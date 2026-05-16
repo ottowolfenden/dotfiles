@@ -6,9 +6,10 @@ hl.bind(mod .. " + M",
     hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 hl.bind(mod .. " + D", hl.dsp.exec_cmd("dolphin"))
 hl.bind(mod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("pkill wofi || wofi --show run"), { release = true })
+hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("pkill wofi || wofi --show drun"), { release = true })
 hl.bind(mod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mod .. " + J", hl.dsp.layout("togglesplit"))
+hl.bind(mod .. " + B", hl.dsp.exec_cmd("helium-browser"))
 
 hl.bind(mod .. " + left", hl.dsp.focus({ direction = "left" }))
 hl.bind(mod .. " + right", hl.dsp.focus({ direction = "right" }))
