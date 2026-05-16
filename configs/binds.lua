@@ -11,6 +11,7 @@ hl.bind("SUPER + down", hl.dsp.focus({ direction = "down" }))
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
 hl.bind("SUPER + F11", hl.dsp.window.fullscreen_state({ internal = 0, client = 2, action = "toggle" }))
+hl.bind("SUPER + M", hl.dsp.window.move({ monitor = "+1", follow = true }))
 for i = 1, 10 do
     local key = i % 10
     hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
@@ -21,6 +22,7 @@ end
 hl.bind("SUPER + Q", hl.dsp.exec_cmd("kitty"))
 hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("pkill wofi || wofi --show drun"), { release = true })
 hl.bind("SUPER + B", hl.dsp.exec_cmd("helium-browser"))
+hl.bind("SUPER + A", hl.dsp.exec_cmd("thunar"))
 
 -- fn keys
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
