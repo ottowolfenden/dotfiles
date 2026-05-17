@@ -29,7 +29,7 @@ hl.bind("SUPER + V",
 
 -- apps
 hl.bind("SUPER + Q", hl.dsp.exec_cmd("kitty"))
-hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("pkill wofi || wofi --show drun"), { release = true })
+hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("pkill wofi || wofi --show drun"))
 hl.bind("SUPER + B", hl.dsp.exec_cmd("helium-browser"))
 hl.bind("SUPER + A", hl.dsp.exec_cmd("thunar"))
 hl.bind("SUPER + C", hl.dsp.exec_cmd("code"))

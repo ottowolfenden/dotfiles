@@ -18,8 +18,8 @@ hl.window_rule({
     float = true
 })
 
--- float edit window in Anki
 hl.window_rule({
+    name = "float-anki-edit-window",
     match = {
         class = "^anki$",
         title = "^Edit.*"
@@ -28,4 +28,14 @@ hl.window_rule({
     center = true
 })
 
-hl.window_rule({ match = { class = ".*" }, fullscreen_state = "0 1" })
+hl.window_rule({
+    name = "fake-fullscreen",
+    match = { class = ".*" },
+    fullscreen_state = "0 1"
+})
+
+hl.window_rule({
+    name = "smaller-yt-music-window",
+    match = { class = "com.github.th_ch.youtube_music" },
+    pseudo = true
+})
