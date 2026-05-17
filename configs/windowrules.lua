@@ -27,3 +27,5 @@ hl.window_rule({
     float = true,
     center = true
 })
+
+hl.window_rule({ match = { class = ".*" }, fullscreen_state = "0 1" })

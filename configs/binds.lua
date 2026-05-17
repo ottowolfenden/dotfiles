@@ -12,8 +12,8 @@ hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
 hl.bind("SUPER + M", hl.dsp.window.move({ monitor = "+1", follow = true }))
 
-hl.bind("F11", hl.dsp.window.fullscreen_state({ internal = 0, client = 2, action = "toggle" }))
-hl.bind("SUPER + F11", hl.dsp.window.fullscreen_state({ internal = 2, client = 2, action = "toggle" }))
+hl.bind("F11", hl.dsp.window.fullscreen_state({ internal = 0, client = 3, action = "toggle" }))
+hl.bind("SUPER + F11", hl.dsp.window.fullscreen_state({ internal = 3, client = 3, action = "toggle" }))
 
 for i = 1, 10 do
     local key = i % 10
