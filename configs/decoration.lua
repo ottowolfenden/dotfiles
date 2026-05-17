@@ -20,7 +20,7 @@ hl.config({
         rounding_power = 2, -- circular
 
         active_opacity = 1.0,
-        inactive_opacity = 0.8,
+        inactive_opacity = 0.85,
 
         blur = {
             enabled = true,

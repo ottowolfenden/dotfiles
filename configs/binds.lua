@@ -10,8 +10,8 @@ hl.bind("SUPER + up", hl.dsp.focus({ direction = "up" }))
 hl.bind("SUPER + down", hl.dsp.focus({ direction = "down" }))
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
-hl.bind("SUPER + F11", hl.dsp.window.fullscreen_state({ internal = 0, client = 2, action = "toggle" }))
 hl.bind("SUPER + M", hl.dsp.window.move({ monitor = "+1", follow = true }))
+
 for i = 1, 10 do
     local key = i % 10
     hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
