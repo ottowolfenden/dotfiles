@@ -18,8 +18,7 @@ for i = 1, 10 do
     hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
     hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
-hl.bind("SUPER + V", hl.dsp.exec_cmd("pkill clipse || kitty --class clipse -e clipse", { float = true }),
-    { release = true })
+hl.bind("SUPER + V", hl.dsp.exec_cmd("pkill clipse || kitty --class clipse -e clipse", { float = true }))
 
 -- apps
 hl.bind("SUPER + Q", hl.dsp.exec_cmd("kitty"))
@@ -27,7 +26,7 @@ hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("pkill wofi || wofi --show drun")
 hl.bind("SUPER + B", hl.dsp.exec_cmd("helium-browser"))
 hl.bind("SUPER + A", hl.dsp.exec_cmd("thunar"))
 hl.bind("SUPER + C", hl.dsp.exec_cmd("code"))
-hl.bind("SUPER + equal", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = true }, { release = true }))
+hl.bind("SUPER + equal", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = true }))
 
 -- fn keys
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
