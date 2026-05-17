@@ -27,6 +27,3 @@ hl.window_rule({
     float = true,
     center = true
 })
-
--- fake fullscreen for all apps
-hl.window_rule({ match = { class = ".*" }, fullscreen_state = "0 1" })
