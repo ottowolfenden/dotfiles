@@ -1,3 +1,6 @@
+local active_class = ""
+hl.on("window.active", function(w) active_class = w.class end)
+
 -- windows
 hl.bind("SUPER + W", hl.dsp.window.close())
 hl.bind("SUPER + mouse:274", hl.dsp.window.close())
@@ -30,9 +33,6 @@ hl.bind("SUPER + equal", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = t
 hl.bind("XF86Calculator", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = true }))
 
 -- global shortcuts
-local active_class = ""
-hl.on("window.active", function(w) active_class = w.class end)
-
 local keys = { "C", "V" }
 for _, key in ipairs(keys) do
     hl.bind("SUPER + ALT + " .. key, function()

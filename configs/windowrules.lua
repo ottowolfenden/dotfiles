@@ -39,3 +39,9 @@ hl.window_rule({
     match = { class = "com.github.th_ch.youtube_music" },
     pseudo = true
 })
+
+hl.window_rule({
+    name = "fix-thunar-rename-dialog",
+    match = { class = "thunar", title = "Rename.*" },
+    float = true
+})
