@@ -18,6 +18,9 @@ hl.bind("F11", hl.dsp.window.fullscreen_state({ internal = 0, client = 3, action
 hl.bind("SUPER + F11", hl.dsp.window.fullscreen_state({ internal = 3, client = 3, action = "toggle" }))
 hl.bind("SUPER + CTRL + left", hl.dsp.focus({ workspace = "-1" }))
 hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "+1" }))
+hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("~/bin/screenshot.sh"))
+hl.bind("Print", hl.dsp.exec_cmd("~/bin/screenshot.sh"))
+hl.bind("XF86SelectiveScreenshot", hl.dsp.exec_cmd("~/bin/screenshot.sh"))
 for i = 1, 10 do
     local key = i % 10
     hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
@@ -33,22 +36,6 @@ hl.bind("SUPER + C", hl.dsp.exec_cmd("code"))
 hl.bind("SUPER + V", hl.dsp.exec_cmd("pkill clipse || kitty --class clipse -e clipse", { float = true }))
 hl.bind("SUPER + equal", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = true }))
 hl.bind("XF86Calculator", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = true }))
-
--- global shortcuts
-local keys = { "C", "V" }
-for _, key in ipairs(keys) do
-    hl.bind("SUPER + ALT + " .. key, function()
-        local target = {
-            mods = (active_class == "kitty") and "CTRL + SHIFT" or "CTRL",
-            key = key,
-            window = "activewindow"
-        }
-        target.state = "down"
-        hl.dispatch(hl.dsp.send_key_state(target))
-        target.state = "up"
-        hl.dispatch(hl.dsp.send_key_state(target))
-    end)
-end
 
 -- fn keys
 hl.bind("XF86AudioRaiseVolume",
@@ -73,9 +60,4 @@ hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
-hl.bind("SUPER + space",
-    hl.dsp.exec_cmd(
-        "BC='platform::kbd_backlight'; [ $(brightnessctl --device=$BC get) -eq 0 ] && brightnessctl --device=$BC set 100% || brightnessctl --device=$BC set 0%"
-    ),
-    { locked = true }
-)
+hl.bind("SUPER + space", hl.dsp.exec_cmd("~/bin/keyboard-backlight.sh"), { locked = true })
