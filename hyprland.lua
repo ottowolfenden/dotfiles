@@ -1,7 +1,7 @@
 require("configs.animations")
-require("configs.autostart")
 require("configs.decoration")
 require("configs.env")
+require("configs.events")
 require("configs.input")
 require("configs.binds")
 require("configs.layout")
