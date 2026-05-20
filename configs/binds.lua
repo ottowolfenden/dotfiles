@@ -1,6 +1,3 @@
-local active_class = ""
-hl.on("window.active", function(w) active_class = w.class end)
-
 -- windows
 hl.bind("SUPER + W", hl.dsp.window.close())
 hl.bind("SUPER + mouse:274", hl.dsp.window.close())

@@ -5,7 +5,7 @@ hl.on("hyprland.start", function()
 end)
 
 hl.on("window.open", function(w)
-    if w.class == "anki" then
+    if w.class == "anki" and w.title == "Otto Wolfenden - Anki" then
         hl.exec_cmd("sleep 0.5 && wtype -k F11 &")
     end
 end)
