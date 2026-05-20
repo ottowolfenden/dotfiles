@@ -6,6 +6,6 @@ end)
 
 hl.on("window.open", function(w)
     if w.class == "anki" then
-        hl.dispatch(hl.dsp.send_shortcut({ mods = "", key = "F11", window = w }))
+        hl.exec_cmd("sleep 0.5 && wtype -k F11 &")
     end
 end)
