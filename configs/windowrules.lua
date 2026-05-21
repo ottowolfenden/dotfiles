@@ -42,3 +42,9 @@ hl.window_rule({
     match = { class = "thunar", title = "Rename.*" },
     float = true
 })
+
+hl.window_rule({
+    "fullscreen-web-app-windows",
+    match = { class = "^chrome-.*$" },
+    fullscreen_state = "0 2"
+})

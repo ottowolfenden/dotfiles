@@ -27,7 +27,7 @@ end
 -- apps
 hl.bind("SUPER + Q", hl.dsp.exec_cmd("kitty"))
 hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("pkill wofi || wofi --show drun"))
-hl.bind("SUPER + B", hl.dsp.exec_cmd("helium-browser"))
+hl.bind("SUPER + B", hl.dsp.exec_cmd("helium-browser --kiosk"))
 hl.bind("SUPER + A", hl.dsp.exec_cmd("thunar"))
 hl.bind("SUPER + C", hl.dsp.exec_cmd("code"))
 hl.bind("SUPER + V", hl.dsp.exec_cmd("pkill clipse || kitty --class clipse -e clipse", { float = true }))
