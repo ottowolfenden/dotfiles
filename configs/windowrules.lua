@@ -27,7 +27,7 @@ hl.window_rule({
 
 hl.window_rule({
     name = "fake-fullscreen",
-    match = { class = ".*" },
+    match = { class = "negative:qimgv" },
     fullscreen_state = "0 1"
 })
 
@@ -39,7 +39,7 @@ hl.window_rule({
 
 hl.window_rule({
     name = "fix-thunar-rename-dialog",
-    match = { class = "thunar", title = "Rename.*" },
+    match = { class = "(?i)thunar", title = "Rename.*" },
     float = true
 })
 

@@ -1,3 +1,6 @@
+local active_window
+hl.on("window.active", function(w) active_window = w end)
+
 -- windows
 hl.bind("SUPER + W", hl.dsp.window.close())
 hl.bind("SUPER + mouse:274", hl.dsp.window.close())
@@ -11,7 +14,13 @@ hl.bind("SUPER + down", hl.dsp.focus({ direction = "down" }))
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
 hl.bind("SUPER + M", hl.dsp.window.move({ monitor = "+1", follow = true }))
-hl.bind("F11", hl.dsp.window.fullscreen_state({ internal = 0, client = 3, action = "toggle" }))
+hl.bind("F11", function()
+    hl.dispatch(hl.dsp.window.fullscreen_state({ internal = 0, client = 3, action = "toggle" }))
+    if string.find(active_window.title, "YouTube") then
+        hl.dispatch(hl.dsp.send_key_state({ mods = "", key = "f", state = "down" }))
+        hl.dispatch(hl.dsp.send_key_state({ mods = "", key = "f", state = "up" }))
+    end
+end)
 hl.bind("SUPER + F11", hl.dsp.window.fullscreen_state({ internal = 3, client = 3, action = "toggle" }))
 hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
 hl.bind("SUPER + CTRL + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))

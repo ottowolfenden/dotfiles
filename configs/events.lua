@@ -6,6 +6,9 @@ end)
 
 hl.on("window.open", function(w)
     if w.class == "anki" and w.title == "Otto Wolfenden - Anki" then
+        hl.exec_cmd("sleep 2 && wtype -k F11 &")
+    end
+    if w.class == "com.github.th_ch.youtube_music" then
         hl.exec_cmd("sleep 0.5 && wtype -k F11 &")
     end
 end)
