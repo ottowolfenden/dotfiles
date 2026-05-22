@@ -1,11 +1,13 @@
-local active_window
-hl.on("window.active", function(w) active_window = w end)
-
 -- windows
 hl.bind("SUPER + W", hl.dsp.window.close())
 hl.bind("SUPER + mouse:274", hl.dsp.window.close())
 hl.bind("SUPER + F", hl.dsp.window.float({ action = "toggle" }))
-hl.bind("SUPER + P", hl.dsp.window.pseudo())
+hl.bind("SUPER + P", function()
+    hl.dispatch(hl.dsp.window.pseudo())
+    if hl.get_active_window() then
+        hl.dispatch(hl.dsp.window.resize({ x = 1000, y = 625 }))
+    end
+end)
 hl.bind("SUPER + slash", hl.dsp.layout("togglesplit"))
 hl.bind("SUPER + left", hl.dsp.focus({ direction = "left" }))
 hl.bind("SUPER + right", hl.dsp.focus({ direction = "right" }))
@@ -16,7 +18,7 @@ hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
 hl.bind("SUPER + M", hl.dsp.window.move({ monitor = "+1", follow = true }))
 hl.bind("F11", function()
     hl.dispatch(hl.dsp.window.fullscreen_state({ internal = 0, client = 3, action = "toggle" }))
-    if string.find(active_window.title, "YouTube") then
+    if string.find(hl.get_active_window().title, "YouTube") then
         hl.dispatch(hl.dsp.send_key_state({ mods = "", key = "f", state = "down" }))
         hl.dispatch(hl.dsp.send_key_state({ mods = "", key = "f", state = "up" }))
     end

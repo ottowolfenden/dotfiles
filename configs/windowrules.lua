@@ -51,12 +51,11 @@ hl.window_rule({
 
 -- apps that are pseudo when they are the only app open in the workspace,
 local dynamic_pseudo_classes = { "kitty", "thunar", "blueman-manager" }
+local default_pseudo_size = { 1000, 625 }
 
 local function contains(tbl, value)
     for _, v in ipairs(tbl) do
-        if v == value then
-            return true
-        end
+        if v == value then return true end
     end
     return false
 end
@@ -71,10 +70,11 @@ local function non_floating(windows)
     return result
 end
 
-hl.on("window.open_early", function(w)
+hl.on("window.open", function(w)
     local windows = non_floating(hl.get_workspace_windows(hl.get_active_workspace().id))
     if #windows == 1 and contains(dynamic_pseudo_classes, w.class) then
         hl.dispatch(hl.dsp.window.pseudo({ action = "enable", window = w }))
+        hl.dispatch(hl.dsp.window.resize({ x = default_pseudo_size[1], y = default_pseudo_size[2], window = w }))
     elseif #windows > 1 then
         for _, win in ipairs(windows) do
             if contains(dynamic_pseudo_classes, win.class) then
@@ -91,6 +91,7 @@ hl.on("window.close", function(w)
         for _, win in ipairs(windows) do
             if win.address ~= w.address and contains(dynamic_pseudo_classes, win.class) then
                 hl.dispatch(hl.dsp.window.pseudo({ action = "enable", window = win }))
+                hl.dispatch(hl.dsp.window.resize({ x = default_pseudo_size[1], y = default_pseudo_size[2], window = win }))
             end
         end
     end
