@@ -96,3 +96,17 @@ hl.on("window.close", function(w)
         end
     end
 end)
+
+hl.on("window.move_to_workspace", function(w, workspace)
+    local windows = non_floating(hl.get_workspace_windows(workspace.id))
+    if #windows == 1 and contains(dynamic_pseudo_classes, w.class) then
+        hl.dispatch(hl.dsp.window.pseudo({ action = "enable", window = w }))
+        hl.dispatch(hl.dsp.window.resize({ x = default_pseudo_size[1], y = default_pseudo_size[2], window = w }))
+    elseif #windows > 1 then
+        for _, win in ipairs(windows) do
+            if contains(dynamic_pseudo_classes, win.class) then
+                hl.dispatch(hl.dsp.window.pseudo({ action = "disable", window = win }))
+            end
+        end
+    end
+end)
