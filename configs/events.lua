@@ -14,13 +14,17 @@ hl.on("window.open", function(w)
 end)
 
 -- apps that are pseudo when they are the only app open in the workspace,
-local dynamic_pseudo_classes = { "kitty", "thunar", "blueman-manager" }
-local pseudo_size = { 1000, 625 }
+local dynamic_pseudo_classes = { "kitty", "[Tt]hunar", "blueman-manager" }
+local dynamic_pseudo_titles = { "Google Calendar" }
+local pseudo_size = { x = 1000, y = 625 }
 local ms_before_resize = 50
 
-local function contains(tbl, value)
-    for _, v in ipairs(tbl) do
-        if v == value then return true end
+local function is_dynamic_pseudo(window)
+    for _, regex in ipairs(dynamic_pseudo_classes) do
+        if string.match(window.class, regex) then return true end
+    end
+    for _, regex in ipairs(dynamic_pseudo_titles) do
+        if string.match(window.title, regex) then return true end
     end
     return false
 end
@@ -37,12 +41,12 @@ end
 
 local function refresh_dynamic_pseudo_state(window, workspace)
     local windows = non_floating(hl.get_workspace_windows(workspace.id))
-    if #windows == 1 and contains(dynamic_pseudo_classes, window.class) then
+    if #windows == 1 and is_dynamic_pseudo(window) then
         hl.dispatch(hl.dsp.window.pseudo({ action = "enable", window = window }))
-        hl.dispatch(hl.dsp.window.resize({ x = pseudo_size[1], y = pseudo_size[2], window = window }))
+        hl.dispatch(hl.dsp.window.resize({ x = pseudo_size.x, y = pseudo_size.y, window = window }))
     elseif #windows > 1 then
         for _, win in ipairs(windows) do
-            if contains(dynamic_pseudo_classes, win.class) then
+            if is_dynamic_pseudo(win) then
                 hl.dispatch(hl.dsp.window.pseudo({ action = "disable", window = win }))
             end
         end
@@ -62,9 +66,9 @@ hl.on("window.close", function()
     hl.timer(function()
         local windows = hl.get_workspace_windows(hl.get_active_workspace().id)
         if #windows ~= 1 then return end
-        if contains(dynamic_pseudo_classes, windows[1].class) then
+        if is_dynamic_pseudo(windows[1]) then
             hl.dispatch(hl.dsp.window.pseudo({ action = "enable", window = windows[1] }))
-            hl.dispatch(hl.dsp.window.resize({ x = pseudo_size[1], y = pseudo_size[2], window = windows[1] }))
+            hl.dispatch(hl.dsp.window.resize({ x = pseudo_size.x, y = pseudo_size.y, window = windows[1] }))
         end
     end, { timeout = ms_before_resize, type = "oneshot" })
 end)

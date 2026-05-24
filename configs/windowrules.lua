@@ -39,7 +39,7 @@ hl.window_rule({
 
 hl.window_rule({
     name = "fix-thunar-rename-dialog",
-    match = { class = "(?i)thunar", title = "Rename.*" },
+    match = { class = "[Tt]hunar", title = "Rename.*" },
     float = true
 })
 
