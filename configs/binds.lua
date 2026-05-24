@@ -39,6 +39,8 @@ hl.bind("SUPER + C", hl.dsp.exec_cmd("code"))
 hl.bind("SUPER + V", hl.dsp.exec_cmd("pkill clipse || kitty --class clipse -e clipse", { float = true }))
 hl.bind("SUPER + equal", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = true }))
 hl.bind("XF86Calculator", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = true }))
+hl.bind("SUPER + T", hl.dsp.exec_cmd("thunar"))
+hl.bind("SUPER + SHIFT + T", hl.dsp.exec_cmd("thunar", { float = true }))
 
 -- fn keys
 hl.bind("XF86AudioRaiseVolume",
