@@ -12,3 +12,57 @@ hl.on("window.open", function(w)
         hl.exec_cmd("sleep 0.5 && wtype -k F11 &")
     end
 end)
+
+-- apps that are pseudo when they are the only app open in the workspace,
+local dynamic_pseudo_classes = { "kitty", "thunar", "blueman-manager" }
+local default_pseudo_size = { 1000, 625 }
+
+local function contains(tbl, value)
+    for _, v in ipairs(tbl) do
+        if v == value then return true end
+    end
+    return false
+end
+
+local function non_floating(windows)
+    local result = {}
+    for _, win in ipairs(windows) do
+        if not win.floating then
+            table.insert(result, win)
+        end
+    end
+    return result
+end
+
+local function refresh_dynamic_pseudo_state(window, workspace)
+    local windows = non_floating(hl.get_workspace_windows(workspace.id))
+    if #windows == 1 and contains(dynamic_pseudo_classes, window.class) then
+        hl.dispatch(hl.dsp.window.pseudo({ action = "enable", window = window }))
+        hl.dispatch(hl.dsp.window.resize({ x = default_pseudo_size[1], y = default_pseudo_size[2], window = window }))
+    elseif #windows > 1 then
+        for _, win in ipairs(windows) do
+            if contains(dynamic_pseudo_classes, win.class) then
+                hl.dispatch(hl.dsp.window.pseudo({ action = "disable", window = win }))
+            end
+        end
+    end
+end
+
+hl.on("window.open", function(window)
+    refresh_dynamic_pseudo_state(window, hl.get_active_workspace())
+end)
+hl.on("window.move_to_workspace", function(window, workspace)
+    refresh_dynamic_pseudo_state(window, workspace)
+end)
+
+hl.on("window.close", function(window)
+    local windows = hl.get_workspace_windows(hl.get_active_workspace().id)
+    if #windows == 2 then
+        for _, w in ipairs(windows) do
+            if w.address ~= window.address and contains(dynamic_pseudo_classes, w.class) then
+                hl.dispatch(hl.dsp.window.pseudo({ action = "enable", window = w }))
+                hl.dispatch(hl.dsp.window.resize({ x = default_pseudo_size[1], y = default_pseudo_size[2], window = w }))
+            end
+        end
+    end
+end)
