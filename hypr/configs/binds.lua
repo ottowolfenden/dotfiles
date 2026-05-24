@@ -20,15 +20,14 @@ hl.bind("F11", hl.dsp.window.fullscreen_state({ internal = 0, client = 3, action
 hl.bind("SUPER + F11", hl.dsp.window.fullscreen_state({ internal = 3, client = 3, action = "toggle" }))
 hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
 hl.bind("SUPER + CTRL + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
-hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("~/bin/screenshot.sh"))
-hl.bind("Print", hl.dsp.exec_cmd("~/bin/screenshot.sh"))
-hl.bind("XF86SelectiveScreenshot", hl.dsp.exec_cmd("~/bin/screenshot.sh"))
+hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh"))
+hl.bind("Print", hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh"))
+hl.bind("XF86SelectiveScreenshot", hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh"))
 for i = 1, 10 do
     local key = i % 10
     hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
     hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
-hl.bind("SUPER + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"))
 
 -- apps
 hl.bind("SUPER + Q", hl.dsp.exec_cmd("kitty"))
@@ -39,6 +38,7 @@ hl.bind("SUPER + C", hl.dsp.exec_cmd("code"))
 hl.bind("SUPER + V", hl.dsp.exec_cmd("pkill clipse || kitty --class clipse -e clipse", { float = true }))
 hl.bind("SUPER + equal", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = true }))
 hl.bind("XF86Calculator", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = true }))
+hl.bind("SUPER + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"))
 hl.bind("SUPER + T", hl.dsp.exec_cmd("thunar"))
 hl.bind("SUPER + SHIFT + T", hl.dsp.exec_cmd("thunar", { float = true }))
 
@@ -65,4 +65,4 @@ hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
-hl.bind("SUPER + space", hl.dsp.exec_cmd("~/bin/keyboard-backlight.sh"), { locked = true })
+hl.bind("SUPER + space", hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.sh"), { locked = true })
