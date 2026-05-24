@@ -14,16 +14,18 @@ hl.on("window.open", function(w)
 end)
 
 -- apps that are pseudo when they are the only app open in the workspace,
-local dynamic_pseudo_classes = { "kitty", "[Tt]hunar", "blueman-manager" }
-local dynamic_pseudo_titles = { "Google Calendar" }
+local dynamic_pseudos = {
+    classes = { "kitty", "[Tt]hunar", "blueman" },
+    titles = { "Google Calendar" }
+}
 local pseudo_size = { x = 1000, y = 625 }
 local ms_before_resize = 50
 
 local function is_dynamic_pseudo(window)
-    for _, regex in ipairs(dynamic_pseudo_classes) do
+    for _, regex in ipairs(dynamic_pseudos.classes) do
         if string.match(window.class, regex) then return true end
     end
-    for _, regex in ipairs(dynamic_pseudo_titles) do
+    for _, regex in ipairs(dynamic_pseudos.titles) do
         if string.match(window.title, regex) then return true end
     end
     return false
