@@ -28,6 +28,18 @@ for i = 1, 10 do
     hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
     hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
+hl.bind("CTRL + mouse_up", function()
+    if hl.get_active_window().class == "kitty" then
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "down" }))
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
+    end
+end)
+hl.bind("CTRL + mouse_down", function()
+    if hl.get_active_window().class == "kitty" then
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
+    end
+end)
 
 -- apps
 hl.bind("SUPER + Q", hl.dsp.exec_cmd("kitty"))
