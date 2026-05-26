@@ -15,7 +15,7 @@ end)
 
 -- apps that are pseudo when they are the only app open in the workspace,
 local dynamic_pseudos = {
-    classes = { "kitty", "[Tt]hunar", "blueman" },
+    classes = { "kitty", "[Tt]hunar", "blueman", "[Oo]verskride" },
     titles = { "Google Calendar" }
 }
 local pseudo_size = { x = 1000, y = 625 }
