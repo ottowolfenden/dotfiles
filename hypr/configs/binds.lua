@@ -15,6 +15,7 @@ hl.bind("SUPER + up", hl.dsp.focus({ direction = "up" }))
 hl.bind("SUPER + down", hl.dsp.focus({ direction = "down" }))
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
+hl.bind("SUPER + SHIFT + mouse:272", hl.dsp.window.resize(), { mouse = true })
 hl.bind("SUPER + M", hl.dsp.window.move({ monitor = "+1", follow = true }))
 hl.bind("F11", hl.dsp.window.fullscreen_state({ internal = 0, client = 3, action = "toggle" }))
 hl.bind("SUPER + F11", hl.dsp.window.fullscreen_state({ internal = 3, client = 3, action = "toggle" }))
@@ -28,16 +29,21 @@ for i = 1, 10 do
     hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
     hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
-hl.bind("CTRL + mouse_up", function()
-    if hl.get_active_window().class == "kitty" then
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "down" }))
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
-    end
-end)
-hl.bind("CTRL + mouse_down", function()
-    if hl.get_active_window().class == "kitty" then
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
+hl.on("window.active", function(w)
+    if w.class == "kitty" then
+        hl.bind("CTRL + mouse_up", function()
+            hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "down" }))
+            hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
+        end)
+        hl.bind("CTRL + mouse_down", function()
+            if hl.get_active_window().class == "kitty" then
+                hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
+                hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
+            end
+        end)
+    else
+        hl.unbind("CTRL + mouse_up")
+        hl.unbind("CTRL + mouse_down")
     end
 end)
 
