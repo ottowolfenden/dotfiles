@@ -21,6 +21,8 @@ hl.bind("F11", hl.dsp.window.fullscreen_state({ internal = 0, client = 3, action
 hl.bind("SUPER + F11", hl.dsp.window.fullscreen_state({ internal = 3, client = 3, action = "toggle" }))
 hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
 hl.bind("SUPER + CTRL + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
+hl.bind("SUPER + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
+hl.bind("SUPER + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
 hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh"))
 hl.bind("Print", hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh"))
 hl.bind("XF86SelectiveScreenshot", hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh"))
