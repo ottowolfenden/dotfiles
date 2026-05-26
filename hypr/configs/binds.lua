@@ -36,10 +36,8 @@ hl.on("window.active", function(w)
             hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
         end)
         hl.bind("CTRL + mouse_down", function()
-            if hl.get_active_window().class == "kitty" then
-                hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
-                hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
-            end
+            hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
+            hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
         end)
     else
         hl.unbind("CTRL + mouse_up")
