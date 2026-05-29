@@ -19,18 +19,10 @@ hl.bind("SUPER + SHIFT + mouse:272", hl.dsp.window.resize(), { mouse = true })
 hl.bind("SUPER + M", hl.dsp.window.move({ monitor = "+1", follow = true }))
 hl.bind("F11", hl.dsp.window.fullscreen_state({ internal = 0, client = 3, action = "toggle" }))
 hl.bind("SUPER + F11", hl.dsp.window.fullscreen_state({ internal = 3, client = 3, action = "toggle" }))
-hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
-hl.bind("SUPER + CTRL + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
-hl.bind("SUPER + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
-hl.bind("SUPER + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
-hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh"))
-hl.bind("Print", hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh"))
-hl.bind("XF86SelectiveScreenshot", hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh"))
-for i = 1, 10 do
-    local key = i % 10
-    hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
-    hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
-end
+local screenshot = hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh")
+hl.bind("SUPER + SHIFT + S", screenshot)
+hl.bind("Print", screenshot)
+hl.bind("XF86SelectiveScreenshot", screenshot)
 hl.on("window.active", function(w)
     if w.class == "kitty" then
         hl.bind("CTRL + mouse_up", function()
@@ -47,6 +39,17 @@ hl.on("window.active", function(w)
     end
 end)
 
+-- workspaces
+hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
+hl.bind("SUPER + CTRL + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
+hl.bind("SUPER + N", hl.dsp.focus({ workspace = "emptym", on_current_monitor = true }))
+hl.bind("SUPER + SHIFT + N", hl.dsp.window.move({ workspace = "emptym" }))
+for i = 1, 10 do
+    local key = i % 10
+    hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
+    hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+end
+
 -- apps
 hl.bind("SUPER + Q", hl.dsp.exec_cmd("kitty"))
 hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("pkill wofi || wofi --show drun"))
@@ -60,7 +63,7 @@ hl.bind("SUPER + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"))
 hl.bind("SUPER + T", hl.dsp.exec_cmd("thunar"))
 hl.bind("SUPER + SHIFT + T", hl.dsp.exec_cmd("thunar", { float = true }))
 
--- fn keys
+-- XF86 keys
 hl.bind("XF86AudioRaiseVolume",
     hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
     { locked = true, repeating = true }
