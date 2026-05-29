@@ -48,3 +48,9 @@ hl.window_rule({
     match = { class = "^chrome-.*$" },
     fullscreen_state = "0 2"
 })
+
+hl.window_rule({
+    name = "remove-redundant-vs-code-top-bar",
+    match = { class = "code" },
+    fullscreen_state = "0 2"
+})
