@@ -32,6 +32,8 @@ hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_mon
 hl.bind("SUPER + CTRL + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
 hl.bind("SUPER + N", hl.dsp.focus({ workspace = "empty" }))
 hl.bind("SUPER + SHIFT + N", hl.dsp.window.move({ workspace = "empty" }))
+hl.bind("SUPER + mouse:276", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
+hl.bind("SUPER + mouse:275", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
 for i = 1, 10 do
     local key = i % 10
     hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
