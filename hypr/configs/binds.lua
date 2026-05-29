@@ -23,27 +23,12 @@ local screenshot = hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh")
 hl.bind("SUPER + SHIFT + S", screenshot)
 hl.bind("Print", screenshot)
 hl.bind("XF86SelectiveScreenshot", screenshot)
-hl.on("window.active", function(w)
-    if w.class == "kitty" then
-        hl.bind("CTRL + mouse_up", function()
-            hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "down" }))
-            hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
-        end)
-        hl.bind("CTRL + mouse_down", function()
-            hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
-            hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
-        end)
-    else
-        hl.unbind("CTRL + mouse_up")
-        hl.unbind("CTRL + mouse_down")
-    end
-end)
 
 -- workspaces
 hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
 hl.bind("SUPER + CTRL + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
-hl.bind("SUPER + N", hl.dsp.focus({ workspace = "emptym", on_current_monitor = true }))
-hl.bind("SUPER + SHIFT + N", hl.dsp.window.move({ workspace = "emptym" }))
+hl.bind("SUPER + N", hl.dsp.focus({ workspace = "empty" }))
+hl.bind("SUPER + SHIFT + N", hl.dsp.window.move({ workspace = "empty" }))
 for i = 1, 10 do
     local key = i % 10
     hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
@@ -87,3 +72,20 @@ hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 hl.bind("SUPER + space", hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.sh"), { locked = true })
+
+-- kitty
+-- hl.on("window.active", function(w)
+--     if w.class == "kitty" then
+--         hl.bind("CTRL + mouse_up", function()
+--             hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "down" }))
+--             hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
+--         end)
+--         hl.bind("CTRL + mouse_down", function()
+--             hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
+--             hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
+--         end)
+--     else
+--         hl.unbind("CTRL + mouse_up")
+--         hl.unbind("CTRL + mouse_down")
+--     end
+-- end)
