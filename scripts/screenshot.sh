@@ -11,5 +11,7 @@ else
         fi
         sleep 0.001
     done
-    grim -g "$(slurp -w 0)" - | tee ~/screenshots/"${FILENAME}.png" | wl-copy
+    SLURP=$(slurp)
+    sleep 0.2
+    grim -g "$SLURP" - | tee ~/screenshots/"${FILENAME}.png" | wl-copy
 fi
