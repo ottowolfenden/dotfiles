@@ -52,6 +52,7 @@ hl.bind("XF86Calculator", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = 
 hl.bind("SUPER + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"))
 hl.bind("SUPER + T", hl.dsp.exec_cmd("thunar"))
 hl.bind("SUPER + SHIFT + T", hl.dsp.exec_cmd("thunar", { float = true }))
+hl.bind("CTRL + SHIFT + Escape", hl.dsp.exec_cmd("pkill btop || kitty --class btop -e btop"))
 
 -- XF86 keys
 hl.bind("XF86AudioRaiseVolume",
