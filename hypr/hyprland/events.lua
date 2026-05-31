@@ -74,3 +74,16 @@ hl.on("window.close", function()
         end
     end, { timeout = ms_before_resize, type = "oneshot" })
 end)
+
+hl.on("window.move_to_workspace", function()
+    hl.timer(function()
+        local workspace = hl.get_last_workspace()
+        if not workspace then return end
+        local windows = hl.get_workspace_windows(workspace.id)
+        if #windows ~= 1 then return end
+        if is_dynamic_pseudo(windows[1]) then
+            hl.dispatch(hl.dsp.window.pseudo({ action = "enable", window = windows[1] }))
+            hl.dispatch(hl.dsp.window.resize({ x = pseudo_size.x, y = pseudo_size.y, window = windows[1] }))
+        end
+    end, { timeout = ms_before_resize, type = "oneshot" })
+end)
