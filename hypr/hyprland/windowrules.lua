@@ -12,13 +12,6 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name = "move-hyprland-run",
-    match = { class = "hyprland-run" },
-    move = "20 monitor_h-120",
-    float = true
-})
-
-hl.window_rule({
     name = "float-anki-edit-window",
     match = { class = "^anki$", title = "^Edit.*" },
     float = true,
@@ -29,13 +22,6 @@ hl.window_rule({
     name = "fake-fullscreen",
     match = { class = "negative:qimgv" },
     fullscreen_state = "0 1"
-})
-
-hl.window_rule({
-    name = "smaller-yt-music-window",
-    match = { class = "com.github.th_ch.youtube_music" },
-    pseudo = true,
-    size = { 1036, 716 }
 })
 
 hl.window_rule({
