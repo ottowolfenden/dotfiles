@@ -26,6 +26,12 @@ hl.bind("XF86SelectiveScreenshot", screenshot)
 hl.bind("SUPER + SHIFT + I", function()
     hl.notification.create({ text = hl.get_active_window().title, timeout = 5000 })
 end)
+hl.bind("SUPER + backslash",
+    hl.dsp.window.resize({
+        x = 425,
+        y = hl.get_active_monitor().height / hl.get_active_monitor().scale - hl.get_config("general.gaps_out").top * 2
+    })
+)
 
 -- workspaces
 hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))

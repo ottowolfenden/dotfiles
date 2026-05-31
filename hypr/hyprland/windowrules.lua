@@ -34,7 +34,8 @@ hl.window_rule({
 hl.window_rule({
     name = "smaller-yt-music-window",
     match = { class = "com.github.th_ch.youtube_music" },
-    pseudo = true
+    pseudo = true,
+    size = { 1036, 716 }
 })
 
 hl.window_rule({
