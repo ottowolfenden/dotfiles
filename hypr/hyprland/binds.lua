@@ -26,12 +26,6 @@ hl.bind("XF86SelectiveScreenshot", screenshot)
 hl.bind("SUPER + SHIFT + I", function()
     hl.notification.create({ text = hl.get_active_window().title, timeout = 5000 })
 end)
-hl.bind("SUPER + backslash",
-    hl.dsp.window.resize({
-        x = 425,
-        y = hl.get_active_monitor().height / hl.get_active_monitor().scale - hl.get_config("general.gaps_out").top * 2
-    })
-)
 
 -- workspaces
 hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
@@ -44,10 +38,32 @@ hl.bind("SUPER + N", hl.dsp.focus({ workspace = "empty" }))
 hl.bind("SUPER + SHIFT + N", hl.dsp.window.move({ workspace = "empty" }))
 hl.bind("SUPER + mouse:276", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
 hl.bind("SUPER + mouse:275", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
-for i = 1, 10 do
-    local key = i % 10
+local function get_num_lock()
+    local f = io.open("/sys/class/leds/input3::numlock/brightness", "r")
+    if not f then return false end
+    local on = f:read("*l") == "1"
+    f:close()
+    return on
+end
+local numpad_keys = { "KP_End", "KP_Down", "KP_Next", "KP_Left", "KP_Begin", "KP_Right", "KP_Home", "KP_Up", "KP_Prior" }
+for i = 1, 9 do
+    local key = i % 9
     hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
     hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+    hl.bind(numpad_keys[i], function()
+        if get_num_lock() then
+            hl.exec_cmd("wtype " .. i)
+        else
+            hl.dispatch(hl.dsp.focus({ workspace = i }))
+        end
+    end)
+    hl.bind("SHIFT + " .. numpad_keys[i], function()
+        if get_num_lock() then
+            hl.exec_cmd("wtype " .. i)
+        else
+            hl.dispatch(hl.dsp.window.move({ workspace = i }))
+        end
+    end)
 end
 
 -- apps
@@ -90,18 +106,15 @@ hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true 
 hl.bind("SUPER + space", hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.sh"), { locked = true })
 
 -- -- kitty
--- hl.on("window.active", function(w)
---     if w.class == "kitty" then
---         hl.bind("CTRL + mouse_up", function()
---             hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "down" }))
---             hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
---         end)
---         hl.bind("CTRL + mouse_down", function()
---             hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
---             hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
---         end)
---     else
---         hl.unbind("CTRL + mouse_up")
---         hl.unbind("CTRL + mouse_down")
---     end
--- end)
+hl.bind("CTRL + mouse_up", function()
+    if hl.get_active_window().class == "kitty" then
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "down" }))
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
+    end
+end)
+hl.bind("CTRL + mouse_down", function()
+    if hl.get_active_window().class == "kitty" then
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
+    end
+end)
