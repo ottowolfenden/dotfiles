@@ -26,6 +26,14 @@ hl.bind("XF86SelectiveScreenshot", screenshot)
 hl.bind("SUPER + SHIFT + I", function()
     hl.notification.create({ text = hl.get_active_window().title, timeout = 5000 })
 end)
+hl.bind("SUPER + mouse_up", function()
+    hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "down" }))
+    hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
+end)
+hl.bind("SUPER + mouse_down", function()
+    hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
+    hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
+end)
 
 -- workspaces
 hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
@@ -82,17 +90,3 @@ hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 hl.bind("SUPER + space", hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.sh"), { locked = true })
-
--- -- kitty
-hl.bind("CTRL + mouse_up", function()
-    if hl.get_active_window().class == "kitty" then
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "down" }))
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
-    end
-end)
-hl.bind("CTRL + mouse_down", function()
-    if hl.get_active_window().class == "kitty" then
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
-    end
-end)
