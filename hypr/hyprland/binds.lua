@@ -38,32 +38,10 @@ hl.bind("SUPER + N", hl.dsp.focus({ workspace = "empty" }))
 hl.bind("SUPER + SHIFT + N", hl.dsp.window.move({ workspace = "empty" }))
 hl.bind("SUPER + mouse:276", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
 hl.bind("SUPER + mouse:275", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
-local function get_num_lock()
-    local f = io.open("/sys/class/leds/input3::numlock/brightness", "r")
-    if not f then return false end
-    local on = f:read("*l") == "1"
-    f:close()
-    return on
-end
-local numpad_keys = { "KP_End", "KP_Down", "KP_Next", "KP_Left", "KP_Begin", "KP_Right", "KP_Home", "KP_Up", "KP_Prior" }
 for i = 1, 9 do
     local key = i % 9
     hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
     hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
-    hl.bind(numpad_keys[i], function()
-        if get_num_lock() then
-            hl.exec_cmd("wtype " .. i)
-        else
-            hl.dispatch(hl.dsp.focus({ workspace = i }))
-        end
-    end)
-    hl.bind("SHIFT + " .. numpad_keys[i], function()
-        if get_num_lock() then
-            hl.exec_cmd("wtype " .. i)
-        else
-            hl.dispatch(hl.dsp.window.move({ workspace = i }))
-        end
-    end)
 end
 
 -- apps
