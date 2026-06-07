@@ -1,5 +1,12 @@
 -- windows
-hl.bind("SUPER + W", hl.dsp.window.close())
+hl.bind("SUPER + W", function()
+    if (hl.get_active_window().title == "qalc") then
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "C", state = "down" }))
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "C", state = "up" }))
+    else
+        hl.dispatch(hl.dsp.window.close())
+    end
+end)
 hl.bind("SUPER + mouse:274", hl.dsp.window.close())
 hl.bind("SUPER + F", hl.dsp.window.float({ action = "toggle" }))
 hl.bind("SUPER + P", function()
