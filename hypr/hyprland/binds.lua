@@ -49,8 +49,8 @@ hl.bind("SUPER + CTRL + SHIFT + right", hl.dsp.window.move({ workspace = "r+1" }
 hl.bind("SUPER + CTRL + SHIFT + left", hl.dsp.window.move({ workspace = "r-1" }))
 hl.bind("SUPER + SHIFT + right", hl.dsp.window.move({ workspace = "r+1" }))
 hl.bind("SUPER + SHIFT + left", hl.dsp.window.move({ workspace = "r-1" }))
-hl.bind("SUPER + N", hl.dsp.focus({ workspace = "empty" }))
-hl.bind("SUPER + SHIFT + N", hl.dsp.window.move({ workspace = "empty" }))
+hl.bind("SUPER + N", hl.dsp.focus({ workspace = "emptynm" }))
+hl.bind("SUPER + SHIFT + N", hl.dsp.window.move({ workspace = "emptynm" }))
 hl.bind("SUPER + mouse:276", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
 hl.bind("SUPER + mouse:275", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
 for i = 1, 9 do
