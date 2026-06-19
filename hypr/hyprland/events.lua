@@ -1,5 +1,6 @@
 hl.on("hyprland.start", function()
     hl.exec_cmd("hyprpaper")
+    hl.exec_cmd("qs")
     hl.exec_cmd("swaync")
     hl.exec_cmd("clipse -listen")
 end)
@@ -22,7 +23,7 @@ local dynamic_pseudos = {
         "[Oo]verskride",
         "com.github.th_ch.youtube_music"
     },
-    initial_titles = { "Google Calendar" }
+    initial_titles = {}
 }
 local pseudo_size = { x = 1000, y = 625 }
 local ms_before_resize = 50
