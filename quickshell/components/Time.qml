@@ -6,14 +6,13 @@ import QtQuick.Controls
 import ".."
 
 Rectangle {
-    id: mainRect
-    color: Config.bgColour
+    color: Config.colours.bg
     radius: Config.borderRadius
-    implicitWidth: contentRow.width + (contentRow.anchors.leftMargin * 2)
+    implicitWidth: textContainer.width + (textContainer.anchors.leftMargin * 2)
     Layout.fillHeight: true
 
     RowLayout {
-        id: contentRow
+        id: textContainer
         spacing: Config.spacing * 2
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
@@ -23,14 +22,14 @@ Rectangle {
             implicitWidth: 43
             Text {
                 id: time
-                color: "#000"
+                color: Config.colours.fg1
                 font.family: Config.font
                 font.pixelSize: Config.fontSize
             }
         }
         Text {
             id: date
-            color: "#000"
+            color: Config.colours.fg1
             font.family: Config.font
             font.pixelSize: Config.fontSize
         }
