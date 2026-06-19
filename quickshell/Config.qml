@@ -6,12 +6,13 @@ QtObject {
     property int fontSize: 15
     property int borderRadius: 5
     property int spacing: 9
-    property string font: "Google Sans Flex"
+    property string fontFamily: "Google Sans Flex"
     property var colours: this.darkMode ? {
         bg: "#aa000000",
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
-        fg3: "#a2a2a2",
+        fg3: '#23ffffff',
+        invfg: "#000000",
         red: "#f07178",
         orange: "#f78c6c",
         yellow: "#ffcb6b",
@@ -24,7 +25,8 @@ QtObject {
         bg: "#aaffffff",
         fg1: "#d8000000",
         fg2: "#55000000",
-        fg3: "#545454",
+        fg3: "#23000000",
+        invfg: "#ffffff",
         red: "#ea4335",
         orange: "#f57c00",
         yellow: "#fbbc05",

@@ -1,1 +1,2 @@
 singleton Config 1.0 Config.qml
+singleton Helpers 1.0 Helpers.qml

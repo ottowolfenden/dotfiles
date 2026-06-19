@@ -1,18 +1,16 @@
 import QtQuick
-import Quickshell
 import Quickshell.Io
 import QtQuick.Layouts
-import QtQuick.Controls
 import ".."
 
 Rectangle {
     color: Config.colours.bg
     radius: Config.borderRadius
-    implicitWidth: textContainer.width + (textContainer.anchors.leftMargin * 2)
+    implicitWidth: container.width + (Config.spacing * 2)
     Layout.fillHeight: true
 
     RowLayout {
-        id: textContainer
+        id: container
         spacing: Config.spacing * 2
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
@@ -23,14 +21,14 @@ Rectangle {
             Text {
                 id: time
                 color: Config.colours.fg1
-                font.family: Config.font
+                font.family: Config.fontFamily
                 font.pixelSize: Config.fontSize
             }
         }
         Text {
             id: date
             color: Config.colours.fg1
-            font.family: Config.font
+            font.family: Config.fontFamily
             font.pixelSize: Config.fontSize
         }
     }

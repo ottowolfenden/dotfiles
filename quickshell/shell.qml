@@ -1,6 +1,5 @@
 import QtQuick
 import Quickshell
-import Quickshell.Io
 import QtQuick.Layouts
 import QtQuick.Controls
 import "./components"
@@ -26,8 +25,10 @@ PanelWindow {
         RowLayout {
             id: leftContainer
             spacing: Config.spacing
-            anchors.fill: parent
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
             Time {}
+            Workspaces {}
         }
     }
 }
