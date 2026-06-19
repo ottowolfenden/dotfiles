@@ -17,7 +17,7 @@ Rectangle {
         anchors.leftMargin: Config.spacing
         Item {
             implicitHeight: time.height
-            implicitWidth: 43
+            implicitWidth: 35
             Text {
                 id: time
                 color: Config.colours.fg1

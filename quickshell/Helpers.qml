@@ -9,4 +9,11 @@ QtObject {
                     return true;
         return false;
     }
+
+    function getRelevantWorkspaceIds(workspaces) {
+        var ids = workspaces.values.map(value => value.id);
+        return Array.from({
+            length: Math.max(...ids)
+        }, (_, i) => i + 1);
+    }
 }

@@ -16,17 +16,16 @@ Rectangle {
         anchors.fill: parent
         anchors.leftMargin: Config.spacing
         anchors.rightMargin: Config.spacing
-        property int smallSize: 16
 
         Repeater {
-            model: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            model: Helpers.getRelevantWorkspaceIds(Hyprland.workspaces)
 
             delegate: Rectangle {
                 required property var modelData
                 property bool isActive: modelData == Hyprland.focusedWorkspace.id
                 property bool exists: Helpers.getWorkspaceExists(Hyprland.workspaces, modelData)
-                width: container.smallSize
-                height: container.smallSize
+                width: 16
+                height: 16
                 radius: Infinity
                 color: isActive ? Config.colours.fg1 : (exists ? Config.colours.fg3 : "transparent")
 
