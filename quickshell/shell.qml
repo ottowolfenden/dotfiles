@@ -29,6 +29,7 @@ PanelWindow {
         }
 
         RowLayout {
+            id: leftContainer
             spacing: w.spacing
             anchors.top: parent.top
             anchors.bottom: parent.bottom
@@ -43,16 +44,18 @@ PanelWindow {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     anchors.leftMargin: w.spacing
-                    Text {
-                        id: time
-                        text: "05:48"
-                        color: "#000"
-                        font.family: "Google Sans Flex"
-                        font.pixelSize: w.fontSize
+                    Item {
+                        implicitHeight: time.height
+                        implicitWidth: 43
+                        Text {
+                            id: time
+                            color: "#000"
+                            font.family: "Google Sans Flex"
+                            font.pixelSize: w.fontSize
+                        }
                     }
                     Text {
                         id: date
-                        text: "Thu 21 Feb"
                         color: "#000"
                         font.family: "Google Sans Flex"
                         font.pixelSize: w.fontSize
@@ -64,7 +67,7 @@ PanelWindow {
 
     Process {
         id: timeProc
-        command: ["date", "+%I:%M:%S"]
+        command: ["date", "+%I:%M"]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
@@ -88,12 +91,9 @@ PanelWindow {
         interval: 1000
         running: true
         repeat: true
-        onTriggered: dateProc.running = true
-    }
-    Timer {
-        interval: 1000
-        running: true
-        repeat: true
-        onTriggered: timeProc.running = true
+        onTriggered: {
+            dateProc.running = true;
+            timeProc.running = true;
+        }
     }
 }
