@@ -9,7 +9,7 @@ Rectangle {
     radius: Config.borderRadius
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
     Layout.fillHeight: true
-    visible: Hyprland.workspaces.values.length != 1 || Hyprland.focusedWorkspace.id != 1
+    visible: Hyprland.workspaces.values.length != 1 || (Hyprland.focusedWorkspace?.id ?? 1) != 1
 
     RowLayout {
         id: container
@@ -24,7 +24,7 @@ Rectangle {
             delegate: Rectangle {
                 id: circle
                 required property var modelData
-                property bool isActive: modelData == Hyprland.focusedWorkspace.id
+                property bool isActive: modelData == (Hyprland.focusedWorkspace?.id ?? -1)
                 property bool exists: Helpers.getWorkspaceExists(Hyprland.workspaces, modelData)
                 width: 16
                 height: 16

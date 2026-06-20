@@ -41,6 +41,7 @@ Scope {
                     right: parent.right
                 }
 
+                Battery {}
                 Power {}
             }
         }
