@@ -21,13 +21,20 @@ Rectangle {
             model: Helpers.getRelevantWorkspaceIds(Hyprland.workspaces)
 
             delegate: Rectangle {
+                id: circle
                 required property var modelData
                 property bool isActive: modelData == Hyprland.focusedWorkspace.id
                 property bool exists: Helpers.getWorkspaceExists(Hyprland.workspaces, modelData)
                 width: 16
                 height: 16
                 radius: Infinity
-                color: isActive ? Config.colours.fg1 : (exists ? Config.colours.fg3 : "transparent")
+                color: {
+                    if (isActive)
+                        return Config.colours.lightblue;
+                    if (exists)
+                        return Config.colours.fg3;
+                    return "transparent";
+                }
 
                 Text {
                     text: parent.modelData
@@ -36,7 +43,23 @@ Rectangle {
                     verticalAlignment: Text.AlignVCenter
                     font.family: Config.fontFamily
                     font.pixelSize: 12
-                    color: parent.isActive ? Config.colours.invfg : Config.colours.fg1
+                    color: {
+                        if (parent.isActive)
+                            return Config.colours.invfg;
+                        if (parent.exists)
+                            return Config.colours.fg1;
+                        return Config.colours.fg2;
+                    }
+                }
+
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        Hyprland.dispatch(`hl.dsp.focus({ workspace = ${parent.modelData} })`);
+                    }
                 }
             }
         }
