@@ -41,6 +41,7 @@ Scope {
                     right: parent.right
                 }
 
+                Bluetooth {}
                 Battery {}
                 Power {}
             }
