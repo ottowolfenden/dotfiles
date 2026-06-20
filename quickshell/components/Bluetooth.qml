@@ -12,6 +12,7 @@ Rectangle {
     Layout.fillHeight: true
     property int numConnected: Bluetooth.defaultAdapter.devices.values.filter(d => d.connected).length
     property bool on: Bluetooth.defaultAdapter.enabled
+    property var devicesToAutoconnect: ["B0:F0:0C:07:BC:07"]
 
     Icon {
         id: icon
@@ -29,10 +30,22 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked: mouse => {
-            if (mouse.button == Qt.LeftButton)
+            if (mouse.button == Qt.LeftButton) {
                 Bluetooth.defaultAdapter.enabled = !Bluetooth.defaultAdapter.enabled;
-            else if (mouse.button == Qt.RightButton)
+                if (Bluetooth.defaultAdapter.enabled)
+                    autoconnectTimer.restart();
+            } else if (mouse.button == Qt.RightButton)
                 Quickshell.execDetached(["overskride"]);
+        }
+    }
+
+    Timer {
+        id: autoconnectTimer
+        interval: 300
+        onTriggered: {
+            if (!Bluetooth.defaultAdapter.enabled)
+                return;
+            Bluetooth.defaultAdapter.devices.values.find(d => bluetooth.devicesToAutoconnect.includes(d.address)).connect();
         }
     }
 }
