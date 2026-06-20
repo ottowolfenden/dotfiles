@@ -9,6 +9,7 @@ Rectangle {
     radius: Config.borderRadius
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
     Layout.fillHeight: true
+    visible: Hyprland.workspaces.values.length != 1
 
     RowLayout {
         id: container

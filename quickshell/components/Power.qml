@@ -26,7 +26,6 @@ Rectangle {
 
     Process {
         id: hyprshutdown
-        command: ["hyprshutdown"]
-        running: false
+        command: ["hyprctl", "dispatch", "hl.dsp.exit()"]
     }
 }
