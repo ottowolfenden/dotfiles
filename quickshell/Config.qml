@@ -3,6 +3,7 @@ import QtQuick
 
 QtObject {
     property bool darkMode: false
+    property int barHeight: 40 - 9
     property int fontSize: 15
     property int borderRadius: 5
     property int spacing: 9
@@ -11,7 +12,7 @@ QtObject {
         bg: "#aa000000",
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
-        fg3: '#23ffffff',
+        fg3: '#15ffffff',
         invfg: "#000000",
         red: "#f07178",
         orange: "#f78c6c",
@@ -25,7 +26,7 @@ QtObject {
         bg: "#aaffffff",
         fg1: "#d8000000",
         fg2: "#55000000",
-        fg3: "#23000000",
+        fg3: '#15000000',
         invfg: "#ffffff",
         red: "#ea4335",
         orange: "#f57c00",

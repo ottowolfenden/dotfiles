@@ -10,25 +10,38 @@ Scope {
         color: "transparent"
         anchors {
             top: true
-            left: true
             right: true
+            left: true
         }
 
         Pane {
             anchors.fill: parent
-            padding: Config.spacing
             bottomPadding: 0
             background: Rectangle {
                 color: "transparent"
             }
 
             RowLayout {
-                id: leftContainer
                 spacing: Config.spacing
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
+                anchors {
+                    top: parent.top
+                    bottom: parent.bottom
+                    left: parent.left
+                }
+
                 Time {}
                 Workspaces {}
+            }
+
+            RowLayout {
+                spacing: Config.spacing
+                anchors {
+                    top: parent.top
+                    bottom: parent.bottom
+                    right: parent.right
+                }
+
+                Power {}
             }
         }
     }

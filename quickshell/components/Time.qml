@@ -39,9 +39,9 @@ Rectangle {
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
-                var a = text.trim().split("-");
-                time.text = a[0];
-                date.text = a[1];
+                var datetime = text.trim().split("-");
+                time.text = datetime[0];
+                date.text = datetime[1];
             }
         }
     }
