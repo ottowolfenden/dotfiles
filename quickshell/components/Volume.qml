@@ -40,6 +40,7 @@ Rectangle {
                 }
             }
         }
+
         Item {
             implicitHeight: volPercentage.height
             implicitWidth: volPercentage.width
@@ -54,20 +55,19 @@ Rectangle {
             }
         }
     }
+
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: {
-            Pipewire.defaultAudioSink.audio.muted = !Pipewire.defaultAudioSink.audio.muted;
-        }
+        property var audio: Pipewire.defaultAudioSink.audio
+        onClicked: audio.muted = !audio.muted
         onWheel: wheel => {
             if (wheel.angleDelta.y > 0)
-                Pipewire.defaultAudioSink.audio.volume += 0.01;
+                audio.volume = Math.min(audio.volume + 0.01, 1);
             else if (wheel.angleDelta.y < 0)
-                Pipewire.defaultAudioSink.audio.volume -= 0.01;
-            Pipewire.defaultAudioSink.audio.volume = Math.min(Pipewire.defaultAudioSink.audio.volume, 1);
+                audio.volume -= 0.01;
         }
     }
 }

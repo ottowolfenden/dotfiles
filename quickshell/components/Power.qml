@@ -19,9 +19,7 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: {
-            hyprshutdown.running = true;
-        }
+        onClicked: hyprshutdown.running = true
     }
 
     Process {
