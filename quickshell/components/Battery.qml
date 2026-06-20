@@ -13,6 +13,7 @@ Rectangle {
 
     property bool isCharging: false
     property int percent: Math.round(UPower.displayDevice.percentage * 100)
+    property bool danger: battery.percent <= 10 && !battery.isCharging
 
     Process {
         id: statusReader
@@ -43,24 +44,26 @@ Rectangle {
             Icon {
                 id: icon
                 iconName: {
-                    if (battery.percent <= 5)
-                        return battery.isCharging ? "battery_charging_full" : "battery_0_bar";
+                    if (battery.percent <= 10)
+                        return battery.isCharging ? "battery_charging_full" : "battery_alert";
                     if (battery.percent <= 20)
                         return battery.isCharging ? "battery_charging_20" : "battery_1_bar";
-                    if (battery.percent <= 35)
+                    if (battery.percent <= 30)
                         return battery.isCharging ? "battery_charging_30" : "battery_2_bar";
                     if (battery.percent <= 50)
                         return battery.isCharging ? "battery_charging_50" : "battery_3_bar";
-                    if (battery.percent <= 65)
+                    if (battery.percent <= 60)
                         return battery.isCharging ? "battery_charging_60" : "battery_4_bar";
                     if (battery.percent <= 80)
                         return battery.isCharging ? "battery_charging_80" : "battery_5_bar";
                     if (battery.percent <= 95)
                         return battery.isCharging ? "battery_charging_90" : "battery_6_bar";
                     if (battery.percent > 95)
-                        return "battery_full";
+                        return battery.isCharging ? "battery_charging_full" : "battery_full";
                     return "battery_unknown";
                 }
+                fill: battery.isCharging && battery.percent > 95
+                colour: battery.danger ? Config.colours.red : Config.colours.fg1
             }
         }
 
@@ -70,7 +73,7 @@ Rectangle {
             Text {
                 id: percent
                 text: battery.percent + "%"
-                color: Config.colours.fg1
+                color: battery.danger ? Config.colours.red : Config.colours.fg1
                 font.family: Config.fontFamily
                 font.pixelSize: Config.fontSize
                 width: 48
