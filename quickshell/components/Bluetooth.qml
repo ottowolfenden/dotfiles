@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Layouts
 import Quickshell
 import Quickshell.Bluetooth
 import ".."
@@ -8,14 +7,16 @@ Rectangle {
     id: bluetooth
     color: Config.colours.bg
     radius: Config.borderRadius
-    width: Config.barHeight
-    Layout.fillHeight: true
+    implicitWidth: Config.barHeight
+    implicitHeight: Config.barHeight
+
     property int numConnected: Bluetooth.defaultAdapter.devices.values.filter(d => d.connected).length
     property bool on: Bluetooth.defaultAdapter.enabled
     property var devicesToAutoconnect: ["B0:F0:0C:07:BC:07"]
 
     Icon {
         id: icon
+        anchors.centerIn: parent
         iconName: {
             if (bluetooth.on)
                 return parent.numConnected <= 0 ? "bluetooth" : "bluetooth_connected";

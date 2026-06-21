@@ -6,7 +6,7 @@ import "./components"
 
 Scope {
     PanelWindow {
-        implicitHeight: 40
+        implicitHeight: Config.panelWindowHeight
         color: "transparent"
         anchors {
             top: true

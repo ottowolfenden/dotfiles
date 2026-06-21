@@ -7,7 +7,7 @@ Rectangle {
     color: Config.colours.bg
     radius: Config.borderRadius
     implicitWidth: container.width + (Config.spacing * 2)
-    Layout.fillHeight: true
+    implicitHeight: Config.barHeight
 
     RowLayout {
         id: container
@@ -50,8 +50,6 @@ Rectangle {
         interval: 1000
         running: true
         repeat: true
-        onTriggered: {
-            timeProc.running = true;
-        }
+        onTriggered: timeProc.running = true
     }
 }

@@ -4,70 +4,60 @@ import QtQuick.Layouts
 import ".."
 
 Rectangle {
+    id: volume
     color: Config.colours.bg
     radius: Config.borderRadius
-    implicitWidth: container.width + (Config.spacing * 2)
     Layout.fillHeight: true
+    implicitWidth: container.implicitWidth + (Config.spacing * 2)
+    implicitHeight: container.implicitHeight + (Config.spacing * 2)
+
+    property var audio: Pipewire.defaultAudioSink.audio
+    property int percent: Math.round(audio.volume * 100)
 
     RowLayout {
         id: container
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: parent.left
-        anchors.leftMargin: Config.spacing * 1.7
+        spacing: Config.spacing
+        anchors.fill: parent
+        anchors.leftMargin: Config.spacing
+        anchors.rightMargin: Config.spacing
 
-        property bool isBluetooth: Pipewire.defaultAudioSink.properties["device.api"] == "bluez5"
-        property int volPercent: Math.round(Pipewire.defaultAudioSink.audio.volume * 100)
-
-        PwObjectTracker {
-            objects: [Pipewire.defaultAudioSink]
+        Icon {
+            iconName: Config.audioIcons.find(i => i.muted == volume.audio.muted || volume.percent <= i.max).icon
         }
 
-        Item {
-            implicitHeight: icon.height
-            implicitWidth: icon.width
-            Icon {
-                id: icon
-                iconName: {
-                    if (Pipewire.defaultAudioSink.audio.muted)
-                        return "no_sound";
-                    if (container.volPercent == 0)
-                        return "volume_mute";
-                    if (container.volPercent <= 50)
-                        return "volume_down";
-                    if (container.volPercent > 50)
-                        return "volume_up";
-                    return "error";
-                }
-            }
-        }
-
-        Item {
-            implicitHeight: volPercentage.height
-            implicitWidth: volPercentage.width
-            Text {
-                id: volPercentage
-                text: container.volPercent + "%"
-                color: Config.colours.fg1
-                font.family: Config.fontFamily
-                font.pixelSize: Config.fontSize
-                width: 50
-                horizontalAlignment: Text.AlignHCenter
-            }
+        Text {
+            text: volume.percent + "%"
+            color: Config.colours.fg1
+            font.family: Config.fontFamily
+            font.pixelSize: Config.fontSize
+            horizontalAlignment: Text.AlignHCenter
+            Layout.preferredWidth: 40
         }
     }
 
     MouseArea {
-        id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        property var audio: Pipewire.defaultAudioSink.audio
-        onClicked: audio.muted = !audio.muted
+
+        onClicked: volume.audio.muted = !volume.audio.muted
         onWheel: wheel => {
             if (wheel.angleDelta.y > 0)
-                audio.volume = Math.min(audio.volume + 0.01, 1);
+                volume.audio.volume = Math.min(volume.audio.volume + 0.01, 1);
             else if (wheel.angleDelta.y < 0)
-                audio.volume -= 0.01;
+                volume.audio.volume -= 0.01;
         }
+    }
+
+    PwObjectTracker {
+        objects: [Pipewire.defaultAudioSink]
+    }
+
+    Timer {
+        interval: 300
+        running: true
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: volume.percent = Math.min(Math.random() * 300, 100)
     }
 }

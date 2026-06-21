@@ -8,7 +8,7 @@ Rectangle {
     color: Config.colours.bg
     radius: Config.borderRadius
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
-    Layout.fillHeight: true
+    implicitHeight: Config.barHeight
     visible: Hyprland.workspaces.values.length != 1 || (Hyprland.focusedWorkspace?.id ?? 1) != 1
 
     RowLayout {

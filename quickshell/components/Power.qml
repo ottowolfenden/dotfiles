@@ -1,16 +1,16 @@
 import QtQuick
-import QtQuick.Layouts
 import Quickshell.Io
 import ".."
 
 Rectangle {
     color: Config.colours.bg
     radius: Config.borderRadius
-    width: Config.barHeight
-    Layout.fillHeight: true
+    implicitWidth: Config.barHeight
+    implicitHeight: Config.barHeight
 
     Icon {
         id: icon
+        anchors.centerIn: parent
         iconName: "power_settings_new"
     }
 
