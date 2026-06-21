@@ -5,6 +5,7 @@ import Quickshell.Networking
 QtObject {
     property bool darkMode: false
     property int spacing: 9
+    property int iconTextSpacing: 5
     property int panelWindowHeight: 40
     property int barHeight: 40 - spacing
     property int fontSize: 15

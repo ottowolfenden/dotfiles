@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell.Io
+import Quickshell
 import ".."
 
 Rectangle {
@@ -10,6 +11,7 @@ Rectangle {
 
     Icon {
         id: icon
+        pixelSize: 17
         anchors.centerIn: parent
         iconName: "power_settings_new"
     }
@@ -19,11 +21,6 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: hyprshutdown.running = true
-    }
-
-    Process {
-        id: hyprshutdown
-        command: ["hyprctl", "dispatch", "hl.dsp.exit()"]
+        onClicked: Quickshell.execDetached(["hyprshutdown"])
     }
 }

@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Networking
-import Quickshell
 import Quickshell.Io
 import ".."
 
@@ -30,13 +29,6 @@ Rectangle {
             property var icons: Config.wifiIcons.find(i => i.connectivity == Networking.connectivity).icons.find(j => network.wifiStrength <= (j.max ?? 1))
             iconName: (network.isWifiSecured ? icons.secured : icons.open) ?? "signal_wifi_statusbar_not_connected"
             fill: icons.fill ?? false
-
-            MouseArea {
-                anchors.fill: parent
-                anchors.margins: -4
-                hoverEnabled: true
-                cursorShape: Qt.PointingHandCursor
-            }
         }
 
         Icon {
@@ -91,10 +83,7 @@ Rectangle {
         id: vpnCheck
         command: ["nmcli", "connection", "show", "--active"]
         stdout: StdioCollector {
-            onStreamFinished: {
-                console.log(text);
-                network.isVpnConnected = Config.vpnIdentifiers.some(i => text.toLowerCase().includes(i));
-            }
+            onStreamFinished: network.isVpnConnected = Config.vpnIdentifiers.some(i => text.toLowerCase().includes(i))
         }
     }
 

@@ -42,6 +42,7 @@ Rectangle {
 
     Timer {
         id: autoconnectTimer
+        running: true
         interval: 300
         onTriggered: {
             if (!Bluetooth.defaultAdapter.enabled)

@@ -18,7 +18,7 @@ Rectangle {
 
     RowLayout {
         id: container
-        spacing: Config.spacing
+        spacing: Config.iconTextSpacing
         anchors.fill: parent
         anchors.leftMargin: Config.spacing
         anchors.rightMargin: Config.spacing
