@@ -52,12 +52,4 @@ Rectangle {
     PwObjectTracker {
         objects: [Pipewire.defaultAudioSink]
     }
-
-    Timer {
-        interval: 300
-        running: true
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: volume.percent = Math.min(Math.random() * 300, 100)
-    }
 }

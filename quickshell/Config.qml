@@ -169,4 +169,5 @@ QtObject {
             icon: "volume_up"
         }
     ]
+    property var vpnIdentifiers: ["vpn", "wireguard", "proton"]
 }

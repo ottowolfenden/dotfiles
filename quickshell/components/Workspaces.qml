@@ -54,14 +54,11 @@ Rectangle {
                 }
 
                 MouseArea {
-                    id: mouseArea
                     anchors.fill: parent
                     anchors.margins: -4
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: {
-                        Hyprland.dispatch(`hl.dsp.focus({ workspace = ${parent.modelData} })`);
-                    }
+                    onClicked: Hyprland.dispatch(`hl.dsp.focus({ workspace = ${parent.modelData} })`)
                 }
             }
         }
