@@ -15,8 +15,8 @@ hl.config({
 
         blur = {
             enabled = true,
-            size = 5,
-            passes = 3,
+            size = 10,
+            passes = 4,
             vibrancy = 0,
         },
 
@@ -24,4 +24,10 @@ hl.config({
     },
 
     animations = { enabled = true }
+})
+
+hl.layer_rule({
+    match = { namespace = "quickshell" },
+    blur = true,
+    ignore_alpha = 0
 })

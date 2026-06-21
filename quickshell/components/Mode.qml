@@ -22,7 +22,7 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
         onClicked: {
             Config.darkMode = !Config.darkMode;
-            Quickshell.execDetached(["set-theme.sh", Config.darkMode ? "dark" : "light"]);
+            Quickshell.execDetached(["/home/otto/dotfiles/scripts/set-theme.sh", Config.darkMode ? "dark" : "light"]);
         }
     }
 }

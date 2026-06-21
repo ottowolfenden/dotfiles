@@ -11,7 +11,7 @@ QtObject {
     property int borderRadius: 4
     property string fontFamily: "Google Sans Flex"
     property var colours: this.darkMode ? {
-        bg: "#aa000000",
+        bg: '#d9000000',
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
         fg3: '#15ffffff',
@@ -25,7 +25,7 @@ QtObject {
         purple: "#c792ea",
         pink: "#ff9cac"
     } : {
-        bg: "#aaffffff",
+        bg: "#d9ffffff",
         fg1: "#d8000000",
         fg2: "#55000000",
         fg3: '#15000000',
