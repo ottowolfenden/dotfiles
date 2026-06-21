@@ -4,12 +4,11 @@ import Quickshell.Networking
 
 QtObject {
     property bool darkMode: false
-    property int spacing: 9
-    property int iconTextSpacing: 5
-    property int panelWindowHeight: 40
-    property int barHeight: 40 - spacing
+    property int spacing: 10
+    property int iconTextSpacing: 4
+    property int barHeight: 30
     property int fontSize: 15
-    property int borderRadius: 5
+    property int borderRadius: 4
     property string fontFamily: "Google Sans Flex"
     property var colours: this.darkMode ? {
         bg: "#aa000000",

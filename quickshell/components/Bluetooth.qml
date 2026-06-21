@@ -47,7 +47,9 @@ Rectangle {
         onTriggered: {
             if (!Bluetooth.defaultAdapter.enabled)
                 return;
-            Bluetooth.defaultAdapter.devices.values.find(d => bluetooth.devicesToAutoconnect.includes(d.address)).connect();
+            var device = Bluetooth.defaultAdapter.devices.values.find(d => bluetooth.devicesToAutoconnect.includes(d.address));
+            if (!device.connected)
+                device.connect();
         }
     }
 }

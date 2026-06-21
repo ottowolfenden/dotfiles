@@ -6,7 +6,7 @@ import "./components"
 
 Scope {
     PanelWindow {
-        implicitHeight: Config.panelWindowHeight
+        implicitHeight: Config.barHeight + Config.spacing
         color: "transparent"
         anchors {
             top: true
@@ -15,8 +15,16 @@ Scope {
         }
 
         Pane {
-            anchors.fill: parent
-            bottomPadding: 0
+            anchors {
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            implicitHeight: Config.barHeight
+            padding: 0
+            leftPadding: Config.spacing
+            rightPadding: Config.spacing
+
             background: Rectangle {
                 color: "transparent"
             }

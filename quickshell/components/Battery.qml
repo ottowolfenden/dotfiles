@@ -8,9 +8,8 @@ Rectangle {
     id: battery
     color: Config.colours.bg
     radius: Config.borderRadius
-    Layout.fillHeight: true
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
-    implicitHeight: container.implicitHeight + (Config.spacing * 2)
+    Layout.preferredHeight: Config.barHeight
 
     property bool isCharging: false
     property int percent: Math.round(UPower.displayDevice.percentage * 100)

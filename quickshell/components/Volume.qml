@@ -7,9 +7,8 @@ Rectangle {
     id: volume
     color: Config.colours.bg
     radius: Config.borderRadius
-    Layout.fillHeight: true
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
-    implicitHeight: container.implicitHeight + (Config.spacing * 2)
+    Layout.preferredHeight: Config.barHeight
 
     property var audio: Pipewire.defaultAudioSink.audio
     property int percent: Math.round(audio.volume * 100)

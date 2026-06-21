@@ -8,9 +8,8 @@ Rectangle {
     id: network
     color: Config.colours.bg
     radius: Config.borderRadius
-    Layout.fillHeight: true
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
-    implicitHeight: container.implicitHeight + (Config.spacing * 2)
+    Layout.preferredHeight: Config.barHeight
 
     property WifiDevice wifiDevice: Networking.devices.values.find(d => d.type == DeviceType.Wifi)
     property WifiNetwork wifiNetwork: wifiDevice.networks.values.find(n => n.connected)

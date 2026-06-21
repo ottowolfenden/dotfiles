@@ -14,7 +14,7 @@ hl.on("window.open", function(w)
     end
 end)
 
--- apps that are pseudo when they are the only app open in the workspace,
+-- apps that are pseudo when they are the only app open in the workspace
 local dynamic_pseudos = {
     classes = {
         "kitty",
