@@ -49,6 +49,7 @@ Scope {
                     right: parent.right
                 }
 
+                Mode {}
                 Network {}
                 Volume {}
                 Bluetooth {}
