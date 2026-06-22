@@ -60,10 +60,11 @@ end
 
 -- apps
 hl.bind("SUPER + Q", function()
-    if (hl.get_active_window().class == "code") then
-        hl.dispatch(hl.dsp.pass({ window = hl.get_active_window() }))
+    local w = hl.get_active_window()
+    if not w or w.class ~= "code" then
+        hl.dispatch(hl.dsp.exec_cmd("kitty"))
     else
-        hl.dsp.exec_cmd("kitty")
+        hl.dispatch(hl.dsp.pass({ window = hl.get_active_window() }))
     end
 end)
 hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("pkill wofi || wofi --show drun"))
