@@ -1,6 +1,6 @@
 hl.on("hyprland.start", function()
     hl.exec_cmd("hyprpaper")
-    hl.exec_cmd("qs")
+    hl.exec_cmd("quickshell --no-crash-handler")
     hl.exec_cmd("swaync")
     hl.exec_cmd("clipse -listen")
 end)

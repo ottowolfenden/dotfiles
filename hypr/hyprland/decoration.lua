@@ -25,9 +25,3 @@ hl.config({
 
     animations = { enabled = true }
 })
-
-hl.layer_rule({
-    match = { namespace = "quickshell" },
-    blur = true,
-    ignore_alpha = 0
-})
