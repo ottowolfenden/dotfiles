@@ -19,8 +19,8 @@ Rectangle {
         anchors.centerIn: parent
         iconName: {
             if (bluetooth.on)
-                return parent.numConnected <= 0 ? "bluetooth" : "bluetooth_connected";
-            return "bluetooth_disabled";
+                return parent.numConnected <= 0 ? Icons.bluetooth.enabled : Icons.bluetooth.connected;
+            return Icons.bluetooth.disabled;
         }
     }
 

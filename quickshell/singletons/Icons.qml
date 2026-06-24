@@ -115,6 +115,10 @@ QtObject {
             ]
         }
     ]
+    property var vpn: ({
+            on: "vpn_key",
+            off: "vpn_key_off"
+        })
     property var audio: [
         {
             muted: true,
@@ -133,4 +137,14 @@ QtObject {
             icon: "volume_up"
         }
     ]
+    property var bluetooth: ({
+            enabled: "bluetooth",
+            disabled: "bluetooth_disabled",
+            connected: "bluetooth_connected"
+        })
+    property var mode: ({
+            light: "light_mode",
+            dark: "dark_mode"
+        })
+    property var power: "power_settings_new"
 }

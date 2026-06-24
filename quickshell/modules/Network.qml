@@ -26,13 +26,13 @@ Rectangle {
         anchors.rightMargin: Config.spacing
 
         Icon {
-            property var icons: Icons.wifi.find(i => i.connectivity == Networking.connectivity).icons.find(j => network.wifiStrength <= (j.max ?? 1))
-            iconName: (network.isWifiSecured ? icons.secured : icons.open) ?? "signal_wifi_statusbar_not_connected"
+            property var icons: Icons.wifi.find(i => i.connectivity == (Networking.connectivity ?? NetworkConnectivity.Unknown)).icons.find(j => network.wifiStrength <= (j.max ?? 1))
+            iconName: (network.isWifiSecured ? icons.secured : icons.open)
             fill: icons.fill ?? false
         }
 
         Icon {
-            iconName: network.isVpnConnected ? "vpn_key" : "vpn_key_off"
+            iconName: network.isVpnConnected ? Icons.vpn.on : Icons.vpn.off
             opacity: 1
 
             MouseArea {

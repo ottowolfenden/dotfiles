@@ -13,7 +13,7 @@ Rectangle {
     Icon {
         id: icon
         anchors.centerIn: parent
-        iconName: QsState.darkMode ? "dark_mode" : "light_mode"
+        iconName: QsState.darkMode ? Icons.mode.dark : Icons.mode.light
     }
 
     MouseArea {

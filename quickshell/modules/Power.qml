@@ -12,7 +12,7 @@ Rectangle {
         id: icon
         pixelSize: 17
         anchors.centerIn: parent
-        iconName: "power_settings_new"
+        iconName: Icons.power
     }
 
     MouseArea {
