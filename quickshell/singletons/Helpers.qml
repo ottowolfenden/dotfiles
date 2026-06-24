@@ -16,4 +16,6 @@ QtObject {
             length: Math.max(...ids)
         }, (_, i) => i + 1);
     }
+
+    property var clamp: (num, min, max) => Math.min(Math.max(num, min), max)
 }

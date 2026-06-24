@@ -44,14 +44,18 @@ Rectangle {
     Flyout {
         id: batteryFlyout
         rectHeight: 200
-        rectWidth: 20
+        rectWidth: 1000
+        parentX: battery.x
     }
 
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: batteryFlyout.visible = true
+        onClicked: {
+            batteryFlyout.parentX = battery.mapToItem(null, battery.width / 2, 0).x;
+            batteryFlyout.visible = true;
+        }
     }
 
     Process {

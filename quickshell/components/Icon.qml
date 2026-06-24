@@ -9,8 +9,8 @@ Item {
     property int horizontalMargin: 0
     property int verticalMargin: 0
 
-    width: icon.width + horizontalMargin
-    height: icon.width + verticalMargin
+    width: pixelSize + horizontalMargin
+    height: pixelSize + verticalMargin
 
     Text {
         id: icon

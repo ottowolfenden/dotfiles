@@ -60,11 +60,12 @@ end
 
 -- apps
 hl.bind("SUPER + Q", function()
-    if hl.get_active_window().class == "code" then
+    local w = hl.get_active_window()
+    if not w or w.class ~= "code" then
+        hl.dispatch(hl.dsp.exec_cmd("kitty"))
+    else
         hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "Q", state = "down" }))
         hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "Q", state = "up" }))
-    else
-        hl.dispatch(hl.dsp.exec_cmd("kitty"))
     end
 end)
 hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("pkill wofi || wofi --show drun"))

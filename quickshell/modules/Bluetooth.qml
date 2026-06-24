@@ -45,7 +45,7 @@ Rectangle {
         running: true
         interval: 300
         onTriggered: {
-            if (!Bluetooth.defaultAdapter.enabled)
+            if (!Bluetooth.defaultAdapter.enabled || Bluetooth.defaultAdapter.devices.values.some(d => Config.devicesToAutoconnect.includes(d.address)))
                 return;
             var device = Bluetooth.defaultAdapter.devices.values.find(d => Config.devicesToAutoconnect.includes(d.address));
             if (!device.connected)

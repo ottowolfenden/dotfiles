@@ -4,8 +4,10 @@ import ".."
 
 PanelWindow {
     id: root
+    default property alias content: contentContainer.children
     required property int rectWidth
     required property int rectHeight
+    property int parentX
 
     color: "transparent"
     focusable: true
@@ -27,12 +29,19 @@ PanelWindow {
         height: root.rectHeight
         color: Config.colours.bg
         radius: Config.radius
-        anchors.centerIn: parent
+        y: Config.spacing
+        x: Helpers.clamp(root.parentX - width / 2, Config.spacing, root.width - width - Config.spacing)
+
         MouseArea {
             anchors.fill: parent
             hoverEnabled: true
             onEntered: root.hovering = true
             onExited: root.hovering = false
+        }
+
+        Item {
+            id: contentContainer
+            anchors.fill: parent
         }
     }
 
