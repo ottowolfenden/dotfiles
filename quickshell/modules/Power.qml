@@ -1,4 +1,5 @@
 import QtQuick
+import Quickshell
 import ".."
 import "../components"
 
@@ -16,13 +17,21 @@ Rectangle {
         iconName: Icons.power
     }
 
+    property bool reopening: false
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: {
+        onPressed: {
+            if (powerFlyout.isOpen) {
+                powerFlyout.isOpen = false;
+                power.reopening = true;
+            } else
+                power.reopening = false;
+        }
+        onReleased: {
             powerFlyout.parentX = power.mapToItem(null, power.width / 2, 0).x;
-            powerFlyout.visible = true;
+            powerFlyout.isOpen = !powerFlyout.isOpen && !power.reopening;
         }
     }
 
@@ -30,6 +39,8 @@ Rectangle {
         id: powerFlyout
         rectHeight: 200
         rectWidth: 300
+        parentX: power.x
+        parentWidth: power.width
 
         Text {
             text: "test"

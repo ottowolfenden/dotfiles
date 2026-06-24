@@ -5,7 +5,7 @@ import Quickshell.Io
 QtObject {
     id: qsState
 
-    property bool darkMode: false
+    property bool darkMode: true
     property var darkModeProcess: Process {
         id: getDarkMode
         command: ["gsettings", "get", "org.gnome.desktop.interface", "color-scheme"]
@@ -22,7 +22,7 @@ QtObject {
         function hide() {
             for (const flyout of qsState.flyouts)
                 if (!flyout.hovering)
-                    flyout.visible = false;
+                    flyout.isOpen = false;
         }
     }
 }

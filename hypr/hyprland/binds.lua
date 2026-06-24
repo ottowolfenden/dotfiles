@@ -1,6 +1,8 @@
 -- windows
 hl.bind("SUPER + W", function()
-    if hl.get_active_window().title == "qalc" then
+    local w = hl.get_active_window()
+    if not w then return end
+    if w.title == "qalc" then
         hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "C", state = "down" }))
         hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "C", state = "up" }))
     end
@@ -42,8 +44,8 @@ hl.bind("SUPER + mouse_down", function()
 end)
 
 -- workspaces
-hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
-hl.bind("SUPER + CTRL + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
+hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }), { repeating = true })
+hl.bind("SUPER + CTRL + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }), { repeating = true })
 hl.bind("SUPER + CTRL + SHIFT + right", hl.dsp.window.move({ workspace = "r+1" }))
 hl.bind("SUPER + CTRL + SHIFT + left", hl.dsp.window.move({ workspace = "r-1" }))
 hl.bind("SUPER + SHIFT + right", hl.dsp.window.move({ workspace = "r+1" }))
