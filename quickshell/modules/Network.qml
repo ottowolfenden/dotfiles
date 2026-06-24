@@ -3,11 +3,12 @@ import QtQuick.Layouts
 import Quickshell.Networking
 import Quickshell.Io
 import ".."
+import "../components"
 
 Rectangle {
     id: network
     color: Config.colours.bg
-    radius: Config.borderRadius
+    radius: Config.radius
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
     Layout.preferredHeight: Config.barHeight
 

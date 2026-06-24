@@ -2,7 +2,7 @@ import QtQuick
 import Quickshell
 import QtQuick.Layouts
 import QtQuick.Controls
-import "./components"
+import "./modules"
 
 Scope {
     PanelWindow {

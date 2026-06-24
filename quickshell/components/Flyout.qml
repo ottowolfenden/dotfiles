@@ -3,34 +3,36 @@ import Quickshell
 import ".."
 
 PanelWindow {
-    id: batteryFlyout
+    id: root
+    required property int rectWidth
+    required property int rectHeight
+
+    color: "transparent"
+    focusable: true
+    visible: false
     anchors {
         top: true
         bottom: true
         left: true
         right: true
     }
-    color: "transparent"
-    focusable: true
-    visible: false
-
     mask: Region {
-        item: popupRect
+        item: rectangle
     }
 
     property bool hovering: false
-
     Rectangle {
-        id: popupRect
-        width: 300
-        height: 200
-        color: "#00ff00"
+        id: rectangle
+        width: root.rectWidth
+        height: root.rectHeight
+        color: Config.colours.bg
+        radius: Config.radius
         anchors.centerIn: parent
         MouseArea {
             anchors.fill: parent
             hoverEnabled: true
-            onEntered: batteryFlyout.hovering = true
-            onExited: batteryFlyout.hovering = false
+            onEntered: root.hovering = true
+            onExited: root.hovering = false
         }
     }
 

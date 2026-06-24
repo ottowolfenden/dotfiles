@@ -2,17 +2,17 @@ import QtQuick
 import Quickshell
 import Quickshell.Bluetooth
 import ".."
+import "../components"
 
 Rectangle {
     id: bluetooth
     color: Config.colours.bg
-    radius: Config.borderRadius
+    radius: Config.radius
     implicitWidth: Config.barHeight
     implicitHeight: Config.barHeight
 
     property int numConnected: Bluetooth.defaultAdapter.devices.values.filter(d => d.connected).length
     property bool on: Bluetooth.defaultAdapter.enabled
-    property var devicesToAutoconnect: ["B0:F0:0C:07:BC:07"]
 
     Icon {
         id: icon
@@ -47,7 +47,7 @@ Rectangle {
         onTriggered: {
             if (!Bluetooth.defaultAdapter.enabled)
                 return;
-            var device = Bluetooth.defaultAdapter.devices.values.find(d => bluetooth.devicesToAutoconnect.includes(d.address));
+            var device = Bluetooth.defaultAdapter.devices.values.find(d => Config.devicesToAutoconnect.includes(d.address));
             if (!device.connected)
                 device.connect();
         }

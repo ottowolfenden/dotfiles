@@ -2,13 +2,13 @@ import QtQuick
 import Quickshell.Services.UPower
 import QtQuick.Layouts
 import Quickshell.Io
-import Quickshell
 import ".."
+import "../components"
 
 Rectangle {
     id: battery
     color: Config.colours.bg
-    radius: Config.borderRadius
+    radius: Config.radius
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
     Layout.preferredHeight: Config.barHeight
 
@@ -41,8 +41,10 @@ Rectangle {
         }
     }
 
-    BatteryFlyout {
+    Flyout {
         id: batteryFlyout
+        rectHeight: 200
+        rectWidth: 20
     }
 
     MouseArea {

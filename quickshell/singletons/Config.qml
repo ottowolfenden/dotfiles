@@ -7,7 +7,7 @@ QtObject {
     property int iconTextSpacing: 4
     property int barHeight: 30
     property int fontSize: 15
-    property int borderRadius: 4
+    property int radius: 4
     property string fontFamily: "Google Sans Flex"
     property var colours: QsState.darkMode ? {
         bg: '#d9000000',
@@ -39,4 +39,5 @@ QtObject {
         pink: "#ff80ab"
     }
     property var vpnIdentifiers: ["vpn", "wireguard", "proton"]
+    property var devicesToAutoconnect: ["B0:F0:0C:07:BC:07", "AC:3E:B1:62:43:27"]
 }

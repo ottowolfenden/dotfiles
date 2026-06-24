@@ -30,5 +30,4 @@ Item {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
     }
-    // DebugBox {}
 }

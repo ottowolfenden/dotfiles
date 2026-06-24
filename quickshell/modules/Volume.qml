@@ -2,11 +2,12 @@ import QtQuick
 import Quickshell.Services.Pipewire
 import QtQuick.Layouts
 import ".."
+import "../components"
 
 Rectangle {
     id: volume
     color: Config.colours.bg
-    radius: Config.borderRadius
+    radius: Config.radius
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
     Layout.preferredHeight: Config.barHeight
 

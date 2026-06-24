@@ -1,9 +1,10 @@
 import QtQuick
 import ".."
+import "../components"
 
 Rectangle {
     color: Config.colours.bg
-    radius: Config.borderRadius
+    radius: Config.radius
     implicitWidth: Config.barHeight
     implicitHeight: Config.barHeight
 
@@ -18,13 +19,12 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: {
-            powerFlyout.visible = true;
-            QsState.flyoutsVisible = true;
-        }
+        onClicked: powerFlyout.visible = true
     }
 
-    PowerFlyout {
+    Flyout {
         id: powerFlyout
+        rectHeight: 200
+        rectWidth: 300
     }
 }

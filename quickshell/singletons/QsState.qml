@@ -3,7 +3,7 @@ import QtQuick
 import Quickshell.Io
 
 QtObject {
-    id: state
+    id: qsState
 
     property bool darkMode: false
     property var darkModeProcess: Process {
@@ -11,7 +11,7 @@ QtObject {
         command: ["gsettings", "get", "org.gnome.desktop.interface", "color-scheme"]
         running: true
         stdout: StdioCollector {
-            onStreamFinished: state.darkMode = text.trim() == "'prefer-dark'"
+            onStreamFinished: qsState.darkMode = text.trim() == "'prefer-dark'"
         }
     }
 
@@ -20,10 +20,9 @@ QtObject {
         target: "flyoutsHandler"
 
         function hide() {
-            for (const flyout of state.flyouts) {
+            for (const flyout of qsState.flyouts)
                 if (!flyout.hovering)
                     flyout.visible = false;
-            }
         }
     }
 }

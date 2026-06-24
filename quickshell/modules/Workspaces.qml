@@ -6,7 +6,7 @@ import ".."
 
 Rectangle {
     color: Config.colours.bg
-    radius: Config.borderRadius
+    radius: Config.radius
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
     implicitHeight: Config.barHeight
     visible: Hyprland.workspaces.values.length != 1 || (Hyprland.focusedWorkspace?.id ?? 1) != 1

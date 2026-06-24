@@ -5,7 +5,7 @@ import ".."
 
 Rectangle {
     color: Config.colours.bg
-    radius: Config.borderRadius
+    radius: Config.radius
     implicitWidth: container.width + (Config.spacing * 2)
     implicitHeight: Config.barHeight
 

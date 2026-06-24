@@ -1,11 +1,12 @@
 import QtQuick
 import Quickshell
 import ".."
+import "../components"
 
 Rectangle {
     id: mode
     color: Config.colours.bg
-    radius: Config.borderRadius
+    radius: Config.radius
     implicitWidth: Config.barHeight
     implicitHeight: Config.barHeight
 
