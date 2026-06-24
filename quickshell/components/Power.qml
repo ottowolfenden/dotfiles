@@ -1,6 +1,4 @@
 import QtQuick
-import Quickshell.Io
-import Quickshell
 import ".."
 
 Rectangle {
@@ -17,10 +15,16 @@ Rectangle {
     }
 
     MouseArea {
-        id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: Quickshell.execDetached(["hyprshutdown"])
+        onClicked: {
+            powerFlyout.visible = true;
+            QsState.flyoutsVisible = true;
+        }
+    }
+
+    PowerFlyout {
+        id: powerFlyout
     }
 }

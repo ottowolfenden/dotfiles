@@ -12,7 +12,7 @@ Rectangle {
     Icon {
         id: icon
         anchors.centerIn: parent
-        iconName: Config.darkMode ? "dark_mode" : "light_mode"
+        iconName: QsState.darkMode ? "dark_mode" : "light_mode"
     }
 
     MouseArea {
@@ -21,8 +21,8 @@ Rectangle {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         onClicked: {
-            Config.darkMode = !Config.darkMode;
-            Quickshell.execDetached(["/home/otto/dotfiles/scripts/set-theme.sh", Config.darkMode ? "dark" : "light"]);
+            QsState.darkMode = !QsState.darkMode;
+            Quickshell.execDetached([Quickshell.shellDir + "/scripts/set-theme.sh", QsState.darkMode ? "dark" : "light"]);
         }
     }
 }

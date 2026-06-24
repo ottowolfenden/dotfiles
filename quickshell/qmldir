@@ -1,2 +1,4 @@
-singleton Config 1.0 Config.qml
-singleton Helpers 1.0 Helpers.qml
+singleton Config 1.0 singletons/Config.qml
+singleton Helpers 1.0 singletons/Helpers.qml
+singleton Icons 1.0 singletons/Icons.qml
+singleton QsState 1.0 singletons/QsState.qml

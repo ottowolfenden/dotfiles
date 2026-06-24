@@ -21,7 +21,7 @@ Rectangle {
         anchors.rightMargin: Config.spacing
 
         Icon {
-            iconName: Config.audioIcons.find(i => i.muted == volume.audio.muted || volume.percent <= i.max).icon
+            iconName: Icons.audio.find(i => i.muted == volume.audio.muted || volume.percent <= i.max).icon
         }
 
         Text {

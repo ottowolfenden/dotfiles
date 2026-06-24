@@ -3,43 +3,7 @@ import QtQuick
 import Quickshell.Networking
 
 QtObject {
-    property bool darkMode: false
-    property int spacing: 10
-    property int iconTextSpacing: 4
-    property int barHeight: 30
-    property int fontSize: 15
-    property int borderRadius: 4
-    property string fontFamily: "Google Sans Flex"
-    property var colours: this.darkMode ? {
-        bg: '#d9000000',
-        fg1: "#d8ffffff",
-        fg2: "#55ffffff",
-        fg3: '#15ffffff',
-        invfg: "#000000",
-        red: "#f07178",
-        orange: "#f78c6c",
-        yellow: "#E2931D",
-        green: "#c3e88d",
-        lightblue: "#89ddff",
-        darkblue: "#82aaff",
-        purple: "#c792ea",
-        pink: "#ff9cac"
-    } : {
-        bg: "#d9ffffff",
-        fg1: "#d8000000",
-        fg2: "#55000000",
-        fg3: '#15000000',
-        invfg: "#ffffff",
-        red: "#ea4335",
-        orange: '#fd6132',
-        yellow: "#f1b911",
-        green: "#34a853",
-        lightblue: "#4285f4",
-        darkblue: "#0057ca",
-        purple: "#7248b9",
-        pink: "#ff80ab"
-    }
-    property var batteryIcons: [
+    property var battery: [
         {
             max: 10,
             charging: "battery_charging_full",
@@ -82,7 +46,7 @@ QtObject {
             fill: true
         },
     ]
-    property var wifiIcons: [
+    property var wifi: [
         {
             connectivity: NetworkConnectivity.Unknown,
             icons: [
@@ -151,7 +115,7 @@ QtObject {
             ]
         }
     ]
-    property var audioIcons: [
+    property var audio: [
         {
             muted: true,
             icon: "no_sound"
@@ -169,5 +133,4 @@ QtObject {
             icon: "volume_up"
         }
     ]
-    property var vpnIdentifiers: ["vpn", "wireguard", "proton"]
 }

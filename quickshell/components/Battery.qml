@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell.Services.UPower
 import QtQuick.Layouts
 import Quickshell.Io
+import Quickshell
 import ".."
 
 Rectangle {
@@ -24,7 +25,7 @@ Rectangle {
 
         Icon {
             colour: battery.danger ? Config.colours.red : Config.colours.fg1
-            property var icons: Config.batteryIcons.find(i => battery.percent <= i.max)
+            property var icons: Icons.battery.find(i => battery.percent <= i.max)
             iconName: battery.isCharging ? icons.charging : icons.discharging
             fill: icons.fill ?? false
             horizontalMargin: -5
@@ -40,11 +41,15 @@ Rectangle {
         }
     }
 
+    BatteryFlyout {
+        id: batteryFlyout
+    }
+
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: batteryStats.running = true
+        onClicked: batteryFlyout.visible = true
     }
 
     Process {

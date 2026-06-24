@@ -59,14 +59,8 @@ for i = 1, 10 do
 end
 
 -- apps
-hl.bind("SUPER + Q", function()
-    local w = hl.get_active_window()
-    if not w or w.class ~= "code" then
-        hl.dispatch(hl.dsp.exec_cmd("kitty"))
-    else
-        hl.dispatch(hl.dsp.pass({ window = hl.get_active_window() }))
-    end
-end)
+hl.bind("SUPER + Q", hl.dsp.exec_cmd("kitty"))
+hl.bind("SUPER + SHIFT + Q", hl.dsp.pass({ window = hl.get_active_window() }))
 hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("pkill wofi || wofi --show drun"))
 hl.bind("SUPER + B", hl.dsp.exec_cmd("helium-browser"))
 hl.bind("SUPER + A", hl.dsp.exec_cmd("thunar"))
@@ -103,3 +97,9 @@ hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 hl.bind("SUPER + space", hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.sh"), { locked = true })
+
+-- quickshell
+local inputsToHideQsFlyouts = { "mouse:272", "mouse:273", "mouse:274" }
+for _, input in ipairs(inputsToHideQsFlyouts) do
+    hl.bind(input, hl.dsp.exec_cmd("qs ipc call flyoutsHandler hide"), { non_consuming = true })
+end
