@@ -1,6 +1,7 @@
 pragma Singleton
 import QtQuick
 import Quickshell.Io
+import Quickshell
 
 QtObject {
     id: qsState
@@ -20,9 +21,11 @@ QtObject {
         target: "flyoutsHandler"
 
         function hide() {
-            for (const flyout of qsState.flyouts)
-                if (!flyout.hovering)
-                    flyout.isOpen = false;
+            Qt.callLater(function () {
+                for (const flyout of qsState.flyouts)
+                    if (!flyout.hovering)
+                        flyout.isOpen = false;
+            });
         }
     }
 }

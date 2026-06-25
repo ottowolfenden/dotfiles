@@ -49,6 +49,7 @@ Scope {
                     right: parent.right
                 }
 
+                Power {}
                 Mode {}
                 Network {}
                 Volume {}

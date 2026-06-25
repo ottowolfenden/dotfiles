@@ -45,11 +45,15 @@ Rectangle {
         running: true
         interval: 300
         onTriggered: {
-            if (!Bluetooth.defaultAdapter.enabled || Bluetooth.defaultAdapter.devices.values.some(d => Config.devicesToAutoconnect.includes(d.address)))
+            if (!Bluetooth.defaultAdapter.enabled)
                 return;
-            var device = Bluetooth.defaultAdapter.devices.values.find(d => Config.devicesToAutoconnect.includes(d.address));
-            if (!device.connected)
-                device.connect();
+            for (var address of Config.devicesToAutoconnect) {
+                var device = Bluetooth.defaultAdapter.devices.values.find(d => d.address == address);
+                if (!device.connected) {
+                    device.connect();
+                    console.log("connecting to " + device.address);
+                }
+            }
         }
     }
 }
