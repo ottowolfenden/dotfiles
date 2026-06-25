@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import QtQuick.Shapes
 import Qt5Compat.GraphicalEffects
 import Quickshell
 import ".."
@@ -28,16 +29,66 @@ PanelWindow {
 
     Item {
         id: cutout
-        x: root.xPos
+        x: root.xPos - 10
         y: root.yPos
-        width: root.parentWidth
+        width: root.parentWidth + 20
         height: root.parentHeight
         layer.enabled: true
         layer.effect: OpacityMask {
-            maskSource: Rectangle {
+            maskSource: Item {
+                id: mask
                 width: root.parentWidth
                 height: root.parentHeight
-                radius: Config.radius
+                Shape {
+                    preferredRendererType: Shape.GeometryRenderer
+                    ShapePath {
+                        startX: 0
+                        startY: 0
+
+                        PathLine {
+                            x: mask.width
+                            y: 0
+                        }
+                        PathArc {
+                            x: mask.width - 10
+                            y: 10
+                            radiusX: 10
+                            radiusY: 10
+                            direction: PathArc.Counterclockwise
+                        }
+                        PathLine {
+                            x: mask.width - 10
+                            y: mask.height - 10
+                        }
+                        PathArc {
+                            x: mask.width - 20
+                            y: mask.height
+                            radiusX: 10
+                            radiusY: 10
+                        }
+                        PathLine {
+                            x: 20
+                            y: mask.height
+                        }
+                        PathArc {
+                            x: 10
+                            y: mask.height - 10
+                            radiusX: 10
+                            radiusY: 10
+                        }
+                        PathLine {
+                            x: 10
+                            y: 10
+                        }
+                        PathArc {
+                            x: 0
+                            y: 0
+                            radiusX: 10
+                            radiusY: 10
+                            direction: PathArc.Counterclockwise
+                        }
+                    }
+                }
             }
         }
 

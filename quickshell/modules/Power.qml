@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Controls
 import ".."
 import "../components"
 
@@ -41,7 +40,5 @@ Rectangle {
         rectWidth: 200
         parentX: power.x
         parentWidth: power.width
-
-        Button {}
     }
 }

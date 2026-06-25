@@ -38,7 +38,7 @@ PanelWindow {
         id: rectangle
         width: root.parentWidth
         height: root.rectHeight
-        color: Config.colours.bg
+        color: Config.colours.red
         radius: Config.radius
         x: Helpers.clamp(root.parentX - width / 2, Config.spacing, root.width - width - Config.spacing)
         y: -height
