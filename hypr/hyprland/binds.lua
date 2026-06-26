@@ -110,5 +110,5 @@ hl.bind("SUPER + space", hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.
 -- quickshell
 local inputsToHideQsFlyouts = { "mouse:272", "mouse:273", "mouse:274" }
 for _, input in ipairs(inputsToHideQsFlyouts) do
-    -- hl.bind(input, hl.dsp.exec_cmd("qs ipc call flyoutsHandler hide"), { non_consuming = true })
+    hl.bind(input, hl.dsp.exec_cmd("qs ipc call flyoutsHandler hide"), { non_consuming = true })
 end

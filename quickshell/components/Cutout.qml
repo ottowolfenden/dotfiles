@@ -29,9 +29,9 @@ PanelWindow {
 
     Item {
         id: cutout
-        x: root.xPos - 10
+        x: root.xPos - Config.radius
         y: root.yPos
-        width: root.parentWidth + 20
+        width: root.parentWidth + Config.radius + Config.radius
         height: root.parentHeight
         layer.enabled: true
         layer.effect: OpacityMask {
@@ -50,41 +50,41 @@ PanelWindow {
                             y: 0
                         }
                         PathArc {
-                            x: mask.width - 10
-                            y: 10
-                            radiusX: 10
-                            radiusY: 10
+                            x: mask.width - Config.radius
+                            y: Config.radius
+                            radiusX: Config.radius
+                            radiusY: Config.radius
                             direction: PathArc.Counterclockwise
                         }
                         PathLine {
-                            x: mask.width - 10
-                            y: mask.height - 10
+                            x: mask.width - Config.radius
+                            y: mask.height - Config.radius
                         }
                         PathArc {
-                            x: mask.width - 20
+                            x: mask.width - Config.radius - Config.radius
                             y: mask.height
-                            radiusX: 10
-                            radiusY: 10
+                            radiusX: Config.radius
+                            radiusY: Config.radius
                         }
                         PathLine {
-                            x: 20
+                            x: Config.radius * 2
                             y: mask.height
                         }
                         PathArc {
-                            x: 10
-                            y: mask.height - 10
-                            radiusX: 10
-                            radiusY: 10
+                            x: Config.radius
+                            y: mask.height - Config.radius
+                            radiusX: Config.radius
+                            radiusY: Config.radius
                         }
                         PathLine {
-                            x: 10
-                            y: 10
+                            x: Config.radius
+                            y: Config.radius
                         }
                         PathArc {
                             x: 0
                             y: 0
-                            radiusX: 10
-                            radiusY: 10
+                            radiusX: Config.radius
+                            radiusY: Config.radius
                             direction: PathArc.Counterclockwise
                         }
                     }

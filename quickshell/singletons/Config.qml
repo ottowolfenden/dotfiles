@@ -7,7 +7,7 @@ QtObject {
     property int iconTextSpacing: 4
     property int barHeight: 30
     property int fontSize: 15
-    property int radius: 10
+    property int radius: 4
     property string fontFamily: "Google Sans Flex"
     property var colours: QsState.darkMode ? {
         bg: "#d9000000",
