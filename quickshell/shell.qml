@@ -37,6 +37,7 @@ Scope {
                     left: parent.left
                 }
 
+                Power {}
                 Time {}
                 Workspaces {}
             }

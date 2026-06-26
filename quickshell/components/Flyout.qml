@@ -1,5 +1,9 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import Quickshell
+import QtQuick.Shapes
+import Qt5Compat.GraphicalEffects
 import ".."
 
 PanelWindow {
@@ -19,7 +23,12 @@ PanelWindow {
         right: true
     }
     mask: Region {
-        item: rectangle
+        item: Rectangle {
+            width: root.rectWidth
+            height: root.rectHeight
+            x: Helpers.clamp(root.parentX - width / 2, Config.spacing, root.width - width - Config.spacing)
+            y: Config.spacing
+        }
     }
 
     property bool isReady: false
@@ -30,7 +39,9 @@ PanelWindow {
         rectangle.y = isOpen ? Config.spacing : -rectangle.height;
         rectangle.width = isOpen ? root.rectWidth : root.parentWidth;
         isFirst = false;
-        Quickshell.execDetached(["hyprctl", "eval", "hl.config({input = { follow_mouse = " + (isOpen ? "0" : "1") + " }})"]);
+        Qt.callLater(() => {
+            Quickshell.execDetached(["hyprctl", "eval", "hl.config({input = { follow_mouse = " + (isOpen ? "0" : "1") + " }})"]);
+        });
     }
 
     property bool hovering: false
@@ -46,11 +57,11 @@ PanelWindow {
         Behavior on y {
             SequentialAnimation {
                 PauseAnimation {
-                    duration: root.isOpen && !root.isFirst ? 40 : 0
+                    duration: root.isOpen && !root.isFirst ? 150 : 0
                 }
                 NumberAnimation {
                     duration: 150
-                    easing: Easing.OutQuart
+                    easing: Easing.Linear
                 }
             }
         }
@@ -58,11 +69,11 @@ PanelWindow {
         Behavior on width {
             SequentialAnimation {
                 PauseAnimation {
-                    duration: root.isOpen && !root.isFirst ? 0 : 40
+                    duration: root.isOpen && !root.isFirst ? 0 : 150
                 }
                 NumberAnimation {
                     duration: 150
-                    easing: Easing.OutQuart
+                    easing: Easing.Linear
                 }
             }
         }
@@ -82,7 +93,7 @@ PanelWindow {
         xPos: rectangle.x - Config.spacing
         yPos: Config.spacing * 2 + Config.barHeight
         parentWidth: rectangle.width + Config.spacing * 2
-        parentHeight: rectangle.height + Config.spacing
+        parentHeight: rectangle.height + rectangle.y
         visible: root.visible
     }
 

@@ -94,10 +94,11 @@ PanelWindow {
 
         Image {
             id: image
-            source: "file:///home/otto/wallpapers/clouds/23260.jpg"
+            source: "file:///home/otto/wallpapers/clouds/42994.jpg"
             width: root.width
             height: root.height
             fillMode: Image.PreserveAspectCrop
+            asynchronous: true
 
             x: -cutout.x
             y: -cutout.y
