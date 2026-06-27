@@ -28,7 +28,7 @@ QtObject {
 
     property string dailyWallpaperPath
     property var dailyWallpaperProcess: Process {
-        command: ["/home/otto/dotfiles/scripts/dailywallpaper.sh", qsState.darkMode ? "dark" : "light"]
+        command: ["/home/otto/dotfiles/scripts/daily-wallpaper.sh", qsState.darkMode ? "dark" : "light"]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
