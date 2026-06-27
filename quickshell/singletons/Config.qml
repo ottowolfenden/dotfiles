@@ -3,14 +3,16 @@ import QtQuick
 import ".."
 
 QtObject {
-    property int spacing: 10
+    property int spacing: 7
     property int iconTextSpacing: 4
-    property int barHeight: 30
+    property int componentHeight: 30
+    property int barHeight: componentHeight + spacing * 2
     property int fontSize: 15
     property int radius: 4
     property string fontFamily: "Google Sans Flex"
     property var colours: QsState.darkMode ? {
-        bg: "#d9000000",
+        bg1: "#000000",
+        bg2: "#1affffff",
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
         fg3: "#15ffffff",
@@ -24,8 +26,9 @@ QtObject {
         purple: "#c792ea",
         pink: "#ff9cac"
     } : {
-        bg: "#d9ffffff",
-        fg1: "#d8000000",
+        bg1: "#ffffff",
+        bg2: "#1a000000",
+        fg1: '#d8030202',
         fg2: "#55000000",
         fg3: "#15000000",
         invfg: "#ffffff",

@@ -31,7 +31,6 @@ PanelWindow {
         }
     }
 
-    property bool isReady: false
     property bool isOpen: false
     property bool isFirst: true
     visible: isOpen || rectangle.y > -rectangle.height
@@ -49,7 +48,7 @@ PanelWindow {
         id: rectangle
         width: root.parentWidth
         height: root.rectHeight
-        color: Config.colours.bg
+        color: Config.colours.bg2
         radius: Config.radius
         x: Helpers.clamp(root.parentX - width / 2, Config.spacing, root.width - width - Config.spacing)
         y: -height
@@ -57,11 +56,11 @@ PanelWindow {
         Behavior on y {
             SequentialAnimation {
                 PauseAnimation {
-                    duration: root.isOpen && !root.isFirst ? 150 : 0
+                    duration: root.isOpen && !root.isFirst ? 100 : 0
                 }
                 NumberAnimation {
                     duration: 150
-                    easing: Easing.Linear
+                    easing: Easing.OutQuart
                 }
             }
         }
@@ -69,11 +68,11 @@ PanelWindow {
         Behavior on width {
             SequentialAnimation {
                 PauseAnimation {
-                    duration: root.isOpen && !root.isFirst ? 0 : 150
+                    duration: root.isOpen && !root.isFirst ? 0 : 100
                 }
                 NumberAnimation {
                     duration: 150
-                    easing: Easing.Linear
+                    easing: Easing.OutQuart
                 }
             }
         }
@@ -89,16 +88,5 @@ PanelWindow {
         }
     }
 
-    Cutout {
-        xPos: rectangle.x - Config.spacing
-        yPos: Config.spacing * 2 + Config.barHeight
-        parentWidth: rectangle.width + Config.spacing * 2
-        parentHeight: rectangle.height + rectangle.y
-        visible: root.visible
-    }
-
-    Component.onCompleted: {
-        QsState.flyouts.push(this);
-        isReady = true;
-    }
+    Component.onCompleted: QsState.flyouts.push(this)
 }

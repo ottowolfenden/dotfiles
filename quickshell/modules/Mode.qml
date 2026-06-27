@@ -5,10 +5,10 @@ import "../components"
 
 Rectangle {
     id: mode
-    color: Config.colours.bg
+    color: Config.colours.bg2
     radius: Config.radius
-    implicitWidth: Config.barHeight
-    implicitHeight: Config.barHeight
+    implicitWidth: Config.componentHeight
+    implicitHeight: Config.componentHeight
 
     Icon {
         id: icon

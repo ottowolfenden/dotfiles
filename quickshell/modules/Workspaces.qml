@@ -5,10 +5,10 @@ import Quickshell.Hyprland
 import ".."
 
 Rectangle {
-    color: Config.colours.bg
+    color: Config.colours.bg2
     radius: Config.radius
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
-    implicitHeight: Config.barHeight
+    implicitHeight: Config.componentHeight
     visible: Hyprland.workspaces.values.length != 1 || (Hyprland.focusedWorkspace?.id ?? 1) != 1
 
     RowLayout {

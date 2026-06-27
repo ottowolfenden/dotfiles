@@ -6,10 +6,10 @@ import "../components"
 
 Rectangle {
     id: volume
-    color: Config.colours.bg
+    color: Config.colours.bg2
     radius: Config.radius
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
-    Layout.preferredHeight: Config.barHeight
+    Layout.preferredHeight: Config.componentHeight
 
     property var audio: Pipewire.defaultAudioSink.audio
     property int percent: Math.round(audio.volume * 100)

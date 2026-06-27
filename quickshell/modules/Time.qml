@@ -4,10 +4,10 @@ import QtQuick.Layouts
 import ".."
 
 Rectangle {
-    color: Config.colours.bg
+    color: Config.colours.bg2
     radius: Config.radius
     implicitWidth: container.width + (Config.spacing * 2)
-    implicitHeight: Config.barHeight
+    implicitHeight: Config.componentHeight
 
     RowLayout {
         id: container

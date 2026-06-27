@@ -6,10 +6,10 @@ import "../components"
 
 Rectangle {
     id: bluetooth
-    color: Config.colours.bg
+    color: Config.colours.bg2
     radius: Config.radius
-    implicitWidth: Config.barHeight
-    implicitHeight: Config.barHeight
+    implicitWidth: Config.componentHeight
+    implicitHeight: Config.componentHeight
 
     property int numConnected: Bluetooth.defaultAdapter.devices.values.filter(d => d.connected).length
     property bool on: Bluetooth.defaultAdapter.enabled

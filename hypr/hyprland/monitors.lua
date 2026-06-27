@@ -2,8 +2,7 @@
 hl.monitor({
     output = "eDP-1",
     mode = "2880x1800@120",
-    position = "140x1080",
-    scale = "1.8"
+    scale = "1.6"
 })
 
 -- HDMI monitor
