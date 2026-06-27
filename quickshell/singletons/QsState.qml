@@ -10,7 +10,10 @@ QtObject {
         command: "gsettings get org.gnome.desktop.interface color-scheme".split(" ")
         running: true
         stdout: StdioCollector {
-            onStreamFinished: qsState.darkMode = text.trim() == "'prefer-dark'"
+            onStreamFinished: {
+                qsState.darkMode = text.trim() == "'prefer-dark'";
+                qsState.dailyWallpaperProcess.running = true;
+            }
         }
     }
 

@@ -13,7 +13,7 @@ QtObject {
     property string fontFamily: "Google Sans Flex"
     property var colours: QsState.darkMode ? {
         bg1: "#000000",
-        bg2: "#00000000",
+        bg2: "#70000000",
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
         fg3: "#15ffffff",
@@ -28,7 +28,7 @@ QtObject {
         pink: "#ff9cac"
     } : {
         bg1: "#ffffff",
-        bg2: "#00000000",
+        bg2: "#d8ffffff",
         fg1: '#d8030202',
         fg2: "#55000000",
         fg3: "#15000000",
