@@ -13,12 +13,12 @@ Item {
         visible: false
 
         Image {
+            id: wallpaperImage
             source: Config.wallpaper
             width: Screen.width
             height: Screen.height
             fillMode: Image.PreserveAspectCrop
-            x: -root.parent.mapToItem(root.parent.Window.contentItem, 0, 0).x
-            y: -root.parent.mapToItem(root.parent.Window.contentItem, 0, 0).y
+            asynchronous: true
         }
 
         Rectangle {
@@ -46,5 +46,18 @@ Item {
         anchors.fill: parent
         source: blurredContainer
         maskSource: maskShape
+    }
+
+    function updateCoords() {
+        wallpaperImage.x = -root.parent.mapToItem(root.parent.Window.contentItem, 0, 0).x;
+        wallpaperImage.y = -root.parent.mapToItem(root.parent.Window.contentItem, 0, 0).y;
+    }
+
+    Timer {
+        id: initTimer
+        interval: 1
+        running: true
+        repeat: false
+        onTriggered: root.updateCoords()
     }
 }

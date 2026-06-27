@@ -23,6 +23,10 @@ brightness-rename() {
     done
 }
 
+restart() {
+    killall $1; $1 & disown
+}
+
 alias tetris=tetriscurses
 alias suspend="systemctl suspend"
 alias code="code -n"
