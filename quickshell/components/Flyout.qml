@@ -1,12 +1,9 @@
-pragma ComponentBehavior: Bound
-
 import QtQuick
 import Quickshell
 import ".."
 
 PanelWindow {
     id: root
-
     default property alias content: contentContainer.children
     required property int rectWidth
     required property int rectHeight
@@ -36,9 +33,7 @@ PanelWindow {
         rectangle.y = isOpen ? Config.spacing : -rectangle.height;
         rectangle.width = isOpen ? root.rectWidth : root.parentWidth;
         isFirst = false;
-        Qt.callLater(() => {
-            Quickshell.execDetached(["hyprctl", "eval", "hl.config({input = { follow_mouse = " + (isOpen ? "0" : "1") + " }})"]);
-        });
+        Qt.callLater(() => Quickshell.execDetached(["hyprctl", "eval", "hl.config({input = { follow_mouse = " + (isOpen ? "0" : "1") + " }})"]));
     }
 
     property bool hovering: false
@@ -46,7 +41,7 @@ PanelWindow {
         id: rectangle
         width: root.parentWidth
         height: root.rectHeight
-        color: Config.colours.bg2
+        color: Config.colours.bg1
         radius: Config.radius
         x: Helpers.clamp(root.parentX - width / 2, Config.spacing, root.width - width - Config.spacing)
         y: -height

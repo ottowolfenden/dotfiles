@@ -14,7 +14,7 @@ Item {
 
         Image {
             id: wallpaperImage
-            source: Config.wallpaper
+            source: QsState.dailyWallpaperPath
             width: Screen.width
             height: Screen.height
             fillMode: Image.PreserveAspectCrop

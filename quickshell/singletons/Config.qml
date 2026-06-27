@@ -28,7 +28,7 @@ QtObject {
         pink: "#ff9cac"
     } : {
         bg1: "#ffffff",
-        bg2: "#b8ffffff",
+        bg2: "#00000000",
         fg1: '#d8030202',
         fg2: "#55000000",
         fg3: "#15000000",
@@ -44,5 +44,4 @@ QtObject {
     }
     property var vpnIdentifiers: ["vpn", "wireguard", "proton"]
     property var devicesToAutoconnect: ["B0:F0:0C:07:BC:07", "AC:3E:B1:62:43:27"]
-    property string wallpaper: "file:///home/otto/wallpapers/clouds/17440.jpg"
 }
