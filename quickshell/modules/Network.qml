@@ -7,10 +7,12 @@ import "../components"
 
 Rectangle {
     id: network
-    color: Config.colours.bg2
+    color: "transparent"
     radius: Config.radius
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
     Layout.preferredHeight: Config.componentHeight
+
+    Cutout {}
 
     property WifiDevice wifiDevice: Networking.devices.values.find(d => d.type == DeviceType.Wifi)
     property WifiNetwork wifiNetwork: wifiDevice.networks.values.find(n => n.connected)

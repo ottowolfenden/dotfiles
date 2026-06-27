@@ -2,8 +2,6 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
-import QtQuick.Shapes
-import Qt5Compat.GraphicalEffects
 import ".."
 
 PanelWindow {

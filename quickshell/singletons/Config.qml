@@ -9,10 +9,11 @@ QtObject {
     property int barHeight: componentHeight + spacing * 2
     property int fontSize: 15
     property int radius: 4
+    property int blurRadius: 70
     property string fontFamily: "Google Sans Flex"
     property var colours: QsState.darkMode ? {
         bg1: "#000000",
-        bg2: "#1affffff",
+        bg2: "#00000000",
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
         fg3: "#15ffffff",
@@ -27,7 +28,7 @@ QtObject {
         pink: "#ff9cac"
     } : {
         bg1: "#ffffff",
-        bg2: "#1a000000",
+        bg2: "#b8ffffff",
         fg1: '#d8030202',
         fg2: "#55000000",
         fg3: "#15000000",
@@ -43,4 +44,5 @@ QtObject {
     }
     property var vpnIdentifiers: ["vpn", "wireguard", "proton"]
     property var devicesToAutoconnect: ["B0:F0:0C:07:BC:07", "AC:3E:B1:62:43:27"]
+    property string wallpaper: "file:///home/otto/wallpapers/clouds/17440.jpg"
 }

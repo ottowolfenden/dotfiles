@@ -112,7 +112,7 @@ local inputsToHideQsFlyouts = { "mouse:272", "mouse:273", "mouse:274" }
 for _, input in ipairs(inputsToHideQsFlyouts) do
     local barHeight = 44
     hl.bind(input, function()
-        if hl.get_cursor_pos().y > 44 then
+        if hl.get_cursor_pos().y > barHeight then
             hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hide"))
         end
     end, { non_consuming = true })

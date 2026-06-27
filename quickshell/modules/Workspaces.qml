@@ -3,13 +3,16 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell.Hyprland
 import ".."
+import "../components"
 
 Rectangle {
-    color: Config.colours.bg2
+    color: "transparent"
     radius: Config.radius
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
     implicitHeight: Config.componentHeight
     visible: Hyprland.workspaces.values.length != 1 || (Hyprland.focusedWorkspace?.id ?? 1) != 1
+
+    Cutout {}
 
     RowLayout {
         id: container

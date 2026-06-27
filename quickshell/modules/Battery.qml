@@ -7,10 +7,12 @@ import "../components"
 
 Rectangle {
     id: battery
-    color: Config.colours.bg2
+    color: "transparent"
     radius: Config.radius
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
     Layout.preferredHeight: Config.componentHeight
+
+    Cutout {}
 
     property bool isCharging: false
     property int percent: Math.round(UPower.displayDevice.percentage * 100)

@@ -4,7 +4,6 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Shapes
 import "./modules"
-import "./components"
 
 Scope {
     PanelWindow {
@@ -76,21 +75,15 @@ Scope {
                     top: parent.top
                     bottom: parent.bottom
                     left: parent.left
+                    right: parent.right
                     bottomMargin: Config.radius
                 }
 
                 Time {}
                 Workspaces {}
-            }
 
-            RowLayout {
-                spacing: Config.spacing
-
-                anchors {
-                    top: parent.top
-                    bottom: parent.bottom
-                    right: parent.right
-                    bottomMargin: Config.radius
+                Item {
+                    Layout.fillWidth: true
                 }
 
                 Mode {}

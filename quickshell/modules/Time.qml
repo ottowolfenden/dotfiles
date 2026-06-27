@@ -1,13 +1,18 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell.Io
 import QtQuick.Layouts
 import ".."
+import "../components"
 
 Rectangle {
-    color: Config.colours.bg2
+    id: time
+    color: "transparent"
     radius: Config.radius
     implicitWidth: container.width + (Config.spacing * 2)
     implicitHeight: Config.componentHeight
+
+    Cutout {}
 
     RowLayout {
         id: container
@@ -16,17 +21,17 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: Config.spacing
         Item {
-            implicitHeight: time.height
+            implicitHeight: timeText.height
             implicitWidth: 35
             Text {
-                id: time
+                id: timeText
                 color: Config.colours.fg1
                 font.family: Config.fontFamily
                 font.pixelSize: Config.fontSize
             }
         }
         Text {
-            id: date
+            id: dateText
             color: Config.colours.fg1
             font.family: Config.fontFamily
             font.pixelSize: Config.fontSize
@@ -40,8 +45,8 @@ Rectangle {
         stdout: StdioCollector {
             onStreamFinished: {
                 var datetime = text.trim().split("-");
-                time.text = datetime[0];
-                date.text = datetime[1];
+                timeText.text = datetime[0];
+                dateText.text = datetime[1];
             }
         }
     }
