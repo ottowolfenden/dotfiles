@@ -92,6 +92,7 @@ Rectangle {
                     id: powerProfiletoggleGroup
                     icons: Icons.powerProfiles
                     onClickedCommands: ["power-saver", "balanced", "performance"].map(p => ["tlpctl", p])
+                    checkTimer: tlpctlGetProcessTimer
                 }
 
                 Process {
@@ -100,6 +101,9 @@ Rectangle {
                     running: true
                     stdout: StdioCollector {
                         onStreamFinished: {
+                            if (powerProfiletoggleGroup.ignoreUpdates)
+                                return;
+
                             if (text.trim() == "power-saver")
                                 powerProfiletoggleGroup.activeIndex = 0;
                             else if (text.trim() == "balanced")
@@ -109,6 +113,7 @@ Rectangle {
                         }
                     }
                 }
+
                 Timer {
                     id: tlpctlGetProcessTimer
                     running: true

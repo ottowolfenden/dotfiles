@@ -10,6 +10,8 @@ Rectangle {
     id: toggleGroup
     required property var icons
     property var onClickedCommands
+    property Timer checkTimer
+    property bool ignoreUpdates: false
     property int activeIndex: -1
 
     implicitHeight: rowLayout.implicitHeight + Config.spacing * 2
@@ -54,9 +56,19 @@ Rectangle {
                     hoverEnabled: true
                     onClicked: {
                         toggleGroup.activeIndex = parent.index;
+                        toggleGroup.ignoreUpdates = true;
+                        cooldownTimer.restart();
+
                         if (toggleGroup.onClickedCommands)
                             Quickshell.execDetached(toggleGroup.onClickedCommands[parent.index]);
+
+                        toggleGroup.checkTimer.restart();
                     }
+                }
+                Timer {
+                    id: cooldownTimer
+                    interval: 1000
+                    onTriggered: toggleGroup.ignoreUpdates = false
                 }
                 Behavior on color {
                     ColorAnimation {
