@@ -43,15 +43,6 @@ Rectangle {
         }
     }
 
-    FlyoutMouseArea {
-        flyout: batteryFlyout
-    }
-
-    Flyout {
-        id: batteryFlyout
-        parentX: battery.x
-    }
-
     Process {
         id: batteryStats
         command: {

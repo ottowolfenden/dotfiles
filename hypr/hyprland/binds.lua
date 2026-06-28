@@ -113,7 +113,7 @@ for _, input in ipairs(inputsToHideQsFlyouts) do
     local barHeight = 44
     hl.bind(input, function()
         if hl.get_cursor_pos().y > barHeight then
-            hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hide"))
+            hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideNonHovering"))
         end
     end, { non_consuming = true })
 end

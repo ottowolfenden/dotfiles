@@ -7,8 +7,12 @@ PanelWindow {
     id: flyout
     default property alias content: contentContainer.children
     property int parentX
+    property int rectWidth
+    property int rectHeight
 
     property string pos: rect.x == 0 ? "left" : (rect.x + rect.width == flyout.width ? "right" : "middle")
+    property bool isOpen: false
+    property bool hovering: false
 
     color: "transparent"
     focusable: true
@@ -21,24 +25,18 @@ PanelWindow {
     mask: Region {
         item: rect
     }
-
-    property bool isOpen: false
     visible: isOpen || rect.y > -rect.height
     onIsOpenChanged: {
         if (isOpen)
-            QsState.hideAllExcept(flyout);
+            QsState.flyoutsHandler.hideAllExcept(flyout);
     }
-
-    property bool hovering: false
 
     Shape {
         id: rect
-        width: 200
-        height: 200
+        width: flyout.rectWidth
+        height: flyout.rectHeight
         x: Helpers.clamp(flyout.parentX - rect.width / 2, 0, flyout.width - rect.width)
         y: flyout.isOpen ? 0 : -height
-        layer.enabled: true
-        layer.samples: 20
 
         ShapePath {
             fillColor: Config.colours.bg1
@@ -79,7 +77,7 @@ PanelWindow {
 
         Behavior on y {
             NumberAnimation {
-                duration: 200
+                duration: Config.animationDuration
                 easing: Easing.OutQuart
             }
         }
@@ -91,15 +89,12 @@ PanelWindow {
         Item {
             id: contentContainer
             anchors.fill: parent
-            clip: true
+            // clip: true
         }
     }
 
     Shape {
         id: middleInvRounding
-        layer.enabled: true
-        layer.samples: 20
-
         property int scaledHeight: Math.min(rect.height + rect.y - Config.radius, Config.radius)
 
         ShapePath {
