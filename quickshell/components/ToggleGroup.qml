@@ -62,7 +62,8 @@ Rectangle {
                         if (toggleGroup.onClickedCommands)
                             Quickshell.execDetached(toggleGroup.onClickedCommands[parent.index]);
 
-                        toggleGroup.checkTimer.restart();
+                        if (toggleGroup.checkTimer)
+                            toggleGroup.checkTimer.restart();
                     }
                 }
                 Timer {

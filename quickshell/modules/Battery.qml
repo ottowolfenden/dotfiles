@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import Quickshell
 import Quickshell.Io
 import Quickshell.Services.UPower
 import ".."
@@ -59,6 +60,11 @@ Rectangle {
         repeat: true
         triggeredOnStart: true
         onTriggered: chargingStatus.running = true
+    }
+
+    onIsChargingChanged: {
+        if (battery.isCharging)
+            Quickshell.execDetached(["tlpctl", "performance"]);
     }
 
     FlyoutMouseArea {

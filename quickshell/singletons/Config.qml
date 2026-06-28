@@ -17,7 +17,7 @@ QtObject {
     property int animationDuration: 200
     property var colours: QsState.darkMode ? {
         bg1: "#000000",
-        bg2: "#06ffffff",
+        bg2: "#0affffff",
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
         fg3: "#15ffffff",
