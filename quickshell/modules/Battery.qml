@@ -120,10 +120,89 @@ Rectangle {
                 }
 
                 Rectangle {
-                    implicitWidth: 160
-                    implicitHeight: 100
+                    implicitWidth: Math.max(210, grid.implicitWidth + Config.spacing * 2)
+                    implicitHeight: grid.implicitHeight + Config.spacing * 2
                     color: Config.colours.bg2
                     radius: Config.radius
+
+                    GridLayout {
+                        id: grid
+                        anchors.fill: parent
+                        anchors.margins: Config.spacing
+                        columns: 3
+                        rowSpacing: Config.spacing
+                        columnSpacing: Config.spacing
+
+                        Text {
+                            font.pixelSize: Config.smallFontSize
+                            color: Config.colours.fg2
+                            font.family: Config.fontFamily
+                            Layout.fillHeight: true
+                            text: "Power profile"
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        Text {
+                            id: powerProfileText
+                            font.pixelSize: Config.smallFontSize
+                            color: Config.colours.fg1
+                            font.family: Config.fontFamily
+                            Layout.fillHeight: true
+                            text: ["Power saver", "Balanced", "Performance"][powerProfiletoggleGroup.activeIndex] ?? "Unknown"
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        Text {
+                            visible: !(battery.percent == 100 && battery.isCharging)
+                            font.pixelSize: Config.smallFontSize
+                            color: Config.colours.fg2
+                            font.family: Config.fontFamily
+                            Layout.fillHeight: true
+                            text: battery.isCharging ? "Time until full" : "Time until empty"
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        Text {
+                            visible: !(battery.percent == 100 && battery.isCharging)
+                            font.pixelSize: Config.smallFontSize
+                            color: Config.colours.fg1
+                            font.family: Config.fontFamily
+                            text: {
+                                let secsLeft = battery.isCharging ? UPower.displayDevice.timeToFull : UPower.displayDevice.timeToEmpty;
+                                return secsLeft == 0 ? "Loading..." : Helpers.secsToHrsMins(secsLeft);
+                            }
+                            Layout.fillHeight: true
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        Text {
+                            font.pixelSize: Config.smallFontSize
+                            color: Config.colours.fg2
+                            font.family: Config.fontFamily
+                            Layout.fillHeight: true
+                            text: battery.isCharging ? "Charge rate" : "Discharge rate"
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        Text {
+                            font.pixelSize: Config.smallFontSize
+                            color: Config.colours.fg1
+                            font.family: Config.fontFamily
+                            text: {
+                                if (UPower.displayDevice.changeRate == 0)
+                                    return "Loading...";
+                                return UPower.displayDevice.changeRate.toPrecision(2) + " W";
+                            }
+                            Layout.fillHeight: true
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                    }
                 }
             }
         }
