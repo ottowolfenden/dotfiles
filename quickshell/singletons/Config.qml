@@ -8,7 +8,7 @@ QtObject {
     property int componentHeight: 30
     property int barHeight: componentHeight + spacing * 2
     property int fontSize: 15
-    property int radius: 20
+    property int radius: 7
     property int blurRadius: 70
     property string fontFamily: "Google Sans Flex"
     property var colours: QsState.darkMode ? {

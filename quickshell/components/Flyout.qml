@@ -8,8 +8,7 @@ PanelWindow {
     default property alias content: contentContainer.children
     property int parentX
 
-    property int rectX: Helpers.clamp(flyout.parentX - rect.width / 2, 0, flyout.width - rect.width)
-    property string pos: rectX == 0 ? "left" : (rectX + rect.width == flyout.width ? "right" : "middle")
+    property string pos: rect.x == 0 ? "left" : (rect.x + rect.width == flyout.width ? "right" : "middle")
 
     color: "transparent"
     focusable: true
@@ -25,28 +24,61 @@ PanelWindow {
     }
 
     property bool isOpen: false
-    property int runs: 0
     visible: isOpen || rect.y > -rect.height
-    onIsOpenChanged: {
-        runs += 1;
-        Qt.callLater(() => Quickshell.execDetached(isOpen ? ["hyprctl", "eval", Config.flyoutOpenHyprlandConfig] : ["hyprctl", "reload"]));
-    }
+    onIsOpenChanged: Qt.callLater(() => Quickshell.execDetached(isOpen ? ["hyprctl", "eval", Config.flyoutOpenHyprlandConfig] : ["hyprctl", "reload"]))
 
     property bool hovering: false
 
-    Rectangle {
+    Shape {
         id: rect
         width: 200
-        height: 100
-        color: Config.colours.green
-        // radius: Config.radius
-        x: flyout.rectX
+        height: 200
+        x: Helpers.clamp(flyout.parentX - rect.width / 2, 0, flyout.width - rect.width)
         y: flyout.isOpen ? 0 : -height
+        layer.enabled: true
+        layer.samples: 20
+
+        ShapePath {
+            fillColor: Config.colours.green
+            strokeWidth: 0
+
+            startX: 0
+            startY: 0
+
+            PathLine {
+                x: rect.width
+                y: 0
+            }
+            PathLine {
+                x: rect.width
+                y: rect.height - Config.radius
+            }
+            PathArc {
+                x: rect.width - Config.radius
+                y: rect.height
+                radiusX: Config.radius
+                radiusY: Config.radius
+            }
+            PathLine {
+                x: Config.radius
+                y: rect.height
+            }
+            PathArc {
+                x: 0
+                y: rect.height - Config.radius
+                radiusX: Config.radius
+                radiusY: Config.radius
+            }
+            PathLine {
+                x: 0
+                y: 0
+            }
+        }
 
         Behavior on y {
             NumberAnimation {
-                duration: 2500
-                easing: Easing.InOutQuart
+                duration: 2000
+                easing: Easing.OutQuart
             }
         }
 
@@ -66,27 +98,27 @@ PanelWindow {
         layer.enabled: true
         layer.samples: 20
 
-        property int scaledHeight: Math.min(rect.height + rect.y, Config.radius)
+        property int scaledHeight: Math.min(rect.height + rect.y - Config.radius, Config.radius)
 
         ShapePath {
             fillColor: Config.colours.green
             strokeWidth: 0
 
-            startX: flyout.rectX
+            startX: rect.x
             startY: 0
 
             PathLine {
-                x: flyout.rectX - Config.radius
+                x: rect.x - Config.radius
                 y: 0
             }
             PathArc {
-                x: flyout.rectX
+                x: rect.x
                 y: middleInvRounding.scaledHeight
                 radiusX: Config.radius
                 radiusY: Config.radius
             }
             PathLine {
-                x: flyout.rectX
+                x: rect.x
                 y: 0
             }
         }
@@ -94,22 +126,22 @@ PanelWindow {
             fillColor: Config.colours.green
             strokeWidth: 0
 
-            startX: flyout.rectX + rect.width
+            startX: rect.x + rect.width
             startY: 0
 
             PathLine {
-                x: flyout.rectX + rect.width + Config.radius
+                x: rect.x + rect.width + Config.radius
                 y: 0
             }
             PathArc {
-                x: flyout.rectX + rect.width
+                x: rect.x + rect.width
                 y: middleInvRounding.scaledHeight
                 radiusX: Config.radius
                 radiusY: Config.radius
                 direction: PathArc.Counterclockwise
             }
             PathLine {
-                x: flyout.rectX + rect.width
+                x: rect.x + rect.width
                 y: 0
             }
         }
