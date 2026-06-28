@@ -6,9 +6,9 @@ import ".."
 PanelWindow {
     id: flyout
     default property alias content: contentContainer.children
-    property int parentX
-    property int rectWidth
-    property int rectHeight
+    required property int parentX
+    required property int rectWidth
+    required property int rectHeight
 
     property string pos: rect.x == 0 ? "left" : (rect.x + rect.width == flyout.width ? "right" : "middle")
     property bool isOpen: false

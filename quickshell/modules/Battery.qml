@@ -1,7 +1,8 @@
 import QtQuick
-import Quickshell.Services.UPower
+import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell.Io
+import Quickshell.Services.UPower
 import ".."
 import "../components"
 
@@ -67,5 +68,38 @@ Rectangle {
         repeat: true
         triggeredOnStart: true
         onTriggered: chargingStatus.running = true
+    }
+
+    FlyoutMouseArea {
+        flyout: batteryFlyout
+    }
+
+    Flyout {
+        id: batteryFlyout
+        parentX: battery.x
+        rectWidth: pane.implicitWidth
+        rectHeight: pane.implicitHeight
+
+        Pane {
+            id: pane
+            padding: Config.spacing
+            background: null
+
+            ColumnLayout {
+                spacing: Config.spacing
+
+                ToggleGroup {
+                    icons: ["energy_savings_leaf", "balance", "bolt"]
+                    activeIndex: 1
+                }
+
+                Rectangle {
+                    implicitWidth: 160
+                    implicitHeight: 100
+                    color: Config.colours.bg2
+                    radius: Config.radius
+                }
+            }
+        }
     }
 }

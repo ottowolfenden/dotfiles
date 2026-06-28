@@ -7,6 +7,8 @@ Controls.Button {
     id: button
     text: "Lorem ipsum"
     property string iconName
+    property string colour
+    property string radius
 
     Layout.fillWidth: true
 
@@ -15,7 +17,6 @@ Controls.Button {
         Icon {
             iconName: button.iconName
             visible: button.iconName
-            colour: Config.colours.fg1
             horizontalMargin: 4
             pixelSize: 16
         }
@@ -36,7 +37,13 @@ Controls.Button {
         implicitHeight: button.contentItem.implicitHeight
         radius: Config.radius
 
-        color: button.pressed ? Config.colours.buttonPressedBg : (button.hovered ? Config.colours.buttonHoveredBg : Config.colours.buttonInactiveBg)
+        color: {
+            if (button.pressed)
+                return Config.colours.buttonPressedBg;
+            else if (button.hovered)
+                return Config.colours.buttonHoveredBg;
+            return Config.colours.buttonInactiveBg;
+        }
 
         border.width: 0
 

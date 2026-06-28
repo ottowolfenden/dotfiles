@@ -3,7 +3,7 @@ import QtQuick
 import ".."
 
 QtObject {
-    property real spacing: 8
+    property int spacing: 8
     property int iconTextSpacing: 4
     property int componentHeight: 30
     property int barHeight: componentHeight + spacing * 2
@@ -17,14 +17,17 @@ QtObject {
     property int animationDuration: 200
     property var colours: QsState.darkMode ? {
         bg1: "#000000",
-        bg2: "#30202020",
+        bg2: "#06ffffff",
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
         fg3: "#15ffffff",
         invfg: "#000000",
-        buttonInactiveBg: "#08ffffff",
+        cutoutBg: "#30202020",
+        buttonInactiveBg: "#0affffff",
         buttonHoveredBg: "#12ffffff",
         buttonPressedBg: "#1effffff",
+        blueButtonHoveredBg: "#91dfff",
+        blueButtonPressedBg: "#97e1ff",
         red: "#f07178",
         orange: "#f78c6c",
         yellow: "#ffcb6b",
@@ -35,14 +38,18 @@ QtObject {
         pink: "#ff9cac"
     } : {
         bg1: "#ffffff",
-        bg2: "#d8ffffff",
+        bg2: "#06000000",
         fg1: '#d8000000',
         fg2: "#55000000",
         fg3: "#15000000",
         invfg: "#ffffff",
-        buttonInactiveBg: "#08000000",
+        cutoutBg: "#d8ffffff",
+        buttonInactiveBg: "#0a000000",
         buttonHoveredBg: "#12000000",
         buttonPressedBg: "#1e000000",
+        blueButtonInactiveBg: "#3f80ea",
+        blueButtonHoveredBg: "#3d7ce3",
+        blueButtonPressedBg: "#3a75d7",
         red: "#ea4335",
         orange: "#fd6132",
         yellow: "#f1b911",

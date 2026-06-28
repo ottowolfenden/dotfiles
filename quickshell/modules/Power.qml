@@ -73,7 +73,7 @@ Rectangle {
                     }
                     Timer {
                         id: lockTimer
-                        interval: Config.animationDuration 
+                        interval: Config.animationDuration
                         repeat: false
                         onTriggered: Quickshell.execDetached(["hyprlock"])
                     }

@@ -43,8 +43,8 @@ QtObject {
                 hl.config({
                     input = { follow_mouse = 0 },
                     decoration = {
-                        active_opacity = 1.0 - 0.4,
-                        inactive_opacity = 0.85 - 0.4
+                        active_opacity = 1.0 - 0.3,
+                        inactive_opacity = 0.85 - 0.3
                     }
                 })
             `]);
