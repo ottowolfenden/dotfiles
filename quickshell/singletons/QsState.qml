@@ -19,15 +19,33 @@ QtObject {
     }
 
     property var flyouts: []
-    property var flyoutsHander: IpcHandler {
+    property var flyoutsHandler: IpcHandler {
         target: "flyoutsHandler"
         function hide() {
-            Qt.callLater(function () {
-                for (const flyout of qsState.flyouts)
-                    if (!flyout.hovering)
-                        flyout.isOpen = false;
-            });
+            for (const flyout of qsState.flyouts)
+                if (!flyout.hovering)
+                    flyout.isOpen = false;
+            if (!qsState.flyouts.some(f => f.hovering))
+                Quickshell.execDetached(["hyprctl", "reload"]);
         }
+    }
+    function hideAllExcept(openFlyout) {
+        for (const flyout of qsState.flyouts)
+            if (flyout != openFlyout)
+                flyout.isOpen = false;
+
+        if (qsState.flyouts.some(f => f.isOpen))
+            Quickshell.execDetached(["hyprctl", "eval", `
+                hl.config({
+                    input = { follow_mouse = 0 },
+                    decoration = {
+                        active_opacity = 1.0 - 0.4,
+                        inactive_opacity = 0.85 - 0.4
+                    }
+                })
+            `]);
+        else
+            Quickshell.execDetached(["hyprctl", "reload"]);
     }
 
     property string dailyWallpaperPath

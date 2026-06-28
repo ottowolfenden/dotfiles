@@ -43,22 +43,8 @@ Rectangle {
         }
     }
 
-    property bool reopening: false
-    MouseArea {
-        anchors.fill: parent
-        hoverEnabled: true
-        cursorShape: Qt.PointingHandCursor
-        onPressed: {
-            if (batteryFlyout.isOpen) {
-                batteryFlyout.isOpen = false;
-                battery.reopening = true;
-            } else
-                battery.reopening = false;
-        }
-        onReleased: {
-            batteryFlyout.parentX = battery.mapToItem(null, battery.width / 2, 0).x;
-            batteryFlyout.isOpen = !batteryFlyout.isOpen && !battery.reopening;
-        }
+    FlyoutMouseArea {
+        flyout: batteryFlyout
     }
 
     Flyout {

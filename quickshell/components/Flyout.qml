@@ -19,13 +19,15 @@ PanelWindow {
         right: true
     }
     mask: Region {
-        // set item to a static rectangle of the max size if animation too laggy
         item: rect
     }
 
     property bool isOpen: false
     visible: isOpen || rect.y > -rect.height
-    onIsOpenChanged: Qt.callLater(() => Quickshell.execDetached(isOpen ? ["hyprctl", "eval", Config.flyoutOpenHyprlandConfig] : ["hyprctl", "reload"]))
+    onIsOpenChanged: {
+        if (isOpen)
+            QsState.hideAllExcept(flyout);
+    }
 
     property bool hovering: false
 
@@ -39,7 +41,7 @@ PanelWindow {
         layer.samples: 20
 
         ShapePath {
-            fillColor: Config.colours.green
+            fillColor: Config.colours.bg1
             strokeWidth: 0
 
             startX: 0
@@ -77,7 +79,7 @@ PanelWindow {
 
         Behavior on y {
             NumberAnimation {
-                duration: 2000
+                duration: 200
                 easing: Easing.OutQuart
             }
         }
@@ -101,7 +103,7 @@ PanelWindow {
         property int scaledHeight: Math.min(rect.height + rect.y - Config.radius, Config.radius)
 
         ShapePath {
-            fillColor: Config.colours.green
+            fillColor: Config.colours.bg1
             strokeWidth: 0
 
             startX: rect.x
@@ -123,7 +125,7 @@ PanelWindow {
             }
         }
         ShapePath {
-            fillColor: Config.colours.green
+            fillColor: Config.colours.bg1
             strokeWidth: 0
 
             startX: rect.x + rect.width

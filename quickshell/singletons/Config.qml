@@ -44,13 +44,4 @@ QtObject {
     }
     property var vpnIdentifiers: ["vpn", "wireguard", "proton"]
     property var devicesToAutoconnect: ["B0:F0:0C:07:BC:07", "AC:3E:B1:62:43:27"]
-    property string flyoutOpenHyprlandConfig: `
-        hl.config({
-            input = { follow_mouse = 0 },
-            decoration = {
-                active_opacity = 1.0 - 0.4,
-                inactive_opacity = 0.85 - 0.4
-            }
-        })
-    `
 }
