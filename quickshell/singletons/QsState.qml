@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick
+import Quickshell
 import Quickshell.Io
 
 QtObject {
@@ -37,7 +38,6 @@ QtObject {
             onStreamFinished: {
                 qsState.dailyWallpaperPath = text.trim();
                 Quickshell.execDetached(["awww", "img", text.trim(), "--transition-type", "none"]);
-                console.log(text);
             }
         }
     }

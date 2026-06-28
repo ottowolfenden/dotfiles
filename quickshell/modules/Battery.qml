@@ -63,10 +63,7 @@ Rectangle {
 
     Flyout {
         id: batteryFlyout
-        rectHeight: 200
-        rectWidth: 1000
         parentX: battery.x
-        parentWidth: battery.width
     }
 
     Process {

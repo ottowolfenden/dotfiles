@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 import ".."
 import "../components"
 
@@ -38,9 +39,6 @@ Rectangle {
 
     Flyout {
         id: powerFlyout
-        rectHeight: 150
-        rectWidth: 200
         parentX: power.x
-        parentWidth: power.width
     }
 }

@@ -8,12 +8,12 @@ QtObject {
     property int componentHeight: 30
     property int barHeight: componentHeight + spacing * 2
     property int fontSize: 15
-    property int radius: 4
+    property int radius: 20
     property int blurRadius: 70
     property string fontFamily: "Google Sans Flex"
     property var colours: QsState.darkMode ? {
         bg1: "#000000",
-        bg2: "#70000000",
+        bg2: "#30202020",
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
         fg3: "#15ffffff",
@@ -44,4 +44,13 @@ QtObject {
     }
     property var vpnIdentifiers: ["vpn", "wireguard", "proton"]
     property var devicesToAutoconnect: ["B0:F0:0C:07:BC:07", "AC:3E:B1:62:43:27"]
+    property string flyoutOpenHyprlandConfig: `
+        hl.config({
+            input = { follow_mouse = 0 },
+            decoration = {
+                active_opacity = 1.0 - 0.4,
+                inactive_opacity = 0.85 - 0.4
+            }
+        })
+    `
 }

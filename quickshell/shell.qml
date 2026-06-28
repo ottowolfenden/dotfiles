@@ -30,7 +30,7 @@ Scope {
                 layer.enabled: true
                 layer.samples: 4
                 ShapePath {
-                    fillColor: Config.colours.bg1
+                    fillColor: Config.colours.green
                     strokeWidth: 0
 
                     startX: 0
@@ -79,13 +79,16 @@ Scope {
                     bottomMargin: Config.radius
                 }
 
+                Power {}
                 Time {}
                 Workspaces {}
+                Power {}
 
                 Item {
                     Layout.fillWidth: true
                 }
 
+                Power {}
                 Mode {}
                 Network {}
                 Volume {}
