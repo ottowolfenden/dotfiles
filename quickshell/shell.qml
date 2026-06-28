@@ -14,7 +14,7 @@ Scope {
             right: true
             left: true
         }
-        exclusiveZone: Config.barHeight
+        exclusiveZone: Config.barHeight - 1
 
         Pane {
             id: pane

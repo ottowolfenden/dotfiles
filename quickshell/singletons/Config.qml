@@ -3,7 +3,7 @@ import QtQuick
 import ".."
 
 QtObject {
-    property int spacing: 8
+    property real spacing: 8
     property int iconTextSpacing: 4
     property int componentHeight: 30
     property int barHeight: componentHeight + spacing * 2
