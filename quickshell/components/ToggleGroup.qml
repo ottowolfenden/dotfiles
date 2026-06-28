@@ -2,13 +2,15 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
 import ".."
 import "../components"
 
 Rectangle {
     id: toggleGroup
     required property var icons
-    required property int activeIndex
+    property var onClickedCommands
+    property int activeIndex: -1
 
     implicitHeight: rowLayout.implicitHeight + Config.spacing * 2
     implicitWidth: rowLayout.implicitWidth + Config.spacing * 2
@@ -50,7 +52,11 @@ Rectangle {
                     cursorShape: Qt.PointingHandCursor
                     anchors.fill: parent
                     hoverEnabled: true
-                    onClicked: toggleGroup.activeIndex = parent.index
+                    onClicked: {
+                        toggleGroup.activeIndex = parent.index;
+                        if (toggleGroup.onClickedCommands)
+                            Quickshell.execDetached(toggleGroup.onClickedCommands[parent.index]);
+                    }
                 }
                 Behavior on color {
                     ColorAnimation {

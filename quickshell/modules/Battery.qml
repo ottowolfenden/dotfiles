@@ -89,8 +89,32 @@ Rectangle {
                 spacing: Config.spacing
 
                 ToggleGroup {
-                    icons: ["energy_savings_leaf", "balance", "bolt"]
-                    activeIndex: 1
+                    id: powerProfiletoggleGroup
+                    icons: Icons.powerProfiles
+                    onClickedCommands: ["power-saver", "balanced", "performance"].map(p => ["tlpctl", p])
+                }
+
+                Process {
+                    id: tlpctlGetProcess
+                    command: ["tlpctl", "get"]
+                    running: true
+                    stdout: StdioCollector {
+                        onStreamFinished: {
+                            if (text.trim() == "power-saver")
+                                powerProfiletoggleGroup.activeIndex = 0;
+                            else if (text.trim() == "balanced")
+                                powerProfiletoggleGroup.activeIndex = 1;
+                            else if (text.trim() == "performance")
+                                powerProfiletoggleGroup.activeIndex = 2;
+                        }
+                    }
+                }
+                Timer {
+                    id: tlpctlGetProcessTimer
+                    running: true
+                    repeat: true
+                    interval: 1500
+                    onTriggered: tlpctlGetProcess.running = true
                 }
 
                 Rectangle {
