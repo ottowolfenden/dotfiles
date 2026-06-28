@@ -40,5 +40,6 @@ Rectangle {
     Flyout {
         id: powerFlyout
         parentX: power.x
+        Button {}
     }
 }

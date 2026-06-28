@@ -4,12 +4,12 @@ import Quickshell
 import ".."
 
 PanelWindow {
-    id: root
+    id: flyout
     default property alias content: contentContainer.children
     property int parentX
 
-    property int rectX: Helpers.clamp(root.parentX - rect.width / 2, 0, root.width - rect.width)
-    property string pos: rectX == 0 ? "left" : (rectX + rect.width == root.width ? "right" : "middle")
+    property int rectX: Helpers.clamp(flyout.parentX - rect.width / 2, 0, flyout.width - rect.width)
+    property string pos: rectX == 0 ? "left" : (rectX + rect.width == flyout.width ? "right" : "middle")
 
     color: "transparent"
     focusable: true
@@ -25,45 +25,33 @@ PanelWindow {
     }
 
     property bool isOpen: false
+    property int runs: 0
     visible: isOpen || rect.y > -rect.height
     onIsOpenChanged: {
-        // animation.running = true;
+        runs += 1;
         Qt.callLater(() => Quickshell.execDetached(isOpen ? ["hyprctl", "eval", Config.flyoutOpenHyprlandConfig] : ["hyprctl", "reload"]));
     }
 
     property bool hovering: false
 
-    ParallelAnimation {
-        id: animation
-        NumberAnimation {
-            target: rect
-            property: "y"
-            duration: 2000
-            easing: Easing.InOutQuart
-
-            from: root.isOpen ? -rect.height : 0
-            to: root.isOpen ? 0 : -rect.height
-        }
-    }
-
     Rectangle {
         id: rect
         width: 200
-        height: 300
+        height: 100
         color: Config.colours.green
         // radius: Config.radius
-        x: root.rectX
-        y: -height
+        x: flyout.rectX
+        y: flyout.isOpen ? 0 : -height
 
-        // Behavior on y {
-        //     NumberAnimation {
-        //         duration: 5000
-        //         easing: Easing.InOutQuart
-        //     }
-        // }
+        Behavior on y {
+            NumberAnimation {
+                duration: 2500
+                easing: Easing.InOutQuart
+            }
+        }
 
         HoverHandler {
-            onHoveredChanged: root.hovering = this.hovered
+            onHoveredChanged: flyout.hovering = this.hovered
         }
 
         Item {
@@ -78,29 +66,51 @@ PanelWindow {
         layer.enabled: true
         layer.samples: 20
 
-        property int scaledHeight: Config.radius
+        property int scaledHeight: Math.min(rect.height + rect.y, Config.radius)
 
         ShapePath {
             fillColor: Config.colours.green
             strokeWidth: 0
 
-            startX: root.rectX - Config.radius
+            startX: flyout.rectX
             startY: 0
 
             PathLine {
-                x: root.rectX
+                x: flyout.rectX - Config.radius
                 y: 0
-            }
-            PathLine {
-                x: root.rectX
-                y: middleInvRounding.scaledHeight
             }
             PathArc {
-                x: root.rectX - Config.radius
+                x: flyout.rectX
+                y: middleInvRounding.scaledHeight
+                radiusX: Config.radius
+                radiusY: Config.radius
+            }
+            PathLine {
+                x: flyout.rectX
                 y: 0
+            }
+        }
+        ShapePath {
+            fillColor: Config.colours.green
+            strokeWidth: 0
+
+            startX: flyout.rectX + rect.width
+            startY: 0
+
+            PathLine {
+                x: flyout.rectX + rect.width + Config.radius
+                y: 0
+            }
+            PathArc {
+                x: flyout.rectX + rect.width
+                y: middleInvRounding.scaledHeight
                 radiusX: Config.radius
                 radiusY: Config.radius
                 direction: PathArc.Counterclockwise
+            }
+            PathLine {
+                x: flyout.rectX + rect.width
+                y: 0
             }
         }
     }
