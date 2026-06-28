@@ -147,5 +147,5 @@ QtObject {
             dark: "dark_mode"
         })
     property var power: "power_settings_new"
-    property var powerProfiles: ["energy_savings_leaf", "balance", "bolt"]
+    property var powerProfiles: ["energy_savings_leaf", "balance", "rocket_launch"]
 }

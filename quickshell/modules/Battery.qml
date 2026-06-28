@@ -120,7 +120,7 @@ Rectangle {
                 }
 
                 Rectangle {
-                    implicitWidth: Math.max(210, grid.implicitWidth + Config.spacing * 2)
+                    implicitWidth: Math.max(220, grid.implicitWidth + Config.spacing * 2)
                     implicitHeight: grid.implicitHeight + Config.spacing * 2
                     color: Config.colours.bg2
                     radius: Config.radius
@@ -129,10 +129,13 @@ Rectangle {
                         id: grid
                         anchors.fill: parent
                         anchors.margins: Config.spacing
-                        columns: 3
+                        columns: 4
                         rowSpacing: Config.spacing
                         columnSpacing: Config.spacing
 
+                        property bool fullAndCharging: battery.percent == 100 && battery.isCharging
+
+                        // row 1
                         Text {
                             font.pixelSize: Config.smallFontSize
                             color: Config.colours.fg2
@@ -153,9 +156,13 @@ Rectangle {
                             text: ["Power saver", "Balanced", "Performance"][powerProfiletoggleGroup.activeIndex] ?? "Unknown"
                             verticalAlignment: Text.AlignVCenter
                         }
+                        Item {
+                            Layout.fillWidth: true
+                        }
 
+                        // row 2
                         Text {
-                            visible: !(battery.percent == 100 && battery.isCharging)
+                            visible: !grid.fullAndCharging
                             font.pixelSize: Config.smallFontSize
                             color: Config.colours.fg2
                             font.family: Config.fontFamily
@@ -164,10 +171,11 @@ Rectangle {
                             verticalAlignment: Text.AlignVCenter
                         }
                         Item {
+                            visible: !grid.fullAndCharging
                             Layout.fillWidth: true
                         }
                         Text {
-                            visible: !(battery.percent == 100 && battery.isCharging)
+                            visible: !grid.fullAndCharging
                             font.pixelSize: Config.smallFontSize
                             color: Config.colours.fg1
                             font.family: Config.fontFamily
@@ -178,7 +186,12 @@ Rectangle {
                             Layout.fillHeight: true
                             verticalAlignment: Text.AlignVCenter
                         }
+                        Item {
+                            visible: !grid.fullAndCharging
+                            Layout.fillWidth: true
+                        }
 
+                        // row 3
                         Text {
                             font.pixelSize: Config.smallFontSize
                             color: Config.colours.fg2
@@ -201,6 +214,9 @@ Rectangle {
                             }
                             Layout.fillHeight: true
                             verticalAlignment: Text.AlignVCenter
+                        }
+                        Item {
+                            Layout.fillWidth: true
                         }
                     }
                 }
