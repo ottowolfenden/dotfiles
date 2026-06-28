@@ -89,7 +89,6 @@ PanelWindow {
         Item {
             id: contentContainer
             anchors.fill: parent
-            // clip: true
         }
     }
 

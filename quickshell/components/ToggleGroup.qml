@@ -41,7 +41,7 @@ Rectangle {
                         return index == toggleGroup.activeIndex ? Config.colours.blueButtonPressedBg : Config.colours.buttonPressedBg;
                     else if (mouseArea.containsMouse)
                         return index == toggleGroup.activeIndex ? Config.colours.blueButtonHoveredBg : Config.colours.buttonHoveredBg;
-                    return index == toggleGroup.activeIndex ? Config.colours.blueButtonInactiveBg : Config.colours.buttonInactiveBg;
+                    return index == toggleGroup.activeIndex ? Config.colours.lightblue : Config.colours.buttonInactiveBg;
                 }
                 radius: Infinity
                 Icon {

@@ -47,7 +47,6 @@ QtObject {
         buttonInactiveBg: "#0a000000",
         buttonHoveredBg: "#12000000",
         buttonPressedBg: "#1e000000",
-        blueButtonInactiveBg: "#3f80ea",
         blueButtonHoveredBg: "#3d7ce3",
         blueButtonPressedBg: "#3a75d7",
         red: "#ea4335",

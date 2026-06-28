@@ -33,6 +33,13 @@ Controls.Button {
         }
     }
 
+    HoverHandler {
+        onHoveredChanged: {
+            if (hovered)
+                this.cursorShape = Qt.PointingHandCursor;
+        }
+    }
+
     background: Rectangle {
         implicitHeight: button.contentItem.implicitHeight
         radius: Config.radius

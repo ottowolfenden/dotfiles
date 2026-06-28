@@ -45,15 +45,6 @@ Rectangle {
     }
 
     Process {
-        id: batteryStats
-        command: {
-            if (battery.isCharging)
-                return ["notify-send", Math.round(UPower.displayDevice.timeToFull / 60) + " min to full"];
-            return ["notify-send", Math.round(UPower.displayDevice.timeToEmpty / 60) + " min to empty"];
-        }
-    }
-
-    Process {
         id: chargingStatus
         command: ["cat", "/sys/class/power_supply/BAT0/status"]
 
@@ -92,7 +83,7 @@ Rectangle {
                     id: powerProfiletoggleGroup
                     icons: Icons.powerProfiles
                     onClickedCommands: ["power-saver", "balanced", "performance"].map(p => ["tlpctl", p])
-                    checkTimer: tlpctlGetProcessTimer
+                    checkTimer: tlpctlTimer
                 }
 
                 Process {
@@ -115,7 +106,7 @@ Rectangle {
                 }
 
                 Timer {
-                    id: tlpctlGetProcessTimer
+                    id: tlpctlTimer
                     running: true
                     repeat: true
                     interval: 1500
