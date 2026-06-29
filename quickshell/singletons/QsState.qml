@@ -21,25 +21,26 @@ QtObject {
     property var flyouts: []
     property var flyoutsHandler: IpcHandler {
         target: "flyoutsHandler"
-        function hideAll() {
-            for (const flyout of qsState.flyouts)
-                flyout.isOpen = false;
-            Quickshell.execDetached(["hyprctl", "reload"]);
-        }
-        function hideNonHovering() {
+        function hideNonHoveredFlyouts() {
             for (const flyout of qsState.flyouts)
                 if (!flyout.hovering)
                     flyout.isOpen = false;
             if (!qsState.flyouts.some(f => f.hovering))
                 Quickshell.execDetached(["hyprctl", "reload"]);
         }
-        function hideAllExcept(openFlyout) {
-            for (const flyout of qsState.flyouts)
-                if (flyout != openFlyout)
-                    flyout.isOpen = false;
+    }
+    function hideAllFlyouts() {
+        for (const flyout of qsState.flyouts)
+            flyout.isOpen = false;
+        Quickshell.execDetached(["hyprctl", "reload"]);
+    }
+    function hideAllFlyoutsExcept(openFlyout) {
+        for (const flyout of qsState.flyouts)
+            if (flyout != openFlyout)
+                flyout.isOpen = false;
 
-            if (qsState.flyouts.some(f => f.isOpen))
-                Quickshell.execDetached(["hyprctl", "eval", `
+        if (qsState.flyouts.some(f => f.isOpen))
+            Quickshell.execDetached(["hyprctl", "eval", `
                 hl.config({
                     input = { follow_mouse = 0 },
                     decoration = {
@@ -48,9 +49,8 @@ QtObject {
                     }
                 })
             `]);
-            else
-                Quickshell.execDetached(["hyprctl", "reload"]);
-        }
+        else
+            Quickshell.execDetached(["hyprctl", "reload"]);
     }
 
     property string dailyWallpaperPath

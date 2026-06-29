@@ -44,7 +44,7 @@ Rectangle {
                     text: "Shut down"
                     iconName: "power_settings_new"
                     onClicked: {
-                        QsState.flyoutsHandler.hideAll();
+                        QsState.hideAllFlyouts();
                         Quickshell.execDetached(["hyprshutdown", "-t", "Shutting down...", "--post-cmd", "systemctl poweroff"]);
                     }
                 }
@@ -52,7 +52,7 @@ Rectangle {
                     text: "Restart"
                     iconName: "restart_alt"
                     onClicked: {
-                        QsState.flyoutsHandler.hideAll();
+                        QsState.hideAllFlyouts();
                         Quickshell.execDetached(["hyprshutdown", "-t", "Restarting...", "--post-cmd", "systemctl reboot"]);
                     }
                 }
@@ -60,7 +60,7 @@ Rectangle {
                     text: "Sleep"
                     iconName: "bedtime"
                     onClicked: {
-                        QsState.flyoutsHandler.hideAll();
+                        QsState.hideAllFlyouts();
                         Quickshell.execDetached(["systemctl", "suspend"]);
                     }
                 }
@@ -68,7 +68,7 @@ Rectangle {
                     text: "Lock"
                     iconName: "lock"
                     onClicked: {
-                        QsState.flyoutsHandler.hideAll();
+                        QsState.hideAllFlyouts();
                         lockTimer.start();
                     }
                     Timer {

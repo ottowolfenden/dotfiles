@@ -28,7 +28,7 @@ PanelWindow {
     visible: isOpen || rect.y > -rect.height
     onIsOpenChanged: {
         if (isOpen)
-            QsState.flyoutsHandler.hideAllExcept(flyout);
+            QsState.hideAllFlyoutsExcept(flyout);
     }
 
     Shape {

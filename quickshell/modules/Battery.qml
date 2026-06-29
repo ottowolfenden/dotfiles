@@ -148,7 +148,6 @@ Rectangle {
                             Layout.fillWidth: true
                         }
                         Text {
-                            id: powerProfileText
                             font.pixelSize: Config.smallFontSize
                             color: Config.colours.fg1
                             font.family: Config.fontFamily
@@ -208,7 +207,7 @@ Rectangle {
                             color: Config.colours.fg1
                             font.family: Config.fontFamily
                             text: {
-                                if (UPower.displayDevice.changeRate == 0)
+                                if (UPower.displayDevice.changeRate == 0 && !grid.fullAndCharging)
                                     return "Loading...";
                                 return UPower.displayDevice.changeRate.toPrecision(2) + " W";
                             }

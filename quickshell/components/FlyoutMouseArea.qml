@@ -10,7 +10,7 @@ MouseArea {
     cursorShape: Qt.PointingHandCursor
     onPressed: {
         if (flyout.isOpen) {
-            QsState.flyoutsHandler.hideNonHovering();
+            QsState.flyoutsHandler.hideNonHoveredFlyouts();
             reopening = true;
         } else
             reopening = false;
