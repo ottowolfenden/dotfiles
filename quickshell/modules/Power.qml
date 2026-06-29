@@ -40,7 +40,7 @@ Rectangle {
             ColumnLayout {
                 spacing: Config.spacing
 
-                Button {
+                TextButton {
                     text: "Shut down"
                     iconName: "power_settings_new"
                     onClicked: {
@@ -48,7 +48,7 @@ Rectangle {
                         Quickshell.execDetached(["hyprshutdown", "-t", "Shutting down...", "--post-cmd", "systemctl poweroff"]);
                     }
                 }
-                Button {
+                TextButton {
                     text: "Restart"
                     iconName: "restart_alt"
                     onClicked: {
@@ -56,7 +56,7 @@ Rectangle {
                         Quickshell.execDetached(["hyprshutdown", "-t", "Restarting...", "--post-cmd", "systemctl reboot"]);
                     }
                 }
-                Button {
+                TextButton {
                     text: "Sleep"
                     iconName: "bedtime"
                     onClicked: {
@@ -64,7 +64,7 @@ Rectangle {
                         Quickshell.execDetached(["systemctl", "suspend"]);
                     }
                 }
-                Button {
+                TextButton {
                     text: "Lock"
                     iconName: "lock"
                     onClicked: {

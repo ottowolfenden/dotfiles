@@ -15,6 +15,7 @@ QtObject {
     property var vpnIdentifiers: ["vpn", "wireguard", "proton"]
     property var devicesToAutoconnect: ["B0:F0:0C:07:BC:07", "AC:3E:B1:62:43:27"]
     property int animationDuration: 200
+    property int circleButtonDiameter: 33
     property var colours: QsState.darkMode ? {
         bg1: "#000000",
         bg2: "#0affffff",
@@ -23,7 +24,7 @@ QtObject {
         fg3: "#15ffffff",
         invfg: "#000000",
         cutoutBg: "#30202020",
-        buttonInactiveBg: "#0affffff",
+        buttonInactiveBg: "#0effffff",
         buttonHoveredBg: "#12ffffff",
         buttonPressedBg: "#1effffff",
         blueButtonHoveredBg: "#91dfff",
@@ -58,4 +59,5 @@ QtObject {
         purple: "#7248b9",
         pink: "#ff80ab"
     }
+    property var playerRequirements: ["canPlay", "canPause", "canControl", "canGoPrevious", "canGoNext"]
 }

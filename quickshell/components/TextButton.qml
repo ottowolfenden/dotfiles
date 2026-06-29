@@ -1,18 +1,16 @@
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Controls 2.15 as Controls
 import ".."
 
-Controls.Button {
+Button {
     id: button
     text: "Lorem ipsum"
     property string iconName
-    property string colour
-    property string radius
+    property int radius: Config.radius
 
     Layout.fillWidth: true
 
-    spacing: 20
     contentItem: RowLayout {
         Icon {
             iconName: button.iconName
@@ -33,17 +31,10 @@ Controls.Button {
         }
     }
 
-    HoverHandler {
-        onHoveredChanged: {
-            if (hovered)
-                this.cursorShape = Qt.PointingHandCursor;
-        }
-    }
-
     background: Rectangle {
         implicitHeight: button.contentItem.implicitHeight
-        radius: Config.radius
-
+        radius: button.radius
+        border.width: 0
         color: {
             if (button.pressed)
                 return Config.colours.buttonPressedBg;
@@ -52,12 +43,17 @@ Controls.Button {
             return Config.colours.buttonInactiveBg;
         }
 
-        border.width: 0
-
         Behavior on color {
             ColorAnimation {
                 duration: 100
             }
+        }
+    }
+
+    HoverHandler {
+        onHoveredChanged: {
+            if (hovered)
+                this.cursorShape = Qt.PointingHandCursor;
         }
     }
 }

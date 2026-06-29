@@ -119,7 +119,7 @@ QtObject {
             on: "vpn_key",
             off: "vpn_key_off"
         })
-    property var audio: [
+    property var volume: [
         {
             muted: true,
             icon: "no_sound"

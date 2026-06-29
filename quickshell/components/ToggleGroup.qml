@@ -33,8 +33,8 @@ Rectangle {
                 required property int index
                 required property string modelData
 
-                implicitWidth: 33
-                implicitHeight: 33
+                implicitWidth: Config.circleButtonDiameter
+                implicitHeight: Config.circleButtonDiameter
 
                 color: {
                     if (mouseArea.pressed)

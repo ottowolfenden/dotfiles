@@ -88,7 +88,7 @@ Scope {
 
                 Mode {}
                 Network {}
-                Volume {}
+                Audio {}
                 Bluetooth {}
                 Battery {}
                 Power {}
