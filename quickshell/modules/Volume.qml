@@ -13,8 +13,8 @@ Rectangle {
 
     Cutout {}
 
-    property var audio: Pipewire.defaultAudioSink.audio
-    property int percent: Math.round(audio.volume * 100)
+    property var audio: Pipewire.defaultAudioSink?.audio
+    property int percent: Math.round(audio?.volume * 100)
 
     RowLayout {
         id: container
@@ -24,7 +24,7 @@ Rectangle {
         anchors.rightMargin: Config.spacing
 
         Icon {
-            iconName: Icons.audio.find(i => i.muted == volume.audio.muted || volume.percent <= i.max).icon
+            iconName: Icons.audio?.find(i => i.muted == volume.audio?.muted || volume.percent <= i.max)?.icon
         }
 
         Text {

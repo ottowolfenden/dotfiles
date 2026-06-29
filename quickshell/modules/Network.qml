@@ -14,10 +14,10 @@ Rectangle {
 
     Cutout {}
 
-    property WifiDevice wifiDevice: Networking.devices.values.find(d => d.type == DeviceType.Wifi)
-    property WifiNetwork wifiNetwork: wifiDevice.networks.values.find(n => n.connected)
-    property real wifiStrength: wifiNetwork.signalStrength ?? 0.0
-    property bool isWifiSecured: ![WifiSecurityType.Open, WifiSecurityType.Owe, WifiSecurityType.Unknown].includes(wifiNetwork.security)
+    property WifiDevice wifiDevice: Networking.devices.values.find(d => d.type == DeviceType.Wifi) ?? null
+    property WifiNetwork wifiNetwork: wifiDevice?.networks?.values.find(n => n.connected) ?? null
+    property real wifiStrength: wifiNetwork?.signalStrength ?? 0
+    property bool isWifiSecured: ![WifiSecurityType.Open, WifiSecurityType.Owe, WifiSecurityType.Unknown].includes(wifiNetwork?.security ?? WifiSecurityType.Unknown)
     property bool isVpnConnected: false
 
     RowLayout {

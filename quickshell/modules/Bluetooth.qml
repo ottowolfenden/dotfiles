@@ -13,8 +13,8 @@ Rectangle {
 
     Cutout {}
 
-    property int numConnected: Bluetooth.defaultAdapter.devices.values.filter(d => d.connected).length
-    property bool on: Bluetooth.defaultAdapter.enabled
+    property int numConnected: (Bluetooth.defaultAdapter?.devices?.values?.filter(d => d.connected) ?? []).length
+    property bool on: Bluetooth.defaultAdapter?.enabled ?? false
 
     Icon {
         id: icon
@@ -51,9 +51,9 @@ Rectangle {
                 return;
             for (var address of Config.devicesToAutoconnect) {
                 var device = Bluetooth.defaultAdapter.devices.values.find(d => d.address == address);
-                if (!device.connected) {
+                if (device.state == BluetoothDeviceState.Disconnected) {
                     device.connect();
-                    console.log("connecting to " + device.address);
+                    console.log(`autoconnecting to "${device.name}"`);
                 }
             }
         }
