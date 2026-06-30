@@ -1,4 +1,6 @@
+pragma ComponentBehavior: Bound
 import QtQuick
+import QtQuick.Effects
 import QtQuick.Layouts
 import QtQuick.Controls
 import Quickshell.Services.Mpris
@@ -16,10 +18,12 @@ Rectangle {
     Cutout {}
 
     readonly property var sink: Pipewire.defaultAudioSink?.audio
-    readonly property var player: {
-        if (!Mpris.players || Mpris.players.values.length == 0)
-            return null;
-        return Mpris.players.values.find(p => p.playbackState);
+    readonly property var players: {
+        if (!Mpris.players)
+            return [];
+        let playingPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Playing);
+        let pausedPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Paused);
+        return playingPlayers.concat(pausedPlayers);
     }
     readonly property int percent: Math.round(sink?.volume * 100)
 
@@ -73,32 +77,126 @@ Rectangle {
             ColumnLayout {
                 anchors.fill: parent
                 spacing: 0
-                RowLayout {
-                    property bool validPlayerPresent: (audio?.player?.playbackState ?? false) && Config.playerRequirements.every(r => audio?.player[r])
-                    onValidPlayerPresentChanged: visibilityTimer.running = !validPlayerPresent
-                    visible: validPlayerPresent || visibilityTimer.running
-                    spacing: Config.spacing * 2
-                    Layout.alignment: Qt.AlignHCenter
+                Item {
+                    Layout.preferredWidth: listContainer.width
+                    Layout.preferredHeight: listContainer.height
 
-                    IconButton {
-                        iconName: "skip_previous"
-                        onClicked: audio.player.previous()
-                    }
-                    IconButton {
-                        iconName: audio?.player?.isPlaying ? "pause" : "play_arrow"
-                        buttonPixelSize: Config.circleButtonDiameter * 1.3
-                        onClicked: audio.player.playbackState == MprisPlaybackState.Playing ? audio.player.pause() : audio.player.play()
-                    }
-                    IconButton {
-                        iconName: "skip_next"
-                        onClicked: audio.player.next()
-                    }
+                    Item {
+                        id: visualContent
+                        anchors.fill: parent
+                        layer.enabled: true
+                        layer.effect: MultiEffect {
+                            maskSource: maskShape
+                            maskEnabled: true
+                        }
 
-                    Timer {
-                        id: visibilityTimer
-                        interval: 1500
-                        repeat: false
-                        running: false
+                        Rectangle {
+                            id: listContainer
+                            width: list.width + Config.spacing * 2
+                            height: list.height + Config.spacing * 2
+                            color: Config.colours.bg2
+
+                            ListView {
+                                id: list
+                                visible: audio.players.length != 0
+                                width: currentItem?.width ?? 0
+                                height: currentItem?.height ?? 0
+                                anchors.centerIn: parent
+                                orientation: ListView.Horizontal
+                                spacing: Config.spacing * 2
+
+                                boundsBehavior: Flickable.StopAtBounds
+                                snapMode: ListView.SnapToItem
+                                highlightRangeMode: ListView.StrictlyEnforceRange
+                                highlightMoveVelocity: 50
+
+                                model: audio.players
+                                delegate: ColumnLayout {
+                                    id: item
+                                    required property var modelData
+                                    spacing: Config.spacing
+
+                                    RowLayout {
+                                        IconButton {
+                                            iconName: "chevron_backward"
+                                            buttonPixelSize: 20
+                                            onClicked: list.decrementCurrentIndex()
+                                            disabled: list.currentIndex == 0
+                                        }
+                                        Item {
+                                            Layout.fillWidth: true
+                                        }
+                                        Text {
+                                            text: item.modelData.identity
+                                            Layout.preferredWidth: 80
+                                            horizontalAlignment: Text.AlignHCenter
+                                            elide: Text.ElideRight
+                                            color: Config.colours.fg1
+                                            font.family: Config.fontFamily
+                                            font.pixelSize: Config.smallFontSize
+                                        }
+                                        Item {
+                                            Layout.fillWidth: true
+                                        }
+                                        IconButton {
+                                            iconName: "chevron_forward"
+                                            buttonPixelSize: 20
+                                            onClicked: list.incrementCurrentIndex()
+                                            disabled: list.currentIndex == list.count - 1
+                                        }
+                                    }
+                                    RowLayout {
+                                        property bool validPlayerPresent: {
+                                            if (audio.players.length == 0)
+                                                return false;
+                                            let isActive = [MprisPlaybackState.Paused, MprisPlaybackState.Playing].includes(item.modelData.playbackState);
+                                            return isActive && Config.playerRequirements.every(r => item.modelData[r]);
+                                        }
+                                        onValidPlayerPresentChanged: {
+                                            if (!validPlayerPresent)
+                                                visibilityTimer.restart();
+                                        }
+                                        visible: validPlayerPresent || visibilityTimer.running
+                                        spacing: Config.spacing * 2
+                                        Layout.alignment: Qt.AlignHCenter
+                                        IconButton {
+                                            iconName: "skip_previous"
+                                            disabled: !item.modelData.canGoPrevious && !visibilityTimer.running
+                                            onClicked: {
+                                                if (!disabled)
+                                                    item.modelData.previous();
+                                            }
+                                        }
+                                        IconButton {
+                                            iconName: item.modelData.isPlaying || visibilityTimer.running ? "pause" : "play_arrow"
+                                            buttonPixelSize: Config.circleButtonDiameter * 1.3
+                                            onClicked: item.modelData.togglePlaying()
+                                        }
+                                        IconButton {
+                                            iconName: "skip_next"
+                                            disabled: !item.modelData.canGoNext && !visibilityTimer.running
+                                            onClicked: {
+                                                if (!disabled)
+                                                    item.modelData.next();
+                                            }
+                                        }
+
+                                        Timer {
+                                            id: visibilityTimer
+                                            interval: 1500
+                                            repeat: false
+                                            running: false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    AudioPlayerShape {
+                        id: maskShape
+                        anchors.fill: parent
+                        visible: false
+                        layer.enabled: true
                     }
                 }
                 ColumnLayout {

@@ -8,10 +8,12 @@ Button {
     property var radius: Infinity
     property int buttonPixelSize: Config.circleButtonDiameter
     property int iconPixelSize: buttonPixelSize * 0.7
+    property bool disabled: false
 
     contentItem: Icon {
         iconName: button.iconName
         pixelSize: button.iconPixelSize
+        colour: button.disabled ? Config.colours.fg3 : Config.colours.fg1
     }
 
     background: Rectangle {
@@ -20,6 +22,8 @@ Button {
         radius: button.radius
         border.width: 0
         color: {
+            if (button.disabled)
+                return Config.colours.buttonInactiveBg;
             if (button.pressed)
                 return Config.colours.buttonPressedBg;
             else if (button.hovered)
@@ -36,8 +40,10 @@ Button {
 
     HoverHandler {
         onHoveredChanged: {
-            if (hovered)
+            if (hovered && !button.disabled)
                 this.cursorShape = Qt.PointingHandCursor;
+            else
+                this.cursorShape = Qt.ArrowCursor;
         }
     }
 }
