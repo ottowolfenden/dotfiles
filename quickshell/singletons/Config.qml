@@ -18,8 +18,7 @@ QtObject {
     property int circleButtonDiameter: 33
     property var colours: QsState.darkMode ? {
         bg1: "#000000",
-        // bg2: "#0affffff",
-        bg2: "#50ff0000",
+        bg2: "#0affffff",
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
         fg3: "#15ffffff",
@@ -61,4 +60,7 @@ QtObject {
         pink: "#ff80ab"
     }
     property var playerRequirements: ["canPlay", "canPause", "canControl", "canTogglePlaying"]
+    property var playerIdentityNames: {
+        "com.github.th_ch.youtube_music": "YouTube Music"
+    }
 }

@@ -7,7 +7,7 @@ Button {
     property string iconName
     property var radius: Infinity
     property int buttonPixelSize: Config.circleButtonDiameter
-    property int iconPixelSize: buttonPixelSize * 0.7
+    property int iconPixelSize: buttonPixelSize * 0.65
     property bool disabled: false
 
     contentItem: Icon {

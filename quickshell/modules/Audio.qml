@@ -1,8 +1,9 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import QtQuick.Effects
 import QtQuick.Layouts
 import QtQuick.Controls
+import Quickshell
+import Quickshell.Io
 import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
 import ".."
@@ -78,23 +79,24 @@ Rectangle {
                 anchors.fill: parent
                 spacing: 0
                 Item {
-                    Layout.preferredWidth: listContainer.width
-                    Layout.preferredHeight: listContainer.height
+                    Layout.preferredWidth: mediaContainer.width
+                    Layout.preferredHeight: mediaContainer.height
 
-                    Item {
-                        id: visualContent
-                        anchors.fill: parent
-                        layer.enabled: true
-                        layer.effect: MultiEffect {
-                            maskSource: maskShape
-                            maskEnabled: true
+                    RowLayout {
+                        id: mediaContainer
+                        IconButton {
+                            iconName: "chevron_backward"
+                            buttonPixelSize: 23
+                            onClicked: list.decrementCurrentIndex()
+                            disabled: list.currentIndex == 0
+                            Layout.alignment: Qt.AlignTop
                         }
-
                         Rectangle {
-                            id: listContainer
-                            width: list.width + Config.spacing * 2
-                            height: list.height + Config.spacing * 2
+                            Layout.preferredWidth: list.width + Config.spacing * 2
+                            Layout.preferredHeight: list.height + Config.spacing * 2
                             color: Config.colours.bg2
+                            radius: Config.radius
+                            clip: true
 
                             ListView {
                                 id: list
@@ -108,7 +110,7 @@ Rectangle {
                                 boundsBehavior: Flickable.StopAtBounds
                                 snapMode: ListView.SnapToItem
                                 highlightRangeMode: ListView.StrictlyEnforceRange
-                                highlightMoveVelocity: 50
+                                highlightMoveDuration: 150
 
                                 model: audio.players
                                 delegate: ColumnLayout {
@@ -116,35 +118,31 @@ Rectangle {
                                     required property var modelData
                                     spacing: Config.spacing
 
-                                    RowLayout {
-                                        IconButton {
-                                            iconName: "chevron_backward"
-                                            buttonPixelSize: 20
-                                            onClicked: list.decrementCurrentIndex()
-                                            disabled: list.currentIndex == 0
-                                        }
-                                        Item {
-                                            Layout.fillWidth: true
-                                        }
-                                        Text {
-                                            text: item.modelData.identity
-                                            Layout.preferredWidth: 80
-                                            horizontalAlignment: Text.AlignHCenter
-                                            elide: Text.ElideRight
-                                            color: Config.colours.fg1
-                                            font.family: Config.fontFamily
-                                            font.pixelSize: Config.smallFontSize
-                                        }
-                                        Item {
-                                            Layout.fillWidth: true
-                                        }
-                                        IconButton {
-                                            iconName: "chevron_forward"
-                                            buttonPixelSize: 20
-                                            onClicked: list.incrementCurrentIndex()
-                                            disabled: list.currentIndex == list.count - 1
+                                    Text {
+                                        id: identityText
+                                        text: Config.playerIdentityNames[item.modelData.identity] ?? item.modelData.identity
+                                        Layout.fillWidth: true
+                                        Layout.preferredWidth: 80
+                                        horizontalAlignment: Text.AlignHCenter
+                                        elide: Text.ElideRight
+                                        color: Config.colours.fg1
+                                        font.family: Config.fontFamily
+                                        font.pixelSize: Config.smallFontSize
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            hoverEnabled: true
+                                            cursorShape: Qt.PointingHandCursor
+                                            onClicked: {
+                                                if (item.modelData.canRaise)
+                                                    item.modelData.raise();
+                                                else {
+                                                    Quickshell.execDetached(["hyprctl", "dispatch", "hl.dsp.focus({ window = 'initialclass:(?i)" + item.modelData.identity.toLowerCase() + "' })"]);
+                                                    QsState.hideAllFlyouts();
+                                                }
+                                            }
                                         }
                                     }
+
                                     RowLayout {
                                         property bool validPlayerPresent: {
                                             if (audio.players.length == 0)
@@ -191,12 +189,13 @@ Rectangle {
                                 }
                             }
                         }
-                    }
-                    AudioPlayerShape {
-                        id: maskShape
-                        anchors.fill: parent
-                        visible: false
-                        layer.enabled: true
+                        IconButton {
+                            iconName: "chevron_forward"
+                            buttonPixelSize: 23
+                            onClicked: list.incrementCurrentIndex()
+                            disabled: list.currentIndex == list.count - 1
+                            Layout.alignment: Qt.AlignTop
+                        }
                     }
                 }
                 ColumnLayout {
