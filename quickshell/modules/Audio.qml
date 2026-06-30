@@ -3,7 +3,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import Quickshell
-import Quickshell.Io
 import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
 import ".."
@@ -19,12 +18,13 @@ Rectangle {
     Cutout {}
 
     readonly property var sink: Pipewire.defaultAudioSink?.audio
-    readonly property var players: {
+    property var players: Mpris.players.values ?? []
+    function orderPlayers() {
         if (!Mpris.players)
             return [];
         let playingPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Playing);
         let pausedPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Paused);
-        return playingPlayers.concat(pausedPlayers);
+        audio.players = playingPlayers.concat(pausedPlayers);
     }
     readonly property int percent: Math.round(sink?.volume * 100)
 
@@ -69,6 +69,12 @@ Rectangle {
         parentX: audio.x
         rectWidth: pane.implicitWidth
         rectHeight: pane.implicitHeight
+        onOpened: {
+            audio.orderPlayers();
+            list.highlightMoveDuration = 0;
+            list.currentIndex = 0;
+            list.highlightMoveDuration = 150;
+        }
 
         Pane {
             id: pane

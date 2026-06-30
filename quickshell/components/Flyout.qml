@@ -9,6 +9,8 @@ PanelWindow {
     required property int parentX
     required property int rectWidth
     required property int rectHeight
+    signal closed
+    signal opened
 
     property string pos: rect.x == 0 ? "left" : (rect.x + rect.width == flyout.width ? "right" : "middle")
     property bool isOpen: false
@@ -27,8 +29,10 @@ PanelWindow {
     }
     visible: isOpen || rect.y > -rect.height
     onIsOpenChanged: {
-        if (isOpen)
+        if (isOpen) {
             QsState.hideAllFlyoutsExcept(flyout);
+            opened();
+        }
     }
 
     Shape {
