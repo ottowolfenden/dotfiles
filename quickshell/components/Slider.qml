@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Shapes
+import QtQuick.Layouts
 import ".."
 
 Item {
@@ -7,24 +8,28 @@ Item {
     required property real value
     property string bgColour: Config.colours.bg2
     property string fgColour: Config.colours.lightblue
-    readonly property int trackWidth: width - ([0, 1].includes(value) ? row.spacing : row.spacing * 2) - handle.initialWidth
+    readonly property int trackWidth: width - handle.Layout.preferredWidth
     readonly property int trackHeight: height - handle.extraHeight
+    readonly property int smallRadius: 2
     signal changed(real newValue)
 
-    Row {
+    RowLayout {
         id: row
-        spacing: 5
+        spacing: 0
+        anchors.fill: parent
+
         Shape {
             id: activeTrack
-            width: Math.round(slider.trackWidth * slider.value)
-            height: slider.trackHeight
+            property int smallRadius: slider.value > 0.02 ? 2 : 0
             layer.enabled: true
             layer.samples: 20
-            anchors.verticalCenter: parent.verticalCenter
+            Layout.preferredWidth: Math.round(slider.trackWidth * slider.value)
+            Layout.preferredHeight: slider.trackHeight
+            Layout.alignment: Qt.AlignVCenter
 
-            Behavior on width {
+            Behavior on Layout.preferredWidth {
                 NumberAnimation {
-                    duration: 35
+                    duration: 40
                 }
             }
 
@@ -36,24 +41,24 @@ Item {
                 startY: 0
 
                 PathLine {
-                    x: activeTrack.width - Config.smallRadius
+                    x: activeTrack.width - activeTrack.smallRadius
                     y: 0
                 }
                 PathArc {
                     x: activeTrack.width
-                    y: Config.smallRadius
-                    radiusX: Config.smallRadius
-                    radiusY: Config.smallRadius
+                    y: activeTrack.smallRadius
+                    radiusX: activeTrack.smallRadius
+                    radiusY: activeTrack.smallRadius
                 }
                 PathLine {
                     x: activeTrack.width
-                    y: activeTrack.height - Config.smallRadius
+                    y: activeTrack.height - activeTrack.smallRadius
                 }
                 PathArc {
-                    x: activeTrack.width - Config.smallRadius
+                    x: activeTrack.width - activeTrack.smallRadius
                     y: activeTrack.height
-                    radiusX: Config.smallRadius
-                    radiusY: Config.smallRadius
+                    radiusX: activeTrack.smallRadius
+                    radiusY: activeTrack.smallRadius
                 }
                 PathLine {
                     x: Config.radius
@@ -78,30 +83,35 @@ Item {
             }
         }
 
-        Rectangle {
+        Item {
             id: handle
-            property int initialWidth: 3
             property int extraHeight: 16
-            color: slider.fgColour
-            width: initialWidth
-            height: slider.trackHeight + extraHeight
-            anchors.verticalCenter: parent.verticalCenter
-            radius: Infinity
+            property int margins: 4
+            property bool clicked
+            Layout.preferredWidth: handleRect.initialWidth + margins * 2
+            Layout.preferredHeight: slider.trackHeight + extraHeight
+            Layout.alignment: Qt.AlignVCenter
+
+            Rectangle {
+                id: handleRect
+                property int initialWidth: 4
+                property int clickedWidth: 2
+                color: slider.fgColour
+                width: handle.clicked ? clickedWidth : initialWidth
+                height: handle.height
+                radius: Infinity
+                anchors.horizontalCenter: handle.horizontalCenter
+            }
         }
 
         Shape {
             id: inactiveTrack
-            width: Math.round(slider.trackWidth * (1 - slider.value))
-            height: slider.trackHeight
+            property int smallRadius: slider.value < 0.98 ? slider.smallRadius : 0
             layer.enabled: true
             layer.samples: 20
-            anchors.verticalCenter: parent.verticalCenter
-
-            Behavior on width {
-                NumberAnimation {
-                    duration: 35
-                }
-            }
+            Layout.preferredHeight: slider.trackHeight
+            Layout.alignment: Qt.AlignVCenter
+            Layout.fillWidth: true
 
             ShapePath {
                 fillColor: slider.bgColour
@@ -131,24 +141,24 @@ Item {
                     radiusY: Config.radius
                 }
                 PathLine {
-                    x: Config.smallRadius
+                    x: inactiveTrack.smallRadius
                     y: inactiveTrack.height
                 }
                 PathArc {
                     x: 0
-                    y: inactiveTrack.height - Config.smallRadius
-                    radiusX: Config.smallRadius
-                    radiusY: Config.smallRadius
+                    y: inactiveTrack.height - inactiveTrack.smallRadius
+                    radiusX: inactiveTrack.smallRadius
+                    radiusY: inactiveTrack.smallRadius
                 }
                 PathLine {
                     x: 0
-                    y: Config.smallRadius
+                    y: inactiveTrack.smallRadius
                 }
                 PathArc {
-                    x: Config.smallRadius
+                    x: inactiveTrack.smallRadius
                     y: 0
-                    radiusX: Config.smallRadius
-                    radiusY: Config.smallRadius
+                    radiusX: inactiveTrack.smallRadius
+                    radiusY: inactiveTrack.smallRadius
                 }
             }
         }
@@ -165,13 +175,26 @@ Item {
             if (listening)
                 slider.changed(Helpers.clamp(mouseX / slider.width, 0, 1));
         }
-        onPressed: listening = true
-        onReleased: listening = false
+        onPressed: listening = handle.clicked = true
+        onReleased: listening = handle.clicked = false
+
         onWheel: wheel => {
             if (wheel.angleDelta.y > 0)
                 slider.changed(Helpers.clamp(slider.value + 0.02, 0, 1));
             else if (wheel.angleDelta.y < 0)
                 slider.changed(Helpers.clamp(slider.value - 0.02, 0, 1));
+
+            handle.clicked = true;
+            if (wheelTimer.running)
+                wheelTimer.restart();
+            else
+                wheelTimer.start();
+        }
+
+        Timer {
+            id: wheelTimer
+            interval: 200
+            onTriggered: handle.clicked = false
         }
     }
 }

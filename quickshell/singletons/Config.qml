@@ -10,7 +10,6 @@ QtObject {
     property int fontSize: 15
     property int smallFontSize: 13
     property int radius: 7
-    property int smallRadius: 2
     property int blurRadius: 70
     property string fontFamily: "Google Sans Flex"
     property var vpnIdentifiers: ["vpn", "wireguard", "proton"]
