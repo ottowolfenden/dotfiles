@@ -105,7 +105,7 @@ Item {
 
         Item {
             id: handle
-            property int extraHeight: 16
+            property int extraHeight: 14
             property int margins: 4
             property bool clicked
             Layout.preferredWidth: handleRect.initialWidth + margins * 2

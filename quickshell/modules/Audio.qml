@@ -214,8 +214,8 @@ Rectangle {
                 }
 
                 Slider {
-                    Layout.preferredWidth: 300
-                    Layout.preferredHeight: 50
+                    Layout.preferredWidth: 250
+                    Layout.preferredHeight: 45
                     Layout.alignment: Qt.AlignHCenter
 
                     value: audio.sink?.audio?.volume ?? 0
