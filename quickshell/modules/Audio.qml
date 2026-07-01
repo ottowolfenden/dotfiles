@@ -246,12 +246,17 @@ Rectangle {
                         spacing: Config.spacing
                         anchors.fill: parent
                         anchors.margins: Config.spacing
-                        property bool showHdmi: false
+                        property bool showHdmi: true
 
                         Repeater {
                             model: {
                                 let filtered = Pipewire.nodes.values.filter(n => !n.isStream && n.isSink && (sinkSelection.showHdmi || !(n.name.concat(n.description).toLowerCase().includes("hdmi"))));
-                                return filtered.sort((a, b) => audio.getSinkDetails(a).name > audio.getSinkDetails(b).name ? 1 : -1);
+                                filtered.sort((a, b) => audio.getSinkDetails(a).name > audio.getSinkDetails(b).name ? 1 : -1);
+                                let target = filtered.find(n => n.name == Config.mainPwNodeName);
+                                if (!target)
+                                    return filtered;
+                                let result = [target, ...filtered.filter(item => item != target)];
+                                return result;
                             }
 
                             delegate: Rectangle {
