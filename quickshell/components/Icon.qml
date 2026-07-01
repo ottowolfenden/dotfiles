@@ -3,6 +3,7 @@ import ".."
 
 Item {
     required property string iconName
+
     property int pixelSize: 18
     property string colour: Config.colours.fg1
     property bool fill: false

@@ -6,11 +6,16 @@ import ".."
 Item {
     id: slider
     required property real value
+
     property string bgColour: Config.colours.bg2
     property string fgColour: Config.colours.lightblue
+    property string iconName
+
     readonly property int trackWidth: width - handle.Layout.preferredWidth
     readonly property int trackHeight: height - handle.extraHeight
     readonly property int smallRadius: 2
+    readonly property bool iconOnActiveTrack: slider.trackWidth * (1 - slider.value) < activeTrackIcon.width + Config.spacing * 2
+
     signal changed(real newValue)
 
     RowLayout {
@@ -81,6 +86,17 @@ Item {
                     radiusY: Config.radius
                 }
             }
+
+            Icon {
+                id: activeTrackIcon
+                iconName: slider.iconName
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+                anchors.rightMargin: Config.spacing
+                colour: Config.colours.invfg
+                visible: slider.iconOnActiveTrack
+            }
         }
 
         Item {
@@ -101,6 +117,12 @@ Item {
                 height: handle.height
                 radius: Infinity
                 anchors.horizontalCenter: handle.horizontalCenter
+
+                Behavior on width {
+                    NumberAnimation {
+                        duration: 25
+                    }
+                }
             }
         }
 
@@ -160,6 +182,19 @@ Item {
                     radiusX: inactiveTrack.smallRadius
                     radiusY: inactiveTrack.smallRadius
                 }
+            }
+
+            Icon {
+                id: inactiveTrackIcon
+                iconName: slider.iconName
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+                anchors.rightMargin: Config.spacing
+                colour: Config.colours.fg1
+                visible: !slider.iconOnActiveTrack
+                layer.enabled: true
+                layer.samples: 0
             }
         }
     }

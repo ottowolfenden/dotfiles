@@ -148,4 +148,28 @@ QtObject {
         })
     property var power: "power_settings_new"
     property var powerProfiles: ["energy_savings_leaf", "balance", "rocket_launch"]
+    property var bluetoothDevices: {
+        "audio-headphones": "headphones",
+        "audio-headset": "headset_mic",
+        "camera-web": "camera",
+        "computer": "computer",
+        "drive-harddisk": "hard_drive_2",
+        "drive-multidisk": "storage",
+        "drive-optical": "hard_disk",
+        "drive-removable-media": "hard_drive",
+        "ebook-reader": "tablet_android",
+        "input-gaming": "sports_esports",
+        "input-keyboard": "keyboard",
+        "input-mouse": "mouse",
+        "input-tablet": "tablet",
+        "media-flash": "sd_card",
+        "media-optical": "album",
+        "media-removable": "security_key",
+        "microphone": "mic",
+        "phone": "mobile",
+        "printer-network": "print",
+        "printer": "print",
+        "scanner": "scanner",
+        "video-display": "tv"
+    }
 }

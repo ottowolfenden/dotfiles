@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick
+import Quickshell.Bluetooth
 
 QtObject {
     function getWorkspaceExists(workspaces, id) {
@@ -38,5 +39,22 @@ QtObject {
         if (hrs == 0)
             return `${minsLeft} ${minsLabel}`;
         return `${hrs} ${hrsLabel} ${minsLeft} ${minsLabel}`;
+    }
+
+    function sinkToBtDevice(sinkNode) {
+        if (!sinkNode || !sinkNode.properties)
+            return null;
+
+        let macAddress = sinkNode.properties["api.bluez5.address"];
+        let dbusPath = sinkNode.properties["device.bus-path"];
+
+        if (!macAddress && !dbusPath)
+            return null;
+
+        for (const device of Bluetooth.devices.values)
+            if ((macAddress && device.address == macAddress) || (dbusPath && device.dbusPath == dbusPath))
+                return device;
+
+        return null;
     }
 }

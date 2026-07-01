@@ -3,6 +3,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import Quickshell
+import Quickshell.Bluetooth
 import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
 import ".."
@@ -17,7 +18,7 @@ Rectangle {
 
     Cutout {}
 
-    readonly property var sink: Pipewire.defaultAudioSink?.audio
+    readonly property var sink: Pipewire.defaultAudioSink
     property var players: Mpris.players.values ?? []
     function orderPlayers() {
         if (!Mpris.players)
@@ -26,7 +27,7 @@ Rectangle {
         let pausedPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Paused);
         audio.players = playingPlayers.concat(pausedPlayers);
     }
-    readonly property int percent: Math.round(sink?.volume * 100)
+    readonly property int percent: Math.round(sink?.audio.volume * 100)
 
     RowLayout {
         id: container
@@ -36,7 +37,7 @@ Rectangle {
         anchors.rightMargin: Config.spacing
 
         Icon {
-            iconName: Icons.volume?.find(i => i.muted == audio.sink?.muted || audio.percent <= i.max)?.icon
+            iconName: Icons.volume?.find(i => i.muted == audio.sink?.audio?.muted || audio.percent <= i.max)?.icon
         }
 
         Text {
@@ -58,9 +59,9 @@ Rectangle {
 
         onWheel: wheel => {
             if (wheel.angleDelta.y > 0)
-                audio.sink.volume = Helpers.clamp(audio.sink.volume + 0.02, 0, 1);
+                audio.sink.audio.volume = Helpers.clamp(audio.sink.audio.volume + 0.02, 0, 1);
             else if (wheel.angleDelta.y < 0)
-                audio.sink.volume = Helpers.clamp(audio.sink.volume - 0.02, 0, 1);
+                audio.sink.audio.volume = Helpers.clamp(audio.sink.audio.volume - 0.02, 0, 1);
         }
     }
 
@@ -84,6 +85,7 @@ Rectangle {
             ColumnLayout {
                 anchors.fill: parent
                 spacing: Config.spacing
+
                 Item {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.preferredWidth: mediaContainer.width
@@ -210,12 +212,21 @@ Rectangle {
                         }
                     }
                 }
+
                 Slider {
                     Layout.preferredWidth: 300
                     Layout.preferredHeight: 50
-                    value: audio.sink?.volume ?? 0
                     Layout.alignment: Qt.AlignHCenter
-                    onChanged: newValue => audio.sink.volume = newValue
+
+                    value: audio.sink?.audio?.volume ?? 0
+                    onChanged: newValue => audio.sink.audio.volume = newValue
+                    iconName: {
+                        let btDevice = Helpers.sinkToBtDevice(Pipewire.defaultAudioSink);
+                        if (btDevice)
+                            return Icons.bluetoothDevices[btDevice.icon];
+
+                        return "laptop";
+                    }
                 }
             }
         }
