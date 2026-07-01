@@ -221,11 +221,16 @@ Rectangle {
                     value: audio.sink?.audio?.volume ?? 0
                     onChanged: newValue => audio.sink.audio.volume = newValue
                     iconName: {
-                        let btDevice = Helpers.sinkToBtDevice(Pipewire.defaultAudioSink);
+                        let btDevice = Helpers.sinkToBtDevice(audio.sink);
                         if (btDevice)
-                            return Icons.bluetoothDevices[btDevice.icon];
-
-                        return "laptop";
+                            return Icons.devices[btDevice.icon] ?? Icons.devices["bluetooth"];
+                        if (!audio.sink?.properties)
+                            return Icons.devices["computer"];
+                        let sinkIcon = audio.sink.properties["device.icon_name"] || audio.sink.properties["device.icon-name"];
+                        console.log(sinkIcon);
+                        if (sinkIcon)
+                            return Icons.devices[sinkIcon] ?? Icons.devices["computer"];
+                        return Icons.devices["computer"];
                     }
                 }
             }
