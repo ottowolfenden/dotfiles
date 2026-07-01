@@ -37,6 +37,7 @@ Rectangle {
         anchors.rightMargin: Config.spacing
 
         Icon {
+            id: barIcon
             iconName: Icons.volume?.find(i => i.muted == audio.sink?.audio?.muted || audio.percent <= i.max)?.icon
         }
 
@@ -232,7 +233,7 @@ Rectangle {
 
                     value: audio.sink?.audio?.volume ?? 0
                     onChanged: newValue => audio.sink.audio.volume = newValue
-                    iconName: audio.getSinkDetails(audio.sink).icon
+                    iconName: repeater.model.length > 1 ? audio.getSinkDetails(audio.sink).icon : barIcon.iconName
                 }
 
                 Rectangle {
@@ -240,17 +241,20 @@ Rectangle {
                     implicitHeight: sinkSelection.implicitHeight + Config.spacing * 2
                     color: Config.colours.bg2
                     radius: Config.radius
+                    visible: repeater.model.length > 1
 
                     ColumnLayout {
                         id: sinkSelection
                         spacing: Config.spacing
                         anchors.fill: parent
                         anchors.margins: Config.spacing
-                        property bool showHdmi: true
+                        property bool showHdmi: false
 
                         Repeater {
+                            id: repeater
                             model: {
-                                let filtered = Pipewire.nodes.values.filter(n => !n.isStream && n.isSink && (sinkSelection.showHdmi || !(n.name.concat(n.description).toLowerCase().includes("hdmi"))));
+                                let containsHdmi = pwNode => pwNode.name.concat(pwNode.description).toLowerCase().includes("hdmi");
+                                let filtered = Pipewire.nodes.values.filter(n => n.audio && !n.isStream && n.isSink && (sinkSelection.showHdmi || !containsHdmi(n)));
                                 filtered.sort((a, b) => audio.getSinkDetails(a).name > audio.getSinkDetails(b).name ? 1 : -1);
                                 let target = filtered.find(n => n.name == Config.mainPwNodeName);
                                 if (!target)
