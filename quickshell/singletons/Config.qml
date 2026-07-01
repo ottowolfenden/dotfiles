@@ -19,7 +19,7 @@ QtObject {
     property int circleButtonDiameter: 33
     property var colours: QsState.darkMode ? {
         bg1: "#000000",
-        bg2: "#0affffff",
+        bg2: "#0fffffff",
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
         fg3: "#15ffffff",
@@ -28,8 +28,7 @@ QtObject {
         buttonInactiveBg: "#0effffff",
         buttonHoveredBg: "#12ffffff",
         buttonPressedBg: "#1effffff",
-        blueButtonHoveredBg: "#91dfff",
-        blueButtonPressedBg: "#97e1ff",
+        selectedBg: "#1889ddff",
         red: "#f07178",
         orange: "#f78c6c",
         yellow: "#ffcb6b",
@@ -49,8 +48,7 @@ QtObject {
         buttonInactiveBg: "#0a000000",
         buttonHoveredBg: "#12000000",
         buttonPressedBg: "#1e000000",
-        blueButtonHoveredBg: "#3d7ce3",
-        blueButtonPressedBg: "#3a75d7",
+        selectedBg: "#184285f4",
         red: "#ea4335",
         orange: "#fd6132",
         yellow: "#f1b911",
@@ -64,4 +62,5 @@ QtObject {
     property var playerIdentityNames: {
         "com.github.th_ch.youtube_music": "YouTube Music"
     }
+    property var earbudSubstrings: ["bud", "airpod", " ear", "tws"]
 }

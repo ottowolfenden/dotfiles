@@ -53,6 +53,19 @@ Rectangle {
     PwObjectTracker {
         objects: [Pipewire.defaultAudioSink]
     }
+    PwObjectTracker {
+        objects: {
+            if (!Pipewire.ready || !Pipewire.nodes.values)
+                return [];
+
+            let sinkList = [];
+            for (const sink of Pipewire.nodes.values)
+                if (sink)
+                    sinkList.push(sink);
+
+            return sinkList;
+        }
+    }
 
     FlyoutMouseArea {
         flyout: volumeFlyout
@@ -83,7 +96,6 @@ Rectangle {
             background: null
 
             ColumnLayout {
-                anchors.fill: parent
                 spacing: Config.spacing
 
                 Item {
@@ -220,20 +232,125 @@ Rectangle {
 
                     value: audio.sink?.audio?.volume ?? 0
                     onChanged: newValue => audio.sink.audio.volume = newValue
-                    iconName: {
-                        let btDevice = Helpers.sinkToBtDevice(audio.sink);
-                        if (btDevice)
-                            return Icons.devices[btDevice.icon] ?? Icons.devices["bluetooth"];
-                        if (!audio.sink?.properties)
-                            return Icons.devices["computer"];
-                        let sinkIcon = audio.sink.properties["device.icon_name"] || audio.sink.properties["device.icon-name"];
-                        console.log(sinkIcon);
-                        if (sinkIcon)
-                            return Icons.devices[sinkIcon] ?? Icons.devices["computer"];
-                        return Icons.devices["computer"];
+                    iconName: audio.getSinkDetails(audio.sink).icon
+                }
+
+                Rectangle {
+                    Layout.fillWidth: true
+                    implicitHeight: sinkSelection.implicitHeight + Config.spacing * 2
+                    color: Config.colours.bg2
+                    radius: Config.radius
+
+                    ColumnLayout {
+                        id: sinkSelection
+                        spacing: Config.spacing
+                        anchors.fill: parent
+                        anchors.margins: Config.spacing
+                        property bool showHdmi: false
+
+                        Repeater {
+                            model: {
+                                let filtered = Pipewire.nodes.values.filter(n => !n.isStream && n.isSink && (sinkSelection.showHdmi || !(n.name.concat(n.description).toLowerCase().includes("hdmi"))));
+                                return filtered.sort((a, b) => audio.getSinkDetails(a).name > audio.getSinkDetails(b).name ? 1 : -1);
+                            }
+
+                            delegate: Rectangle {
+                                id: node
+                                required property var modelData
+                                property bool isActive: node.modelData == audio.sink
+                                property string colour: isActive ? Config.colours.lightblue : Config.colours.fg1
+                                radius: Config.radius
+                                color: {
+                                    if (isActive)
+                                        return Config.colours.selectedBg;
+                                    if (mouseArea.pressed)
+                                        return Config.colours.buttonPressedBg;
+                                    else if (mouseArea.containsMouse)
+                                        return Config.colours.buttonHoveredBg;
+                                    return Config.colours.buttonInactiveBg;
+                                }
+                                Layout.fillWidth: true
+                                Layout.preferredHeight: row.implicitHeight + Config.spacing
+
+                                RowLayout {
+                                    id: row
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    anchors.leftMargin: Config.spacing / 2
+                                    anchors.rightMargin: Config.spacing / 2
+                                    Icon {
+                                        iconName: node.isActive ? "check" : audio.getSinkDetails(node.modelData).icon
+                                        colour: node.colour
+                                        Layout.leftMargin: Config.spacing / 2
+                                    }
+                                    Text {
+                                        id: text
+                                        text: audio.getSinkDetails(node.modelData).name
+                                        Layout.fillWidth: true
+                                        elide: Text.ElideRight
+                                        font.family: Config.fontFamily
+                                        font.pixelSize: Config.smallFontSize
+                                        color: node.colour
+                                        Layout.leftMargin: Config.spacing / 2
+                                    }
+                                    Item {
+                                        Layout.fillWidth: true
+                                    }
+                                    Text {
+                                        text: Math.round(node.modelData.audio.volume * 100) + "%"
+                                        font.family: Config.fontFamily
+                                        font.pixelSize: Config.smallFontSize
+                                        color: node.colour
+                                        Layout.rightMargin: Config.spacing / 2
+                                    }
+                                }
+
+                                MouseArea {
+                                    id: mouseArea
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    cursorShape: node.isActive ? undefined : Qt.PointingHandCursor
+                                    onClicked: Pipewire.preferredDefaultAudioSink = node.modelData
+                                }
+
+                                Behavior on color {
+                                    ColorAnimation {
+                                        duration: 100
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
+
+    function getSinkDetails(sink) {
+        let unknown = {
+            icon: Icons.devices["computer"],
+            name: "Laptop"
+        };
+
+        let btDevice = Helpers.sinkToBtDevice(sink);
+        if (btDevice)
+            return {
+                icon: isEarbud(btDevice) ? "earbud_left" : Icons.devices[btDevice.icon] ?? Icons.devices["bluetooth"],
+                name: btDevice.name
+            };
+
+        if (!sink?.properties)
+            return unknown;
+        let sinkIcon = sink.properties["device.icon_name"] || sink.properties["device.icon-name"];
+        let sinkName = sink.nickname != "" && sink.nickname ? sink.nickname : sink.description;
+        if (sinkIcon)
+            return {
+                icon: Icons.devices[sinkIcon] ?? Icons.devices["computer"],
+                name: sinkName && !["", "Speaker"].includes(sinkName) ? sinkName : "Laptop"
+            };
+        return unknown;
+    }
+
+    property var isEarbud: btDevice => Config.earbudSubstrings.some(s => btDevice.name.toLowerCase().includes(s) || btDevice.deviceName.toLowerCase().includes(s))
 }

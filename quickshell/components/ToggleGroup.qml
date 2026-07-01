@@ -37,11 +37,13 @@ Rectangle {
                 implicitHeight: Config.circleButtonDiameter
 
                 color: {
+                    if (index == toggleGroup.activeIndex)
+                        return Config.colours.lightblue;
                     if (mouseArea.pressed)
-                        return index == toggleGroup.activeIndex ? Config.colours.blueButtonPressedBg : Config.colours.buttonPressedBg;
+                        return Config.colours.buttonPressedBg;
                     else if (mouseArea.containsMouse)
-                        return index == toggleGroup.activeIndex ? Config.colours.blueButtonHoveredBg : Config.colours.buttonHoveredBg;
-                    return index == toggleGroup.activeIndex ? Config.colours.lightblue : Config.colours.buttonInactiveBg;
+                        return Config.colours.buttonHoveredBg;
+                    return Config.colours.buttonInactiveBg;
                 }
                 radius: Infinity
                 Icon {
@@ -51,7 +53,7 @@ Rectangle {
                 }
                 MouseArea {
                     id: mouseArea
-                    cursorShape: Qt.PointingHandCursor
+                    cursorShape: toggleGroup.activeIndex == parent.index ? undefined : Qt.PointingHandCursor
                     anchors.fill: parent
                     hoverEnabled: true
                     onClicked: {

@@ -41,12 +41,12 @@ QtObject {
         return `${hrs} ${hrsLabel} ${minsLeft} ${minsLabel}`;
     }
 
-    function sinkToBtDevice(sinkNode) {
-        if (!sinkNode || !sinkNode.properties)
+    function sinkToBtDevice(sink) {
+        if (!sink || !sink.properties)
             return null;
 
-        let macAddress = sinkNode.properties["api.bluez5.address"];
-        let dbusPath = sinkNode.properties["device.bus-path"];
+        let macAddress = sink.properties["api.bluez5.address"];
+        let dbusPath = sink.properties["device.bus-path"];
 
         if (!macAddress && !dbusPath)
             return null;
