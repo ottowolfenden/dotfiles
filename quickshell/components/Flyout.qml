@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Shapes
 import Quickshell
 import ".."
@@ -9,7 +10,6 @@ PanelWindow {
     required property int parentX
     required property int rectWidth
     required property int rectHeight
-    signal closed
     signal opened
 
     property string pos: rect.x == 0 ? "left" : (rect.x + rect.width == flyout.width ? "right" : "middle")

@@ -10,11 +10,13 @@ QtObject {
     property int fontSize: 15
     property int smallFontSize: 13
     property int radius: 7
+    property int smallRadius: 2
     property int blurRadius: 70
     property string fontFamily: "Google Sans Flex"
     property var vpnIdentifiers: ["vpn", "wireguard", "proton"]
     property var devicesToAutoconnect: ["B0:F0:0C:07:BC:07", "AC:3E:B1:62:43:27"]
     property int animationDuration: 200
+    property int listAnimationDuration: 150
     property int circleButtonDiameter: 33
     property var colours: QsState.darkMode ? {
         bg1: "#000000",

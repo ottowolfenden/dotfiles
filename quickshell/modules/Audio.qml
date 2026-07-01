@@ -58,9 +58,9 @@ Rectangle {
 
         onWheel: wheel => {
             if (wheel.angleDelta.y > 0)
-                audio.sink.volume = Math.min(audio.sink.volume + 0.01, 1);
+                audio.sink.volume = Helpers.clamp(audio.sink.volume + 0.02, 0, 1);
             else if (wheel.angleDelta.y < 0)
-                audio.sink.volume -= 0.01;
+                audio.sink.volume = Helpers.clamp(audio.sink.volume - 0.02, 0, 1);
         }
     }
 
@@ -73,7 +73,7 @@ Rectangle {
             audio.orderPlayers();
             list.highlightMoveDuration = 0;
             list.currentIndex = 0;
-            list.highlightMoveDuration = 150;
+            list.highlightMoveDuration = Config.listAnimationDuration;
         }
 
         Pane {
@@ -83,10 +83,12 @@ Rectangle {
 
             ColumnLayout {
                 anchors.fill: parent
-                spacing: 0
+                spacing: Config.spacing
                 Item {
+                    Layout.alignment: Qt.AlignHCenter
                     Layout.preferredWidth: mediaContainer.width
                     Layout.preferredHeight: mediaContainer.height
+                    visible: audio.players.length != 0
 
                     RowLayout {
                         id: mediaContainer
@@ -95,6 +97,7 @@ Rectangle {
                             buttonPixelSize: 23
                             onClicked: list.decrementCurrentIndex()
                             disabled: list.currentIndex == 0
+                            visible: audio.players.length > 1
                             Layout.alignment: Qt.AlignTop
                         }
                         Rectangle {
@@ -116,7 +119,7 @@ Rectangle {
                                 boundsBehavior: Flickable.StopAtBounds
                                 snapMode: ListView.SnapToItem
                                 highlightRangeMode: ListView.StrictlyEnforceRange
-                                highlightMoveDuration: 150
+                                highlightMoveDuration: Config.listAnimationDuration
 
                                 model: audio.players
                                 delegate: ColumnLayout {
@@ -128,7 +131,7 @@ Rectangle {
                                         id: identityText
                                         text: Config.playerIdentityNames[item.modelData.identity] ?? item.modelData.identity
                                         Layout.fillWidth: true
-                                        Layout.preferredWidth: 80
+                                        Layout.preferredWidth: buttonsContainer.implicitWidth
                                         horizontalAlignment: Text.AlignHCenter
                                         elide: Text.ElideRight
                                         color: Config.colours.fg1
@@ -150,6 +153,7 @@ Rectangle {
                                     }
 
                                     RowLayout {
+                                        id: buttonsContainer
                                         property bool validPlayerPresent: {
                                             if (audio.players.length == 0)
                                                 return false;
@@ -163,6 +167,7 @@ Rectangle {
                                         visible: validPlayerPresent || visibilityTimer.running
                                         spacing: Config.spacing * 2
                                         Layout.alignment: Qt.AlignHCenter
+
                                         IconButton {
                                             iconName: "skip_previous"
                                             disabled: !item.modelData.canGoPrevious && !visibilityTimer.running
@@ -200,12 +205,17 @@ Rectangle {
                             buttonPixelSize: 23
                             onClicked: list.incrementCurrentIndex()
                             disabled: list.currentIndex == list.count - 1
+                            visible: audio.players.length > 1
                             Layout.alignment: Qt.AlignTop
                         }
                     }
                 }
-                ColumnLayout {
-                    Repeater {}
+                Slider {
+                    Layout.preferredWidth: 300
+                    Layout.preferredHeight: 50
+                    value: audio.sink?.volume ?? 0
+                    Layout.alignment: Qt.AlignHCenter
+                    onChanged: newValue => audio.sink.volume = newValue
                 }
             }
         }

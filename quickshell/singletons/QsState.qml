@@ -23,30 +23,21 @@ QtObject {
         target: "flyoutsHandler"
         function hideNonHoveredFlyouts() {
             for (const flyout of qsState.flyouts)
-                if (!flyout.hovering) {
-                    if (flyout.isOpen)
-                        flyout.closed();
+                if (!flyout.hovering)
                     flyout.isOpen = false;
-                }
             if (!qsState.flyouts.some(f => f.hovering))
                 Quickshell.execDetached(["hyprctl", "reload"]);
         }
     }
     function hideAllFlyouts() {
-        for (const flyout of qsState.flyouts) {
-            if (flyout.isOpen)
-                flyout.closed();
+        for (const flyout of qsState.flyouts)
             flyout.isOpen = false;
-        }
         Quickshell.execDetached(["hyprctl", "reload"]);
     }
     function hideAllFlyoutsExcept(openFlyout) {
         for (const flyout of qsState.flyouts)
-            if (flyout != openFlyout) {
-                if (flyout.isOpen)
-                    flyout.closed();
+            if (flyout != openFlyout)
                 flyout.isOpen = false;
-            }
 
         if (qsState.flyouts.some(f => f.isOpen))
             Quickshell.execDetached(["hyprctl", "eval", `
