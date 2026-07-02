@@ -18,7 +18,7 @@ Rectangle {
         id: icon
         pixelSize: 17
         anchors.centerIn: parent
-        iconName: Icons.power
+        iconName: Icons.power.onOff
         verticalMargin: -2
     }
 
@@ -42,7 +42,7 @@ Rectangle {
 
                 TextButton {
                     text: "Shut down"
-                    iconName: "power_settings_new"
+                    iconName: Icons.power.shutDown
                     onClicked: {
                         QsState.hideAllFlyouts();
                         Quickshell.execDetached(["hyprshutdown", "-t", "Shutting down...", "--post-cmd", "systemctl poweroff"]);
@@ -50,7 +50,7 @@ Rectangle {
                 }
                 TextButton {
                     text: "Restart"
-                    iconName: "restart_alt"
+                    iconName: Icons.power.restart
                     onClicked: {
                         QsState.hideAllFlyouts();
                         Quickshell.execDetached(["hyprshutdown", "-t", "Restarting...", "--post-cmd", "systemctl reboot"]);
@@ -58,7 +58,7 @@ Rectangle {
                 }
                 TextButton {
                     text: "Sleep"
-                    iconName: "bedtime"
+                    iconName: Icons.power.sleep
                     onClicked: {
                         QsState.hideAllFlyouts();
                         Quickshell.execDetached(["systemctl", "suspend"]);
@@ -66,7 +66,7 @@ Rectangle {
                 }
                 TextButton {
                     text: "Lock"
-                    iconName: "lock"
+                    iconName: Icons.power.lock
                     onClicked: {
                         QsState.hideAllFlyouts();
                         lockTimer.start();

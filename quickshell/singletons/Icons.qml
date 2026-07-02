@@ -149,7 +149,13 @@ QtObject {
             light: "light_mode",
             dark: "dark_mode"
         })
-    property var power: "power_settings_new"
+    property var power: ({
+            onOff: "power_settings_new",
+            shutDown: "power_settings_new",
+            restart: "restart_alt",
+            sleep: "bedtime",
+            lock: "lock"
+        })
     property var powerProfiles: ["energy_savings_leaf", "balance", "rocket_launch"]
     property var devices: {
         "ac-adapter": "power",
@@ -179,6 +185,7 @@ QtObject {
         "drive-optical": "hard_disk",
         "drive-removable-media": "hard_drive",
         "ebook-reader": "tablet_android",
+        "earbud": "earbud_left",
         "input-dialpad": "dialpad",
         "input-touchpad": "trackpad_input",
         "input-gaming": "sports_esports",

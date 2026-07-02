@@ -29,6 +29,7 @@ Rectangle {
                 required property var modelData
                 property bool isActive: modelData == (Hyprland.focusedWorkspace?.id ?? -1)
                 property bool exists: Helpers.getWorkspaceExists(Hyprland.workspaces, modelData)
+
                 width: 16
                 height: 16
                 radius: Infinity

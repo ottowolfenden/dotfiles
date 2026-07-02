@@ -39,7 +39,7 @@ Rectangle {
         let btDevice = Helpers.sinkToBtDevice(sink);
         if (btDevice)
             return {
-                icon: isEarbud(btDevice) ? "earbud_left" : Icons.devices[btDevice.icon] ?? Icons.devices["bluetooth"],
+                icon: isEarbud(btDevice) ? Icons.devices["earbud"] : Icons.devices[btDevice.icon] ?? Icons.devices["bluetooth"],
                 name: btDevice.name
             };
 
