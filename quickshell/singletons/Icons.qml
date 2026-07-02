@@ -3,6 +3,9 @@ import QtQuick
 import Quickshell.Networking
 
 QtObject {
+    property string forward: "chevron_forward"
+    property string backward: "chevron_backward"
+    property string tick: "check"
     property var battery: [
         {
             max: 10,
@@ -212,4 +215,10 @@ QtObject {
         "video-joined-displays": "tv_displays",
         "video-single-display": "monitor"
     }
+    property var media: ({
+            play: "play_arrow",
+            pause: "pause",
+            skip: "skip_next",
+            skipBack: "skip_previous"
+        })
 }

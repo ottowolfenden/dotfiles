@@ -40,7 +40,7 @@ Rectangle {
 
     Process {
         id: timeProc
-        command: ["date", "+%I:%M-%a %d %b"]
+        command: ["date", "+%I:%M-%a %-d %b"]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {

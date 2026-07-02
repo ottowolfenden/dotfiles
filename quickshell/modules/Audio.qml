@@ -16,10 +16,12 @@ Rectangle {
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
     Layout.preferredHeight: Config.componentHeight
 
-    Cutout {}
-
     readonly property var sink: Pipewire.defaultAudioSink
+    readonly property int percent: Math.round(sink?.audio.volume * 100)
     property var players: Mpris.players.values ?? []
+
+    property var isEarbud: btDevice => Config.earbudSubstrings.some(s => btDevice.name.toLowerCase().includes(s) || btDevice.deviceName.toLowerCase().includes(s))
+
     function orderPlayers() {
         if (!Mpris.players)
             return [];
@@ -27,7 +29,33 @@ Rectangle {
         let pausedPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Paused);
         audio.players = playingPlayers.concat(pausedPlayers);
     }
-    readonly property int percent: Math.round(sink?.audio.volume * 100)
+
+    function getSinkDetails(sink) {
+        let unknown = {
+            icon: Icons.devices["computer"],
+            name: "Laptop"
+        };
+
+        let btDevice = Helpers.sinkToBtDevice(sink);
+        if (btDevice)
+            return {
+                icon: isEarbud(btDevice) ? "earbud_left" : Icons.devices[btDevice.icon] ?? Icons.devices["bluetooth"],
+                name: btDevice.name
+            };
+
+        if (!sink?.properties)
+            return unknown;
+        let sinkIcon = sink.properties["device.icon_name"] || sink.properties["device.icon-name"];
+        let sinkName = sink.nickname != "" && sink.nickname ? sink.nickname : sink.description;
+        if (sinkIcon)
+            return {
+                icon: Icons.devices[sinkIcon] ?? Icons.devices["computer"],
+                name: sinkName && !["", "Speaker"].includes(sinkName) ? sinkName : "Laptop"
+            };
+        return unknown;
+    }
+
+    Cutout {}
 
     RowLayout {
         id: container
@@ -77,6 +105,8 @@ Rectangle {
             else if (wheel.angleDelta.y < 0)
                 audio.sink.audio.volume = Helpers.clamp(audio.sink.audio.volume - 0.02, 0, 1);
         }
+
+        onMiddleClicked: audio.sink.audio.muted = !audio.sink.audio.muted
     }
 
     Flyout {
@@ -108,7 +138,7 @@ Rectangle {
                     RowLayout {
                         id: mediaContainer
                         IconButton {
-                            iconName: "chevron_backward"
+                            iconName: Icons.backward
                             buttonPixelSize: 23
                             onClicked: list.decrementCurrentIndex()
                             disabled: list.currentIndex == 0
@@ -184,21 +214,23 @@ Rectangle {
                                         Layout.alignment: Qt.AlignHCenter
 
                                         IconButton {
-                                            iconName: "skip_previous"
+                                            iconName: Icons.media.skipBack
                                             disabled: !item.modelData.canGoPrevious && !visibilityTimer.running
+                                            buttonPixelSize: Config.circleButtonDiameter * 0.9
                                             onClicked: {
                                                 if (!disabled)
                                                     item.modelData.previous();
                                             }
                                         }
                                         IconButton {
-                                            iconName: item.modelData.isPlaying || visibilityTimer.running ? "pause" : "play_arrow"
-                                            buttonPixelSize: Config.circleButtonDiameter * 1.3
+                                            iconName: Icons.media[item.modelData.isPlaying || visibilityTimer.running ? "pause" : "play"]
+                                            buttonPixelSize: Config.circleButtonDiameter * 1.2
                                             onClicked: item.modelData.togglePlaying()
                                         }
                                         IconButton {
-                                            iconName: "skip_next"
+                                            iconName: Icons.media.skip
                                             disabled: !item.modelData.canGoNext && !visibilityTimer.running
+                                            buttonPixelSize: Config.circleButtonDiameter * 0.9
                                             onClicked: {
                                                 if (!disabled)
                                                     item.modelData.next();
@@ -216,7 +248,7 @@ Rectangle {
                             }
                         }
                         IconButton {
-                            iconName: "chevron_forward"
+                            iconName: Icons.forward
                             buttonPixelSize: 23
                             onClicked: list.incrementCurrentIndex()
                             disabled: list.currentIndex == list.count - 1
@@ -289,7 +321,7 @@ Rectangle {
                                     anchors.leftMargin: Config.spacing / 2
                                     anchors.rightMargin: Config.spacing / 2
                                     Icon {
-                                        iconName: node.isActive ? "check" : audio.getSinkDetails(node.modelData).icon
+                                        iconName: node.isActive ? Icons.tick : audio.getSinkDetails(node.modelData).icon
                                         colour: node.colour
                                         Layout.leftMargin: Config.spacing / 2
                                     }
@@ -335,31 +367,4 @@ Rectangle {
             }
         }
     }
-
-    function getSinkDetails(sink) {
-        let unknown = {
-            icon: Icons.devices["computer"],
-            name: "Laptop"
-        };
-
-        let btDevice = Helpers.sinkToBtDevice(sink);
-        if (btDevice)
-            return {
-                icon: isEarbud(btDevice) ? "earbud_left" : Icons.devices[btDevice.icon] ?? Icons.devices["bluetooth"],
-                name: btDevice.name
-            };
-
-        if (!sink?.properties)
-            return unknown;
-        let sinkIcon = sink.properties["device.icon_name"] || sink.properties["device.icon-name"];
-        let sinkName = sink.nickname != "" && sink.nickname ? sink.nickname : sink.description;
-        if (sinkIcon)
-            return {
-                icon: Icons.devices[sinkIcon] ?? Icons.devices["computer"],
-                name: sinkName && !["", "Speaker"].includes(sinkName) ? sinkName : "Laptop"
-            };
-        return unknown;
-    }
-
-    property var isEarbud: btDevice => Config.earbudSubstrings.some(s => btDevice.name.toLowerCase().includes(s) || btDevice.deviceName.toLowerCase().includes(s))
 }
