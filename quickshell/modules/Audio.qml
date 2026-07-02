@@ -3,7 +3,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import Quickshell
-import Quickshell.Bluetooth
 import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
 import ".."
@@ -22,9 +21,9 @@ Rectangle {
 
     property var isEarbud: btDevice => Config.earbudSubstrings.some(s => btDevice.name.toLowerCase().includes(s) || btDevice.deviceName.toLowerCase().includes(s))
 
-    function orderPlayers() {
+    function filterPlayers() {
         if (!Mpris.players)
-            return [];
+            return;
         let playingPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Playing);
         let pausedPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Paused);
         audio.players = playingPlayers.concat(pausedPlayers);
@@ -109,16 +108,25 @@ Rectangle {
         onMiddleClicked: audio.sink.audio.muted = !audio.sink.audio.muted
     }
 
+    Timer {
+        id: refilterPlayersTimer
+        interval: 1000
+        running: false
+        repeat: false
+        onTriggered: audio.filterPlayers()
+    }
+
     Flyout {
         id: volumeFlyout
         parentX: audio.x
         rectWidth: pane.implicitWidth
         rectHeight: pane.implicitHeight
         onOpened: {
-            audio.orderPlayers();
+            audio.filterPlayers();
             list.highlightMoveDuration = 0;
             list.currentIndex = 0;
             list.highlightMoveDuration = Config.listAnimationDuration;
+            refilterPlayersTimer.restart();
         }
 
         Pane {
@@ -280,13 +288,13 @@ Rectangle {
                         spacing: Config.spacing
                         anchors.fill: parent
                         anchors.margins: Config.spacing
-                        property bool showHdmi: false
+                        property bool showHdmi: true
 
                         Repeater {
                             id: repeater
                             model: {
                                 let containsHdmi = pwNode => pwNode.name.concat(pwNode.description).toLowerCase().includes("hdmi");
-                                let filtered = Pipewire.nodes.values.filter(n => n.audio && !n.isStream && n.isSink && (sinkSelection.showHdmi || !containsHdmi(n)));
+                                let filtered = Pipewire.nodes.values.filter(n => n.audio && n.audio.volume != null && !n.isStream && n.isSink && (sinkSelection.showHdmi || !containsHdmi(n)));
                                 filtered.sort((a, b) => audio.getSinkDetails(a).name > audio.getSinkDetails(b).name ? 1 : -1);
                                 let target = filtered.find(n => n.name == Config.mainPwNodeName);
                                 if (!target)
@@ -340,6 +348,7 @@ Rectangle {
                                     }
                                     Text {
                                         text: Math.round(node.modelData.audio.volume * 100) + "%"
+                                        font.strikeout: node.modelData.audio.muted
                                         font.family: Config.fontFamily
                                         font.pixelSize: Config.smallFontSize
                                         color: node.colour
