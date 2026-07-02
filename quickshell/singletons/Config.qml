@@ -17,6 +17,7 @@ QtObject {
     property int animationDuration: 200
     property int listAnimationDuration: 150
     property int circleButtonDiameter: 33
+    property var easing: Easing.OutQuart
     property var colours: QsState.darkMode ? {
         bg1: "#000000",
         bg2: "#0fffffff",

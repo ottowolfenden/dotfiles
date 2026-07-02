@@ -41,6 +41,7 @@ PanelWindow {
         height: flyout.rectHeight
         x: Helpers.clamp(flyout.parentX - rect.width / 2, 0, flyout.width - rect.width)
         y: flyout.isOpen ? 0 : -height
+        clip: true
 
         ShapePath {
             fillColor: Config.colours.bg1
@@ -82,7 +83,14 @@ PanelWindow {
         Behavior on y {
             NumberAnimation {
                 duration: Config.animationDuration
-                easing: Easing.OutQuart
+                easing: Config.easing
+            }
+        }
+
+        Behavior on height {
+            NumberAnimation {
+                duration: Config.animationDuration
+                easing: Config.easing
             }
         }
 
