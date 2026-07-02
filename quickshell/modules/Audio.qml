@@ -79,20 +79,7 @@ Rectangle {
     }
 
     PwObjectTracker {
-        objects: [Pipewire.defaultAudioSink]
-    }
-    PwObjectTracker {
-        objects: {
-            if (!Pipewire.ready || !Pipewire.nodes.values)
-                return [];
-
-            let sinkList = [];
-            for (const sink of Pipewire.nodes.values)
-                if (sink)
-                    sinkList.push(sink);
-
-            return sinkList;
-        }
+        objects: Pipewire.nodes.values
     }
 
     FlyoutMouseArea {
@@ -288,13 +275,12 @@ Rectangle {
                         spacing: Config.spacing
                         anchors.fill: parent
                         anchors.margins: Config.spacing
-                        property bool showHdmi: true
 
                         Repeater {
                             id: repeater
                             model: {
                                 let containsHdmi = pwNode => pwNode.name.concat(pwNode.description).toLowerCase().includes("hdmi");
-                                let filtered = Pipewire.nodes.values.filter(n => n.audio && n.audio.volume != null && !n.isStream && n.isSink && (sinkSelection.showHdmi || !containsHdmi(n)));
+                                let filtered = Pipewire.nodes.values.filter(n => n.audio && n.ready && !n.isStream && n.isSink && (Config.showHdmiSinks || !containsHdmi(n)));
                                 filtered.sort((a, b) => audio.getSinkDetails(a).name > audio.getSinkDetails(b).name ? 1 : -1);
                                 let target = filtered.find(n => n.name == Config.mainPwNodeName);
                                 if (!target)
