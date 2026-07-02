@@ -62,7 +62,7 @@ QtObject {
     }
     property var playerRequirements: ["canPlay", "canPause", "canControl", "canTogglePlaying"]
     property var playerIdentityNames: {
-        "com.github.th_ch.youtube_music": "YouTube Music"
+        "com.github.th-ch.youtube-music": "YouTube Music"
     }
     property var earbudSubstrings: ["bud", "airpod", " ear", "tws"]
     property var mainPwNodeName: "alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__Speaker__sink"
