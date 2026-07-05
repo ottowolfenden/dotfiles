@@ -1,7 +1,9 @@
+local gaps = 4
+
 hl.config({
     general = {
-        gaps_in = 4,
-        gaps_out = 4 * 2,
+        gaps_in = gaps,
+        gaps_out = { top = gaps * 2 + 2, left = gaps * 2, bottom = gaps * 2, right = gaps * 2 },
         border_size = 0,
         layout = "dwindle"
     },
