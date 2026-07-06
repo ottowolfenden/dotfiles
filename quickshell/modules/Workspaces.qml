@@ -26,7 +26,7 @@ Rectangle {
 
             delegate: Rectangle {
                 id: circle
-                required property var modelData
+                required property int modelData
                 property bool isActive: modelData == (Hyprland.focusedWorkspace?.id ?? -1)
                 property bool exists: Helpers.getWorkspaceExists(Hyprland.workspaces, modelData)
 

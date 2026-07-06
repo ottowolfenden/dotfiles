@@ -3,12 +3,13 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import ".."
+import "../components"
 
 QtObject {
     id: qsState
 
     property var darkMode: null
-    property var darkModeProcess: Process {
+    property Process darkModeProcess: Process {
         command: "gsettings get org.gnome.desktop.interface color-scheme".split(" ")
         running: true
         stdout: StdioCollector {
@@ -16,8 +17,8 @@ QtObject {
         }
     }
 
-    property var flyouts: []
-    property var flyoutsHandler: IpcHandler {
+    property list<Flyout> flyouts: []
+    property IpcHandler flyoutsHandler: IpcHandler {
         target: "flyoutsHandler"
         function hideNonHoveredFlyouts() {
             for (const flyout of qsState.flyouts)
@@ -52,7 +53,7 @@ QtObject {
     }
 
     property string dailyWallpaperPath
-    property var dailyWallpaperProcess: Process {
+    property Process dailyWallpaperProcess: Process {
         command: [Config.scriptsDir + "daily-wallpaper.sh", qsState.darkMode ? "dark" : "light"]
         running: qsState.darkMode != null
         stdout: StdioCollector {
@@ -62,7 +63,7 @@ QtObject {
             }
         }
     }
-    property var dailyWallpaperTimer: Timer {
+    property Timer dailyWallpaperTimer: Timer {
         running: true
         interval: new Date(new Date().setHours(24, 0, 0, 0)) - new Date()
         onTriggered: {
@@ -71,7 +72,7 @@ QtObject {
             restart();
         }
     }
-    property var dailyWallpaperHandler: IpcHandler {
+    property IpcHandler dailyWallpaperHandler: IpcHandler {
         target: "dailyWallpaperHandler"
         function refresh() {
             qsState.dailyWallpaperProcess.running = true;

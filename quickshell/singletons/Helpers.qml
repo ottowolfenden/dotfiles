@@ -3,7 +3,7 @@ import QtQuick
 import Quickshell.Bluetooth
 
 QtObject {
-    function getWorkspaceExists(workspaces, id) {
+    function getWorkspaceExists(workspaces: var, id: int): bool {
         if (workspaces && workspaces.values)
             for (var i = 0; i < workspaces.values.length; i++)
                 if (workspaces.values[i] && workspaces.values[i].id == id)
@@ -11,16 +11,18 @@ QtObject {
         return false;
     }
 
-    function getRelevantWorkspaceIds(workspaces) {
+    function getRelevantWorkspaceIds(workspaces: var): list<int> {
         var ids = workspaces.values.map(value => value.id);
         return Array.from({
             length: Math.max(...ids)
         }, (_, i) => i + 1);
     }
 
-    property var clamp: (num, min, max) => Math.min(Math.max(num, min), max)
+    function clamp(num: real, min: real, max: real): real {
+        return Math.min(Math.max(num, min), max);
+    }
 
-    function secsToHrsMins(secs) {
+    function secsToHrsMins(secs: real): string {
         secs = Math.round(secs);
 
         if (secs <= 0)
@@ -41,7 +43,7 @@ QtObject {
         return `${hrs} ${hrsLabel} ${minsLeft} ${minsLabel}`;
     }
 
-    function sinkToBtDevice(sink) {
+    function sinkToBtDevice(sink: var): BluetoothDevice {
         if (!sink || !sink.properties)
             return null;
 

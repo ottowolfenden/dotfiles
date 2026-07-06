@@ -15,21 +15,21 @@ Rectangle {
     implicitWidth: container.implicitWidth + (Config.spacing * 2)
     Layout.preferredHeight: Config.componentHeight
 
-    readonly property var sink: Pipewire.defaultAudioSink
+    readonly property PwNode sink: Pipewire.defaultAudioSink
     readonly property int percent: Math.round(sink?.audio.volume * 100)
-    property var players: Mpris.players.values ?? []
+    property list<MprisPlayer> players: Mpris.players.values ?? []
 
-    property var isEarbud: btDevice => Config.earbudSubstrings.some(s => btDevice.name.toLowerCase().includes(s) || btDevice.deviceName.toLowerCase().includes(s))
-
-    function filterPlayers() {
+    function isEarbud(btDevice: string): bool {
+        return btDevice => Config.earbudSubstrings.some(s => btDevice.name.toLowerCase().includes(s) || btDevice.deviceName.toLowerCase().includes(s));
+    }
+    function filterPlayers(): void {
         if (!Mpris.players)
             return;
         let playingPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Playing);
         let pausedPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Paused);
         audio.players = playingPlayers.concat(pausedPlayers);
     }
-
-    function getSinkDetails(sink) {
+    function getSinkDetails(sink: PwNode): var {
         let unknown = {
             icon: Icons.devices["computer"],
             name: "Laptop"
@@ -164,7 +164,7 @@ Rectangle {
                                 model: audio.players
                                 delegate: ColumnLayout {
                                     id: item
-                                    required property var modelData
+                                    required property MprisPlayer modelData
                                     spacing: Config.spacing
 
                                     Text {
@@ -291,7 +291,7 @@ Rectangle {
 
                             delegate: Rectangle {
                                 id: node
-                                required property var modelData
+                                required property PwNode modelData
                                 property bool isActive: node.modelData == audio.sink
                                 property string colour: isActive ? Config.colours.lightblue : Config.colours.fg1
                                 radius: Config.radius

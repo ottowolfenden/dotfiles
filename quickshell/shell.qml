@@ -99,10 +99,10 @@ Scope {
     ShellRoot {
         Connections {
             target: Quickshell
-            function onReloadCompleted() {
+            function onReloadCompleted(): void {
                 Quickshell.inhibitReloadPopup();
             }
-            function onReloadFailed(error) {
+            function onReloadFailed(error): void {
                 Quickshell.inhibitReloadPopup();
             }
         }

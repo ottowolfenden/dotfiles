@@ -5,7 +5,7 @@ import ".."
 Button {
     id: button
     property string iconName
-    property var radius: Infinity
+    property real radius: Infinity
     property int buttonPixelSize: Config.circleButtonDiameter
     property int iconPixelSize: buttonPixelSize * 0.65
     property bool disabled: false

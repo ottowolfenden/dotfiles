@@ -48,7 +48,7 @@ Item {
         maskSource: maskShape
     }
 
-    function updateCoords() {
+    function updateCoords(): void {
         wallpaperImage.x = -root.parent.mapToItem(root.parent.Window.contentItem, 0, 0).x;
         wallpaperImage.y = -root.parent.mapToItem(root.parent.Window.contentItem, 0, 0).y;
     }

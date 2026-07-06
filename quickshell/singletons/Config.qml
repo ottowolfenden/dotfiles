@@ -3,23 +3,23 @@ import QtQuick
 import ".."
 
 QtObject {
-    property int spacing: 8
-    property int iconTextSpacing: 4
-    property int componentHeight: 30
-    property int barHeight: componentHeight + spacing * 2
-    property int fontSize: 15
-    property int smallFontSize: 13
-    property int radius: 7
-    property int blurRadius: 70
-    property string fontFamily: "Google Sans Flex"
-    property var vpnIdentifiers: ["vpn", "wireguard", "proton"]
-    property var devicesToAutoconnect: ["B0:F0:0C:07:BC:07", "AC:3E:B1:62:43:27"]
-    property int animationDuration: 200
-    property int listAnimationDuration: 150
-    property int circleButtonDiameter: 33
-    property var easing: Easing.OutQuart
-    property bool showHdmiSinks: false
-    property var colours: QsState.darkMode ? {
+    readonly property int spacing: 8
+    readonly property int iconTextSpacing: 4
+    readonly property int componentHeight: 30
+    readonly property int barHeight: componentHeight + spacing * 2
+    readonly property int fontSize: 15
+    readonly property int smallFontSize: 13
+    readonly property int radius: 7
+    readonly property int blurRadius: 70
+    readonly property string fontFamily: "Google Sans Flex"
+    readonly property list<string> vpnIdentifiers: ["vpn", "wireguard", "proton"]
+    readonly property list<string> devicesToAutoconnect: ["B0:F0:0C:07:BC:07", "AC:3E:B1:62:43:27"]
+    readonly property int animationDuration: 200
+    readonly property int listAnimationDuration: 150
+    readonly property int circleButtonDiameter: 33
+    readonly property int easing: Easing.OutQuart
+    readonly property bool showHdmiSinks: false
+    readonly property var colours: QsState.darkMode ? {
         bg1: "#000000",
         bg2: "#0fffffff",
         fg1: "#d8ffffff",
@@ -60,11 +60,11 @@ QtObject {
         purple: "#7248b9",
         pink: "#ff80ab"
     }
-    property var playerRequirements: ["canPlay", "canPause", "canControl", "canTogglePlaying"]
-    property var playerIdentityNames: {
+    readonly property list<string> playerRequirements: ["canPlay", "canPause", "canControl", "canTogglePlaying"]
+    readonly property var playerIdentityNames: {
         "com.github.th-ch.youtube-music": "YouTube Music"
     }
-    property var earbudSubstrings: ["bud", "airpod", " ear", "tws"]
-    property var mainPwNodeName: "alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__Speaker__sink"
-    property string scriptsDir: "/home/otto/dotfiles/scripts/"
+    readonly property list<string> earbudSubstrings: ["bud", "airpod", " ear", "tws"]
+    readonly property string mainPwNodeName: "alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__Speaker__sink"
+    readonly property string scriptsDir: "/home/otto/dotfiles/scripts/"
 }

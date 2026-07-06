@@ -8,7 +8,7 @@ import "../components"
 
 Rectangle {
     id: toggleGroup
-    required property var icons
+    required property list<string> icons
     property var onClickedCommands
     property Timer checkTimer
     property bool ignoreUpdates: false
