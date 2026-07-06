@@ -24,7 +24,7 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
         onClicked: {
             QsState.darkMode = !QsState.darkMode;
-            Quickshell.execDetached([Quickshell.shellDir + "/scripts/set-theme.sh", QsState.darkMode ? "dark" : "light"]);
+            Quickshell.execDetached([Config.scriptsDir + "set-theme.sh", QsState.darkMode ? "dark" : "light"]);
         }
     }
 }

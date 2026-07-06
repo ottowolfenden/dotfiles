@@ -2,19 +2,17 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import ".."
 
 QtObject {
     id: qsState
 
-    property bool darkMode: true
+    property var darkMode: null
     property var darkModeProcess: Process {
         command: "gsettings get org.gnome.desktop.interface color-scheme".split(" ")
         running: true
         stdout: StdioCollector {
-            onStreamFinished: {
-                qsState.darkMode = text.trim() == "'prefer-dark'";
-                qsState.dailyWallpaperProcess.running = true;
-            }
+            onStreamFinished: qsState.darkMode = text.trim() == "'prefer-dark'"
         }
     }
 
@@ -55,8 +53,8 @@ QtObject {
 
     property string dailyWallpaperPath
     property var dailyWallpaperProcess: Process {
-        command: ["/home/otto/dotfiles/scripts/daily-wallpaper.sh", qsState.darkMode ? "dark" : "light"]
-        running: true
+        command: [Config.scriptsDir + "daily-wallpaper.sh", qsState.darkMode ? "dark" : "light"]
+        running: qsState.darkMode != null
         stdout: StdioCollector {
             onStreamFinished: {
                 qsState.dailyWallpaperPath = text.trim();

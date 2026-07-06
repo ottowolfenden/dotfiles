@@ -66,4 +66,5 @@ QtObject {
     }
     property var earbudSubstrings: ["bud", "airpod", " ear", "tws"]
     property var mainPwNodeName: "alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__Speaker__sink"
+    property string scriptsDir: "/home/otto/dotfiles/scripts/"
 }
