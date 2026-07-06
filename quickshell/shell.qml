@@ -3,7 +3,9 @@ import Quickshell
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Shapes
-import "./modules"
+import Quickshell.Services.Pipewire
+import "modules"
+import "components"
 
 Scope {
     PanelWindow {
@@ -15,6 +17,18 @@ Scope {
             left: true
         }
         exclusiveZone: Config.barHeight - 1
+
+        OverlayPopup {
+            Slider {
+                Layout.preferredWidth: 250
+                Layout.preferredHeight: 45
+                Layout.alignment: Qt.AlignHCenter
+
+                value: Pipewire.defaultAudioSink?.audio?.volume ?? 0
+                onChanged: newValue => Pipewire.defaultAudioSink.audio.volume = newValue
+                iconName: Icons.volume?.find(i => i.muted == Pipewire.defaultAudioSink?.audio?.muted || Math.round(Pipewire.defaultAudioSink?.audio.volume * 100) <= i.max)?.icon
+            }
+        }
 
         Pane {
             id: pane
