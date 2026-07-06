@@ -12,6 +12,7 @@ source $ZSH/oh-my-zsh.sh
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 autoload -Uz tetriscurses
+
 brightness-rename() {
     for img in *.(jpg|jpeg|png|webp)(N); do
         if [[ $img =~ '^[0-9]{5}\.' ]]; then
@@ -24,7 +25,7 @@ brightness-rename() {
 }
 
 restart() {
-    killall $1; $1 & disown
+    killall $1; $1
 }
 
 alias tetris=tetriscurses
