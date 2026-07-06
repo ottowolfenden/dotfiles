@@ -19,8 +19,8 @@ Rectangle {
     readonly property int percent: Math.round(sink?.audio.volume * 100)
     property list<MprisPlayer> players: Mpris.players.values ?? []
 
-    function isEarbud(btDevice: string): bool {
-        return btDevice => Config.earbudSubstrings.some(s => btDevice.name.toLowerCase().includes(s) || btDevice.deviceName.toLowerCase().includes(s));
+    function isEarbud(btDevice: var): bool {
+        return Config.earbudSubstrings.some(s => btDevice.name.toLowerCase().includes(s) || btDevice.deviceName.toLowerCase().includes(s));
     }
     function filterPlayers(): void {
         if (!Mpris.players)
