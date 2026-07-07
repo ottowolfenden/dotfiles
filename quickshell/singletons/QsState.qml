@@ -44,11 +44,13 @@ QtObject {
     property IpcHandler bafsHandler: IpcHandler {
         target: "bafsHandler"
         function showBaf(type: string): void {
-            for (const baf of qsState.bafs)
+            for (const baf of qsState.bafs) {
                 if (baf.type == type) {
                     baf.isOpen = true;
                     baf.autoHideTimer.restart();
-                }
+                } else
+                    baf.isOpen = false;
+            }
             Quickshell.execDetached(Config.hyprlandCommands[qsState.bafs.some(b => b.isOpen) ? "bafOpen" : "reset"]);
         }
         function hideAllBafs(): void {
@@ -65,7 +67,7 @@ QtObject {
             return;
         }
         baf.isOpen = false;
-        if (!qsState.flyouts.some(f => f.isOpen))
+        if (![...qsState.flyouts, ...qsState.bafs].some(f => f.isOpen))
             Quickshell.execDetached(Config.hyprlandCommands.reset);
     }
 

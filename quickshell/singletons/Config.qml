@@ -26,7 +26,7 @@ QtObject {
     readonly property int sliderHeight: 45
     readonly property var colours: QsState.darkMode ? {
         bg1: "#000000",
-        bg2: "#0fffffff",
+        bg2: "#18ffffff",
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
         fg3: "#15ffffff",
@@ -46,12 +46,12 @@ QtObject {
         pink: "#ff9cac"
     } : {
         bg1: "#ffffff",
-        bg2: "#06000000",
+        bg2: "#09000000",
         fg1: '#d8000000',
         fg2: "#55000000",
         fg3: "#15000000",
         invfg: "#ffffff",
-        cutoutBg: "#c0f8f8f8",
+        cutoutBg: "#cff8f8f8",
         buttonInactiveBg: "#0a000000",
         buttonHoveredBg: "#12000000",
         buttonPressedBg: "#1e000000",
