@@ -43,17 +43,29 @@ hl.bind("SUPER + mouse_down", function()
 end)
 
 
-hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }), { repeating = true })
 hl.bind("SUPER + CTRL + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }), { repeating = true })
-hl.bind("SUPER + CTRL + SHIFT + right", hl.dsp.window.move({ workspace = "r+1" }))
-hl.bind("SUPER + CTRL + SHIFT + left", hl.dsp.window.move({ workspace = "r-1" }))
-hl.bind("SUPER + SHIFT + right", hl.dsp.window.move({ workspace = "r+1" }))
-hl.bind("SUPER + SHIFT + left", hl.dsp.window.move({ workspace = "r-1" }))
+hl.bind("SUPER + CTRL + SHIFT + left", hl.dsp.window.move({ workspace = "r-1" }), { repeating = true })
+hl.bind("SUPER + CTRL + right", function()
+        if hl.get_active_workspace().id < 9 then
+            hl.dispatch(hl.dsp.focus({ workspace = "r+1" }))
+        end
+    end,
+    { repeating = true }
+)
+hl.bind("SUPER + CTRL + SHIFT + right", function()
+        if hl.get_active_workspace().id < 9 then
+            hl.dispatch(hl.dsp.window.move({ workspace = "r+1" }))
+        end
+    end,
+    { repeating = true }
+)
+hl.bind("SUPER + SHIFT + right", hl.dsp.window.swap({ direction = "right" }))
+hl.bind("SUPER + SHIFT + left", hl.dsp.window.swap({ direction = "left" }))
 hl.bind("SUPER + N", hl.dsp.focus({ workspace = "emptynm" }))
 hl.bind("SUPER + SHIFT + N", hl.dsp.window.move({ workspace = "emptynm" }))
 hl.bind("SUPER + mouse:276", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
 hl.bind("SUPER + mouse:275", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }))
-for i = 1, 10 do
+for i = 1, 9 do
     local key = i % 10
     hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
     hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
@@ -93,7 +105,7 @@ hl.bind("SUPER + space", hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.
 
 local inputsToHideQsFlyouts = { "mouse:272", "mouse:273", "mouse:274" }
 for _, input in ipairs(inputsToHideQsFlyouts) do
-    local pos = hl.get_active_monitor().position.y
+    local pos = hl.get_monitor_at_cursor().position.y
     local barHeight = 44
     hl.bind(input, function()
         if hl.get_cursor_pos().y - pos > barHeight then
