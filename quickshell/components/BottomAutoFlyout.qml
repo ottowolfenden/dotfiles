@@ -3,6 +3,7 @@ import QtQuick.Shapes
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Wayland
 import ".."
 
 PanelWindow {
@@ -27,6 +28,8 @@ PanelWindow {
     mask: Region {
         item: rect
     }
+    WlrLayershell.namespace: "quickshell-baf"
+    WlrLayershell.layer: WlrLayer.Overlay
 
     Shape {
         id: rect

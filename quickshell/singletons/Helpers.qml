@@ -1,7 +1,6 @@
 pragma Singleton
 import QtQuick
 import Quickshell.Bluetooth
-import ".."
 
 QtObject {
     function getWorkspaceExists(workspaces: var, id: int): bool {
