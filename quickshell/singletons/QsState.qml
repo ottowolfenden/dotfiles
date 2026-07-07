@@ -24,7 +24,7 @@ QtObject {
             for (const flyout of qsState.flyouts)
                 if (!flyout.hovering)
                     flyout.isOpen = false;
-            if (![...qsState.flyouts, ...qsState.bafs].some(x => x.hovering))
+            if (![...qsState.flyouts, ...qsState.bafs].some(x => x.hovering || x.isOpen))
                 Quickshell.execDetached(Config.hyprlandCommands.reset);
         }
     }
@@ -57,7 +57,7 @@ QtObject {
             for (const baf of qsState.bafs)
                 if (!baf.hovering)
                     baf.isOpen = false;
-            if (![...qsState.flyouts, ...qsState.bafs].some(x => x.hovering))
+            if (![...qsState.flyouts, ...qsState.bafs].some(x => x.hovering || x.isOpen))
                 Quickshell.execDetached(Config.hyprlandCommands.reset);
         }
     }

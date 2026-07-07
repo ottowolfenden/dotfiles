@@ -91,12 +91,12 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tru
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 hl.bind("SUPER + space", hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.sh"), { locked = true })
 
-
 local inputsToHideQsFlyouts = { "mouse:272", "mouse:273", "mouse:274" }
 for _, input in ipairs(inputsToHideQsFlyouts) do
+    local pos = hl.get_active_monitor().position.y
     local barHeight = 44
     hl.bind(input, function()
-        if hl.get_cursor_pos().y > barHeight then
+        if hl.get_cursor_pos().y - pos > barHeight then
             hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideNonHoveredFlyouts"))
         end
         hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler hideAllBafs"))
