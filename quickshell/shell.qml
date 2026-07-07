@@ -3,9 +3,10 @@ import Quickshell
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Shapes
-import Quickshell.Services.Pipewire
+// import Quickshell.Services.Pipewire
 import "modules"
-import "components"
+
+// import "components"
 
 Scope {
     PanelWindow {
@@ -17,19 +18,6 @@ Scope {
             left: true
         }
         exclusiveZone: Config.barHeight - 1
-
-        BottomAutoFlyout {
-            type: "volume"
-            Slider {
-                Layout.preferredWidth: 250
-                Layout.preferredHeight: 45
-                Layout.alignment: Qt.AlignHCenter
-
-                value: Pipewire.defaultAudioSink?.audio?.volume ?? 0
-                onChanged: newValue => Pipewire.defaultAudioSink.audio.volume = newValue
-                iconName: Icons.volume?.find(i => i.muted == Pipewire.defaultAudioSink?.audio?.muted || Math.round(Pipewire.defaultAudioSink?.audio.volume * 100) <= i.max)?.icon
-            }
-        }
 
         Pane {
             id: pane
@@ -109,6 +97,8 @@ Scope {
                 Power {}
             }
         }
+
+        BottomAutoFlyouts {}
     }
 
     ShellRoot {

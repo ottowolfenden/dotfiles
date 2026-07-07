@@ -228,4 +228,18 @@ QtObject {
             skip: "skip_next",
             skipBack: "skip_previous"
         })
+    property var brightness: [
+        {
+            max: 20,
+            icon: "brightness_5"
+        },
+        {
+            max: 80,
+            icon: "brightness_6"
+        },
+        {
+            max: 100,
+            icon: "brightness_7"
+        },
+    ]
 }

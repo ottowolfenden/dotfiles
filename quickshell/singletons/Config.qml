@@ -20,6 +20,8 @@ QtObject {
     readonly property int easing: Easing.OutCubic
     readonly property bool showHdmiSinks: false
     readonly property int bafMsDelay: 1500
+    readonly property int brightnessExpPower: 4
+    readonly property int minBrightness: 4
     readonly property var colours: QsState.darkMode ? {
         bg1: "#000000",
         bg2: "#0fffffff",

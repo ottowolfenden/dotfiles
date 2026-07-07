@@ -81,9 +81,10 @@ hl.bind("SUPER + T", hl.dsp.exec_cmd("thunar"))
 hl.bind("SUPER + SHIFT + T", hl.dsp.exec_cmd("thunar", { float = true }))
 hl.bind("CTRL + SHIFT + Escape", hl.dsp.exec_cmd("pkill btop || kitty --class btop -e btop"))
 
-
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), { locked = true, repeating = true })
+hl.bind("XF86AudioMicMute",
+    hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
+    { locked = true, repeating = true }
+)
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
@@ -120,7 +121,13 @@ hl.bind("XF86AudioMute", function()
     end,
     { locked = true, repeating = true }
 )
-hl.bind("XF86AudioMicMute",
-    hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
-    { locked = true, repeating = true }
-)
+hl.bind("XF86MonBrightnessUp", function()
+        hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler showBaf brightness"))
+        hl.dispatch(hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"))
+    end,
+    { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", function()
+        hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler showBaf brightness"))
+        hl.dispatch(hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"))
+    end,
+    { locked = true, repeating = true })
