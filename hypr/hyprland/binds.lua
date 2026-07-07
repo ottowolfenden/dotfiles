@@ -121,13 +121,9 @@ hl.bind("XF86AudioMute", function()
     end,
     { locked = true, repeating = true }
 )
-hl.bind("XF86MonBrightnessUp", function()
-        hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler showBaf brightness"))
-        hl.dispatch(hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"))
-    end,
-    { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", function()
-        hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler showBaf brightness"))
-        hl.dispatch(hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"))
-    end,
-    { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("qs ipc call brightnessHandler change increase"),
+    { locked = true, repeating = true }
+)
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("qs ipc call brightnessHandler change decrease"),
+    { locked = true, repeating = true }
+)

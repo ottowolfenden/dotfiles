@@ -254,10 +254,6 @@ Rectangle {
                 }
 
                 Slider {
-                    Layout.preferredWidth: 250
-                    Layout.preferredHeight: 45
-                    Layout.alignment: Qt.AlignHCenter
-
                     value: audio.sink?.audio?.volume ?? 0
                     onChanged: newValue => audio.sink.audio.volume = newValue
                     iconName: repeater.model.length > 1 ? audio.getSinkDetails(audio.sink).icon : barIcon.iconName

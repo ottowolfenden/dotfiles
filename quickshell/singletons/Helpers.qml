@@ -60,11 +60,4 @@ QtObject {
 
         return null;
     }
-
-    function getExpBrightness(rawPercent) {
-        return Math.round(Math.pow(rawPercent / 100, 1 / Config.brightnessExpPower) * 100);
-    }
-    function getRawBrightness(expPercent) {
-        return Math.round(Math.pow(expPercent / 100, Config.brightnessExpPower) * 100);
-    }
 }

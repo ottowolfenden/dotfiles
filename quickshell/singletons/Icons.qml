@@ -230,15 +230,15 @@ QtObject {
         })
     property var brightness: [
         {
-            max: 20,
-            icon: "brightness_5"
+            max: 0.2,
+            icon: "brightness_empty"
         },
         {
-            max: 80,
+            max: 0.8,
             icon: "brightness_6"
         },
         {
-            max: 100,
+            max: 1,
             icon: "brightness_7"
         },
     ]

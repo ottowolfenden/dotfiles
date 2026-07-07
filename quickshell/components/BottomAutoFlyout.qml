@@ -27,10 +27,6 @@ PanelWindow {
     mask: Region {
         item: rect
     }
-    onHoveringChanged: {
-        if (!hovering)
-            QsState.hideBaf(this);
-    }
 
     Shape {
         id: rect

@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pipewire
@@ -11,45 +10,63 @@ Scope {
     BottomAutoFlyout {
         type: "volume"
         Slider {
-            Layout.preferredWidth: 250
-            Layout.preferredHeight: 45
-            Layout.alignment: Qt.AlignHCenter
-
             value: Pipewire.defaultAudioSink?.audio?.volume ?? 0
             onChanged: newValue => Pipewire.defaultAudioSink.audio.volume = newValue
             iconName: Icons.volume?.find(i => i.muted == Pipewire.defaultAudioSink?.audio?.muted || Math.round(Pipewire.defaultAudioSink?.audio.volume * 100) <= i.max)?.icon
         }
     }
 
-    property int percentBrightness: 0
+    property int maxBrightness: 496
+    property int brightness: 0
+    property bool increasing: false
     BottomAutoFlyout {
         type: "brightness"
         Slider {
-            Layout.preferredWidth: 250
-            Layout.preferredHeight: 45
-            Layout.alignment: Qt.AlignHCenter
+            value: root.brightness / root.maxBrightness
 
-            value: Helpers.getRawBrightness(root.percentBrightness) / 100
             onChanged: newValue => {
-                let newPercent = Helpers.getExpBrightness(newValue * 100);
-                root.percentBrightness = newPercent;
-                Quickshell.execDetached(["brightnessctl", "-e" + Config.brightnessExpPower, "-n" + Config.minBrightness, "s", newPercent + "%"]);
+                root.brightness = root.maxBrightness * newValue;
+                console.log(root.brightness);
+
+                Quickshell.execDetached(["brightnessctl", "-n" + Config.minBrightness, "s", root.brightness]);
             }
-            iconName: Icons.brightness.find(i => i.max >= root.percentBrightness).icon
+            iconName: Icons.brightness.find(i => i.max >= root.brightness / root.maxBrightness).icon
+        }
+    }
+    function setBrightness(text) {
+        const {
+            2: current,
+            4: max
+        } = text.trim().split(",");
+        root.maxBrightness = max;
+        root.brightness = (max / (max - Config.minBrightness)) * (current - Config.minBrightness);
+    }
+    Process {
+        id: getBrightnessProc
+        command: ["brightnessctl", "-m"]
+        running: true
+        stdout: StdioCollector {
+            onStreamFinished: root.setBrightness(text)
         }
     }
     Process {
-        id: brightnessProc
-        command: ["brightnessctl", "-m"]
+        id: changeBrightnessProc
+        command: ["brightnessctl", "-n" + Config.minBrightness, "-m", "s", "10%" + (root.increasing ? "+" : "-")]
         stdout: StdioCollector {
-            onStreamFinished: root.percentBrightness = Helpers.getExpBrightness(text.trim().split(",")[3].slice(0, -1))
+            onStreamFinished: root.setBrightness(text)
         }
     }
-
-    Timer {
-        interval: 100
-        running: true
-        repeat: true
-        onTriggered: brightnessProc.running = true
+    IpcHandler {
+        target: "brightnessHandler"
+        function change(type: string): void {
+            QsState.bafsHandler.showBaf("brightness");
+            if (type == "increase")
+                root.increasing = true;
+            else if (type == "decrease")
+                root.increasing = false;
+            else
+                return;
+            changeBrightnessProc.running = true;
+        }
     }
 }

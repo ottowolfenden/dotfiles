@@ -18,6 +18,10 @@ Item {
 
     signal changed(real newValue)
 
+    Layout.preferredWidth: Config.sliderWidth
+    Layout.preferredHeight: Config.sliderHeight
+    Layout.alignment: Qt.AlignHCenter
+
     RowLayout {
         id: row
         spacing: 0

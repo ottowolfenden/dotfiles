@@ -22,6 +22,8 @@ QtObject {
     readonly property int bafMsDelay: 1500
     readonly property int brightnessExpPower: 4
     readonly property int minBrightness: 4
+    readonly property int sliderWidth: 250
+    readonly property int sliderHeight: 45
     readonly property var colours: QsState.darkMode ? {
         bg1: "#000000",
         bg2: "#0fffffff",
