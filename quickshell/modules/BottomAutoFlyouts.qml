@@ -16,21 +16,17 @@ Scope {
         }
     }
 
-    property int maxBrightness: 496
     property int brightness: 0
     property bool increasing: false
     BottomAutoFlyout {
         type: "brightness"
         Slider {
-            value: root.brightness / root.maxBrightness
-
+            value: root.brightness / Config.maxBrightness
             onChanged: newValue => {
-                root.brightness = root.maxBrightness * newValue;
-                console.log(root.brightness);
-
+                root.brightness = Config.maxBrightness * newValue;
                 Quickshell.execDetached(["brightnessctl", "-n" + Config.minBrightness, "s", root.brightness]);
             }
-            iconName: Icons.brightness.find(i => i.max >= root.brightness / root.maxBrightness).icon
+            iconName: Icons.brightness.find(i => i.max >= root.brightness / Config.maxBrightness).icon
         }
     }
     function setBrightness(text) {
@@ -38,7 +34,7 @@ Scope {
             2: current,
             4: max
         } = text.trim().split(",");
-        root.maxBrightness = max;
+        Config.maxBrightness = max;
         root.brightness = (max / (max - Config.minBrightness)) * (current - Config.minBrightness);
     }
     Process {
