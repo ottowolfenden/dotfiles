@@ -17,8 +17,9 @@ QtObject {
     readonly property int animationDuration: 200
     readonly property int listAnimationDuration: 150
     readonly property int circleButtonDiameter: 33
-    readonly property int easing: Easing.OutQuart
+    readonly property int easing: Easing.OutCubic
     readonly property bool showHdmiSinks: false
+    readonly property int bafMsDelay: 1500
     readonly property var colours: QsState.darkMode ? {
         bg1: "#000000",
         bg2: "#0fffffff",
@@ -67,4 +68,24 @@ QtObject {
     readonly property list<string> earbudSubstrings: ["bud", "airpod", " ear", "tws"]
     readonly property string mainPwNodeName: "alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__Speaker__sink"
     readonly property string scriptsDir: "/home/otto/dotfiles/scripts/"
+    readonly property var hyprlandCommands: ({
+            flyoutOpen: ["hyprctl", "eval", `
+                hl.config({
+                    input = { follow_mouse = 0 },
+                    decoration = {
+                        active_opacity = 1.0 - 0.3,
+                        inactive_opacity = 0.85 - 0.3
+                    }
+                })
+            `],
+            bafOpen: ["hyprctl", "eval", `
+                hl.config({
+                    decoration = {
+                        active_opacity = 1.0 - 0.3,
+                        inactive_opacity = 0.85 - 0.3
+                    }
+                })
+            `],
+            reset: ["hyprctl", "reload"]
+        })
 }

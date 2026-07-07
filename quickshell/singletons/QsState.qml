@@ -24,32 +24,49 @@ QtObject {
             for (const flyout of qsState.flyouts)
                 if (!flyout.hovering)
                     flyout.isOpen = false;
-            if (!qsState.flyouts.some(f => f.hovering))
-                Quickshell.execDetached(["hyprctl", "reload"]);
+            if (![...qsState.flyouts, ...qsState.bafs].some(x => x.hovering))
+                Quickshell.execDetached(Config.hyprlandCommands.reset);
         }
     }
     function hideAllFlyouts() {
         for (const flyout of qsState.flyouts)
             flyout.isOpen = false;
-        Quickshell.execDetached(["hyprctl", "reload"]);
+        Quickshell.execDetached(Config.hyprlandCommands.reset);
     }
     function hideAllFlyoutsExcept(openFlyout) {
         for (const flyout of qsState.flyouts)
             if (flyout != openFlyout)
                 flyout.isOpen = false;
+        Quickshell.execDetached(Config.hyprlandCommands[qsState.flyouts.some(f => f.isOpen) ? "flyoutOpen" : "reset"]);
+    }
 
-        if (qsState.flyouts.some(f => f.isOpen))
-            Quickshell.execDetached(["hyprctl", "eval", `
-                hl.config({
-                    input = { follow_mouse = 0 },
-                    decoration = {
-                        active_opacity = 1.0 - 0.3,
-                        inactive_opacity = 0.85 - 0.3
-                    }
-                })
-            `]);
-        else
-            Quickshell.execDetached(["hyprctl", "reload"]);
+    property list<BottomAutoFlyout> bafs: []
+    property IpcHandler bafsHandler: IpcHandler {
+        target: "bafsHandler"
+        function showBaf(type: string): void {
+            for (const baf of qsState.bafs)
+                if (baf.type == type) {
+                    baf.isOpen = true;
+                    baf.autoHideTimer.restart();
+                }
+            Quickshell.execDetached(Config.hyprlandCommands[qsState.bafs.some(b => b.isOpen) ? "bafOpen" : "reset"]);
+        }
+        function hideAllBafs(): void {
+            for (const baf of qsState.bafs)
+                if (!baf.hovering)
+                    baf.isOpen = false;
+            if (![...qsState.flyouts, ...qsState.bafs].some(x => x.hovering))
+                Quickshell.execDetached(Config.hyprlandCommands.reset);
+        }
+    }
+    function hideBaf(baf: BottomAutoFlyout): void {
+        if (baf.hovering) {
+            baf.autoHideTimer.restart();
+            return;
+        }
+        baf.isOpen = false;
+        if (!qsState.flyouts.some(f => f.isOpen))
+            Quickshell.execDetached(Config.hyprlandCommands.reset);
     }
 
     property string dailyWallpaperPath

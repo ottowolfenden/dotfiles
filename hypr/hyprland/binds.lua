@@ -1,4 +1,3 @@
--- windows
 hl.bind("SUPER + W", function()
     local w = hl.get_active_window()
     if not w then return end
@@ -43,7 +42,7 @@ hl.bind("SUPER + mouse_down", function()
     hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
 end)
 
--- workspaces
+
 hl.bind("SUPER + CTRL + right", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }), { repeating = true })
 hl.bind("SUPER + CTRL + left", hl.dsp.focus({ workspace = "r-1", on_current_monitor = true }), { repeating = true })
 hl.bind("SUPER + CTRL + SHIFT + right", hl.dsp.window.move({ workspace = "r+1" }))
@@ -60,7 +59,7 @@ for i = 1, 10 do
     hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
 
--- apps
+
 hl.bind("SUPER + Q", function()
     local w = hl.get_active_window()
     if not w or w.class ~= "code" then
@@ -82,23 +81,7 @@ hl.bind("SUPER + T", hl.dsp.exec_cmd("thunar"))
 hl.bind("SUPER + SHIFT + T", hl.dsp.exec_cmd("thunar", { float = true }))
 hl.bind("CTRL + SHIFT + Escape", hl.dsp.exec_cmd("pkill btop || kitty --class btop -e btop"))
 
--- XF86 keys
-hl.bind("XF86AudioRaiseVolume",
-    hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
-    { locked = true, repeating = true }
-)
-hl.bind("XF86AudioLowerVolume",
-    hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
-    { locked = true, repeating = true }
-)
-hl.bind("XF86AudioMute",
-    hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
-    { locked = true, repeating = true }
-)
-hl.bind("XF86AudioMicMute",
-    hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
-    { locked = true, repeating = true }
-)
+
 hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), { locked = true, repeating = true })
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
@@ -107,7 +90,7 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tru
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 hl.bind("SUPER + space", hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.sh"), { locked = true })
 
--- quickshell
+
 local inputsToHideQsFlyouts = { "mouse:272", "mouse:273", "mouse:274" }
 for _, input in ipairs(inputsToHideQsFlyouts) do
     local barHeight = 44
@@ -115,5 +98,29 @@ for _, input in ipairs(inputsToHideQsFlyouts) do
         if hl.get_cursor_pos().y > barHeight then
             hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideNonHoveredFlyouts"))
         end
+        hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler hideAllBafs"))
     end, { non_consuming = true })
 end
+
+hl.bind("XF86AudioRaiseVolume", function()
+        hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler showBaf volume"))
+        hl.dispatch(hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"))
+    end,
+    { locked = true, repeating = true }
+)
+hl.bind("XF86AudioLowerVolume", function()
+        hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler showBaf volume"))
+        hl.dispatch(hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"))
+    end,
+    { locked = true, repeating = true }
+)
+hl.bind("XF86AudioMute", function()
+        hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler showBaf volume"))
+        hl.dispatch(hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
+    end,
+    { locked = true, repeating = true }
+)
+hl.bind("XF86AudioMicMute",
+    hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
+    { locked = true, repeating = true }
+)

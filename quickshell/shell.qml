@@ -18,7 +18,8 @@ Scope {
         }
         exclusiveZone: Config.barHeight - 1
 
-        OverlayPopup {
+        BottomAutoFlyout {
+            type: "volume"
             Slider {
                 Layout.preferredWidth: 250
                 Layout.preferredHeight: 45
