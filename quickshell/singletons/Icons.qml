@@ -243,7 +243,10 @@ QtObject {
         },
     ]
     property var searchMode: ({
-            search: "search",
+            default: "search",
+            apps: "apps",
+            files: "folder",
+            web: "language",
             terminal: "terminal"
         })
 }

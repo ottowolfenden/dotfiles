@@ -95,7 +95,12 @@ QtObject {
             reset: ["hyprctl", "reload"]
         })
     readonly property var searchModePlaceholder: ({
-            search: "Search",
+            default: "Search",
+            apps: "Search apps",
+            files: "Search files and folders",
+            web: "Search the web",
             terminal: "Execute"
         })
+    readonly property list<string> appSearchInputDirs: ["/usr/share/applications/", "/home/otto/.local/share/applications/"]
+    readonly property string appSearchOutputDir: "/home/otto/.cache/"
 }

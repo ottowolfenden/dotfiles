@@ -9,7 +9,7 @@ import "../components"
 Rectangle {
     id: search
     property bool isOpen: searchFlyout.isOpen
-    property string mode: "search"
+    property string mode: "default"
 
     color: Config.colours.bg2
     radius: Config.radius
@@ -49,7 +49,7 @@ Rectangle {
             Layout.preferredHeight: Config.componentHeight
             Icon {
                 id: icon
-                iconName: Icons.searchMode[search.mode] ?? Icons.searchMode["search"]
+                iconName: Icons.searchMode[search.mode] ?? Icons.searchMode["default"]
                 anchors.fill: parent
             }
         }
@@ -57,7 +57,7 @@ Rectangle {
         TextField {
             id: searchInput
             color: Config.colours.fg1
-            placeholderText: Config.searchModePlaceholder[search.mode] ?? Config.searchModePlaceholder["search"]
+            placeholderText: Config.searchModePlaceholder[search.mode] ?? Config.searchModePlaceholder["default"]
             background: null
             font.pixelSize: Config.fontSize
             font.family: search.mode == "terminal" ? Config.monospaceFontFamily : Config.fontFamily
@@ -76,12 +76,12 @@ Rectangle {
             }
             Keys.onPressed: e => {
                 if (e.key == Qt.Key_Backspace && text == "")
-                    search.mode = "search";
+                    search.mode = "default";
             }
 
             function reset() {
                 text = "";
-                search.mode = "search";
+                search.mode = "default";
                 QsState.hideFlyout(searchFlyout);
             }
         }
