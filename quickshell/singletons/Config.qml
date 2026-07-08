@@ -12,6 +12,7 @@ QtObject {
     readonly property int radius: 7
     readonly property int blurRadius: 70
     readonly property string fontFamily: "Google Sans Flex"
+    readonly property string monospaceFontFamily: "Consolas"
     readonly property list<string> vpnIdentifiers: ["vpn", "wireguard", "proton"]
     readonly property list<string> devicesToAutoconnect: ["B0:F0:0C:07:BC:07", "AC:3E:B1:62:43:27"]
     readonly property int animationDuration: 200
@@ -26,7 +27,7 @@ QtObject {
     readonly property int sliderHeight: 45
     readonly property var colours: QsState.darkMode ? {
         bg1: "#000000",
-        bg2: "#18ffffff",
+        bg2: "#10ffffff",
         fg1: "#d8ffffff",
         fg2: "#55ffffff",
         fg3: "#15ffffff",
@@ -91,5 +92,9 @@ QtObject {
                 })
             `],
             reset: ["hyprctl", "reload"]
+        })
+    readonly property var searchModePlaceholder: ({
+            search: "Search",
+            terminal: "Execute"
         })
 }

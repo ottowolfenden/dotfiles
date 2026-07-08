@@ -37,4 +37,15 @@ MouseArea {
         flyout.parentX = parent.mapToItem(null, parent.width / 2, 0).x;
         flyout.isOpen = !flyout.isOpen && !reopening;
     }
+
+    function open() {
+        if (flyout.isOpen) {
+            QsState.flyoutsHandler.hideNonHoveredFlyouts();
+            reopening = true;
+        } else
+            reopening = false;
+
+        flyout.parentX = parent.mapToItem(null, parent.width / 2, 0).x;
+        flyout.isOpen = !flyout.isOpen && !reopening;
+    }
 }

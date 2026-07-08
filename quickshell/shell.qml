@@ -1,15 +1,14 @@
 import QtQuick
 import Quickshell
+import Quickshell.Wayland
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Shapes
-// import Quickshell.Services.Pipewire
 import "modules"
-
-// import "components"
 
 Scope {
     PanelWindow {
+        id: root
         implicitHeight: Config.barHeight + Config.radius
         color: "transparent"
         anchors {
@@ -18,17 +17,17 @@ Scope {
             left: true
         }
         exclusiveZone: Config.barHeight - 1
+        focusable: true
+        WlrLayershell.keyboardFocus: search.isOpen ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.OnDemand
 
         Pane {
             id: pane
             anchors.fill: parent
             implicitHeight: Config.barHeight
-
             topPadding: 0
             bottomPadding: 0
             leftPadding: Config.spacing
             rightPadding: Config.spacing
-
             background: Shape {
                 layer.enabled: true
                 layer.samples: 4
@@ -75,18 +74,39 @@ Scope {
             RowLayout {
                 spacing: Config.spacing
                 anchors {
+                    left: parent.left
                     top: parent.top
                     bottom: parent.bottom
-                    left: parent.left
-                    right: parent.right
                     bottomMargin: Config.radius
                 }
 
                 Time {}
                 Workspaces {}
+            }
 
-                Item {
-                    Layout.fillWidth: true
+            Item {
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                    bottom: parent.bottom
+                    bottomMargin: Config.radius
+                }
+
+                Search {
+                    id: search
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            RowLayout {
+                spacing: Config.spacing
+                anchors {
+                    right: parent.right
+                    top: parent.top
+                    bottom: parent.bottom
+                    bottomMargin: Config.radius
                 }
 
                 Mode {}

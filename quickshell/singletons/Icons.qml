@@ -242,4 +242,8 @@ QtObject {
             icon: "brightness_7"
         },
     ]
+    property var searchMode: ({
+            search: "search",
+            terminal: "terminal"
+        })
 }

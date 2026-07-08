@@ -61,6 +61,8 @@ hl.bind("SUPER + CTRL + SHIFT + right", function()
 )
 hl.bind("SUPER + SHIFT + right", hl.dsp.window.swap({ direction = "right" }))
 hl.bind("SUPER + SHIFT + left", hl.dsp.window.swap({ direction = "left" }))
+hl.bind("SUPER + SHIFT + up", hl.dsp.window.swap({ direction = "up" }))
+hl.bind("SUPER + SHIFT + down", hl.dsp.window.swap({ direction = "down" }))
 hl.bind("SUPER + N", hl.dsp.focus({ workspace = "emptynm" }))
 hl.bind("SUPER + SHIFT + N", hl.dsp.window.move({ workspace = "emptynm" }))
 hl.bind("SUPER + mouse:276", hl.dsp.focus({ workspace = "r+1", on_current_monitor = true }))
@@ -81,7 +83,6 @@ hl.bind("SUPER + Q", function()
         hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "Q", state = "up" }))
     end
 end)
-hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("pkill wofi || wofi --show drun"))
 hl.bind("SUPER + B", hl.dsp.exec_cmd("helium-browser"))
 hl.bind("SUPER + A", hl.dsp.exec_cmd("thunar"))
 hl.bind("SUPER + C", hl.dsp.exec_cmd("code"))
@@ -103,6 +104,8 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tru
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 hl.bind("SUPER + space", hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.sh"), { locked = true })
 
+
+hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("qs ipc call searchHandler toggle"))
 local inputsToHideQsFlyouts = { "mouse:272", "mouse:273", "mouse:274" }
 for _, input in ipairs(inputsToHideQsFlyouts) do
     local pos = hl.get_monitor_at_cursor().position.y
@@ -114,7 +117,6 @@ for _, input in ipairs(inputsToHideQsFlyouts) do
         hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler hideAllBafs"))
     end, { non_consuming = true })
 end
-
 hl.bind("XF86AudioRaiseVolume", function()
         hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler showBaf volume"))
         hl.dispatch(hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"))
