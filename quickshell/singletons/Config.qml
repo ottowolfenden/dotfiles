@@ -25,6 +25,7 @@ QtObject {
     property int maxBrightness: 496
     readonly property int sliderWidth: 250
     readonly property int sliderHeight: 45
+    readonly property int sliderHandleOffset: 15
     readonly property var colours: QsState.darkMode ? {
         bg1: "#000000",
         bg2: "#10ffffff",

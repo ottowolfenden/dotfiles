@@ -93,7 +93,8 @@ PanelWindow {
 
         Pane {
             id: pane
-            padding: Config.spacing
+            verticalPadding: Config.spacing
+            horizontalPadding: contentContainer.children.every(c => c.toString().includes("Slider")) ? Config.sliderHandleOffset : Config.spacing
             background: null
             anchors.fill: parent
 
