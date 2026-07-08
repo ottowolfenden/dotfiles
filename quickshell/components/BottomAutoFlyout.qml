@@ -30,6 +30,7 @@ PanelWindow {
     }
     WlrLayershell.namespace: "quickshell-baf"
     WlrLayershell.layer: WlrLayer.Overlay
+    visible: isOpen || rect.y < height
 
     Shape {
         id: rect
