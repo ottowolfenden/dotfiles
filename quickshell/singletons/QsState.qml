@@ -39,6 +39,12 @@ QtObject {
                 flyout.isOpen = false;
         Quickshell.execDetached(Config.hyprlandCommands[qsState.flyouts.some(f => f.isOpen) ? "flyoutOpen" : "reset"]);
     }
+    function hideFlyout(flyoutToHide: Flyout): void {
+        for (const flyout of qsState.flyouts)
+            if (flyout == flyoutToHide)
+                flyout.isOpen = false;
+        Quickshell.execDetached(Config.hyprlandCommands[qsState.flyouts.some(f => f.isOpen) ? "flyoutOpen" : "reset"]);
+    }
 
     property list<BottomAutoFlyout> bafs: []
     property IpcHandler bafsHandler: IpcHandler {

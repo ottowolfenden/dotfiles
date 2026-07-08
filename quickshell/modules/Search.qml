@@ -71,7 +71,7 @@ Rectangle {
             }
             onAccepted: {
                 if (search.mode == "terminal")
-                    Quickshell.execDetached(["kitty", "sh", "-c", text + "; exec $SHELL"]);
+                    Quickshell.execDetached(["/bin/sh", "-c", text]);
                 reset();
             }
             Keys.onPressed: e => {
@@ -82,7 +82,7 @@ Rectangle {
             function reset() {
                 text = "";
                 search.mode = "search";
-                QsState.hideAllFlyouts();
+                QsState.hideFlyout(searchFlyout);
             }
         }
     }
