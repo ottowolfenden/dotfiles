@@ -3,10 +3,10 @@ import QtQuick
 import Quickshell.Networking
 
 QtObject {
-    property string forward: "chevron_forward"
-    property string backward: "chevron_backward"
-    property string tick: "check"
-    property var battery: [
+    readonly property string forward: "chevron_forward"
+    readonly property string backward: "chevron_backward"
+    readonly property string tick: "check"
+    readonly property var battery: [
         {
             max: 10,
             charging: "battery_charging_full",
@@ -49,7 +49,7 @@ QtObject {
             fill: true
         },
     ]
-    property var wifi: [
+    readonly property var wifi: [
         {
             connectivity: NetworkConnectivity.Unknown,
             icons: [
@@ -118,11 +118,11 @@ QtObject {
             ]
         }
     ]
-    property var vpn: ({
+    readonly property var vpn: ({
             on: "vpn_key",
             off: "vpn_key_off"
         })
-    property var volume: [
+    readonly property var volume: [
         {
             muted: true,
             icon: "no_sound"
@@ -140,24 +140,25 @@ QtObject {
             icon: "volume_up"
         }
     ]
-    property var bluetooth: ({
+    readonly property var bluetooth: ({
             enabled: "bluetooth",
             disabled: "bluetooth_disabled",
             connected: "bluetooth_connected"
         })
-    property var mode: ({
-            light: "light_mode",
-            dark: "dark_mode"
-        })
-    property var power: ({
+    readonly property var mode: {
+        "none": "contrast",
+        "light": "light_mode",
+        "dark": "dark_mode"
+    }
+    readonly property var power: ({
             onOff: "power_settings_new",
             shutDown: "power_settings_new",
             restart: "restart_alt",
             sleep: "bedtime",
             lock: "lock"
         })
-    property var powerProfiles: ["energy_savings_leaf", "balance", "rocket_launch"]
-    property var devices: {
+    readonly property var powerProfiles: ["energy_savings_leaf", "balance", "rocket_launch"]
+    readonly property var devices: {
         "ac-adapter": "power",
         "audio-card": "music_note",
         "audio-card-analog": "laptop_windows",
@@ -222,13 +223,13 @@ QtObject {
         "video-joined-displays": "tv_displays",
         "video-single-display": "monitor"
     }
-    property var media: ({
+    readonly property var media: ({
             play: "play_arrow",
             pause: "pause",
             skip: "skip_next",
             skipBack: "skip_previous"
         })
-    property var brightness: [
+    readonly property var brightness: [
         {
             max: 0.2,
             icon: "brightness_empty"
@@ -242,7 +243,7 @@ QtObject {
             icon: "brightness_7"
         },
     ]
-    property var searchMode: ({
+    readonly property var searchMode: ({
             default: "search",
             apps: "apps",
             files: "folder",

@@ -8,9 +8,9 @@ import "../components"
 Rectangle {
     id: network
     color: "transparent"
-    radius: Config.radius
-    implicitWidth: container.implicitWidth + (Config.spacing * 2)
-    Layout.preferredHeight: Config.componentHeight
+    radius: Design.radius
+    implicitWidth: container.implicitWidth + (Design.spacing * 2)
+    Layout.preferredHeight: Design.componentHeight
 
     property WifiDevice wifiDevice: Networking.devices.values.find(d => d.type == DeviceType.Wifi) ?? null
     property WifiNetwork wifiNetwork: wifiDevice?.networks?.values.find(n => n.connected) ?? null
@@ -22,10 +22,10 @@ Rectangle {
 
     RowLayout {
         id: container
-        spacing: Config.spacing
+        spacing: Design.spacing
         anchors.fill: parent
-        anchors.leftMargin: Config.spacing
-        anchors.rightMargin: Config.spacing
+        anchors.leftMargin: Design.spacing
+        anchors.rightMargin: Design.spacing
 
         Icon {
             property var icons: Icons.wifi.find(i => i.connectivity == (Networking.connectivity ?? NetworkConnectivity.Unknown)).icons.find(j => network.wifiStrength <= (j.max ?? 1))
@@ -85,7 +85,7 @@ Rectangle {
         id: vpnCheck
         command: ["nmcli", "connection", "show", "--active"]
         stdout: StdioCollector {
-            onStreamFinished: network.isVpnConnected = Config.vpnIdentifiers.some(i => text.toLowerCase().includes(i))
+            onStreamFinished: network.isVpnConnected = System.vpnIdentifiers.some(i => text.toLowerCase().includes(i))
         }
     }
 

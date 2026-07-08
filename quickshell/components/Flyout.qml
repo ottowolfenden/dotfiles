@@ -29,7 +29,7 @@ PanelWindow {
     visible: isOpen || rect.y > -rect.height
     onIsOpenChanged: {
         if (isOpen) {
-            QsState.hideAllFlyoutsExcept(flyout);
+            FlyoutsService.hideAllFlyoutsExcept(flyout);
             opened();
         }
     }
@@ -38,12 +38,12 @@ PanelWindow {
         id: rect
         width: flyout.rectWidth
         height: flyout.rectHeight
-        x: Helpers.clamp(flyout.parentX - rect.width / 2, 0, flyout.width - rect.width)
+        x: MiscService.clamp(flyout.parentX - rect.width / 2, 0, flyout.width - rect.width)
         y: flyout.isOpen ? 0 : -height
         clip: true
 
         ShapePath {
-            fillColor: Config.colours.bg1
+            fillColor: Colours.bg1
             strokeWidth: 0
 
             startX: 0
@@ -55,23 +55,23 @@ PanelWindow {
             }
             PathLine {
                 x: rect.width
-                y: rect.height - Config.radius
+                y: rect.height - Design.radius
             }
             PathArc {
-                x: rect.width - Config.radius
+                x: rect.width - Design.radius
                 y: rect.height
-                radiusX: Config.radius
-                radiusY: Config.radius
+                radiusX: Design.radius
+                radiusY: Design.radius
             }
             PathLine {
-                x: Config.radius
+                x: Design.radius
                 y: rect.height
             }
             PathArc {
                 x: 0
-                y: rect.height - Config.radius
-                radiusX: Config.radius
-                radiusY: Config.radius
+                y: rect.height - Design.radius
+                radiusX: Design.radius
+                radiusY: Design.radius
             }
             PathLine {
                 x: 0
@@ -81,15 +81,15 @@ PanelWindow {
 
         Behavior on y {
             NumberAnimation {
-                duration: Config.animationDuration
-                easing: Config.easing
+                duration: Design.animationDuration
+                easing: Design.easing
             }
         }
 
         Behavior on height {
             NumberAnimation {
-                duration: Config.animationDuration
-                easing: Config.easing
+                duration: Design.animationDuration
+                easing: Design.easing
             }
         }
 
@@ -105,24 +105,24 @@ PanelWindow {
 
     Shape {
         id: middleInvRounding
-        property int scaledHeight: Math.min(rect.height + rect.y - Config.radius, Config.radius)
+        property int scaledHeight: Math.min(rect.height + rect.y - Design.radius, Design.radius)
 
         ShapePath {
-            fillColor: Config.colours.bg1
+            fillColor: Colours.bg1
             strokeWidth: 0
 
             startX: rect.x
             startY: 0
 
             PathLine {
-                x: rect.x - Config.radius
+                x: rect.x - Design.radius
                 y: 0
             }
             PathArc {
                 x: rect.x
                 y: middleInvRounding.scaledHeight
-                radiusX: Config.radius
-                radiusY: Config.radius
+                radiusX: Design.radius
+                radiusY: Design.radius
             }
             PathLine {
                 x: rect.x
@@ -130,21 +130,21 @@ PanelWindow {
             }
         }
         ShapePath {
-            fillColor: Config.colours.bg1
+            fillColor: Colours.bg1
             strokeWidth: 0
 
             startX: rect.x + rect.width
             startY: 0
 
             PathLine {
-                x: rect.x + rect.width + Config.radius
+                x: rect.x + rect.width + Design.radius
                 y: 0
             }
             PathArc {
                 x: rect.x + rect.width
                 y: middleInvRounding.scaledHeight
-                radiusX: Config.radius
-                radiusY: Config.radius
+                radiusX: Design.radius
+                radiusY: Design.radius
                 direction: PathArc.Counterclockwise
             }
             PathLine {
@@ -154,5 +154,5 @@ PanelWindow {
         }
     }
 
-    Component.onCompleted: QsState.flyouts.push(this)
+    Component.onCompleted: FlyoutsService.flyouts.push(this)
 }

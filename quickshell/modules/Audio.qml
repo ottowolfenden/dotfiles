@@ -11,57 +11,22 @@ import "../components"
 Rectangle {
     id: audio
     color: "transparent"
-    radius: Config.radius
-    implicitWidth: container.implicitWidth + (Config.spacing * 2)
-    Layout.preferredHeight: Config.componentHeight
+    radius: Design.radius
+    implicitWidth: container.implicitWidth + (Design.spacing * 2)
+    Layout.preferredHeight: Design.componentHeight
 
     readonly property PwNode sink: Pipewire.defaultAudioSink
     readonly property int percent: Math.round(sink?.audio.volume * 100)
     property list<MprisPlayer> players: Mpris.players.values ?? []
 
-    function isEarbud(btDevice: var): bool {
-        return Config.earbudSubstrings.some(s => btDevice.name.toLowerCase().includes(s) || btDevice.deviceName.toLowerCase().includes(s));
-    }
-    function filterPlayers(): void {
-        if (!Mpris.players)
-            return;
-        let playingPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Playing);
-        let pausedPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Paused);
-        audio.players = playingPlayers.concat(pausedPlayers);
-    }
-    function getSinkDetails(sink: PwNode): var {
-        let unknown = {
-            icon: Icons.devices["computer"],
-            name: "Laptop"
-        };
-
-        let btDevice = Helpers.sinkToBtDevice(sink);
-        if (btDevice)
-            return {
-                icon: isEarbud(btDevice) ? Icons.devices["earbud"] : Icons.devices[btDevice.icon] ?? Icons.devices["bluetooth"],
-                name: btDevice.name
-            };
-
-        if (!sink?.properties)
-            return unknown;
-        let sinkIcon = sink.properties["device.icon_name"] || sink.properties["device.icon-name"];
-        let sinkName = sink.nickname != "" && sink.nickname ? sink.nickname : sink.description;
-        if (sinkIcon)
-            return {
-                icon: Icons.devices[sinkIcon] ?? Icons.devices["computer"],
-                name: sinkName && !["", "Speaker"].includes(sinkName) ? sinkName : "Laptop"
-            };
-        return unknown;
-    }
-
     Cutout {}
 
     RowLayout {
         id: container
-        spacing: Config.iconTextSpacing
+        spacing: Design.iconTextSpacing
         anchors.fill: parent
-        anchors.leftMargin: Config.spacing
-        anchors.rightMargin: Config.spacing
+        anchors.leftMargin: Design.spacing
+        anchors.rightMargin: Design.spacing
 
         Icon {
             id: barIcon
@@ -70,9 +35,9 @@ Rectangle {
 
         Text {
             text: audio.percent + "%"
-            color: Config.colours.fg1
-            font.family: Config.fontFamily
-            font.pixelSize: Config.fontSize
+            color: Colours.fg1
+            font.family: Design.fontFamily
+            font.pixelSize: Design.fontSize
             horizontalAlignment: Text.AlignHCenter
             Layout.preferredWidth: 40
         }
@@ -87,9 +52,9 @@ Rectangle {
 
         onWheel: wheel => {
             if (wheel.angleDelta.y > 0)
-                audio.sink.audio.volume = Helpers.clamp(audio.sink.audio.volume + 0.02, 0, 1);
+                audio.sink.audio.volume = MiscService.clamp(audio.sink.audio.volume + 0.02, 0, 1);
             else if (wheel.angleDelta.y < 0)
-                audio.sink.audio.volume = Helpers.clamp(audio.sink.audio.volume - 0.02, 0, 1);
+                audio.sink.audio.volume = MiscService.clamp(audio.sink.audio.volume - 0.02, 0, 1);
         }
 
         onMiddleClicked: audio.sink.audio.muted = !audio.sink.audio.muted
@@ -100,7 +65,7 @@ Rectangle {
         interval: 1000
         running: false
         repeat: false
-        onTriggered: audio.filterPlayers()
+        onTriggered: audio.players = AudioService.getFilteredPlayers()
     }
 
     Flyout {
@@ -109,20 +74,20 @@ Rectangle {
         rectWidth: pane.implicitWidth
         rectHeight: pane.implicitHeight
         onOpened: {
-            audio.filterPlayers();
+            audio.players = AudioService.getFilteredPlayers();
             list.highlightMoveDuration = 0;
             list.currentIndex = 0;
-            list.highlightMoveDuration = Config.listAnimationDuration;
+            list.highlightMoveDuration = Design.listAnimationDuration;
             refilterPlayersTimer.restart();
         }
 
         Pane {
             id: pane
-            padding: Config.spacing
+            padding: Design.spacing
             background: null
 
             ColumnLayout {
-                spacing: Config.spacing
+                spacing: Design.spacing
 
                 Item {
                     Layout.alignment: Qt.AlignHCenter
@@ -141,10 +106,10 @@ Rectangle {
                             Layout.alignment: Qt.AlignTop
                         }
                         Rectangle {
-                            Layout.preferredWidth: list.width + Config.spacing * 2
-                            Layout.preferredHeight: list.height + Config.spacing * 2
-                            color: Config.colours.bg2
-                            radius: Config.radius
+                            Layout.preferredWidth: list.width + Design.spacing * 2
+                            Layout.preferredHeight: list.height + Design.spacing * 2
+                            color: Colours.bg2
+                            radius: Design.radius
                             clip: true
 
                             ListView {
@@ -154,29 +119,29 @@ Rectangle {
                                 height: currentItem?.height ?? 0
                                 anchors.centerIn: parent
                                 orientation: ListView.Horizontal
-                                spacing: Config.spacing * 2
+                                spacing: Design.spacing * 2
 
                                 boundsBehavior: Flickable.StopAtBounds
                                 snapMode: ListView.SnapToItem
                                 highlightRangeMode: ListView.StrictlyEnforceRange
-                                highlightMoveDuration: Config.listAnimationDuration
+                                highlightMoveDuration: Design.listAnimationDuration
 
                                 model: audio.players
                                 delegate: ColumnLayout {
                                     id: item
                                     required property MprisPlayer modelData
-                                    spacing: Config.spacing
+                                    spacing: Design.spacing
 
                                     Text {
                                         id: identityText
-                                        text: Config.playerIdentityNames[item.modelData.identity] ?? item.modelData.identity
+                                        text: Misc.playerIdentityNames[item.modelData.identity] ?? item.modelData.identity
                                         Layout.fillWidth: true
                                         Layout.preferredWidth: buttonsContainer.implicitWidth
                                         horizontalAlignment: Text.AlignHCenter
                                         elide: Text.ElideRight
-                                        color: Config.colours.fg1
-                                        font.family: Config.fontFamily
-                                        font.pixelSize: Config.smallFontSize
+                                        color: Colours.fg1
+                                        font.family: Design.fontFamily
+                                        font.pixelSize: Design.smallFontSize
                                         MouseArea {
                                             anchors.fill: parent
                                             hoverEnabled: true
@@ -186,7 +151,7 @@ Rectangle {
                                                     item.modelData.raise();
                                                 else {
                                                     Quickshell.execDetached(["hyprctl", "dispatch", "hl.dsp.focus({ window = 'initialclass:(?i)" + item.modelData.identity.toLowerCase() + "' })"]);
-                                                    QsState.hideAllFlyouts();
+                                                    FlyoutsService.hideAllFlyouts();
                                                 }
                                             }
                                         }
@@ -198,20 +163,20 @@ Rectangle {
                                             if (audio.players.length == 0)
                                                 return false;
                                             let isActive = [MprisPlaybackState.Paused, MprisPlaybackState.Playing].includes(item.modelData.playbackState);
-                                            return isActive && Config.playerRequirements.every(r => item.modelData[r]);
+                                            return isActive && Misc.playerRequirements.every(r => item.modelData[r]);
                                         }
                                         onValidPlayerPresentChanged: {
                                             if (!validPlayerPresent)
                                                 visibilityTimer.restart();
                                         }
                                         visible: validPlayerPresent || visibilityTimer.running
-                                        spacing: Config.spacing * 2
+                                        spacing: Design.spacing * 2
                                         Layout.alignment: Qt.AlignHCenter
 
                                         IconButton {
                                             iconName: Icons.media.skipBack
                                             disabled: !item.modelData.canGoPrevious && !visibilityTimer.running
-                                            buttonPixelSize: Config.circleButtonDiameter * 0.9
+                                            buttonPixelSize: Design.circleButtonDiameter * 0.9
                                             onClicked: {
                                                 if (!disabled)
                                                     item.modelData.previous();
@@ -219,13 +184,13 @@ Rectangle {
                                         }
                                         IconButton {
                                             iconName: Icons.media[item.modelData.isPlaying || visibilityTimer.running ? "pause" : "play"]
-                                            buttonPixelSize: Config.circleButtonDiameter * 1.2
+                                            buttonPixelSize: Design.circleButtonDiameter * 1.2
                                             onClicked: item.modelData.togglePlaying()
                                         }
                                         IconButton {
                                             iconName: Icons.media.skip
                                             disabled: !item.modelData.canGoNext && !visibilityTimer.running
-                                            buttonPixelSize: Config.circleButtonDiameter * 0.9
+                                            buttonPixelSize: Design.circleButtonDiameter * 0.9
                                             onClicked: {
                                                 if (!disabled)
                                                     item.modelData.next();
@@ -256,74 +221,65 @@ Rectangle {
                 Slider {
                     value: audio.sink?.audio?.volume ?? 0
                     onChanged: newValue => audio.sink.audio.volume = newValue
-                    iconName: repeater.model.length > 1 ? audio.getSinkDetails(audio.sink).icon : barIcon.iconName
+                    iconName: repeater.model.length > 1 ? AudioService.getSinkDetails(audio.sink).icon : barIcon.iconName
                 }
 
                 Rectangle {
                     Layout.fillWidth: true
-                    implicitHeight: sinkSelection.implicitHeight + Config.spacing * 2
-                    color: Config.colours.bg2
-                    radius: Config.radius
+                    implicitHeight: sinkSelection.implicitHeight + Design.spacing * 2
+                    color: Colours.bg2
+                    radius: Design.radius
                     visible: repeater.model.length > 1
 
                     ColumnLayout {
                         id: sinkSelection
-                        spacing: Config.spacing
+                        spacing: Design.spacing
                         anchors.fill: parent
-                        anchors.margins: Config.spacing
+                        anchors.margins: Design.spacing
 
                         Repeater {
                             id: repeater
-                            model: {
-                                let containsHdmi = pwNode => pwNode.name.concat(pwNode.description).toLowerCase().includes("hdmi");
-                                let filtered = Pipewire.nodes.values.filter(n => n.audio && n.ready && !n.isStream && n.isSink && (Config.showHdmiSinks || !containsHdmi(n)));
-                                filtered.sort((a, b) => audio.getSinkDetails(a).name > audio.getSinkDetails(b).name ? 1 : -1);
-                                let target = filtered.find(n => n.name == Config.mainPwNodeName);
-                                if (!target)
-                                    return filtered;
-                                let result = [target, ...filtered.filter(item => item != target)];
-                                return result;
-                            }
+                            model: AudioService.getFilteredSinks()
 
                             delegate: Rectangle {
                                 id: node
                                 required property PwNode modelData
                                 property bool isActive: node.modelData == audio.sink
-                                property string colour: isActive ? Config.colours.lightblue : Config.colours.fg1
-                                radius: Config.radius
+                                property color colour: isActive ? Colours.lightblue : Colours.fg1
+                                radius: Design.radius
                                 color: {
                                     if (isActive)
-                                        return Config.colours.selectedBg;
+                                        return Colours.selectedBg;
                                     if (mouseArea.pressed)
-                                        return Config.colours.buttonPressedBg;
+                                        return Colours.buttonPressedBg;
                                     else if (mouseArea.containsMouse)
-                                        return Config.colours.buttonHoveredBg;
-                                    return Config.colours.buttonInactiveBg;
+                                        return Colours.buttonHoveredBg;
+                                    return Colours.buttonInactiveBg;
                                 }
                                 Layout.fillWidth: true
-                                Layout.preferredHeight: row.implicitHeight + Config.spacing
+                                Layout.preferredHeight: row.implicitHeight + Design.spacing
 
                                 RowLayout {
                                     id: row
                                     anchors.left: parent.left
                                     anchors.right: parent.right
                                     anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: Config.spacing / 2
-                                    anchors.rightMargin: Config.spacing / 2
+                                    anchors.leftMargin: Design.spacing / 2
+                                    anchors.rightMargin: Design.spacing / 2
                                     Icon {
-                                        iconName: node.isActive ? Icons.tick : audio.getSinkDetails(node.modelData).icon
+                                        iconName: node.isActive ? Icons.tick : AudioService.getSinkDetails(node.modelData).icon
                                         colour: node.colour
-                                        Layout.leftMargin: Config.spacing / 2
+                                        Layout.leftMargin: Design.spacing / 2
                                     }
                                     Text {
                                         id: text
-                                        text: audio.getSinkDetails(node.modelData).name
+                                        text: AudioService.getSinkDetails(node.modelData).name
                                         Layout.fillWidth: true
                                         elide: Text.ElideRight
-                                        font.family: Config.fontFamily
-                                        font.pixelSize: Config.smallFontSize
+                                        font.family: Design.fontFamily
+                                        font.pixelSize: Design.smallFontSize
                                         color: node.colour
-                                        Layout.leftMargin: Config.spacing / 2
+                                        Layout.leftMargin: Design.spacing / 2
                                     }
                                     Item {
                                         Layout.fillWidth: true
@@ -331,10 +287,10 @@ Rectangle {
                                     Text {
                                         text: Math.round(node.modelData.audio.volume * 100) + "%"
                                         font.strikeout: node.modelData.audio.muted
-                                        font.family: Config.fontFamily
-                                        font.pixelSize: Config.smallFontSize
+                                        font.family: Design.fontFamily
+                                        font.pixelSize: Design.smallFontSize
                                         color: node.colour
-                                        Layout.rightMargin: Config.spacing / 2
+                                        Layout.rightMargin: Design.spacing / 2
                                     }
                                 }
 

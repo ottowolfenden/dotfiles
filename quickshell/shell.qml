@@ -5,34 +5,35 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Shapes
 import "modules"
+import "modules/bafs"
 
 Scope {
     PanelWindow {
         id: root
-        implicitHeight: Config.barHeight + Config.radius
+        implicitHeight: Design.barHeight + Design.radius
         color: "transparent"
         anchors {
             top: true
             right: true
             left: true
         }
-        exclusiveZone: Config.barHeight - 1
+        exclusiveZone: Design.barHeight - 1
         focusable: true
         WlrLayershell.keyboardFocus: search.isOpen ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.OnDemand
 
         Pane {
             id: pane
             anchors.fill: parent
-            implicitHeight: Config.barHeight
+            implicitHeight: Design.barHeight
             topPadding: 0
             bottomPadding: 0
-            leftPadding: Config.spacing
-            rightPadding: Config.spacing
+            leftPadding: Design.spacing
+            rightPadding: Design.spacing
             background: Shape {
                 layer.enabled: true
                 layer.samples: 4
                 ShapePath {
-                    fillColor: Config.colours.bg1
+                    fillColor: Colours.bg1
                     strokeWidth: 0
 
                     startX: 0
@@ -47,21 +48,21 @@ Scope {
                         y: pane.height
                     }
                     PathArc {
-                        x: pane.width - Config.radius
-                        y: pane.height - Config.radius
-                        radiusX: Config.radius
-                        radiusY: Config.radius
+                        x: pane.width - Design.radius
+                        y: pane.height - Design.radius
+                        radiusX: Design.radius
+                        radiusY: Design.radius
                         direction: PathArc.Counterclockwise
                     }
                     PathLine {
-                        x: Config.radius
-                        y: pane.height - Config.radius
+                        x: Design.radius
+                        y: pane.height - Design.radius
                     }
                     PathArc {
                         x: 0
                         y: pane.height
-                        radiusX: Config.radius
-                        radiusY: Config.radius
+                        radiusX: Design.radius
+                        radiusY: Design.radius
                         direction: PathArc.Counterclockwise
                     }
                     PathLine {
@@ -72,12 +73,12 @@ Scope {
             }
 
             RowLayout {
-                spacing: Config.spacing
+                spacing: Design.spacing
                 anchors {
                     left: parent.left
                     top: parent.top
                     bottom: parent.bottom
-                    bottomMargin: Config.radius
+                    bottomMargin: Design.radius
                 }
 
                 Time {}
@@ -90,7 +91,7 @@ Scope {
                     right: parent.right
                     top: parent.top
                     bottom: parent.bottom
-                    bottomMargin: Config.radius
+                    bottomMargin: Design.radius
                 }
 
                 Search {
@@ -101,12 +102,12 @@ Scope {
             }
 
             RowLayout {
-                spacing: Config.spacing
+                spacing: Design.spacing
                 anchors {
                     right: parent.right
                     top: parent.top
                     bottom: parent.bottom
-                    bottomMargin: Config.radius
+                    bottomMargin: Design.radius
                 }
 
                 Mode {}
@@ -118,7 +119,8 @@ Scope {
             }
         }
 
-        BottomAutoFlyouts {}
+        BrightnessBaf {}
+        VolumeBaf {}
     }
 
     ShellRoot {

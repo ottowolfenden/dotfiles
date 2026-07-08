@@ -8,9 +8,9 @@ import "../components"
 Rectangle {
     id: power
     color: "transparent"
-    radius: Config.radius
-    implicitWidth: Config.componentHeight
-    implicitHeight: Config.componentHeight
+    radius: Design.radius
+    implicitWidth: Design.componentHeight
+    implicitHeight: Design.componentHeight
 
     Cutout {}
 
@@ -34,17 +34,17 @@ Rectangle {
 
         Pane {
             id: pane
-            padding: Config.spacing
+            padding: Design.spacing
             background: null
 
             ColumnLayout {
-                spacing: Config.spacing
+                spacing: Design.spacing
 
                 TextButton {
                     text: "Shut down"
                     iconName: Icons.power.shutDown
                     onClicked: {
-                        QsState.hideAllFlyouts();
+                        FlyoutsService.hideAllFlyouts();
                         Quickshell.execDetached(["hyprshutdown", "-t", "Shutting down...", "--post-cmd", "systemctl poweroff"]);
                     }
                 }
@@ -52,7 +52,7 @@ Rectangle {
                     text: "Restart"
                     iconName: Icons.power.restart
                     onClicked: {
-                        QsState.hideAllFlyouts();
+                        FlyoutsService.hideAllFlyouts();
                         Quickshell.execDetached(["hyprshutdown", "-t", "Restarting...", "--post-cmd", "systemctl reboot"]);
                     }
                 }
@@ -60,7 +60,7 @@ Rectangle {
                     text: "Sleep"
                     iconName: Icons.power.sleep
                     onClicked: {
-                        QsState.hideAllFlyouts();
+                        FlyoutsService.hideAllFlyouts();
                         Quickshell.execDetached(["systemctl", "suspend"]);
                     }
                 }
@@ -68,12 +68,12 @@ Rectangle {
                     text: "Lock"
                     iconName: Icons.power.lock
                     onClicked: {
-                        QsState.hideAllFlyouts();
+                        FlyoutsService.hideAllFlyouts();
                         lockTimer.start();
                     }
                     Timer {
                         id: lockTimer
-                        interval: Config.animationDuration
+                        interval: Design.animationDuration
                         repeat: false
                         onTriggered: Quickshell.execDetached(["hyprlock"])
                     }

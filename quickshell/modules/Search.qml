@@ -11,15 +11,15 @@ Rectangle {
     property bool isOpen: searchFlyout.isOpen
     property string mode: "default"
 
-    color: Config.colours.bg2
-    radius: Config.radius
-    width: search.isOpen ? 300 : Config.componentHeight
-    height: Config.componentHeight
+    color: Colours.bg2
+    radius: Design.radius
+    width: search.isOpen ? 300 : Design.componentHeight
+    height: Design.componentHeight
 
     Behavior on width {
         NumberAnimation {
-            duration: Config.animationDuration
-            easing: Config.easing
+            duration: Design.animationDuration
+            easing: Design.easing
         }
     }
 
@@ -34,7 +34,7 @@ Rectangle {
         target: "searchHandler"
         function toggle() {
             if (search.isOpen)
-                QsState.hideAllFlyouts();
+                FlyoutsService.hideAllFlyouts();
             else
                 flyoutMouseArea.open();
         }
@@ -45,8 +45,8 @@ Rectangle {
         spacing: 0
 
         Item {
-            Layout.preferredWidth: Config.componentHeight
-            Layout.preferredHeight: Config.componentHeight
+            Layout.preferredWidth: Design.componentHeight
+            Layout.preferredHeight: Design.componentHeight
             Icon {
                 id: icon
                 iconName: Icons.searchMode[search.mode] ?? Icons.searchMode["default"]
@@ -56,11 +56,11 @@ Rectangle {
 
         TextField {
             id: searchInput
-            color: Config.colours.fg1
-            placeholderText: Config.searchModePlaceholder[search.mode] ?? Config.searchModePlaceholder["default"]
+            color: Colours.fg1
+            placeholderText: Misc.searchModePlaceholder[search.mode] ?? Misc.searchModePlaceholder["default"]
             background: null
-            font.pixelSize: Config.fontSize
-            font.family: search.mode == "terminal" ? Config.monospaceFontFamily : Config.fontFamily
+            font.pixelSize: Design.fontSize
+            font.family: search.mode == "terminal" ? Design.monospaceFontFamily : Design.fontFamily
             Layout.fillHeight: true
             Layout.fillWidth: true
             onTextEdited: {
@@ -82,7 +82,7 @@ Rectangle {
             function reset() {
                 text = "";
                 search.mode = "default";
-                QsState.hideFlyout(searchFlyout);
+                FlyoutsService.hideFlyout(searchFlyout);
             }
         }
     }

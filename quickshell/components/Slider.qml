@@ -7,19 +7,19 @@ Item {
     id: slider
     required property real value
 
-    property string bgColour: Config.colours.bg2
-    property string fgColour: Config.colours.lightblue
+    property color bgColour: Colours.bg2
+    property color fgColour: Colours.lightblue
     property string iconName
 
     readonly property int trackWidth: width - handle.Layout.preferredWidth
     readonly property int trackHeight: height - handle.extraHeight
     readonly property int smallRadius: 2
-    readonly property bool iconOnActiveTrack: slider.trackWidth * (1 - slider.value) < activeTrackIcon.width + Config.spacing * 2
+    readonly property bool iconOnActiveTrack: slider.trackWidth * (1 - slider.value) < activeTrackIcon.width + Design.spacing * 2
 
     signal changed(real newValue)
 
-    Layout.preferredWidth: Config.sliderWidth
-    Layout.preferredHeight: Config.sliderHeight
+    Layout.preferredWidth: Design.sliderWidth
+    Layout.preferredHeight: Design.sliderHeight
     Layout.alignment: Qt.AlignHCenter
 
     RowLayout {
@@ -50,7 +50,7 @@ Item {
                     fillColor: slider.fgColour
                     strokeWidth: 0
 
-                    startX: Config.radius
+                    startX: Design.radius
                     startY: 0
 
                     PathLine {
@@ -74,36 +74,36 @@ Item {
                         radiusY: activeTrack.smallRadius
                     }
                     PathLine {
-                        x: Config.radius
+                        x: Design.radius
                         y: activeTrack.height
                     }
                     PathArc {
                         x: 0
-                        y: activeTrack.height - Config.radius
-                        radiusX: Config.radius
-                        radiusY: Config.radius
+                        y: activeTrack.height - Design.radius
+                        radiusX: Design.radius
+                        radiusY: Design.radius
                     }
                     PathLine {
                         x: 0
-                        y: Config.radius
+                        y: Design.radius
                     }
                     PathArc {
-                        x: Config.radius
+                        x: Design.radius
                         y: 0
-                        radiusX: Config.radius
-                        radiusY: Config.radius
+                        radiusX: Design.radius
+                        radiusY: Design.radius
                     }
                 }
             }
             Icon {
                 id: activeTrackIcon
                 iconName: slider.iconName
-                colour: Config.colours.invfg
+                colour: Colours.invfg
                 visible: slider.iconOnActiveTrack
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
-                anchors.rightMargin: Config.spacing
+                anchors.rightMargin: Design.spacing
             }
         }
 
@@ -151,28 +151,28 @@ Item {
                     fillColor: slider.bgColour
                     strokeWidth: 0
 
-                    startX: Config.radius
+                    startX: Design.radius
                     startY: 0
 
                     PathLine {
-                        x: inactiveTrack.width - Config.radius
+                        x: inactiveTrack.width - Design.radius
                         y: 0
                     }
                     PathArc {
                         x: inactiveTrack.width
-                        y: Config.radius
-                        radiusX: Config.radius
-                        radiusY: Config.radius
+                        y: Design.radius
+                        radiusX: Design.radius
+                        radiusY: Design.radius
                     }
                     PathLine {
                         x: inactiveTrack.width
-                        y: inactiveTrack.height - Config.radius
+                        y: inactiveTrack.height - Design.radius
                     }
                     PathArc {
-                        x: inactiveTrack.width - Config.radius
+                        x: inactiveTrack.width - Design.radius
                         y: inactiveTrack.height
-                        radiusX: Config.radius
-                        radiusY: Config.radius
+                        radiusX: Design.radius
+                        radiusY: Design.radius
                     }
                     PathLine {
                         x: inactiveTrack.smallRadius
@@ -203,8 +203,8 @@ Item {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
-                anchors.rightMargin: Config.spacing
-                colour: Config.colours.fg1
+                anchors.rightMargin: Design.spacing
+                colour: Colours.fg1
                 visible: !slider.iconOnActiveTrack
             }
         }
@@ -219,16 +219,16 @@ Item {
         property bool listening: false
         onMouseXChanged: {
             if (listening)
-                slider.changed(Helpers.clamp(mouseX / slider.width, 0, 1));
+                slider.changed(MiscService.clamp(mouseX / slider.width, 0, 1));
         }
         onPressed: listening = handle.clicked = true
         onReleased: listening = handle.clicked = false
 
         onWheel: wheel => {
             if (wheel.angleDelta.y > 0)
-                slider.changed(Helpers.clamp(slider.value + 0.02, 0, 1));
+                slider.changed(MiscService.clamp(slider.value + 0.02, 0, 1));
             else if (wheel.angleDelta.y < 0)
-                slider.changed(Helpers.clamp(slider.value - 0.02, 0, 1));
+                slider.changed(MiscService.clamp(slider.value - 0.02, 0, 1));
 
             handle.clicked = true;
             if (wheelTimer.running)

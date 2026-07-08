@@ -9,6 +9,17 @@ MouseArea {
     signal rightClicked
     signal middleClicked
 
+    function open() {
+        if (flyout.isOpen) {
+            FlyoutsService.flyoutsHandler.hideNonHoveredFlyouts();
+            reopening = true;
+        } else
+            reopening = false;
+
+        flyout.parentX = parent.mapToItem(null, parent.width / 2, 0).x;
+        flyout.isOpen = !flyout.isOpen && !reopening;
+    }
+
     anchors.fill: parent
     hoverEnabled: true
     cursorShape: Qt.PointingHandCursor
@@ -18,7 +29,7 @@ MouseArea {
         case Qt.LeftButton:
             leftClicked();
             if (flyout.isOpen) {
-                QsState.flyoutsHandler.hideNonHoveredFlyouts();
+                FlyoutsService.flyoutsHandler.hideNonHoveredFlyouts();
                 reopening = true;
             } else
                 reopening = false;
@@ -34,17 +45,6 @@ MouseArea {
     onReleased: mouse => {
         if (mouse.button != Qt.LeftButton)
             return;
-        flyout.parentX = parent.mapToItem(null, parent.width / 2, 0).x;
-        flyout.isOpen = !flyout.isOpen && !reopening;
-    }
-
-    function open() {
-        if (flyout.isOpen) {
-            QsState.flyoutsHandler.hideNonHoveredFlyouts();
-            reopening = true;
-        } else
-            reopening = false;
-
         flyout.parentX = parent.mapToItem(null, parent.width / 2, 0).x;
         flyout.isOpen = !flyout.isOpen && !reopening;
     }

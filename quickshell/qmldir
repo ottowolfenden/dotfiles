@@ -1,4 +1,13 @@
-singleton Config 1.0 singletons/Config.qml
-singleton Helpers 1.0 singletons/Helpers.qml
-singleton Icons 1.0 singletons/Icons.qml
-singleton QsState 1.0 singletons/QsState.qml
+singleton Icons 1.0 config/Icons.qml
+singleton Directories 1.0 config/Directories.qml
+singleton Colours 1.0 config/Colours.qml
+singleton System 1.0 config/System.qml
+singleton Design 1.0 config/Design.qml
+singleton Misc 1.0 config/Misc.qml
+
+singleton HyprlandService 1.0 services/HyprlandService.qml
+singleton AudioService 1.0 services/AudioService.qml
+singleton MiscService 1.0 services/MiscService.qml
+singleton ModeService 1.0 services/ModeService.qml
+singleton DailyWallpaperService 1.0 services/DailyWallpaperService.qml
+singleton FlyoutsService 1.0 services/FlyoutsService.qml

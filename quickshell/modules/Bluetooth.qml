@@ -7,9 +7,9 @@ import "../components"
 Rectangle {
     id: bluetooth
     color: "transparent"
-    radius: Config.radius
-    implicitWidth: Config.componentHeight
-    implicitHeight: Config.componentHeight
+    radius: Design.radius
+    implicitWidth: Design.componentHeight
+    implicitHeight: Design.componentHeight
 
     Cutout {}
 
@@ -49,7 +49,7 @@ Rectangle {
         onTriggered: {
             if (!Bluetooth.defaultAdapter.enabled)
                 return;
-            for (var address of Config.devicesToAutoconnect) {
+            for (var address of System.devicesToAutoconnect) {
                 var device = Bluetooth.defaultAdapter.devices.values.find(d => d.address == address);
                 if (device.state == BluetoothDeviceState.Disconnected) {
                     device.connect();

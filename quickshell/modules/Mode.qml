@@ -6,16 +6,16 @@ import "../components"
 Rectangle {
     id: mode
     color: "transparent"
-    radius: Config.radius
-    implicitWidth: Config.componentHeight
-    implicitHeight: Config.componentHeight
+    radius: Design.radius
+    implicitWidth: Design.componentHeight
+    implicitHeight: Design.componentHeight
 
     Cutout {}
 
     Icon {
         id: icon
         anchors.centerIn: parent
-        iconName: QsState.darkMode ? Icons.mode.dark : Icons.mode.light
+        iconName: Icons.mode[ModeService.mode ?? "none"]
     }
 
     MouseArea {
@@ -23,8 +23,8 @@ Rectangle {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         onClicked: {
-            QsState.darkMode = !QsState.darkMode;
-            Quickshell.execDetached([Config.scriptsDir + "set-theme.sh", QsState.darkMode ? "dark" : "light"]);
+            ModeService.swap();
+            Quickshell.execDetached([Directories.scripts + "set-theme.sh", ModeService.mode]);
         }
     }
 }

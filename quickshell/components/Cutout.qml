@@ -14,7 +14,7 @@ Item {
 
         Image {
             id: wallpaperImage
-            source: QsState.dailyWallpaperPath
+            source: DailyWallpaperService.path
             width: Screen.width
             height: Screen.height
             fillMode: Image.PreserveAspectCrop
@@ -23,7 +23,7 @@ Item {
 
         Rectangle {
             anchors.fill: parent
-            color: Config.colours.cutoutBg
+            color: Colours.cutoutBg
         }
     }
 
@@ -31,14 +31,14 @@ Item {
         id: blurredContainer
         anchors.fill: parent
         source: maskContainer
-        radius: Config.blurRadius
+        radius: Design.blurRadius
         visible: false
     }
 
     Rectangle {
         id: maskShape
         anchors.fill: parent
-        radius: Config.radius
+        radius: Design.radius
         visible: false
     }
 
@@ -48,16 +48,14 @@ Item {
         maskSource: maskShape
     }
 
-    function updateCoords(): void {
-        wallpaperImage.x = -root.parent.mapToItem(root.parent.Window.contentItem, 0, 0).x;
-        wallpaperImage.y = -root.parent.mapToItem(root.parent.Window.contentItem, 0, 0).y;
-    }
-
     Timer {
         id: initTimer
         interval: 1
         running: true
         repeat: false
-        onTriggered: root.updateCoords()
+        onTriggered: {
+            wallpaperImage.x = -root.parent.mapToItem(root.parent.Window.contentItem, 0, 0).x;
+            wallpaperImage.y = -root.parent.mapToItem(root.parent.Window.contentItem, 0, 0).y;
+        }
     }
 }

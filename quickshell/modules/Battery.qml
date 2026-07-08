@@ -10,9 +10,9 @@ import "../components"
 Rectangle {
     id: battery
     color: "transparent"
-    radius: Config.radius
-    implicitWidth: container.implicitWidth + (Config.spacing * 2)
-    Layout.preferredHeight: Config.componentHeight
+    radius: Design.radius
+    implicitWidth: container.implicitWidth + (Design.spacing * 2)
+    Layout.preferredHeight: Design.componentHeight
 
     Cutout {}
 
@@ -22,13 +22,13 @@ Rectangle {
 
     RowLayout {
         id: container
-        spacing: Config.iconTextSpacing
+        spacing: Design.iconTextSpacing
         anchors.fill: parent
-        anchors.leftMargin: Config.spacing
-        anchors.rightMargin: Config.spacing
+        anchors.leftMargin: Design.spacing
+        anchors.rightMargin: Design.spacing
 
         Icon {
-            colour: battery.danger ? Config.colours.red : Config.colours.fg1
+            colour: battery.danger ? Colours.red : Colours.fg1
             property var icons: Icons.battery.find(i => battery.percent <= i.max)
             iconName: battery.isCharging ? icons.charging : icons.discharging
             fill: icons.fill ?? false
@@ -37,9 +37,9 @@ Rectangle {
 
         Text {
             text: battery.percent + "%"
-            color: battery.danger ? Config.colours.red : Config.colours.fg1
-            font.family: Config.fontFamily
-            font.pixelSize: Config.fontSize
+            color: battery.danger ? Colours.red : Colours.fg1
+            font.family: Design.fontFamily
+            font.pixelSize: Design.fontSize
             horizontalAlignment: Text.AlignHCenter
             Layout.preferredWidth: 40
         }
@@ -79,11 +79,11 @@ Rectangle {
 
         Pane {
             id: pane
-            padding: Config.spacing
+            padding: Design.spacing
             background: null
 
             ColumnLayout {
-                spacing: Config.spacing
+                spacing: Design.spacing
 
                 ToggleGroup {
                     id: powerProfiletoggleGroup
@@ -120,26 +120,26 @@ Rectangle {
                 }
 
                 Rectangle {
-                    implicitWidth: Math.max(220, grid.implicitWidth + Config.spacing * 2)
-                    implicitHeight: grid.implicitHeight + Config.spacing * 2
-                    color: Config.colours.bg2
-                    radius: Config.radius
+                    implicitWidth: Math.max(220, grid.implicitWidth + Design.spacing * 2)
+                    implicitHeight: grid.implicitHeight + Design.spacing * 2
+                    color: Colours.bg2
+                    radius: Design.radius
 
                     GridLayout {
                         id: grid
                         anchors.fill: parent
-                        anchors.margins: Config.spacing
+                        anchors.margins: Design.spacing
                         columns: 4
-                        rowSpacing: Config.spacing
-                        columnSpacing: Config.spacing
+                        rowSpacing: Design.spacing
+                        columnSpacing: Design.spacing
 
                         property bool fullAndCharging: battery.percent == 100 && battery.isCharging
 
                         // row 1
                         Text {
-                            font.pixelSize: Config.smallFontSize
-                            color: Config.colours.fg2
-                            font.family: Config.fontFamily
+                            font.pixelSize: Design.smallFontSize
+                            color: Colours.fg2
+                            font.family: Design.fontFamily
                             Layout.fillHeight: true
                             text: "Power profile"
                             verticalAlignment: Text.AlignVCenter
@@ -148,9 +148,9 @@ Rectangle {
                             Layout.fillWidth: true
                         }
                         Text {
-                            font.pixelSize: Config.smallFontSize
-                            color: Config.colours.fg1
-                            font.family: Config.fontFamily
+                            font.pixelSize: Design.smallFontSize
+                            color: Colours.fg1
+                            font.family: Design.fontFamily
                             Layout.fillHeight: true
                             text: ["Power saver", "Balanced", "Performance"][powerProfiletoggleGroup.activeIndex] ?? "Unknown"
                             verticalAlignment: Text.AlignVCenter
@@ -162,9 +162,9 @@ Rectangle {
                         // row 2
                         Text {
                             visible: !grid.fullAndCharging
-                            font.pixelSize: Config.smallFontSize
-                            color: Config.colours.fg2
-                            font.family: Config.fontFamily
+                            font.pixelSize: Design.smallFontSize
+                            color: Colours.fg2
+                            font.family: Design.fontFamily
                             Layout.fillHeight: true
                             text: battery.isCharging ? "Time until full" : "Time until empty"
                             verticalAlignment: Text.AlignVCenter
@@ -175,12 +175,12 @@ Rectangle {
                         }
                         Text {
                             visible: !grid.fullAndCharging
-                            font.pixelSize: Config.smallFontSize
-                            color: Config.colours.fg1
-                            font.family: Config.fontFamily
+                            font.pixelSize: Design.smallFontSize
+                            color: Colours.fg1
+                            font.family: Design.fontFamily
                             text: {
                                 let secsLeft = battery.isCharging ? UPower.displayDevice.timeToFull : UPower.displayDevice.timeToEmpty;
-                                return secsLeft == 0 ? "Loading..." : Helpers.secsToHrsMins(secsLeft);
+                                return secsLeft == 0 ? "Loading..." : MiscService.secsToHrsMins(secsLeft);
                             }
                             Layout.fillHeight: true
                             verticalAlignment: Text.AlignVCenter
@@ -192,9 +192,9 @@ Rectangle {
 
                         // row 3
                         Text {
-                            font.pixelSize: Config.smallFontSize
-                            color: Config.colours.fg2
-                            font.family: Config.fontFamily
+                            font.pixelSize: Design.smallFontSize
+                            color: Colours.fg2
+                            font.family: Design.fontFamily
                             Layout.fillHeight: true
                             text: battery.isCharging ? "Charge rate" : "Discharge rate"
                             verticalAlignment: Text.AlignVCenter
@@ -203,9 +203,9 @@ Rectangle {
                             Layout.fillWidth: true
                         }
                         Text {
-                            font.pixelSize: Config.smallFontSize
-                            color: Config.colours.fg1
-                            font.family: Config.fontFamily
+                            font.pixelSize: Design.smallFontSize
+                            color: Colours.fg1
+                            font.family: Design.fontFamily
                             text: {
                                 if (UPower.displayDevice.changeRate == 0 && !grid.fullAndCharging)
                                     return "Loading...";

@@ -7,7 +7,7 @@ Button {
     id: button
     text: "Lorem ipsum"
     property string iconName
-    property int radius: Config.radius
+    property int radius: Design.radius
 
     Layout.fillWidth: true
 
@@ -20,11 +20,11 @@ Button {
         }
         Text {
             text: button.text
-            font.pixelSize: Config.fontSize
-            font.family: Config.fontFamily
-            color: Config.colours.fg1
-            rightPadding: Config.spacing
-            leftPadding: button.iconName ? 0 : Config.spacing
+            font.pixelSize: Design.fontSize
+            font.family: Design.fontFamily
+            color: Colours.fg1
+            rightPadding: Design.spacing
+            leftPadding: button.iconName ? 0 : Design.spacing
         }
         Item {
             Layout.fillWidth: true
@@ -37,10 +37,10 @@ Button {
         border.width: 0
         color: {
             if (button.pressed)
-                return Config.colours.buttonPressedBg;
+                return Colours.buttonPressedBg;
             else if (button.hovered)
-                return Config.colours.buttonHoveredBg;
-            return Config.colours.buttonInactiveBg;
+                return Colours.buttonHoveredBg;
+            return Colours.buttonInactiveBg;
         }
 
         Behavior on color {
