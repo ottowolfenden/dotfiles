@@ -108,7 +108,8 @@ hl.bind("SUPER + space", hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.
 hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("qs ipc call searchHandler toggle"))
 local inputsToHideQsFlyouts = { "mouse:272", "mouse:273", "mouse:274" }
 for _, input in ipairs(inputsToHideQsFlyouts) do
-    local pos = hl.get_monitor_at_cursor().position.y
+    if not hl.get_active_monitor() or not hl.get_active_monitor().position then return end
+    local pos = hl.get_active_monitor().position.y
     local barHeight = 44
     hl.bind(input, function()
         if hl.get_cursor_pos().y - pos > barHeight then
