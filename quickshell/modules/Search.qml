@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
@@ -14,6 +15,8 @@ Rectangle {
         let modes = SearchConf.modes.map(m => m.name);
         mode = modes[Math.max((modes.indexOf(mode) + 1) % modes.length, 1)];
     }
+
+    property bool exclusive: false
 
     color: ColoursConf.bg2
     radius: DesignConf.radius
@@ -106,13 +109,16 @@ Rectangle {
         id: searchFlyout
         parentX: search.x
         rectWidth: search.width + DesignConf.spacing
-        rectHeight: pane.implicitHeight
+        rectHeight: pane.height
         focusable: false
         onIsOpenChanged: {
-            if (isOpen)
+            if (isOpen) {
                 searchInput.forceActiveFocus();
-            else
+                search.exclusive = true;
+            } else {
                 searchInput.reset();
+                search.exclusive = false;
+            }
         }
 
         Pane {
@@ -128,26 +134,48 @@ Rectangle {
 
                 Repeater {
                     id: appsRepeater
-                    model: SearchService.getApps(searchInput.text, 6)
+                    property int activeIndex: 0
+                    model: SearchService.searchApps(searchInput.text, 6)
                     delegate: Rectangle {
-                        id: appItem
                         required property DesktopEntry modelData
+                        required property int index
+                        property bool pressed: mouseArea.pressed
+                        property bool hovered: (index == appsRepeater.activeIndex) || mouseArea.containsMouse
 
-                        color: ColoursConf.bg2
-                        radius: DesignConf.radius / 2
+                        color: {
+                            if (pressed)
+                                return ColoursConf.buttonPressedBg;
+                            else if (hovered)
+                                return ColoursConf.buttonHoveredBg;
+                            return "transparent";
+                        }
+                        radius: DesignConf.smallRadius
                         Layout.fillWidth: true
                         Layout.preferredHeight: appName.implicitHeight + DesignConf.spacing
 
                         Text {
                             id: appName
+                            text: parent.modelData.name
                             anchors.left: parent.left
                             anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
                             anchors.leftMargin: DesignConf.spacing / 2
-                            text: appItem.modelData.name
                             color: ColoursConf.fg1
                             font.family: DesignConf.fontFamily
                             font.pixelSize: DesignConf.smallFontSize
-                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        MouseArea {
+                            id: mouseArea
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                        }
+
+                        Behavior on color {
+                            ColorAnimation {
+                                duration: 100
+                            }
                         }
                     }
                 }

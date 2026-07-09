@@ -19,7 +19,6 @@ Scope {
         }
         exclusiveZone: DesignConf.barHeight - 1
         focusable: true
-        WlrLayershell.keyboardFocus: search.isOpen ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.OnDemand
 
         Pane {
             id: pane
@@ -98,6 +97,21 @@ Scope {
                     id: search
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
+                    onIsOpenChanged: {
+                        if (isOpen) {
+                            root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive;
+                            releaseFocusTimer.running = true;
+                        } else
+                            root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.OnDemand;
+                    }
+
+                    Timer {
+                        id: releaseFocusTimer
+                        interval: 10
+                        running: false
+                        repeat: false
+                        onTriggered: root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.OnDemand
+                    }
                 }
             }
 
