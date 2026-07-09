@@ -10,6 +10,9 @@ Rectangle {
     id: search
     property bool isOpen: searchFlyout.isOpen
     property string mode: "default"
+    function cycleMode() {
+        mode = Misc.searchModes[Math.max((Misc.searchModes.indexOf(mode) + 1) % Misc.searchModes.length, 1)];
+    }
 
     color: Colours.bg2
     radius: Design.radius
@@ -32,7 +35,7 @@ Rectangle {
 
     IpcHandler {
         target: "searchHandler"
-        function toggle() {
+        function toggle(): void {
             if (search.isOpen)
                 FlyoutsService.hideAllFlyouts();
             else
@@ -63,20 +66,26 @@ Rectangle {
             font.family: search.mode == "terminal" ? Design.monospaceFontFamily : Design.fontFamily
             Layout.fillHeight: true
             Layout.fillWidth: true
-            onTextEdited: {
-                if (text == ">" && search.mode != "terminal") {
-                    search.mode = "terminal";
-                    text = "";
-                }
-            }
+            onTextEdited: {}
             onAccepted: {
                 if (search.mode == "terminal")
                     Quickshell.execDetached(["/bin/sh", "-c", text]);
                 reset();
             }
+
             Keys.onPressed: e => {
+                if (!search.isOpen) {
+                    e.accepted = true;
+                    return;
+                }
                 if (e.key == Qt.Key_Backspace && text == "")
                     search.mode = "default";
+                else if (e.key == Qt.Key_Tab)
+                    search.cycleMode();
+                else if (Object.values(Misc.searchModeBinds).some(v => v.includes(e.key)) && (Misc.isCopilotKey(e) || Misc.isFunctionKey(e))) {
+                    search.mode = Object.keys(Misc.searchModeBinds).find(k => Misc.searchModeBinds[k].includes(e.key));
+                    e.accepted = true;
+                }
             }
 
             function reset() {
