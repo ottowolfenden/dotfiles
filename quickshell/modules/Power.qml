@@ -8,9 +8,9 @@ import "../components"
 Rectangle {
     id: power
     color: "transparent"
-    radius: Design.radius
-    implicitWidth: Design.componentHeight
-    implicitHeight: Design.componentHeight
+    radius: DesignConf.radius
+    implicitWidth: DesignConf.componentHeight
+    implicitHeight: DesignConf.componentHeight
 
     Cutout {}
 
@@ -18,7 +18,7 @@ Rectangle {
         id: icon
         pixelSize: 17
         anchors.centerIn: parent
-        iconName: Icons.power.onOff
+        iconName: IconsConf.power.onOff
         verticalMargin: -2
     }
 
@@ -34,15 +34,15 @@ Rectangle {
 
         Pane {
             id: pane
-            padding: Design.spacing
+            padding: DesignConf.spacing
             background: null
 
             ColumnLayout {
-                spacing: Design.spacing
+                spacing: DesignConf.spacing
 
                 TextButton {
                     text: "Shut down"
-                    iconName: Icons.power.shutDown
+                    iconName: IconsConf.power.shutDown
                     onClicked: {
                         FlyoutsService.hideAllFlyouts();
                         Quickshell.execDetached(["hyprshutdown", "-t", "Shutting down...", "--post-cmd", "systemctl poweroff"]);
@@ -50,7 +50,7 @@ Rectangle {
                 }
                 TextButton {
                     text: "Restart"
-                    iconName: Icons.power.restart
+                    iconName: IconsConf.power.restart
                     onClicked: {
                         FlyoutsService.hideAllFlyouts();
                         Quickshell.execDetached(["hyprshutdown", "-t", "Restarting...", "--post-cmd", "systemctl reboot"]);
@@ -58,7 +58,7 @@ Rectangle {
                 }
                 TextButton {
                     text: "Sleep"
-                    iconName: Icons.power.sleep
+                    iconName: IconsConf.power.sleep
                     onClicked: {
                         FlyoutsService.hideAllFlyouts();
                         Quickshell.execDetached(["systemctl", "suspend"]);
@@ -66,14 +66,14 @@ Rectangle {
                 }
                 TextButton {
                     text: "Lock"
-                    iconName: Icons.power.lock
+                    iconName: IconsConf.power.lock
                     onClicked: {
                         FlyoutsService.hideAllFlyouts();
                         lockTimer.start();
                     }
                     Timer {
                         id: lockTimer
-                        interval: Design.animationDuration
+                        interval: DesignConf.animationDuration
                         repeat: false
                         onTriggered: Quickshell.execDetached(["hyprlock"])
                     }

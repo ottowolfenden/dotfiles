@@ -26,4 +26,8 @@ QtObject {
             return `${minsLeft} ${minsLabel}`;
         return `${hrs} ${hrsLabel} ${minsLeft} ${minsLabel}`;
     }
+
+    function getDistinct(array) {
+        return [...new Set(array)];
+    }
 }

@@ -7,19 +7,19 @@ import "../components"
 
 Rectangle {
     color: "transparent"
-    radius: Design.radius
-    implicitWidth: container.implicitWidth + (Design.spacing * 2)
-    implicitHeight: Design.componentHeight
+    radius: DesignConf.radius
+    implicitWidth: container.implicitWidth + (DesignConf.spacing * 2)
+    implicitHeight: DesignConf.componentHeight
     visible: Hyprland.workspaces.values.length != 1 || (Hyprland.focusedWorkspace?.id ?? 1) != 1
 
     Cutout {}
 
     RowLayout {
         id: container
-        spacing: Design.spacing
+        spacing: DesignConf.spacing
         anchors.fill: parent
-        anchors.leftMargin: Design.spacing
-        anchors.rightMargin: Design.spacing
+        anchors.leftMargin: DesignConf.spacing
+        anchors.rightMargin: DesignConf.spacing
 
         Repeater {
             model: HyprlandService.getRelevantWorkspaceIds(Hyprland.workspaces)
@@ -35,9 +35,9 @@ Rectangle {
                 radius: Infinity
                 color: {
                     if (isActive)
-                        return Colours.lightblue;
+                        return ColoursConf.lightblue;
                     if (exists)
-                        return Colours.fg3;
+                        return ColoursConf.fg3;
                     return "transparent";
                 }
 
@@ -46,14 +46,14 @@ Rectangle {
                     anchors.fill: parent
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    font.family: Design.fontFamily
+                    font.family: DesignConf.fontFamily
                     font.pixelSize: 12
                     color: {
                         if (parent.isActive)
-                            return Colours.invfg;
+                            return ColoursConf.invfg;
                         if (parent.exists)
-                            return Colours.fg1;
-                        return Colours.fg2;
+                            return ColoursConf.fg1;
+                        return ColoursConf.fg2;
                     }
                 }
 

@@ -10,30 +10,30 @@ import "modules/bafs"
 Scope {
     PanelWindow {
         id: root
-        implicitHeight: Design.barHeight + Design.radius
+        implicitHeight: DesignConf.barHeight + DesignConf.radius
         color: "transparent"
         anchors {
             top: true
             right: true
             left: true
         }
-        exclusiveZone: Design.barHeight - 1
+        exclusiveZone: DesignConf.barHeight - 1
         focusable: true
         WlrLayershell.keyboardFocus: search.isOpen ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.OnDemand
 
         Pane {
             id: pane
             anchors.fill: parent
-            implicitHeight: Design.barHeight
+            implicitHeight: DesignConf.barHeight
             topPadding: 0
             bottomPadding: 0
-            leftPadding: Design.spacing
-            rightPadding: Design.spacing
+            leftPadding: DesignConf.spacing
+            rightPadding: DesignConf.spacing
             background: Shape {
                 layer.enabled: true
                 layer.samples: 4
                 ShapePath {
-                    fillColor: Colours.bg1
+                    fillColor: ColoursConf.bg1
                     strokeWidth: 0
 
                     startX: 0
@@ -48,21 +48,21 @@ Scope {
                         y: pane.height
                     }
                     PathArc {
-                        x: pane.width - Design.radius
-                        y: pane.height - Design.radius
-                        radiusX: Design.radius
-                        radiusY: Design.radius
+                        x: pane.width - DesignConf.radius
+                        y: pane.height - DesignConf.radius
+                        radiusX: DesignConf.radius
+                        radiusY: DesignConf.radius
                         direction: PathArc.Counterclockwise
                     }
                     PathLine {
-                        x: Design.radius
-                        y: pane.height - Design.radius
+                        x: DesignConf.radius
+                        y: pane.height - DesignConf.radius
                     }
                     PathArc {
                         x: 0
                         y: pane.height
-                        radiusX: Design.radius
-                        radiusY: Design.radius
+                        radiusX: DesignConf.radius
+                        radiusY: DesignConf.radius
                         direction: PathArc.Counterclockwise
                     }
                     PathLine {
@@ -73,12 +73,12 @@ Scope {
             }
 
             RowLayout {
-                spacing: Design.spacing
+                spacing: DesignConf.spacing
                 anchors {
                     left: parent.left
                     top: parent.top
                     bottom: parent.bottom
-                    bottomMargin: Design.radius
+                    bottomMargin: DesignConf.radius
                 }
 
                 Time {}
@@ -91,7 +91,7 @@ Scope {
                     right: parent.right
                     top: parent.top
                     bottom: parent.bottom
-                    bottomMargin: Design.radius
+                    bottomMargin: DesignConf.radius
                 }
 
                 Search {
@@ -102,12 +102,12 @@ Scope {
             }
 
             RowLayout {
-                spacing: Design.spacing
+                spacing: DesignConf.spacing
                 anchors {
                     right: parent.right
                     top: parent.top
                     bottom: parent.bottom
-                    bottomMargin: Design.radius
+                    bottomMargin: DesignConf.radius
                 }
 
                 Mode {}

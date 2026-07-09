@@ -8,33 +8,33 @@ import "../components"
 Rectangle {
     id: time
     color: "transparent"
-    radius: Design.radius
-    implicitWidth: container.width + (Design.spacing * 2)
-    implicitHeight: Design.componentHeight
+    radius: DesignConf.radius
+    implicitWidth: container.width + (DesignConf.spacing * 2)
+    implicitHeight: DesignConf.componentHeight
 
     Cutout {}
 
     RowLayout {
         id: container
-        spacing: Design.spacing * 2
+        spacing: DesignConf.spacing * 2
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        anchors.leftMargin: Design.spacing
+        anchors.leftMargin: DesignConf.spacing
         Item {
             implicitHeight: timeText.height
             implicitWidth: 35
             Text {
                 id: timeText
-                color: Colours.fg1
-                font.family: Design.fontFamily
-                font.pixelSize: Design.fontSize
+                color: ColoursConf.fg1
+                font.family: DesignConf.fontFamily
+                font.pixelSize: DesignConf.fontSize
             }
         }
         Text {
             id: dateText
-            color: Colours.fg1
-            font.family: Design.fontFamily
-            font.pixelSize: Design.fontSize
+            color: ColoursConf.fg1
+            font.family: DesignConf.fontFamily
+            font.pixelSize: DesignConf.fontSize
         }
     }
 

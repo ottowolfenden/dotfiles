@@ -11,19 +11,19 @@ Rectangle {
     property bool isOpen: searchFlyout.isOpen
     property string mode: "default"
     function cycleMode() {
-        let modes = Misc.searchModes.map(m => m.name);
+        let modes = SearchConf.modes.map(m => m.name);
         mode = modes[Math.max((modes.indexOf(mode) + 1) % modes.length, 1)];
     }
 
-    color: Colours.bg2
-    radius: Design.radius
-    width: search.isOpen ? 300 : Design.componentHeight
-    height: Design.componentHeight
+    color: ColoursConf.bg2
+    radius: DesignConf.radius
+    width: search.isOpen ? DesignConf.searchBoxWidth : DesignConf.componentHeight
+    height: DesignConf.componentHeight
 
     Behavior on width {
         NumberAnimation {
-            duration: Design.animationDuration
-            easing: Design.easing
+            duration: DesignConf.animationDuration
+            easing: DesignConf.easing
         }
     }
 
@@ -49,22 +49,22 @@ Rectangle {
         spacing: 0
 
         Item {
-            Layout.preferredWidth: Design.componentHeight
-            Layout.preferredHeight: Design.componentHeight
+            Layout.preferredWidth: DesignConf.componentHeight
+            Layout.preferredHeight: DesignConf.componentHeight
             Icon {
                 id: icon
-                iconName: Icons.searchMode[search.mode] ?? Icons.searchMode["default"]
+                iconName: IconsConf.searchMode[search.mode] ?? IconsConf.searchMode["default"]
                 anchors.fill: parent
             }
         }
 
         TextField {
             id: searchInput
-            color: Colours.fg1
-            placeholderText: Misc.searchModes.find(m => m.name == search.mode).placeholder
+            color: ColoursConf.fg1
+            placeholderText: SearchConf.modes.find(m => m.name == search.mode).placeholder
             background: null
-            font.pixelSize: Design.fontSize
-            font.family: search.mode == "command" ? Design.monospaceFontFamily : Design.fontFamily
+            font.pixelSize: DesignConf.fontSize
+            font.family: search.mode == "command" ? DesignConf.monospaceFontFamily : DesignConf.fontFamily
             Layout.fillHeight: true
             Layout.fillWidth: true
             onTextEdited: {}
@@ -86,7 +86,7 @@ Rectangle {
             }
 
             Keys.onReleased: e => {
-                let mode = Misc.searchModes.find(m => m.prefixes.some(p => text.startsWith(p)));
+                let mode = SearchConf.modes.find(m => m.prefixes.some(p => text.startsWith(p)));
                 let prefix = mode?.prefixes.find(p => text.startsWith(p));
                 if (mode && search.mode != mode.name) {
                     search.mode = mode.name;
@@ -105,7 +105,7 @@ Rectangle {
     Flyout {
         id: searchFlyout
         parentX: search.x
-        rectWidth: pane.implicitWidth
+        rectWidth: search.width + DesignConf.spacing
         rectHeight: pane.implicitHeight
         focusable: false
         onIsOpenChanged: {
@@ -117,8 +117,41 @@ Rectangle {
 
         Pane {
             id: pane
-            padding: 0
+            padding: appsRepeater.model.length == 0 ? 0 : DesignConf.spacing
+            anchors.left: parent.left
+            anchors.right: parent.right
             background: null
+
+            ColumnLayout {
+                anchors.fill: parent
+                spacing: DesignConf.spacing / 2
+
+                Repeater {
+                    id: appsRepeater
+                    model: SearchService.getApps(searchInput.text, 6)
+                    delegate: Rectangle {
+                        id: appItem
+                        required property DesktopEntry modelData
+
+                        color: ColoursConf.bg2
+                        radius: DesignConf.radius / 2
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: appName.implicitHeight + DesignConf.spacing
+
+                        Text {
+                            id: appName
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.leftMargin: DesignConf.spacing / 2
+                            text: appItem.modelData.name
+                            color: ColoursConf.fg1
+                            font.family: DesignConf.fontFamily
+                            font.pixelSize: DesignConf.smallFontSize
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -6,16 +6,16 @@ import "../components"
 Rectangle {
     id: mode
     color: "transparent"
-    radius: Design.radius
-    implicitWidth: Design.componentHeight
-    implicitHeight: Design.componentHeight
+    radius: DesignConf.radius
+    implicitWidth: DesignConf.componentHeight
+    implicitHeight: DesignConf.componentHeight
 
     Cutout {}
 
     Icon {
         id: icon
         anchors.centerIn: parent
-        iconName: Icons.mode[ModeService.mode ?? "none"]
+        iconName: IconsConf.mode[ModeService.mode ?? "none"]
     }
 
     MouseArea {
@@ -24,7 +24,7 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
         onClicked: {
             ModeService.swap();
-            Quickshell.execDetached([Directories.scripts + "set-theme.sh", ModeService.mode]);
+            Quickshell.execDetached([DirectoriesConf.scripts + "set-theme.sh", ModeService.mode]);
         }
     }
 }

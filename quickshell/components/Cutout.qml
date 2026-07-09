@@ -23,7 +23,7 @@ Item {
 
         Rectangle {
             anchors.fill: parent
-            color: Colours.cutoutBg
+            color: ColoursConf.cutoutBg
         }
     }
 
@@ -31,14 +31,14 @@ Item {
         id: blurredContainer
         anchors.fill: parent
         source: maskContainer
-        radius: Design.blurRadius
+        radius: DesignConf.blurRadius
         visible: false
     }
 
     Rectangle {
         id: maskShape
         anchors.fill: parent
-        radius: Design.radius
+        radius: DesignConf.radius
         visible: false
     }
 

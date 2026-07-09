@@ -24,7 +24,7 @@ QtObject {
     }
 
     function isEarbud(btDevice: var): bool {
-        return Misc.earbudSubstrings.some(s => btDevice.name.toLowerCase().includes(s) || btDevice.deviceName.toLowerCase().includes(s));
+        return AudioConf.earbudSubstrings.some(s => btDevice.name.toLowerCase().includes(s) || btDevice.deviceName.toLowerCase().includes(s));
     }
 
     function containsHdmi(pwNode: PwNode): bool {
@@ -41,14 +41,14 @@ QtObject {
 
     function getSinkDetails(sink: PwNode): var {
         let unknown = {
-            icon: Icons.devices["computer"],
+            icon: IconsConf.devices["computer"],
             name: "Laptop"
         };
 
         let btDevice = sinkToBtDevice(sink);
         if (btDevice)
             return {
-                icon: isEarbud(btDevice) ? Icons.devices["earbud"] : Icons.devices[btDevice.icon] ?? Icons.devices["bluetooth"],
+                icon: isEarbud(btDevice) ? IconsConf.devices["earbud"] : IconsConf.devices[btDevice.icon] ?? IconsConf.devices["bluetooth"],
                 name: btDevice.name
             };
 
@@ -58,16 +58,16 @@ QtObject {
         let sinkName = sink.nickname != "" && sink.nickname ? sink.nickname : sink.description;
         if (sinkIcon)
             return {
-                icon: Icons.devices[sinkIcon] ?? Icons.devices["computer"],
+                icon: IconsConf.devices[sinkIcon] ?? IconsConf.devices["computer"],
                 name: sinkName && !["", "Speaker"].includes(sinkName) ? sinkName : "Laptop"
             };
         return unknown;
     }
 
     function getFilteredSinks(): list<PwNode> {
-        let filtered = Pipewire.nodes.values.filter(n => n.audio && n.ready && !n.isStream && n.isSink && (System.showHdmiSinks || !containsHdmi(n)));
+        let filtered = Pipewire.nodes.values.filter(n => n.audio && n.ready && !n.isStream && n.isSink && (SystemConf.showHdmiSinks || !containsHdmi(n)));
         filtered.sort((a, b) => getSinkDetails(a).name > getSinkDetails(b).name ? 1 : -1);
-        let target = filtered.find(n => n.name == System.mainPwNodeName);
+        let target = filtered.find(n => n.name == SystemConf.mainPwNodeName);
         if (!target)
             return filtered;
         return [target, ...filtered.filter(item => item != target)];

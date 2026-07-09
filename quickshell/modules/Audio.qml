@@ -11,9 +11,9 @@ import "../components"
 Rectangle {
     id: audio
     color: "transparent"
-    radius: Design.radius
-    implicitWidth: container.implicitWidth + (Design.spacing * 2)
-    Layout.preferredHeight: Design.componentHeight
+    radius: DesignConf.radius
+    implicitWidth: container.implicitWidth + (DesignConf.spacing * 2)
+    Layout.preferredHeight: DesignConf.componentHeight
 
     readonly property PwNode sink: Pipewire.defaultAudioSink
     readonly property int percent: Math.round(sink?.audio.volume * 100)
@@ -23,21 +23,21 @@ Rectangle {
 
     RowLayout {
         id: container
-        spacing: Design.iconTextSpacing
+        spacing: DesignConf.iconTextSpacing
         anchors.fill: parent
-        anchors.leftMargin: Design.spacing
-        anchors.rightMargin: Design.spacing
+        anchors.leftMargin: DesignConf.spacing
+        anchors.rightMargin: DesignConf.spacing
 
         Icon {
             id: barIcon
-            iconName: Icons.volume?.find(i => i.muted == audio.sink?.audio?.muted || audio.percent <= i.max)?.icon
+            iconName: IconsConf.volume?.find(i => i.muted == audio.sink?.audio?.muted || audio.percent <= i.max)?.icon
         }
 
         Text {
             text: audio.percent + "%"
-            color: Colours.fg1
-            font.family: Design.fontFamily
-            font.pixelSize: Design.fontSize
+            color: ColoursConf.fg1
+            font.family: DesignConf.fontFamily
+            font.pixelSize: DesignConf.fontSize
             horizontalAlignment: Text.AlignHCenter
             Layout.preferredWidth: 40
         }
@@ -77,17 +77,17 @@ Rectangle {
             audio.players = AudioService.getFilteredPlayers();
             list.highlightMoveDuration = 0;
             list.currentIndex = 0;
-            list.highlightMoveDuration = Design.listAnimationDuration;
+            list.highlightMoveDuration = DesignConf.listAnimationDuration;
             refilterPlayersTimer.restart();
         }
 
         Pane {
             id: pane
-            padding: Design.spacing
+            padding: DesignConf.spacing
             background: null
 
             ColumnLayout {
-                spacing: Design.spacing
+                spacing: DesignConf.spacing
 
                 Item {
                     Layout.alignment: Qt.AlignHCenter
@@ -98,7 +98,7 @@ Rectangle {
                     RowLayout {
                         id: mediaContainer
                         IconButton {
-                            iconName: Icons.backward
+                            iconName: IconsConf.backward
                             buttonPixelSize: 23
                             onClicked: list.decrementCurrentIndex()
                             disabled: list.currentIndex == 0
@@ -106,10 +106,10 @@ Rectangle {
                             Layout.alignment: Qt.AlignTop
                         }
                         Rectangle {
-                            Layout.preferredWidth: list.width + Design.spacing * 2
-                            Layout.preferredHeight: list.height + Design.spacing * 2
-                            color: Colours.bg2
-                            radius: Design.radius
+                            Layout.preferredWidth: list.width + DesignConf.spacing * 2
+                            Layout.preferredHeight: list.height + DesignConf.spacing * 2
+                            color: ColoursConf.bg2
+                            radius: DesignConf.radius
                             clip: true
 
                             ListView {
@@ -119,29 +119,29 @@ Rectangle {
                                 height: currentItem?.height ?? 0
                                 anchors.centerIn: parent
                                 orientation: ListView.Horizontal
-                                spacing: Design.spacing * 2
+                                spacing: DesignConf.spacing * 2
 
                                 boundsBehavior: Flickable.StopAtBounds
                                 snapMode: ListView.SnapToItem
                                 highlightRangeMode: ListView.StrictlyEnforceRange
-                                highlightMoveDuration: Design.listAnimationDuration
+                                highlightMoveDuration: DesignConf.listAnimationDuration
 
                                 model: audio.players
                                 delegate: ColumnLayout {
                                     id: item
                                     required property MprisPlayer modelData
-                                    spacing: Design.spacing
+                                    spacing: DesignConf.spacing
 
                                     Text {
                                         id: identityText
-                                        text: Misc.playerIdentityNames[item.modelData.identity] ?? item.modelData.identity
+                                        text: AudioConf.playerIdentityNames[item.modelData.identity] ?? item.modelData.identity
                                         Layout.fillWidth: true
                                         Layout.preferredWidth: buttonsContainer.implicitWidth
                                         horizontalAlignment: Text.AlignHCenter
                                         elide: Text.ElideRight
-                                        color: Colours.fg1
-                                        font.family: Design.fontFamily
-                                        font.pixelSize: Design.smallFontSize
+                                        color: ColoursConf.fg1
+                                        font.family: DesignConf.fontFamily
+                                        font.pixelSize: DesignConf.smallFontSize
                                         MouseArea {
                                             anchors.fill: parent
                                             hoverEnabled: true
@@ -163,34 +163,34 @@ Rectangle {
                                             if (audio.players.length == 0)
                                                 return false;
                                             let isActive = [MprisPlaybackState.Paused, MprisPlaybackState.Playing].includes(item.modelData.playbackState);
-                                            return isActive && Misc.playerRequirements.every(r => item.modelData[r]);
+                                            return isActive && AudioConf.playerRequirements.every(r => item.modelData[r]);
                                         }
                                         onValidPlayerPresentChanged: {
                                             if (!validPlayerPresent)
                                                 visibilityTimer.restart();
                                         }
                                         visible: validPlayerPresent || visibilityTimer.running
-                                        spacing: Design.spacing * 2
+                                        spacing: DesignConf.spacing * 2
                                         Layout.alignment: Qt.AlignHCenter
 
                                         IconButton {
-                                            iconName: Icons.media.skipBack
+                                            iconName: IconsConf.media.skipBack
                                             disabled: !item.modelData.canGoPrevious && !visibilityTimer.running
-                                            buttonPixelSize: Design.circleButtonDiameter * 0.9
+                                            buttonPixelSize: DesignConf.circleButtonDiameter * 0.9
                                             onClicked: {
                                                 if (!disabled)
                                                     item.modelData.previous();
                                             }
                                         }
                                         IconButton {
-                                            iconName: Icons.media[item.modelData.isPlaying || visibilityTimer.running ? "pause" : "play"]
-                                            buttonPixelSize: Design.circleButtonDiameter * 1.2
+                                            iconName: IconsConf.media[item.modelData.isPlaying || visibilityTimer.running ? "pause" : "play"]
+                                            buttonPixelSize: DesignConf.circleButtonDiameter * 1.2
                                             onClicked: item.modelData.togglePlaying()
                                         }
                                         IconButton {
-                                            iconName: Icons.media.skip
+                                            iconName: IconsConf.media.skip
                                             disabled: !item.modelData.canGoNext && !visibilityTimer.running
-                                            buttonPixelSize: Design.circleButtonDiameter * 0.9
+                                            buttonPixelSize: DesignConf.circleButtonDiameter * 0.9
                                             onClicked: {
                                                 if (!disabled)
                                                     item.modelData.next();
@@ -208,7 +208,7 @@ Rectangle {
                             }
                         }
                         IconButton {
-                            iconName: Icons.forward
+                            iconName: IconsConf.forward
                             buttonPixelSize: 23
                             onClicked: list.incrementCurrentIndex()
                             disabled: list.currentIndex == list.count - 1
@@ -226,16 +226,16 @@ Rectangle {
 
                 Rectangle {
                     Layout.fillWidth: true
-                    implicitHeight: sinkSelection.implicitHeight + Design.spacing * 2
-                    color: Colours.bg2
-                    radius: Design.radius
+                    implicitHeight: sinkSelection.implicitHeight + DesignConf.spacing * 2
+                    color: ColoursConf.bg2
+                    radius: DesignConf.radius
                     visible: repeater.model.length > 1
 
                     ColumnLayout {
                         id: sinkSelection
-                        spacing: Design.spacing
+                        spacing: DesignConf.spacing
                         anchors.fill: parent
-                        anchors.margins: Design.spacing
+                        anchors.margins: DesignConf.spacing
 
                         Repeater {
                             id: repeater
@@ -245,41 +245,41 @@ Rectangle {
                                 id: node
                                 required property PwNode modelData
                                 property bool isActive: node.modelData == audio.sink
-                                property color colour: isActive ? Colours.lightblue : Colours.fg1
-                                radius: Design.radius
+                                property color colour: isActive ? ColoursConf.lightblue : ColoursConf.fg1
+                                radius: DesignConf.radius
                                 color: {
                                     if (isActive)
-                                        return Colours.selectedBg;
+                                        return ColoursConf.selectedBg;
                                     if (mouseArea.pressed)
-                                        return Colours.buttonPressedBg;
+                                        return ColoursConf.buttonPressedBg;
                                     else if (mouseArea.containsMouse)
-                                        return Colours.buttonHoveredBg;
-                                    return Colours.buttonInactiveBg;
+                                        return ColoursConf.buttonHoveredBg;
+                                    return ColoursConf.buttonInactiveBg;
                                 }
                                 Layout.fillWidth: true
-                                Layout.preferredHeight: row.implicitHeight + Design.spacing
+                                Layout.preferredHeight: row.implicitHeight + DesignConf.spacing
 
                                 RowLayout {
                                     id: row
                                     anchors.left: parent.left
                                     anchors.right: parent.right
                                     anchors.verticalCenter: parent.verticalCenter
-                                    anchors.leftMargin: Design.spacing / 2
-                                    anchors.rightMargin: Design.spacing / 2
+                                    anchors.leftMargin: DesignConf.spacing / 2
+                                    anchors.rightMargin: DesignConf.spacing / 2
                                     Icon {
-                                        iconName: node.isActive ? Icons.tick : AudioService.getSinkDetails(node.modelData).icon
+                                        iconName: node.isActive ? IconsConf.tick : AudioService.getSinkDetails(node.modelData).icon
                                         colour: node.colour
-                                        Layout.leftMargin: Design.spacing / 2
+                                        Layout.leftMargin: DesignConf.spacing / 2
                                     }
                                     Text {
                                         id: text
                                         text: AudioService.getSinkDetails(node.modelData).name
                                         Layout.fillWidth: true
                                         elide: Text.ElideRight
-                                        font.family: Design.fontFamily
-                                        font.pixelSize: Design.smallFontSize
+                                        font.family: DesignConf.fontFamily
+                                        font.pixelSize: DesignConf.smallFontSize
                                         color: node.colour
-                                        Layout.leftMargin: Design.spacing / 2
+                                        Layout.leftMargin: DesignConf.spacing / 2
                                     }
                                     Item {
                                         Layout.fillWidth: true
@@ -287,10 +287,10 @@ Rectangle {
                                     Text {
                                         text: Math.round(node.modelData.audio.volume * 100) + "%"
                                         font.strikeout: node.modelData.audio.muted
-                                        font.family: Design.fontFamily
-                                        font.pixelSize: Design.smallFontSize
+                                        font.family: DesignConf.fontFamily
+                                        font.pixelSize: DesignConf.smallFontSize
                                         color: node.colour
-                                        Layout.rightMargin: Design.spacing / 2
+                                        Layout.rightMargin: DesignConf.spacing / 2
                                     }
                                 }
 

@@ -6,14 +6,14 @@ Button {
     id: button
     property string iconName
     property real radius: Infinity
-    property int buttonPixelSize: Design.circleButtonDiameter
+    property int buttonPixelSize: DesignConf.circleButtonDiameter
     property int iconPixelSize: buttonPixelSize * 0.65
     property bool disabled: false
 
     contentItem: Icon {
         iconName: button.iconName
         pixelSize: button.iconPixelSize
-        colour: button.disabled ? Colours.fg3 : Colours.fg1
+        colour: button.disabled ? ColoursConf.fg3 : ColoursConf.fg1
     }
 
     background: Rectangle {
@@ -23,12 +23,12 @@ Button {
         border.width: 0
         color: {
             if (button.disabled)
-                return Colours.buttonInactiveBg;
+                return ColoursConf.buttonInactiveBg;
             if (button.pressed)
-                return Colours.buttonPressedBg;
+                return ColoursConf.buttonPressedBg;
             else if (button.hovered)
-                return Colours.buttonHoveredBg;
-            return Colours.buttonInactiveBg;
+                return ColoursConf.buttonHoveredBg;
+            return ColoursConf.buttonInactiveBg;
         }
 
         Behavior on color {

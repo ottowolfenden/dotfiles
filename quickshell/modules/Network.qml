@@ -8,9 +8,9 @@ import "../components"
 Rectangle {
     id: network
     color: "transparent"
-    radius: Design.radius
-    implicitWidth: container.implicitWidth + (Design.spacing * 2)
-    Layout.preferredHeight: Design.componentHeight
+    radius: DesignConf.radius
+    implicitWidth: container.implicitWidth + (DesignConf.spacing * 2)
+    Layout.preferredHeight: DesignConf.componentHeight
 
     property WifiDevice wifiDevice: Networking.devices.values.find(d => d.type == DeviceType.Wifi) ?? null
     property WifiNetwork wifiNetwork: wifiDevice?.networks?.values.find(n => n.connected) ?? null
@@ -22,19 +22,19 @@ Rectangle {
 
     RowLayout {
         id: container
-        spacing: Design.spacing
+        spacing: DesignConf.spacing
         anchors.fill: parent
-        anchors.leftMargin: Design.spacing
-        anchors.rightMargin: Design.spacing
+        anchors.leftMargin: DesignConf.spacing
+        anchors.rightMargin: DesignConf.spacing
 
         Icon {
-            property var icons: Icons.wifi.find(i => i.connectivity == (Networking.connectivity ?? NetworkConnectivity.Unknown)).icons.find(j => network.wifiStrength <= (j.max ?? 1))
+            property var icons: IconsConf.wifi.find(i => i.connectivity == (Networking.connectivity ?? NetworkConnectivity.Unknown)).icons.find(j => network.wifiStrength <= (j.max ?? 1))
             iconName: (network.isWifiSecured ? icons.secured : icons.open)
             fill: icons.fill ?? false
         }
 
         Icon {
-            iconName: network.isVpnConnected ? Icons.vpn.on : Icons.vpn.off
+            iconName: network.isVpnConnected ? IconsConf.vpn.on : IconsConf.vpn.off
             opacity: 1
 
             MouseArea {
@@ -85,7 +85,7 @@ Rectangle {
         id: vpnCheck
         command: ["nmcli", "connection", "show", "--active"]
         stdout: StdioCollector {
-            onStreamFinished: network.isVpnConnected = System.vpnIdentifiers.some(i => text.toLowerCase().includes(i))
+            onStreamFinished: network.isVpnConnected = SystemConf.vpnIdentifiers.some(i => text.toLowerCase().includes(i))
         }
     }
 

@@ -15,19 +15,19 @@ Scope {
             2: current,
             4: max
         } = text.trim().split(",");
-        System.maxBrightness = max;
-        root.brightness = (max / (max - System.minBrightness)) * (current - System.minBrightness);
+        SystemConf.maxBrightness = max;
+        root.brightness = (max / (max - SystemConf.minBrightness)) * (current - SystemConf.minBrightness);
     }
 
     BottomAutoFlyout {
         type: "brightness"
         Slider {
-            value: root.brightness / System.maxBrightness
+            value: root.brightness / SystemConf.maxBrightness
             onChanged: newValue => {
-                root.brightness = System.maxBrightness * newValue;
-                Quickshell.execDetached(["brightnessctl", "-n" + System.minBrightness, "s", root.brightness]);
+                root.brightness = SystemConf.maxBrightness * newValue;
+                Quickshell.execDetached(["brightnessctl", "-n" + SystemConf.minBrightness, "s", root.brightness]);
             }
-            iconName: Icons.brightness.find(i => i.max >= root.brightness / System.maxBrightness).icon
+            iconName: IconsConf.brightness.find(i => i.max >= root.brightness / SystemConf.maxBrightness).icon
         }
     }
 
@@ -42,7 +42,7 @@ Scope {
 
     Process {
         id: changeBrightnessProc
-        command: ["brightnessctl", "-n" + System.minBrightness, "-m", "s", "10%" + (root.increasing ? "+" : "-")]
+        command: ["brightnessctl", "-n" + SystemConf.minBrightness, "-m", "s", "10%" + (root.increasing ? "+" : "-")]
         stdout: StdioCollector {
             onStreamFinished: root.setBrightness(text)
         }

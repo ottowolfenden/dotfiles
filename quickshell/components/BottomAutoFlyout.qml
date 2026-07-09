@@ -13,7 +13,7 @@ PanelWindow {
     property bool hovering: false
     property bool isOpen: false
     property Timer autoHideTimer: Timer {
-        interval: Design.bafMsDelay
+        interval: DesignConf.bafMsDelay
         repeat: false
         onTriggered: FlyoutsService.hideBaf(baf)
     }
@@ -44,7 +44,7 @@ PanelWindow {
         }
 
         ShapePath {
-            fillColor: Colours.bg1
+            fillColor: ColoursConf.bg1
             strokeWidth: 0
 
             startX: 0
@@ -52,23 +52,23 @@ PanelWindow {
 
             PathLine {
                 x: 0
-                y: Design.radius
+                y: DesignConf.radius
             }
             PathArc {
-                x: Design.radius
+                x: DesignConf.radius
                 y: 0
-                radiusX: Design.radius
-                radiusY: Design.radius
+                radiusX: DesignConf.radius
+                radiusY: DesignConf.radius
             }
             PathLine {
-                x: rect.width - Design.radius
+                x: rect.width - DesignConf.radius
                 y: 0
             }
             PathArc {
                 x: rect.width
-                y: Design.radius
-                radiusX: Design.radius
-                radiusY: Design.radius
+                y: DesignConf.radius
+                radiusX: DesignConf.radius
+                radiusY: DesignConf.radius
             }
             PathLine {
                 x: rect.width
@@ -83,8 +83,8 @@ PanelWindow {
         Behavior on y {
             enabled: baf.height > 0
             NumberAnimation {
-                duration: Design.animationDuration
-                easing: Design.easing
+                duration: DesignConf.animationDuration
+                easing: DesignConf.easing
             }
         }
 
@@ -94,8 +94,8 @@ PanelWindow {
 
         Pane {
             id: pane
-            verticalPadding: Design.spacing
-            horizontalPadding: contentContainer.children.every(c => c.toString().includes("Slider")) ? Design.sliderHandleOffset : Design.spacing
+            verticalPadding: DesignConf.spacing
+            horizontalPadding: contentContainer.children.every(c => c.toString().includes("Slider")) ? DesignConf.sliderHandleOffset : DesignConf.spacing
             background: null
             anchors.fill: parent
 
@@ -108,27 +108,27 @@ PanelWindow {
 
     Shape {
         id: middleInvRounding
-        property int scaledHeight: Math.max(rect.y + Design.radius, baf.height - Design.radius)
+        property int scaledHeight: Math.max(rect.y + DesignConf.radius, baf.height - DesignConf.radius)
         layer.enabled: true
         layer.samples: 20
         opacity: baf.isOpen || rect.y < baf.height ? 1 : 0
 
         ShapePath {
-            fillColor: Colours.bg1
+            fillColor: ColoursConf.bg1
             strokeWidth: 0
 
             startX: rect.x
             startY: baf.height
 
             PathLine {
-                x: rect.x - Design.radius
+                x: rect.x - DesignConf.radius
                 y: baf.height
             }
             PathArc {
                 x: rect.x
                 y: middleInvRounding.scaledHeight
-                radiusX: Design.radius
-                radiusY: Design.radius
+                radiusX: DesignConf.radius
+                radiusY: DesignConf.radius
                 direction: PathArc.Counterclockwise
             }
             PathLine {
@@ -137,21 +137,21 @@ PanelWindow {
             }
         }
         ShapePath {
-            fillColor: Colours.bg1
+            fillColor: ColoursConf.bg1
             strokeWidth: 0
 
             startX: rect.x + rect.width
             startY: baf.height
 
             PathLine {
-                x: rect.x + rect.width + Design.radius
+                x: rect.x + rect.width + DesignConf.radius
                 y: baf.height
             }
             PathArc {
                 x: rect.x + rect.width
                 y: middleInvRounding.scaledHeight
-                radiusX: Design.radius
-                radiusY: Design.radius
+                radiusX: DesignConf.radius
+                radiusY: DesignConf.radius
             }
             PathLine {
                 x: rect.x + rect.width

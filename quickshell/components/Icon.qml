@@ -5,7 +5,7 @@ Item {
     required property string iconName
 
     property int pixelSize: 18
-    property color colour: Colours.fg1
+    property color colour: ColoursConf.fg1
     property bool fill: false
     property int horizontalMargin: 0
     property int verticalMargin: 0

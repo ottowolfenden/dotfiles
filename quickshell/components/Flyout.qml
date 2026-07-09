@@ -43,7 +43,7 @@ PanelWindow {
         clip: true
 
         ShapePath {
-            fillColor: Colours.bg1
+            fillColor: ColoursConf.bg1
             strokeWidth: 0
 
             startX: 0
@@ -55,23 +55,23 @@ PanelWindow {
             }
             PathLine {
                 x: rect.width
-                y: rect.height - Design.radius
+                y: rect.height - DesignConf.radius
             }
             PathArc {
-                x: rect.width - Design.radius
+                x: rect.width - DesignConf.radius
                 y: rect.height
-                radiusX: Design.radius
-                radiusY: Design.radius
+                radiusX: DesignConf.radius
+                radiusY: DesignConf.radius
             }
             PathLine {
-                x: Design.radius
+                x: DesignConf.radius
                 y: rect.height
             }
             PathArc {
                 x: 0
-                y: rect.height - Design.radius
-                radiusX: Design.radius
-                radiusY: Design.radius
+                y: rect.height - DesignConf.radius
+                radiusX: DesignConf.radius
+                radiusY: DesignConf.radius
             }
             PathLine {
                 x: 0
@@ -81,15 +81,15 @@ PanelWindow {
 
         Behavior on y {
             NumberAnimation {
-                duration: Design.animationDuration
-                easing: Design.easing
+                duration: DesignConf.animationDuration
+                easing: DesignConf.easing
             }
         }
 
         Behavior on height {
             NumberAnimation {
-                duration: Design.animationDuration
-                easing: Design.easing
+                duration: DesignConf.animationDuration
+                easing: DesignConf.easing
             }
         }
 
@@ -105,24 +105,24 @@ PanelWindow {
 
     Shape {
         id: middleInvRounding
-        property int scaledHeight: Math.min(rect.height + rect.y - Design.radius, Design.radius)
+        property int scaledHeight: Math.min(rect.height + rect.y - DesignConf.radius, DesignConf.radius)
 
         ShapePath {
-            fillColor: Colours.bg1
+            fillColor: ColoursConf.bg1
             strokeWidth: 0
 
             startX: rect.x
             startY: 0
 
             PathLine {
-                x: rect.x - Design.radius
+                x: rect.x - DesignConf.radius
                 y: 0
             }
             PathArc {
                 x: rect.x
                 y: middleInvRounding.scaledHeight
-                radiusX: Design.radius
-                radiusY: Design.radius
+                radiusX: DesignConf.radius
+                radiusY: DesignConf.radius
             }
             PathLine {
                 x: rect.x
@@ -130,21 +130,21 @@ PanelWindow {
             }
         }
         ShapePath {
-            fillColor: Colours.bg1
+            fillColor: ColoursConf.bg1
             strokeWidth: 0
 
             startX: rect.x + rect.width
             startY: 0
 
             PathLine {
-                x: rect.x + rect.width + Design.radius
+                x: rect.x + rect.width + DesignConf.radius
                 y: 0
             }
             PathArc {
                 x: rect.x + rect.width
                 y: middleInvRounding.scaledHeight
-                radiusX: Design.radius
-                radiusY: Design.radius
+                radiusX: DesignConf.radius
+                radiusY: DesignConf.radius
                 direction: PathArc.Counterclockwise
             }
             PathLine {

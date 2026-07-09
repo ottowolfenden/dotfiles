@@ -14,16 +14,16 @@ Rectangle {
     property bool ignoreUpdates: false
     property int activeIndex: -1
 
-    implicitHeight: rowLayout.implicitHeight + Design.spacing * 2
-    implicitWidth: rowLayout.implicitWidth + Design.spacing * 2
+    implicitHeight: rowLayout.implicitHeight + DesignConf.spacing * 2
+    implicitWidth: rowLayout.implicitWidth + DesignConf.spacing * 2
     Layout.alignment: Qt.AlignHCenter
-    color: Colours.bg2
+    color: ColoursConf.bg2
     radius: Infinity
 
     RowLayout {
         id: rowLayout
         anchors.centerIn: parent
-        spacing: Design.spacing
+        spacing: DesignConf.spacing
 
         Repeater {
             id: repeater
@@ -33,23 +33,23 @@ Rectangle {
                 required property int index
                 required property string modelData
 
-                implicitWidth: Design.circleButtonDiameter
-                implicitHeight: Design.circleButtonDiameter
+                implicitWidth: DesignConf.circleButtonDiameter
+                implicitHeight: DesignConf.circleButtonDiameter
 
                 color: {
                     if (index == toggleGroup.activeIndex)
-                        return Colours.lightblue;
+                        return ColoursConf.lightblue;
                     if (mouseArea.pressed)
-                        return Colours.buttonPressedBg;
+                        return ColoursConf.buttonPressedBg;
                     else if (mouseArea.containsMouse)
-                        return Colours.buttonHoveredBg;
-                    return Colours.buttonInactiveBg;
+                        return ColoursConf.buttonHoveredBg;
+                    return ColoursConf.buttonInactiveBg;
                 }
                 radius: Infinity
                 Icon {
                     iconName: parent.modelData
                     anchors.fill: parent
-                    colour: parent.index == toggleGroup.activeIndex ? Colours.invfg : Colours.fg1
+                    colour: parent.index == toggleGroup.activeIndex ? ColoursConf.invfg : ColoursConf.fg1
                 }
                 MouseArea {
                     id: mouseArea
