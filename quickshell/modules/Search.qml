@@ -11,7 +11,8 @@ Rectangle {
     property bool isOpen: searchFlyout.isOpen
     property string mode: "default"
     function cycleMode() {
-        mode = Misc.searchModes[Math.max((Misc.searchModes.indexOf(mode) + 1) % Misc.searchModes.length, 1)];
+        let modes = Misc.searchModes.map(m => m.name);
+        mode = modes[Math.max((modes.indexOf(mode) + 1) % modes.length, 1)];
     }
 
     color: Colours.bg2
@@ -60,15 +61,15 @@ Rectangle {
         TextField {
             id: searchInput
             color: Colours.fg1
-            placeholderText: Misc.searchModePlaceholder[search.mode] ?? Misc.searchModePlaceholder["default"]
+            placeholderText: Misc.searchModes.find(m => m.name == search.mode).placeholder
             background: null
             font.pixelSize: Design.fontSize
-            font.family: search.mode == "terminal" ? Design.monospaceFontFamily : Design.fontFamily
+            font.family: search.mode == "command" ? Design.monospaceFontFamily : Design.fontFamily
             Layout.fillHeight: true
             Layout.fillWidth: true
             onTextEdited: {}
             onAccepted: {
-                if (search.mode == "terminal")
+                if (search.mode == "command")
                     Quickshell.execDetached(["/bin/sh", "-c", text]);
                 reset();
             }
@@ -82,9 +83,14 @@ Rectangle {
                     search.mode = "default";
                 else if (e.key == Qt.Key_Tab)
                     search.cycleMode();
-                else if (Object.values(Misc.searchModeBinds).some(v => v.includes(e.key)) && (Misc.isCopilotKey(e) || Misc.isFunctionKey(e))) {
-                    search.mode = Object.keys(Misc.searchModeBinds).find(k => Misc.searchModeBinds[k].includes(e.key));
-                    e.accepted = true;
+            }
+
+            Keys.onReleased: e => {
+                let mode = Misc.searchModes.find(m => m.prefixes.some(p => text.startsWith(p)));
+                let prefix = mode?.prefixes.find(p => text.startsWith(p));
+                if (mode && search.mode != mode.name) {
+                    search.mode = mode.name;
+                    text = text.replace(prefix, "");
                 }
             }
 

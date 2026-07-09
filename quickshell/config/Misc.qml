@@ -8,20 +8,31 @@ QtObject {
         "com.github.th-ch.youtube-music": "YouTube Music"
     }
 
-    readonly property list<string> searchModes: ["default", "apps", "files", "web", "terminal"]
-    readonly property var searchModePlaceholder: ({
-            default: "Search",
-            apps: "Search apps",
-            files: "Search files and folders",
-            web: "Search the web",
-            terminal: "Execute"
-        })
-    readonly property var searchModeBinds: ({
-            apps: [Qt.Key_A, Qt.Key_F1],
-            files: [Qt.Key_T, Qt.Key_F2],
-            web: [Qt.Key_B, Qt.Key_F3],
-            terminal: [Qt.Key_Q, Qt.Key_F4]
-        })
-    readonly property var isCopilotKey: e => (e.modifiers & (Qt.MetaModifier | Qt.ShiftModifier)) == (Qt.MetaModifier | Qt.ShiftModifier)
-    readonly property var isFunctionKey: e => e.key >= Qt.Key_F1 && e.key <= Qt.Key_F35
+    readonly property var searchModes: [
+        {
+            name: "default",
+            prefixes: ["d:", "default:", "none:"],
+            placeholder: "Search"
+        },
+        {
+            name: "apps",
+            prefixes: ["a:", "apps:"],
+            placeholder: "Search apps"
+        },
+        {
+            name: "files",
+            prefixes: ["f:", "files:"],
+            placeholder: "Search files and folders"
+        },
+        {
+            name: "web",
+            prefixes: ["w:", "web:"],
+            placeholder: "Search the web"
+        },
+        {
+            name: "command",
+            prefixes: [">", "exec:"],
+            placeholder: "Execute"
+        }
+    ]
 }

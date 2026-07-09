@@ -248,6 +248,6 @@ QtObject {
             apps: "apps",
             files: "folder",
             web: "language",
-            terminal: "terminal"
+            command: "terminal"
         })
 }
