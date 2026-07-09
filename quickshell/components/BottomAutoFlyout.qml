@@ -30,13 +30,13 @@ PanelWindow {
     }
     WlrLayershell.namespace: "quickshell-baf"
     WlrLayershell.layer: WlrLayer.Overlay
-    visible: isOpen || rect.y < height
 
     Shape {
         id: rect
         width: pane.implicitWidth
         height: pane.implicitHeight
         x: baf.width / 2 - width / 2
+        opacity: baf.isOpen || rect.y < baf.height ? 1 : 0
         y: {
             if (baf.height <= 0)
                 return Screen.height;
@@ -111,6 +111,7 @@ PanelWindow {
         property int scaledHeight: Math.max(rect.y + Design.radius, baf.height - Design.radius)
         layer.enabled: true
         layer.samples: 20
+        opacity: baf.isOpen || rect.y < baf.height ? 1 : 0
 
         ShapePath {
             fillColor: Colours.bg1
