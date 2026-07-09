@@ -24,7 +24,7 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
         onClicked: {
             ModeService.swap();
-            Quickshell.execDetached([DirectoriesConf.scripts + "set-theme.sh", ModeService.mode]);
+            Quickshell.execDetached([PathsConf.scripts + "set-theme.sh", ModeService.mode]);
         }
     }
 }

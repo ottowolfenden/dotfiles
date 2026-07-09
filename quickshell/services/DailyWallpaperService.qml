@@ -10,7 +10,7 @@ QtObject {
     property string path
 
     property Process dailyWallpaperProcess: Process {
-        command: [DirectoriesConf.scripts + "daily-wallpaper.sh", ModeService.mode]
+        command: [PathsConf.scripts + "daily-wallpaper.sh", ModeService.mode]
         running: ModeService.mode != null
         stdout: StdioCollector {
             onStreamFinished: {

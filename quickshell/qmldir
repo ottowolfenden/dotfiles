@@ -1,5 +1,5 @@
 singleton IconsConf 1.0 config/IconsConf.qml
-singleton DirectoriesConf 1.0 config/DirectoriesConf.qml
+singleton PathsConf 1.0 config/PathsConf.qml
 singleton ColoursConf 1.0 config/ColoursConf.qml
 singleton SystemConf 1.0 config/SystemConf.qml
 singleton DesignConf 1.0 config/DesignConf.qml
