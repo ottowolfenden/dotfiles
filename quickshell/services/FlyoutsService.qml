@@ -19,7 +19,7 @@ QtObject {
                 if (!flyout.hovering)
                     flyout.isOpen = false;
             if (![...flyoutsService.flyouts, ...flyoutsService.bafs].some(x => x.hovering || x.isOpen))
-                Quickshell.execDetached(HyprlandService.hyprlandCommands.reset);
+                Quickshell.execDetached(HyprlandService.commands.reset);
         }
     }
 
@@ -34,7 +34,7 @@ QtObject {
                 } else
                     baf.isOpen = false;
             }
-            Quickshell.execDetached(HyprlandService.hyprlandCommands[flyoutsService.bafs.some(b => b.isOpen) ? "bafOpen" : "reset"]);
+            Quickshell.execDetached(HyprlandService.commands[flyoutsService.bafs.some(b => b.isOpen) ? "bafOpen" : "reset"]);
         }
 
         function hideAllBafs(): void {
@@ -42,28 +42,28 @@ QtObject {
                 if (!baf.hovering)
                     baf.isOpen = false;
             if (![...flyoutsService.flyouts, ...flyoutsService.bafs].some(x => x.hovering || x.isOpen))
-                Quickshell.execDetached(HyprlandService.hyprlandCommands.reset);
+                Quickshell.execDetached(HyprlandService.commands.reset);
         }
     }
 
     function hideAllFlyouts() {
         for (const flyout of flyoutsService.flyouts)
             flyout.isOpen = false;
-        Quickshell.execDetached(HyprlandService.hyprlandCommands.reset);
+        Quickshell.execDetached(HyprlandService.commands.reset);
     }
 
     function hideAllFlyoutsExcept(openFlyout) {
         for (const flyout of flyoutsService.flyouts)
             if (flyout != openFlyout)
                 flyout.isOpen = false;
-        Quickshell.execDetached(HyprlandService.hyprlandCommands[flyoutsService.flyouts.some(f => f.isOpen) ? "flyoutOpen" : "reset"]);
+        Quickshell.execDetached(HyprlandService.commands[flyoutsService.flyouts.some(f => f.isOpen) ? "flyoutOpen" : "reset"]);
     }
 
     function hideFlyout(flyoutToHide: Flyout): void {
         for (const flyout of flyoutsService.flyouts)
             if (flyout == flyoutToHide)
                 flyout.isOpen = false;
-        Quickshell.execDetached(HyprlandService.hyprlandCommands[flyoutsService.flyouts.some(f => f.isOpen) ? "flyoutOpen" : "reset"]);
+        Quickshell.execDetached(HyprlandService.commands[flyoutsService.flyouts.some(f => f.isOpen) ? "flyoutOpen" : "reset"]);
     }
 
     function hideBaf(baf: BottomAutoFlyout): void {
@@ -73,6 +73,6 @@ QtObject {
         }
         baf.isOpen = false;
         if (![...flyoutsService.flyouts, ...flyoutsService.bafs].some(f => f.isOpen))
-            Quickshell.execDetached(HyprlandService.hyprlandCommands.reset);
+            Quickshell.execDetached(HyprlandService.commands.reset);
     }
 }

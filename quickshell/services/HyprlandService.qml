@@ -2,7 +2,7 @@ pragma Singleton
 import QtQuick
 
 QtObject {
-    readonly property var hyprlandCommands: ({
+    readonly property var commands: ({
             flyoutOpen: ["hyprctl", "eval", `
                 hl.config({
                     input = { follow_mouse = 0 },
@@ -20,7 +20,8 @@ QtObject {
                     }
                 })
             `],
-            reset: ["hyprctl", "reload"]
+            reset: ["hyprctl", "reload"],
+            focusEmptyWorkspace: ["hyprctl", "dispatch", "hl.dsp.focus({ workspace = \"emptynm\" })"]
         })
 
     function getWorkspaceExists(workspaces: var, id: int): bool {
