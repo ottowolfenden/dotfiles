@@ -1,15 +1,26 @@
 pragma Singleton
 import QtQuick
 import Quickshell
+import ".."
 
 QtObject {
-    function getApps(text, max) {
+    function searchApps(text, max) {
         if (!text || text.length == 0 || max == 0)
             return [];
 
-        let search = attr => DesktopEntries.applications.values.filter(a => a[attr].toLowerCase().includes(text.toLowerCase()));
-        let getDistinct = array => [...new Set(array)];
+        text = text.toLowerCase();
 
-        return getDistinct([DesktopEntries.heuristicLookup(text), ...["name", "execString", "genericName", "comment"].flatMap(search)]).filter(el => el).slice(0, max);
+        let search = attr => {
+            if (Array.isArray(attr))
+                attr = attr.reduce((acc, el) => acc + el);
+            let startsWith = ["name", "execString"].includes(attr) ? DesktopEntries.applications.values.filter(a => a[attr]?.toLowerCase().startsWith(text)) : [];
+            let includes = text.length >= 2 ? DesktopEntries.applications.values.filter(a => a[attr]?.toLowerCase().includes(text)) : [];
+            return [...startsWith, ...includes];
+        };
+        let getDistinctNonNull = array => [...new Set(array)].filter(el => el);
+
+        let results = SearchConf.appAttrPriority.reduce((acc, attr) => [...acc, ...search(attr)], []);
+
+        return getDistinctNonNull(results).slice(0, max);
     }
 }

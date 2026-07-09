@@ -29,4 +29,6 @@ QtObject {
             placeholder: "Execute"
         }
     ]
+
+    readonly property list<string> appAttrPriority: ["name", "execString", "genericName", "comment", "categories", "keywords", "startupClass", "icon"]
 }
