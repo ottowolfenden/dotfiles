@@ -75,14 +75,12 @@ end
 
 -- apps
 hl.bind("SUPER + B", hl.dsp.exec_cmd("helium-browser"))
-hl.bind("SUPER + A", hl.dsp.exec_cmd("thunar"))
 hl.bind("SUPER + C", hl.dsp.exec_cmd("code"))
 hl.bind("SUPER + V", hl.dsp.exec_cmd("pkill clipse || kitty --class clipse -e clipse", { float = true }))
 hl.bind("SUPER + equal", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = true }))
 hl.bind("XF86Calculator", hl.dsp.exec_cmd("pkill qalc || kitty qalc", { float = true }))
 hl.bind("SUPER + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"))
 hl.bind("SUPER + T", hl.dsp.exec_cmd("thunar"))
-hl.bind("SUPER + SHIFT + T", hl.dsp.exec_cmd("thunar", { float = true }))
 hl.bind("CTRL + SHIFT + escape", hl.dsp.exec_cmd("pkill btop || kitty --class btop -e btop"))
 hl.bind("SUPER + Q", function()
     local w = hl.get_active_window()
