@@ -11,27 +11,27 @@ QtObject {
     readonly property var searchModes: [
         {
             name: "default",
-            prefixes: ["d:", "default:", "none:"],
+            prefixes: ["default:", "none:", "d:", "n:"],
             placeholder: "Search"
         },
         {
             name: "apps",
-            prefixes: ["a:", "apps:"],
+            prefixes: ["apps:", "a:"],
             placeholder: "Search apps"
         },
         {
             name: "files",
-            prefixes: ["f:", "files:"],
+            prefixes: ["files:", "f:"],
             placeholder: "Search files and folders"
         },
         {
             name: "web",
-            prefixes: ["w:", "web:"],
+            prefixes: ["web:", "browser:", "w:", "b:"],
             placeholder: "Search the web"
         },
         {
             name: "command",
-            prefixes: [">", "exec:"],
+            prefixes: ["exec:", ">", "e:", "t:", "c:"],
             placeholder: "Execute"
         }
     ]
