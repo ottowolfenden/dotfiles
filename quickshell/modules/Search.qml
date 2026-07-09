@@ -68,13 +68,19 @@ Rectangle {
             background: null
             font.pixelSize: DesignConf.fontSize
             font.family: search.mode == "command" ? DesignConf.monospaceFontFamily : DesignConf.fontFamily
+            selectionColor: ColoursConf.textSelectionBg
+            selectedTextColor: ColoursConf.fg1
             Layout.fillHeight: true
             Layout.fillWidth: true
-            onTextEdited: {}
-            onAccepted: {
-                if (search.mode == "command")
-                    Quickshell.execDetached(["/bin/sh", "-c", text]);
-                reset();
+
+            property bool shiftReturn: false
+
+            function reset() {
+                text = "";
+                search.mode = "default";
+                appsRepeater.activeIndex;
+                FlyoutsService.hideFlyout(searchFlyout);
+                shiftReturn = false;
             }
 
             Keys.onPressed: e => {
@@ -86,6 +92,14 @@ Rectangle {
                     search.mode = "default";
                 else if (e.key == Qt.Key_Tab)
                     search.cycleMode();
+                else if (e.key == Qt.Key_Down)
+                    appsRepeater.activeIndex++;
+                else if (e.key == Qt.Key_Up)
+                    appsRepeater.activeIndex--;
+                else if (e.key == Qt.Key_Return && (e.modifiers & Qt.ShiftModifier))
+                    shiftReturn = true;
+                else
+                    appsRepeater.activeIndex = 0;
             }
 
             Keys.onReleased: e => {
@@ -97,10 +111,16 @@ Rectangle {
                 }
             }
 
-            function reset() {
-                text = "";
-                search.mode = "default";
-                FlyoutsService.hideFlyout(searchFlyout);
+            onAccepted: {
+                if (search.mode == "command")
+                    Quickshell.execDetached(["/bin/sh", "-c", text]);
+                else {
+                    let app = appsRepeater.model[appsRepeater.activeIndex];
+                    if (shiftReturn)
+                        Quickshell.execDetached(HyprlandService.commands.focusEmptyWorkspace);
+                    app.execute();
+                }
+                reset();
             }
         }
     }
@@ -120,6 +140,10 @@ Rectangle {
                 search.exclusive = false;
             }
         }
+        onHoveringChanged: {
+            if (!hovering)
+                appsRepeater.activeIndex = 0;
+        }
 
         Pane {
             id: pane
@@ -129,6 +153,7 @@ Rectangle {
             background: null
 
             ColumnLayout {
+                id: appsColumn
                 anchors.fill: parent
                 spacing: DesignConf.spacing / 2
 
@@ -140,12 +165,12 @@ Rectangle {
                         required property DesktopEntry modelData
                         required property int index
                         property bool pressed: mouseArea.pressed
-                        property bool hovered: (index == appsRepeater.activeIndex) || mouseArea.containsMouse
+                        property bool active: (index == appsRepeater.activeIndex) || mouseArea.containsMouse
 
                         color: {
                             if (pressed)
                                 return ColoursConf.buttonPressedBg;
-                            else if (hovered)
+                            else if (active)
                                 return ColoursConf.buttonHoveredBg;
                             return "transparent";
                         }
@@ -168,8 +193,14 @@ Rectangle {
                         MouseArea {
                             id: mouseArea
                             anchors.fill: parent
+                            anchors.margins: -appsColumn.spacing / 2
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
+                            onContainsMouseChanged: appsRepeater.activeIndex = containsMouse ? parent.index : -1
+                            onClicked: {
+                                parent.modelData.execute();
+                                searchInput.reset();
+                            }
                         }
 
                         Behavior on color {
