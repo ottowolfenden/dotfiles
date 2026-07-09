@@ -9,6 +9,7 @@ QtObject {
     readonly property int fontSize: 15
     readonly property int smallFontSize: 13
     readonly property int radius: 7
+    readonly property int smallRadius: 4
     readonly property int blurRadius: 70
     readonly property string fontFamily: "Google Sans Flex"
     readonly property string monospaceFontFamily: "Consolas"
