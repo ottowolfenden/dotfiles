@@ -215,7 +215,7 @@ Rectangle {
 
                         Behavior on color {
                             ColorAnimation {
-                                duration: 100
+                                duration: DesignConf.buttonColourAnimationDuration
                             }
                         }
                     }

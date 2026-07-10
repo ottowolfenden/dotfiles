@@ -15,6 +15,7 @@ QtObject {
     readonly property string monospaceFontFamily: "Consolas"
     readonly property int animationDuration: 200
     readonly property int listAnimationDuration: 150
+    readonly property int buttonColourAnimationDuration: 100
     readonly property int circleButtonDiameter: 33
     readonly property int easing: Easing.OutCubic
     readonly property int bafMsDelay: 1500
