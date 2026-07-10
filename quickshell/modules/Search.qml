@@ -182,6 +182,7 @@ Rectangle {
                     property int activeIndex: 0
                     model: SearchService.searchApps(searchInput.text, searchInput.maxResults)
                     delegate: Rectangle {
+                        id: appRect
                         required property DesktopEntry modelData
                         required property int index
                         property bool pressed: mouseArea.pressed
@@ -198,18 +199,6 @@ Rectangle {
                         Layout.fillWidth: true
                         Layout.preferredHeight: appName.implicitHeight + DesignConf.spacing
 
-                        Text {
-                            id: appName
-                            text: parent.modelData.name
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.leftMargin: DesignConf.spacing / 2
-                            color: ColoursConf.fg1
-                            font.family: DesignConf.fontFamily
-                            font.pixelSize: DesignConf.smallFontSize
-                        }
-
                         MouseArea {
                             id: mouseArea
                             anchors.fill: parent
@@ -217,14 +206,66 @@ Rectangle {
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
                             acceptedButtons: Qt.LeftButton | Qt.MiddleButton
-                            onContainsMouseChanged: appsRep.activeIndex = containsMouse ? parent.index : -1
+                            onContainsMouseChanged: appsRep.activeIndex = (containsMouse || hideButton.hovering || openInNewWsButton.hovering) ? appRect.index : -1
                             onClicked: mouse => {
                                 if (mouse.button == Qt.LeftButton) {
-                                    MiscService.execApp(parent.modelData);
-                                    SearchService.updateAppHistory(parent.modelData);
+                                    MiscService.execApp(appRect.modelData);
+                                    SearchService.updateAppHistory(appRect.modelData);
                                     searchInput.reset();
                                 } else if (mouse.button == Qt.MiddleButton)
-                                    SearchService.hideApp(parent.modelData);
+                                    SearchService.hideApp(appRect.modelData);
+                            }
+                        }
+                        RowLayout {
+                            anchors.fill: parent
+                            Text {
+                                id: appName
+                                text: appRect.modelData.name
+                                color: ColoursConf.fg1
+                                font.family: DesignConf.fontFamily
+                                font.pixelSize: DesignConf.smallFontSize
+                                elide: Text.ElideRight
+                                Layout.fillWidth: true
+                                Layout.alignment: Qt.AlignVCenter
+                                Layout.leftMargin: DesignConf.spacing / 2
+                                Layout.rightMargin: DesignConf.spacing / 2
+                            }
+
+                            IconButton {
+                                id: hideButton
+                                isTransparentOnInactive: true
+                                visible: mouseArea.containsMouse || hovering || openInNewWsButton.hovering
+                                opacity: visible
+                                iconName: "visibility_off"
+                                Layout.alignment: Qt.AlignRight
+                                buttonPixelSize: appRect.Layout.preferredHeight - DesignConf.spacing
+                                onClicked: SearchService.hideApp(appRect.modelData)
+                                Behavior on opacity {
+                                    NumberAnimation {
+                                        duration: DesignConf.buttonColourAnimationDuration
+                                    }
+                                }
+                            }
+                            IconButton {
+                                id: openInNewWsButton
+                                isTransparentOnInactive: true
+                                visible: mouseArea.containsMouse || hovering || hideButton.hovering
+                                opacity: visible
+                                iconName: "open_in_new"
+                                Layout.alignment: Qt.AlignRight
+                                Layout.rightMargin: DesignConf.spacing / 2
+                                buttonPixelSize: appRect.Layout.preferredHeight - DesignConf.spacing
+                                onClicked: {
+                                    HyprlandService.focusWs("emptynm");
+                                    appExecTimer.appToExec = appRect.modelData;
+                                    appExecTimer.running = true;
+                                    searchInput.reset();
+                                }
+                                Behavior on opacity {
+                                    NumberAnimation {
+                                        duration: DesignConf.buttonColourAnimationDuration
+                                    }
+                                }
                             }
                         }
 

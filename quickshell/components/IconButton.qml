@@ -9,6 +9,8 @@ Button {
     property int buttonPixelSize: DesignConf.circleButtonDiameter
     property int iconPixelSize: buttonPixelSize * 0.65
     property bool disabled: false
+    property bool hovering: false
+    property bool isTransparentOnInactive: false
 
     contentItem: Icon {
         iconName: button.iconName
@@ -23,12 +25,12 @@ Button {
         border.width: 0
         color: {
             if (button.disabled)
-                return ColoursConf.buttonInactiveBg;
+                return button.isTransparentOnInactive ? "transparent" : ColoursConf.buttonInactiveBg;
             if (button.pressed)
                 return ColoursConf.buttonPressedBg;
             else if (button.hovered)
                 return ColoursConf.buttonHoveredBg;
-            return ColoursConf.buttonInactiveBg;
+            return button.isTransparentOnInactive ? "transparent" : ColoursConf.buttonInactiveBg;
         }
 
         Behavior on color {
@@ -40,10 +42,13 @@ Button {
 
     HoverHandler {
         onHoveredChanged: {
-            if (hovered && !button.disabled)
+            if (hovered && !button.disabled) {
                 this.cursorShape = Qt.PointingHandCursor;
-            else
+                button.hovering = true;
+            } else {
                 this.cursorShape = Qt.ArrowCursor;
+                button.hovering = false;
+            }
         }
     }
 }
