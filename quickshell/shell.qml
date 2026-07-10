@@ -6,6 +6,7 @@ import QtQuick.Controls
 import QtQuick.Shapes
 import "modules"
 import "modules/bafs"
+import "services"
 
 Scope {
     PanelWindow {
@@ -69,6 +70,13 @@ Scope {
                         y: 0
                     }
                 }
+            }
+
+            MouseArea {
+                width: Screen.width
+                x: -DesignConf.spacing
+                height: pane.height - DesignConf.spacing + 1
+                onClicked: FlyoutsService.hideAllFlyouts()
             }
 
             RowLayout {
