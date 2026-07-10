@@ -5,15 +5,6 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("clipse -listen")
 end)
 
-hl.on("window.open", function(w)
-    if w.class == "anki" and w.title == "Otto Wolfenden - Anki" then
-        hl.exec_cmd("sleep 2 && wtype -k F11 &")
-    end
-    if w.class == "com.github.th-ch.youtube-music" then
-        hl.exec_cmd("sleep 0.5 && wtype -k F11 &")
-    end
-end)
-
 -- apps that are pseudo when they are the only app open in the workspace
 local dynamic_pseudos = {
     classes = {
