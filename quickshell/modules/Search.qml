@@ -94,9 +94,9 @@ Rectangle {
                 else if (e.key == Qt.Key_Tab)
                     search.cycleMode();
                 else if (e.key == Qt.Key_Down)
-                    appsRep.activeIndex = MiscService.clamp(appsRep.activeIndex + 1, 0, appsRep.model.length - 1);
+                    appsRep.activeIndex = (appsRep.activeIndex + 1) % appsRep.model.length;
                 else if (e.key == Qt.Key_Up)
-                    appsRep.activeIndex = MiscService.clamp(appsRep.activeIndex - 1, 0, appsRep.model.length - 1);
+                    appsRep.activeIndex = (appsRep.activeIndex - 1 + appsRep.model.length) % (appsRep.model.length);
                 else if (e.key == Qt.Key_Return && (e.modifiers & Qt.ShiftModifier))
                     shiftReturn = true;
                 else if (e.key == Qt.Key_Return || e.key == Qt.Key_Shift || e.key == Qt.Key_Control)
