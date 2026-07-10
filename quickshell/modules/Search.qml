@@ -98,6 +98,8 @@ Rectangle {
                     appsRepeater.activeIndex--;
                 else if (e.key == Qt.Key_Return && (e.modifiers & Qt.ShiftModifier))
                     shiftReturn = true;
+                else if (e.key == Qt.Key_Return)
+                    return;
                 else
                     appsRepeater.activeIndex = 0;
             }
@@ -119,6 +121,7 @@ Rectangle {
                     if (shiftReturn)
                         Quickshell.execDetached(HyprlandService.commands.focusEmptyWorkspace);
                     app.execute();
+                    SearchService.updateAppHistory(app);
                 }
                 reset();
             }
@@ -199,6 +202,7 @@ Rectangle {
                             onContainsMouseChanged: appsRepeater.activeIndex = containsMouse ? parent.index : -1
                             onClicked: {
                                 parent.modelData.execute();
+                                SearchService.updateAppHistory(parent.modelData);
                                 searchInput.reset();
                             }
                         }
