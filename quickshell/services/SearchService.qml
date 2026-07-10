@@ -46,17 +46,18 @@ QtObject {
         text = text.toLowerCase();
         let apps = DesktopEntries.applications.values.filter(a => !hiddenApps.includes(a.id));
 
+        let hasWordPrefixMatches = attr => (attr ?? "").toLowerCase().split(" ").some(w => w.startsWith(text));
         let getLastOpened = app => appHistory.find(entry => entry.id == app.id)?.lastOpened ?? 0;
         let search = attr => {
             if (Array.isArray(attr))
                 attr = attr.reduce((acc, el) => acc + el);
-            let prefixMatches = ["name", "execString"].includes(attr) ? apps.filter(a => a[attr]?.toLowerCase().startsWith(text)) : [];
+            let prefixMatches = ["name", "execString"].includes(attr) ? apps.filter(a => hasWordPrefixMatches(a[attr])) : [];
             let substringMatches = apps.filter(a => a[attr]?.toLowerCase().includes(text));
             return [...prefixMatches, ...substringMatches];
         };
         let allAttrsSearch = () => SearchConf.appAttrPriority.reduce((acc, attr) => [...acc, ...search(attr)], []);
         let recentSearch = () => {
-            let matches = apps.filter(a => (a["name"] + a["execString"]).toLowerCase().includes(text));
+            let matches = apps.filter(a => hasWordPrefixMatches(a["name"]) || hasWordPrefixMatches(a["execString"]));
             return matches.sort((a, b) => getLastOpened(b) - getLastOpened(a));
         };
 
