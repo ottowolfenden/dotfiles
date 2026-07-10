@@ -74,11 +74,12 @@ Rectangle {
             Layout.fillWidth: true
 
             property bool shiftReturn: false
+            property int maxResults: 6
 
             function reset() {
                 text = "";
                 search.mode = "default";
-                appsRepeater.activeIndex;
+                appsRep.activeIndex;
                 FlyoutsService.hideFlyout(searchFlyout);
                 shiftReturn = false;
             }
@@ -93,9 +94,9 @@ Rectangle {
                 else if (e.key == Qt.Key_Tab)
                     search.cycleMode();
                 else if (e.key == Qt.Key_Down)
-                    appsRepeater.activeIndex++;
+                    appsRep.activeIndex = MiscService.clamp(appsRep.activeIndex + 1, 0, appsRep.model.length - 1);
                 else if (e.key == Qt.Key_Up)
-                    appsRepeater.activeIndex--;
+                    appsRep.activeIndex = MiscService.clamp(appsRep.activeIndex - 1, 0, appsRep.model.length - 1);
                 else if (e.key == Qt.Key_Return && (e.modifiers & Qt.ShiftModifier))
                     shiftReturn = true;
                 else if (e.key == Qt.Key_Return || e.key == Qt.Key_Shift || e.key == Qt.Key_Control)
@@ -103,7 +104,7 @@ Rectangle {
                 else if (e.key == Qt.Key_Escape)
                     reset();
                 else
-                    appsRepeater.activeIndex = 0;
+                    appsRep.activeIndex = 0;
             }
 
             Keys.onReleased: e => {
@@ -119,7 +120,7 @@ Rectangle {
                 if (search.mode == "command")
                     Quickshell.execDetached(["/bin/sh", "-c", text]);
                 else {
-                    let app = appsRepeater.model[appsRepeater.activeIndex];
+                    let app = appsRep.model[appsRep.activeIndex];
                     if (shiftReturn) {
                         HyprlandService.focusWs("emptynm");
                         appExecTimer.appToExec = app;
@@ -160,12 +161,12 @@ Rectangle {
         }
         onHoveringChanged: {
             if (!hovering)
-                appsRepeater.activeIndex = 0;
+                appsRep.activeIndex = 0;
         }
 
         Pane {
             id: pane
-            padding: appsRepeater.model.length == 0 ? 0 : DesignConf.spacing
+            padding: appsRep.model.length == 0 ? 0 : DesignConf.spacing
             anchors.left: parent.left
             anchors.right: parent.right
             background: null
@@ -176,14 +177,14 @@ Rectangle {
                 spacing: DesignConf.spacing / 2
 
                 Repeater {
-                    id: appsRepeater
+                    id: appsRep
                     property int activeIndex: 0
-                    model: SearchService.searchApps(searchInput.text, 6)
+                    model: SearchService.searchApps(searchInput.text, searchInput.maxResults)
                     delegate: Rectangle {
                         required property DesktopEntry modelData
                         required property int index
                         property bool pressed: mouseArea.pressed
-                        property bool active: (index == appsRepeater.activeIndex) || mouseArea.containsMouse
+                        property bool active: (index == appsRep.activeIndex) || mouseArea.containsMouse
 
                         color: {
                             if (pressed)
@@ -215,7 +216,7 @@ Rectangle {
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
                             acceptedButtons: Qt.LeftButton | Qt.MiddleButton
-                            onContainsMouseChanged: appsRepeater.activeIndex = containsMouse ? parent.index : -1
+                            onContainsMouseChanged: appsRep.activeIndex = containsMouse ? parent.index : -1
                             onClicked: mouse => {
                                 if (mouse.button == Qt.LeftButton) {
                                     parent.modelData.execute();
