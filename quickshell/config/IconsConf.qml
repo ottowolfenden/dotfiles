@@ -6,6 +6,8 @@ QtObject {
     readonly property string forward: "chevron_forward"
     readonly property string backward: "chevron_backward"
     readonly property string tick: "check"
+    readonly property string appSearchHideButton: "visibility_off"
+    readonly property string appSearchOpenInNewWsButton: "open_in_new"
     readonly property var battery: [
         {
             max: 10,

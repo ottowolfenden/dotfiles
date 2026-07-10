@@ -236,7 +236,7 @@ Rectangle {
                                 isTransparentOnInactive: true
                                 visible: mouseArea.containsMouse || hovering || openInNewWsButton.hovering
                                 opacity: visible
-                                iconName: "visibility_off"
+                                iconName: IconsConf.appSearchHideButton
                                 Layout.alignment: Qt.AlignRight
                                 buttonPixelSize: appRect.Layout.preferredHeight - DesignConf.spacing
                                 onClicked: SearchService.hideApp(appRect.modelData)
@@ -251,7 +251,7 @@ Rectangle {
                                 isTransparentOnInactive: true
                                 visible: mouseArea.containsMouse || hovering || hideButton.hovering
                                 opacity: visible
-                                iconName: "open_in_new"
+                                iconName: IconsConf.appSearchOpenInNewWsButton
                                 Layout.alignment: Qt.AlignRight
                                 Layout.rightMargin: DesignConf.spacing / 2
                                 buttonPixelSize: appRect.Layout.preferredHeight - DesignConf.spacing
