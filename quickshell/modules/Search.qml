@@ -126,7 +126,7 @@ Rectangle {
                         appExecTimer.appToExec = app;
                         appExecTimer.running = true;
                     } else
-                        app.execute();
+                        MiscService.execApp(app);
                     SearchService.updateAppHistory(app);
                 }
                 reset();
@@ -137,7 +137,8 @@ Rectangle {
                 property DesktopEntry appToExec: null
                 interval: 100
                 onTriggered: {
-                    appToExec?.execute();
+                    if (appToExec)
+                        MiscService.execApp(appToExec);
                     appToExec = null;
                 }
             }
@@ -219,7 +220,7 @@ Rectangle {
                             onContainsMouseChanged: appsRep.activeIndex = containsMouse ? parent.index : -1
                             onClicked: mouse => {
                                 if (mouse.button == Qt.LeftButton) {
-                                    parent.modelData.execute();
+                                    MiscService.execApp(parent.modelData);
                                     SearchService.updateAppHistory(parent.modelData);
                                     searchInput.reset();
                                 } else if (mouse.button == Qt.MiddleButton)
