@@ -41,3 +41,8 @@ hl.window_rule({
     match = { class = "code" },
     fullscreen_state = "0 2"
 })
+
+hl.layer_rule({
+    match = { namespace = "quickshell" },
+    no_anim = true
+})

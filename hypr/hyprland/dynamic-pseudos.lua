@@ -1,11 +1,3 @@
-hl.on("hyprland.start", function()
-    hl.exec_cmd("qs")
-    hl.exec_cmd("awww-daemon")
-    hl.exec_cmd("swaync")
-    hl.exec_cmd("clipse -listen")
-end)
-
--- apps that are pseudo when they are the only app open in the workspace
 local dynamic_pseudos = {
     classes = {
         "kitty",
@@ -16,6 +8,14 @@ local dynamic_pseudos = {
     },
     initial_titles = {}
 }
+
+hl.bind("SUPER + P", function()
+    hl.dispatch(hl.dsp.window.pseudo())
+    if hl.get_active_window() then
+        hl.dispatch(hl.dsp.window.resize({ x = 1000, y = 625 }))
+    end
+end)
+
 local pseudo_size = { x = 1000, y = 625 }
 local ms_before_resize = 50
 

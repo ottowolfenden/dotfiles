@@ -1,16 +1,20 @@
-local gaps = 4
+local spacing = 8
 
 hl.config({
     general = {
-        gaps_in = gaps,
-        gaps_out = { top = gaps * 2 + 2, left = gaps * 2, bottom = gaps * 2, right = gaps * 2 },
-        border_size = 0,
-        layout = "dwindle"
+        gaps_in = spacing / 2,
+        gaps_out = {
+            top = spacing + 2,
+            left = spacing,
+            bottom = spacing,
+            right = spacing
+        },
+        border_size = 0
     },
 
     decoration = {
         rounding = 8,
-        rounding_power = 2, -- circular
+        rounding_power = 2,
 
         active_opacity = 1.0,
         inactive_opacity = 0.85,
@@ -25,5 +29,11 @@ hl.config({
         shadow = { enabled = false }
     },
 
-    animations = { enabled = true }
+    animations = { enabled = true },
+
+    misc = {
+        force_default_wallpaper = 0,
+        disable_hyprland_logo = true,
+        focus_on_activate = true
+    }
 })
