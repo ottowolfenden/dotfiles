@@ -98,7 +98,7 @@ Rectangle {
                     appsRepeater.activeIndex--;
                 else if (e.key == Qt.Key_Return && (e.modifiers & Qt.ShiftModifier))
                     shiftReturn = true;
-                else if (e.key == Qt.Key_Return)
+                else if (e.key == Qt.Key_Return || e.key == Qt.Key_Shift || e.key == Qt.Key_Control)
                     return;
                 else
                     appsRepeater.activeIndex = 0;
