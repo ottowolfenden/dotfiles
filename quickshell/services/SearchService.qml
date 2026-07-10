@@ -46,6 +46,7 @@ QtObject {
         text = text.toLowerCase();
         let apps = DesktopEntries.applications.values.filter(a => !hiddenApps.includes(a.id));
 
+        let getLastOpened = app => appHistory.find(entry => entry.id == app.id)?.lastOpened ?? 0;
         let search = attr => {
             if (Array.isArray(attr))
                 attr = attr.reduce((acc, el) => acc + el);
@@ -53,10 +54,13 @@ QtObject {
             let substringMatches = apps.filter(a => a[attr]?.toLowerCase().includes(text));
             return [...prefixMatches, ...substringMatches];
         };
-        let getLastOpened = app => appHistory.find(entry => entry.id == app.id)?.lastOpened ?? 0;
+        let allAttrsSearch = () => SearchConf.appAttrPriority.reduce((acc, attr) => [...acc, ...search(attr)], []);
+        let recentSearch = () => {
+            let matches = apps.filter(a => (a["name"] + a["execString"]).toLowerCase().includes(text));
+            return matches.sort((a, b) => getLastOpened(b) - getLastOpened(a));
+        };
 
-        let results = SearchConf.appAttrPriority.reduce((acc, attr) => [...acc, ...search(attr)], []);
-        results = results.sort((a, b) => getLastOpened(b) - getLastOpened(a));
-        return MiscService.getDistinctNonNull(results).slice(0, max);
+        let sortedResults = [...recentSearch(), ...allAttrsSearch()];
+        return MiscService.getDistinctNonNull(sortedResults).slice(0, max);
     }
 }
