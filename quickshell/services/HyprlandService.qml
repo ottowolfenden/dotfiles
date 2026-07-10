@@ -21,7 +21,7 @@ QtObject {
                 })
             `],
             reset: ["hyprctl", "reload"],
-            focusEmptyWorkspace: ["hyprctl", "dispatch", "hl.dsp.focus({ workspace = \"emptynm\" })"]
+            focusEmptyWorkspace: ["hyprctl", "dispatch", `hl.dsp.focus({ workspace = "emptynm" })`]
         })
 
     function getWorkspaceExists(workspaces: var, id: int): bool {

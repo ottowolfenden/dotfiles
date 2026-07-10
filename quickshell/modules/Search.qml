@@ -120,12 +120,25 @@ Rectangle {
                     Quickshell.execDetached(["/bin/sh", "-c", text]);
                 else {
                     let app = appsRepeater.model[appsRepeater.activeIndex];
-                    if (shiftReturn)
+                    if (shiftReturn) {
                         Quickshell.execDetached(HyprlandService.commands.focusEmptyWorkspace);
-                    app.execute();
+                        appExecTimer.appToExec = app;
+                        appExecTimer.running = true;
+                    } else
+                        app.execute();
                     SearchService.updateAppHistory(app);
                 }
                 reset();
+            }
+
+            Timer {
+                id: appExecTimer
+                property DesktopEntry appToExec: null
+                interval: 100
+                onTriggered: {
+                    appToExec?.execute();
+                    appToExec = null;
+                }
             }
         }
     }
