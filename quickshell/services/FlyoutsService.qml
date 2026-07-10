@@ -1,6 +1,5 @@
 pragma Singleton
 import QtQuick
-import Quickshell
 import Quickshell.Io
 import ".."
 import "../components"
@@ -14,12 +13,12 @@ QtObject {
     property IpcHandler flyoutsHandler: IpcHandler {
         target: "flyoutsHandler"
 
-        function hideNonHoveredFlyouts() {
+        function hideNonHoveredFlyouts(): void {
             for (const flyout of flyoutsService.flyouts)
                 if (!flyout.hovering)
                     flyout.isOpen = false;
             if (![...flyoutsService.flyouts, ...flyoutsService.bafs].some(x => x.hovering || x.isOpen))
-                Quickshell.execDetached(HyprlandService.commands.reset);
+                HyprlandService.reload();
         }
     }
 
@@ -34,7 +33,10 @@ QtObject {
                 } else
                     baf.isOpen = false;
             }
-            Quickshell.execDetached(HyprlandService.commands[flyoutsService.bafs.some(b => b.isOpen) ? "bafOpen" : "reset"]);
+            if (flyoutsService.bafs.some(b => b.isOpen))
+                HyprlandService.applyBafConf();
+            else
+                HyprlandService.applyFlyoutConf();
         }
 
         function hideAllBafs(): void {
@@ -42,28 +44,34 @@ QtObject {
                 if (!baf.hovering)
                     baf.isOpen = false;
             if (![...flyoutsService.flyouts, ...flyoutsService.bafs].some(x => x.hovering || x.isOpen))
-                Quickshell.execDetached(HyprlandService.commands.reset);
+                HyprlandService.reload();
         }
     }
 
-    function hideAllFlyouts() {
+    function hideAllFlyouts(): void {
         for (const flyout of flyoutsService.flyouts)
             flyout.isOpen = false;
-        Quickshell.execDetached(HyprlandService.commands.reset);
+        HyprlandService.reload();
     }
 
-    function hideAllFlyoutsExcept(openFlyout) {
+    function hideAllFlyoutsExcept(openFlyout: Flyout): void {
         for (const flyout of flyoutsService.flyouts)
             if (flyout != openFlyout)
                 flyout.isOpen = false;
-        Quickshell.execDetached(HyprlandService.commands[flyoutsService.flyouts.some(f => f.isOpen) ? "flyoutOpen" : "reset"]);
+        if (flyoutsService.flyouts.some(f => f.isOpen))
+            HyprlandService.applyFlyoutConf();
+        else
+            HyprlandService.reload();
     }
 
     function hideFlyout(flyoutToHide: Flyout): void {
         for (const flyout of flyoutsService.flyouts)
             if (flyout == flyoutToHide)
                 flyout.isOpen = false;
-        Quickshell.execDetached(HyprlandService.commands[flyoutsService.flyouts.some(f => f.isOpen) ? "flyoutOpen" : "reset"]);
+        if (flyoutsService.flyouts.some(f => f.isOpen))
+            HyprlandService.applyFlyoutConf();
+        else
+            HyprlandService.reload();
     }
 
     function hideBaf(baf: BottomAutoFlyout): void {
@@ -73,6 +81,6 @@ QtObject {
         }
         baf.isOpen = false;
         if (![...flyoutsService.flyouts, ...flyoutsService.bafs].some(f => f.isOpen))
-            Quickshell.execDetached(HyprlandService.commands.reset);
+            HyprlandService.reload();
     }
 }

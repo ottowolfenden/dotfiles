@@ -22,13 +22,12 @@ Rectangle {
         anchors.rightMargin: DesignConf.spacing
 
         Repeater {
-            model: HyprlandService.getRelevantWorkspaceIds(Hyprland.workspaces)
-
+            model: HyprlandService.getFilteredWsIds()
             delegate: Rectangle {
                 id: circle
                 required property int modelData
                 property bool isActive: modelData == (Hyprland.focusedWorkspace?.id ?? -1)
-                property bool exists: HyprlandService.getWorkspaceExists(Hyprland.workspaces, modelData)
+                property bool exists: HyprlandService.getWsExists(modelData)
 
                 width: 16
                 height: 16
@@ -62,7 +61,7 @@ Rectangle {
                     anchors.margins: -4
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Hyprland.dispatch(`hl.dsp.focus({ workspace = ${parent.modelData} })`)
+                    onClicked: HyprlandService.focusWs(parent.modelData)
                 }
             }
         }

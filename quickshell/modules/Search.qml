@@ -121,7 +121,7 @@ Rectangle {
                 else {
                     let app = appsRepeater.model[appsRepeater.activeIndex];
                     if (shiftReturn) {
-                        Quickshell.execDetached(HyprlandService.commands.focusEmptyWorkspace);
+                        HyprlandService.focusWs("emptynm");
                         appExecTimer.appToExec = app;
                         appExecTimer.running = true;
                     } else
