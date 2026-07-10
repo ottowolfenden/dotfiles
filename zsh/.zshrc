@@ -42,6 +42,7 @@ restart() {
 alias tetris=tetriscurses
 alias suspend="systemctl suspend"
 alias code="code -n"
+alias qs="clear; qs |& grep -v 'quickshell.bluetooth.device'"
 
 export MANPATH=/home/otto/.local/share/man:$MANPATH
 export PATH=/home/otto/.local/bin:$PATH
