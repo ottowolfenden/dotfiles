@@ -26,23 +26,37 @@ QtObject {
         appHistoryFile.setText(JSON.stringify(appHistory, null, 4));
     }
 
+    property FileView hiddenAppsFile: FileView {
+        path: PathsConf.hiddenApps
+        watchChanges: true
+        onFileChanged: reload()
+        onLoadFailed: setText("[]")
+    }
+
+    property list<string> hiddenApps: JSON.parse(hiddenAppsFile.text() || "[]")
+
+    function hideApp(app: DesktopEntry): void {
+        hiddenApps = MiscService.getDistinctNonNull([...hiddenApps, app.id]);
+        hiddenAppsFile.setText(JSON.stringify(hiddenApps, null, 4));
+    }
+
     function searchApps(text: string, max: int): list<DesktopEntry> {
         if (!text || text.length == 0 || max == 0)
             return [];
         text = text.toLowerCase();
+        let apps = DesktopEntries.applications.values.filter(a => !hiddenApps.includes(a.id));
 
         let search = attr => {
             if (Array.isArray(attr))
                 attr = attr.reduce((acc, el) => acc + el);
-            let startsWith = ["name", "execString"].includes(attr) ? DesktopEntries.applications.values.filter(a => a[attr]?.toLowerCase().startsWith(text)) : [];
-            let includes = text.length >= 2 ? DesktopEntries.applications.values.filter(a => a[attr]?.toLowerCase().includes(text)) : [];
-            return [...startsWith, ...includes];
+            let prefixMatches = ["name", "execString"].includes(attr) ? apps.filter(a => a[attr]?.toLowerCase().startsWith(text)) : [];
+            let substringMatches = apps.filter(a => a[attr]?.toLowerCase().includes(text));
+            return [...prefixMatches, ...substringMatches];
         };
         let getLastOpened = app => appHistory.find(entry => entry.id == app.id)?.lastOpened ?? 0;
-        let getDistinctNonNull = array => [...new Set(array)].filter(el => el);
 
         let results = SearchConf.appAttrPriority.reduce((acc, attr) => [...acc, ...search(attr)], []);
         results = results.sort((a, b) => getLastOpened(b) - getLastOpened(a));
-        return getDistinctNonNull(results).slice(0, max);
+        return MiscService.getDistinctNonNull(results).slice(0, max);
     }
 }

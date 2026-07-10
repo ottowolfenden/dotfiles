@@ -26,4 +26,8 @@ QtObject {
             return `${minsLeft} ${minsLabel}`;
         return `${hrs} ${hrsLabel} ${minsLeft} ${minsLabel}`;
     }
+
+    function getDistinctNonNull(array: var): var {
+        return [...new Set(array.filter(el => el != null))];
+    }
 }

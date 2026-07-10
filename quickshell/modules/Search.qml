@@ -100,6 +100,8 @@ Rectangle {
                     shiftReturn = true;
                 else if (e.key == Qt.Key_Return || e.key == Qt.Key_Shift || e.key == Qt.Key_Control)
                     return;
+                else if (e.key == Qt.Key_Escape)
+                    reset();
                 else
                     appsRepeater.activeIndex = 0;
             }
@@ -199,11 +201,15 @@ Rectangle {
                             anchors.margins: -appsColumn.spacing / 2
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
+                            acceptedButtons: Qt.LeftButton | Qt.MiddleButton
                             onContainsMouseChanged: appsRepeater.activeIndex = containsMouse ? parent.index : -1
-                            onClicked: {
-                                parent.modelData.execute();
-                                SearchService.updateAppHistory(parent.modelData);
-                                searchInput.reset();
+                            onClicked: mouse => {
+                                if (mouse.button == Qt.LeftButton) {
+                                    parent.modelData.execute();
+                                    SearchService.updateAppHistory(parent.modelData);
+                                    searchInput.reset();
+                                } else if (mouse.button == Qt.MiddleButton)
+                                    SearchService.hideApp(parent.modelData);
                             }
                         }
 

@@ -5,4 +5,5 @@ import Quickshell
 QtObject {
     readonly property string scripts: `${Quickshell.env("HOME")}/dotfiles/scripts/`
     readonly property string appHistory: `${Quickshell.env("HOME")}/.cache/qs-app-history.json`
+    readonly property string hiddenApps: `${Quickshell.env("HOME")}/.config/qs-hidden-apps.json`
 }
