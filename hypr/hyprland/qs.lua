@@ -8,7 +8,7 @@ local function is_from_qs(tags)
 end
 
 hl.on("window.open", function(w)
-    hl.exec_scheduled_prop_refresh_immediately()
+    -- hl.exec_scheduled_prop_refresh_immediately()
     if w.tags and is_from_qs(w.tags) then
         hl.dispatch(hl.dsp.focus({ window = w }))
     end
