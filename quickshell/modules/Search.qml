@@ -126,7 +126,7 @@ Rectangle {
                         appExecTimer.appToExec = app;
                         appExecTimer.running = true;
                     } else
-                        MiscService.execApp(app);
+                        SearchService.execApp(app);
                     SearchService.updateAppHistory(app);
                 }
                 reset();
@@ -138,7 +138,7 @@ Rectangle {
                 interval: 100
                 onTriggered: {
                     if (appToExec)
-                        MiscService.execApp(appToExec);
+                        SearchService.execApp(appToExec);
                     appToExec = null;
                 }
             }
@@ -209,7 +209,7 @@ Rectangle {
                             onContainsMouseChanged: appsRep.activeIndex = (containsMouse || hideButton.hovering || openInNewWsButton.hovering) ? appRect.index : -1
                             onClicked: mouse => {
                                 if (mouse.button == Qt.LeftButton) {
-                                    MiscService.execApp(appRect.modelData);
+                                    SearchService.execApp(appRect.modelData);
                                     SearchService.updateAppHistory(appRect.modelData);
                                     searchInput.reset();
                                 } else if (mouse.button == Qt.MiddleButton)

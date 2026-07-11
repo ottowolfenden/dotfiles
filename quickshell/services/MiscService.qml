@@ -1,6 +1,7 @@
 pragma Singleton
 import QtQuick
 import Quickshell
+import ".."
 
 QtObject {
     function clamp(num: real, min: real, max: real): real {
@@ -30,12 +31,5 @@ QtObject {
 
     function getDistinctNonNull(array: var): var {
         return [...new Set(array.filter(el => el != null))];
-    }
-
-    function execApp(app: DesktopEntry): void {
-        Quickshell.execDetached({
-            command: app.runInTerminal ? ["kitty", "sh", "-c", app.command + "; exec $SHELL"] : app.command,
-            workingDirectory: app.workingDirectory
-        });
     }
 }

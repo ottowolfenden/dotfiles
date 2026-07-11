@@ -51,10 +51,8 @@ Rectangle {
                 return;
             for (var address of SystemConf.devicesToAutoconnect) {
                 var device = Bluetooth.defaultAdapter.devices.values.find(d => d.address == address);
-                if (device.state == BluetoothDeviceState.Disconnected) {
+                if (device.state == BluetoothDeviceState.Disconnected)
                     device.connect();
-                    console.log(`autoconnecting to "${device.name}"`);
-                }
             }
         }
     }

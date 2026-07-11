@@ -64,4 +64,8 @@ QtObject {
         let sortedResults = [...recentSearch(), ...allAttrsSearch()];
         return MiscService.getDistinctNonNull(sortedResults).slice(0, max);
     }
+
+    function execApp(app: DesktopEntry): void {
+        HyprlandService.execWithQsTag(app.runInTerminal ? `kitty --class ${app.command[0]} -e ${app.command[0]}` : app.command.join(" "));
+    }
 }
