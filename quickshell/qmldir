@@ -12,4 +12,8 @@ singleton MiscService 1.0 services/MiscService.qml
 singleton ModeService 1.0 services/ModeService.qml
 singleton DailyWallpaperService 1.0 services/DailyWallpaperService.qml
 singleton FlyoutsService 1.0 services/FlyoutsService.qml
-singleton SearchService 1.0 services/SearchService.qml
+
+singleton AppSearchService 1.0 services/search/AppSearchService.qml
+singleton CommandSearchService 1.0 services/search/CommandSearchService.qml
+singleton FileSearchService 1.0 services/search/FileSearchService.qml
+singleton WebSearchService 1.0 services/search/WebSearchService.qml

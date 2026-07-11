@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick
+import ".."
 
 QtObject {
     function clamp(num: real, min: real, max: real): real {
@@ -29,5 +30,11 @@ QtObject {
 
     function getDistinctNonNull(array: var): var {
         return [...new Set(array.filter(el => el != null))];
+    }
+
+    function getMaxSearchResults(modeProvider: string, mode: string): int {
+        if (!["default", modeProvider].includes(mode))
+            return 0;
+        return SearchConf.modes.find(m => m.name == modeProvider).maxResults[mode == "default" ? "all" : "filtered"];
     }
 }

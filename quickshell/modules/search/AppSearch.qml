@@ -12,7 +12,7 @@ Repeater {
     required property TextField searchInput
     property int activeIndex: 0
 
-    model: SearchService.searchApps(searchInput.text, mode)
+    model: AppSearchService.search(searchInput.text, mode)
     delegate: Rectangle {
         id: appRect
         required property DesktopEntry modelData
@@ -41,11 +41,11 @@ Repeater {
             onContainsMouseChanged: appsRep.activeIndex = (containsMouse || hideButton.hovering || openInNewWsButton.hovering) ? appRect.index : -1
             onClicked: mouse => {
                 if (mouse.button == Qt.LeftButton) {
-                    SearchService.execApp(appRect.modelData);
-                    SearchService.updateAppHistory(appRect.modelData);
+                    AppSearchService.exec(appRect.modelData);
+                    AppSearchService.updateHistory(appRect.modelData);
                     appsRep.searchInput.reset();
                 } else if (mouse.button == Qt.MiddleButton)
-                    SearchService.hideApp(appRect.modelData);
+                    AppSearchService.hide(appRect.modelData);
             }
         }
         RowLayout {
@@ -71,7 +71,7 @@ Repeater {
                 iconName: IconsConf.appSearchHideButton
                 Layout.alignment: Qt.AlignRight
                 buttonPixelSize: appRect.Layout.preferredHeight - DesignConf.spacing
-                onClicked: SearchService.hideApp(appRect.modelData)
+                onClicked: AppSearchService.hide(appRect.modelData)
                 Behavior on opacity {
                     NumberAnimation {
                         duration: DesignConf.buttonColourAnimationDuration
@@ -88,7 +88,7 @@ Repeater {
                 Layout.rightMargin: DesignConf.spacing / 2
                 buttonPixelSize: appRect.Layout.preferredHeight - DesignConf.spacing
                 onClicked: {
-                    SearchService.execApp(appRect.modelData, true);
+                    AppSearchService.exec(appRect.modelData, true);
                     appsRep.searchInput.reset();
                 }
                 Behavior on opacity {

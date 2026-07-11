@@ -118,7 +118,7 @@ Rectangle {
                 if (search.mode == "command")
                     Quickshell.execDetached(["/bin/sh", "-c", text]);
                 else
-                    SearchService.execApp(appSearch.model[appSearch.activeIndex], shiftReturn);
+                    AppSearchService.exec(appSearch.model[appSearch.activeIndex], shiftReturn);
                 reset();
             }
         }
