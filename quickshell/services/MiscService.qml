@@ -1,7 +1,5 @@
 pragma Singleton
 import QtQuick
-import Quickshell
-import ".."
 
 QtObject {
     function clamp(num: real, min: real, max: real): real {

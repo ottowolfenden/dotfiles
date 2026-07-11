@@ -40,8 +40,15 @@ QtObject {
         hiddenAppsFile.setText(JSON.stringify(hiddenApps, null, 4));
     }
 
-    function searchApps(text: string, max: int): list<DesktopEntry> {
-        if (!text || text.length == 0 || max == 0)
+    function getMaxResults(modeProvider: string, mode: string): int {
+        if (!["default", modeProvider].includes(mode))
+            return 0;
+        return SearchConf.modes.find(m => m.name == modeProvider).maxResults[mode == "default" ? "all" : "filtered"];
+    }
+
+    function searchApps(text: string, mode: string): list<DesktopEntry> {
+        let max = getMaxResults("apps", mode);
+        if (!text || !max || text.length == 0 || max == 0)
             return [];
         text = text.toLowerCase();
         let apps = DesktopEntries.applications.values.filter(a => !hiddenApps.includes(a.id));
@@ -65,7 +72,24 @@ QtObject {
         return MiscService.getDistinctNonNull(sortedResults).slice(0, max);
     }
 
-    function execApp(app: DesktopEntry): void {
-        HyprlandService.execWithQsTag(app.runInTerminal ? `kitty --class ${app.command[0]} -e ${app.command[0]}` : app.command.join(" "));
+    function execApp(app: DesktopEntry, inNewWs: bool): void {
+        if (inNewWs) {
+            HyprlandService.focusWs("emptynm");
+            appExecTimer.appToExec = app;
+            appExecTimer.running = true;
+        } else
+            HyprlandService.execWithQsTag(app.runInTerminal ? `kitty --class ${app.command[0]} -e ${app.command[0]}` : app.command.join(" "));
+        updateAppHistory(app);
+    }
+
+    property Timer appExecTimer: Timer {
+        property DesktopEntry appToExec: null
+        interval: 100
+        onTriggered: {
+            if (appToExec) {
+                parent.execApp(appToExec);
+                appToExec = null;
+            }
+        }
     }
 }

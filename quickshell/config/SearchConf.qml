@@ -11,17 +11,29 @@ QtObject {
         {
             name: "apps",
             prefixes: ["apps:", "a:"],
-            placeholder: "Search apps"
+            placeholder: "Search apps",
+            maxResults: {
+                all: 3,
+                filtered: 6
+            }
         },
         {
             name: "files",
             prefixes: ["files:", "f:"],
-            placeholder: "Search files and folders"
+            placeholder: "Search files and folders",
+            maxResults: {
+                all: 5,
+                filtered: 10
+            }
         },
         {
             name: "web",
             prefixes: ["web:", "browser:", "w:", "b:"],
-            placeholder: "Search the web"
+            placeholder: "Search the web",
+            maxResults: {
+                all: 2,
+                filtered: 10
+            }
         },
         {
             name: "command",
