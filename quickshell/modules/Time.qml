@@ -1,6 +1,6 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import Quickshell.Io
+import Quickshell
 import QtQuick.Layouts
 import ".."
 import "../components"
@@ -14,47 +14,41 @@ Rectangle {
 
     Cutout {}
 
+    SystemClock {
+        id: clock
+        precision: SystemClock.Seconds
+    }
+
     RowLayout {
         id: container
-        spacing: DesignConf.spacing * 2
+        spacing: DesignConf.spacing
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.leftMargin: DesignConf.spacing
+
         Item {
             implicitHeight: timeText.height
-            implicitWidth: 35
+            implicitWidth: Math.max(44, timeText.width)
             Text {
                 id: timeText
+                text: Qt.formatDateTime(clock.date, "hh:mm ap").slice(0, -3)
                 color: ColoursConf.fg1
                 font.family: DesignConf.fontFamily
                 font.pixelSize: DesignConf.fontSize
             }
         }
-        Text {
-            id: dateText
-            color: ColoursConf.fg1
-            font.family: DesignConf.fontFamily
-            font.pixelSize: DesignConf.fontSize
-        }
-    }
 
-    Process {
-        id: timeProc
-        command: ["date", "+%I:%M-%a %-d %b"]
-        running: true
-        stdout: StdioCollector {
-            onStreamFinished: {
-                var datetime = text.trim().split("-");
-                timeText.text = datetime[0];
-                dateText.text = datetime[1];
+        Item {
+            implicitHeight: dateText.height
+            implicitWidth: dateText.width
+            Text {
+                id: dateText
+                text: Qt.formatDateTime(clock.date, "ddd d MMM")
+                color: ColoursConf.fg1
+                font.family: DesignConf.fontFamily
+                font.pixelSize: DesignConf.fontSize
+                anchors.right: parent.right
             }
         }
-    }
-
-    Timer {
-        interval: 1000
-        running: true
-        repeat: true
-        onTriggered: timeProc.running = true
     }
 }
