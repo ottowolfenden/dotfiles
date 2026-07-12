@@ -33,8 +33,8 @@ Rectangle {
                 id: timeText
                 text: Qt.formatDateTime(clock.date, "hh:mm ap").slice(0, -3)
                 color: ColoursConf.fg1
-                font.family: DesignConf.fontFamily
-                font.pixelSize: DesignConf.fontSize
+                font.family: FontsConf.mainFamily
+                font.pixelSize: FontsConf.pixelSize
             }
         }
 
@@ -45,8 +45,8 @@ Rectangle {
                 id: dateText
                 text: Qt.formatDateTime(clock.date, "ddd d MMM")
                 color: ColoursConf.fg1
-                font.family: DesignConf.fontFamily
-                font.pixelSize: DesignConf.fontSize
+                font.family: FontsConf.mainFamily
+                font.pixelSize: FontsConf.pixelSize
                 anchors.right: parent.right
             }
         }

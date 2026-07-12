@@ -38,8 +38,8 @@ Rectangle {
         Text {
             text: battery.percent + "%"
             color: battery.danger ? ColoursConf.red : ColoursConf.fg1
-            font.family: DesignConf.fontFamily
-            font.pixelSize: DesignConf.fontSize
+            font.family: FontsConf.mainFamily
+            font.pixelSize: FontsConf.pixelSize
             horizontalAlignment: Text.AlignHCenter
             Layout.preferredWidth: 40
         }
@@ -137,9 +137,9 @@ Rectangle {
 
                         // row 1
                         Text {
-                            font.pixelSize: DesignConf.smallFontSize
+                            font.pixelSize: FontsConf.smallPixelSize
                             color: ColoursConf.fg2
-                            font.family: DesignConf.fontFamily
+                            font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
                             text: "Power profile"
                             verticalAlignment: Text.AlignVCenter
@@ -148,9 +148,9 @@ Rectangle {
                             Layout.fillWidth: true
                         }
                         Text {
-                            font.pixelSize: DesignConf.smallFontSize
+                            font.pixelSize: FontsConf.smallPixelSize
                             color: ColoursConf.fg1
-                            font.family: DesignConf.fontFamily
+                            font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
                             text: ["Power saver", "Balanced", "Performance"][powerProfiletoggleGroup.activeIndex] ?? "Unknown"
                             verticalAlignment: Text.AlignVCenter
@@ -162,9 +162,9 @@ Rectangle {
                         // row 2
                         Text {
                             visible: !grid.fullAndCharging
-                            font.pixelSize: DesignConf.smallFontSize
+                            font.pixelSize: FontsConf.smallPixelSize
                             color: ColoursConf.fg2
-                            font.family: DesignConf.fontFamily
+                            font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
                             text: battery.isCharging ? "Time until full" : "Time until empty"
                             verticalAlignment: Text.AlignVCenter
@@ -175,9 +175,9 @@ Rectangle {
                         }
                         Text {
                             visible: !grid.fullAndCharging
-                            font.pixelSize: DesignConf.smallFontSize
+                            font.pixelSize: FontsConf.smallPixelSize
                             color: ColoursConf.fg1
-                            font.family: DesignConf.fontFamily
+                            font.family: FontsConf.mainFamily
                             text: {
                                 let secsLeft = battery.isCharging ? UPower.displayDevice.timeToFull : UPower.displayDevice.timeToEmpty;
                                 return secsLeft == 0 ? "Loading..." : MiscService.secsToHrsMins(secsLeft);
@@ -192,9 +192,9 @@ Rectangle {
 
                         // row 3
                         Text {
-                            font.pixelSize: DesignConf.smallFontSize
+                            font.pixelSize: FontsConf.smallPixelSize
                             color: ColoursConf.fg2
-                            font.family: DesignConf.fontFamily
+                            font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
                             text: battery.isCharging ? "Charge rate" : "Discharge rate"
                             verticalAlignment: Text.AlignVCenter
@@ -203,9 +203,9 @@ Rectangle {
                             Layout.fillWidth: true
                         }
                         Text {
-                            font.pixelSize: DesignConf.smallFontSize
+                            font.pixelSize: FontsConf.smallPixelSize
                             color: ColoursConf.fg1
-                            font.family: DesignConf.fontFamily
+                            font.family: FontsConf.mainFamily
                             text: {
                                 if (UPower.displayDevice.changeRate == 0 && !grid.fullAndCharging)
                                     return "Loading...";

@@ -1,15 +1,15 @@
 pragma Singleton
 import QtQuick
-import Quickshell
-import ".."
+import "../../types"
 import "../.."
 
 QtObject {
-    function search(text: string, mode: string): list<DesktopEntry> {
+    function search(text: string, mode: string): list<FsEntry> {
         let max = MiscService.getMaxSearchResults("files", mode);
+        return [];
     }
 
-    function open(fsEntry: DesktopEntry, inNewWs: bool): void {
+    function open(fsEntry: FsEntry, inNewWs: bool): void {
         console.log(fsEntry.name);
     }
 }

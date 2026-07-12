@@ -36,8 +36,8 @@ Rectangle {
         Text {
             text: audio.percent + "%"
             color: ColoursConf.fg1
-            font.family: DesignConf.fontFamily
-            font.pixelSize: DesignConf.fontSize
+            font.family: FontsConf.mainFamily
+            font.pixelSize: FontsConf.pixelSize
             horizontalAlignment: Text.AlignHCenter
             Layout.preferredWidth: 40
         }
@@ -140,8 +140,8 @@ Rectangle {
                                         horizontalAlignment: Text.AlignHCenter
                                         elide: Text.ElideRight
                                         color: ColoursConf.fg1
-                                        font.family: DesignConf.fontFamily
-                                        font.pixelSize: DesignConf.smallFontSize
+                                        font.family: FontsConf.mainFamily
+                                        font.pixelSize: FontsConf.smallPixelSize
                                         MouseArea {
                                             anchors.fill: parent
                                             hoverEnabled: true
@@ -276,8 +276,8 @@ Rectangle {
                                         text: AudioService.getSinkDetails(node.modelData).name
                                         Layout.fillWidth: true
                                         elide: Text.ElideRight
-                                        font.family: DesignConf.fontFamily
-                                        font.pixelSize: DesignConf.smallFontSize
+                                        font.family: FontsConf.mainFamily
+                                        font.pixelSize: FontsConf.smallPixelSize
                                         color: node.colour
                                         Layout.leftMargin: DesignConf.spacing / 2
                                     }
@@ -287,8 +287,8 @@ Rectangle {
                                     Text {
                                         text: Math.round(node.modelData.audio.volume * 100) + "%"
                                         font.strikeout: node.modelData.audio.muted
-                                        font.family: DesignConf.fontFamily
-                                        font.pixelSize: DesignConf.smallFontSize
+                                        font.family: FontsConf.mainFamily
+                                        font.pixelSize: FontsConf.smallPixelSize
                                         color: node.colour
                                         Layout.rightMargin: DesignConf.spacing / 2
                                     }

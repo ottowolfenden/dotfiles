@@ -19,13 +19,11 @@ Repeater {
         id: appRect
         required property DesktopEntry modelData
         required property int index
-        property bool pressed: mouseArea.pressed
-        property bool active: (index == appSearch.activeIndex)
 
         color: {
-            if (pressed)
+            if (mouseArea.pressed)
                 return ColoursConf.buttonPressedBg;
-            else if (active)
+            else if (index == appSearch.activeIndex)
                 return ColoursConf.buttonHoveredBg;
             return "transparent";
         }
@@ -59,15 +57,14 @@ Repeater {
                 id: appName
                 text: appRect.modelData.name
                 color: ColoursConf.fg1
-                font.family: DesignConf.fontFamily
-                font.pixelSize: DesignConf.smallFontSize
+                font.family: FontsConf.mainFamily
+                font.pixelSize: FontsConf.smallPixelSize
                 elide: Text.ElideRight
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
                 Layout.leftMargin: DesignConf.spacing / 2
                 Layout.rightMargin: DesignConf.spacing / 2
             }
-
             IconButton {
                 id: hideButton
                 isTransparentOnInactive: true

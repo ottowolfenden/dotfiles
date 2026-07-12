@@ -65,8 +65,8 @@ Rectangle {
             color: ColoursConf.fg1
             placeholderText: SearchConf.modes.find(m => m.name == search.mode).placeholder
             background: null
-            font.pixelSize: DesignConf.fontSize
-            font.family: search.mode == "command" ? DesignConf.monospaceFontFamily : DesignConf.fontFamily
+            font.pixelSize: FontsConf.pixelSize
+            font.family: search.mode == "command" ? FontsConf.monospaceFamily : FontsConf.mainFamily
             selectionColor: ColoursConf.textSelectionBg
             selectedTextColor: ColoursConf.fg1
             Layout.fillHeight: true

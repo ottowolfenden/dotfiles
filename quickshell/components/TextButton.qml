@@ -20,8 +20,8 @@ Button {
         }
         Text {
             text: button.text
-            font.pixelSize: DesignConf.fontSize
-            font.family: DesignConf.fontFamily
+            font.pixelSize: FontsConf.pixelSize
+            font.family: FontsConf.mainFamily
             color: ColoursConf.fg1
             rightPadding: DesignConf.spacing
             leftPadding: button.iconName ? 0 : DesignConf.spacing

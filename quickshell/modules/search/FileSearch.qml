@@ -2,29 +2,27 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import Quickshell
 import "../.."
+import "../../types"
 
 Repeater {
     id: fileSearch
     required property string mode
     required property TextField searchInput
     required property int activeIndex
-    readonly property DesktopEntry activeItem: model[activeIndex] ?? null
+    readonly property FsEntry activeItem: model[activeIndex] ?? null
     signal activeIndexSet(index: int)
 
-    model: AppSearchService.search(searchInput.text, mode)
+    model: FileSearchService.search(searchInput.text, mode)
     delegate: Rectangle {
         id: fileRect
-        required property DesktopEntry modelData
+        required property FsEntry modelData
         required property int index
-        property bool pressed: mouseArea.pressed
-        property bool active: (index == fileSearch.activeIndex)
 
         color: {
-            if (pressed)
+            if (mouseArea.pressed)
                 return ColoursConf.buttonPressedBg;
-            else if (active)
+            else if (index == fileSearch.activeIndex)
                 return ColoursConf.buttonHoveredBg;
             return "transparent";
         }
@@ -53,8 +51,8 @@ Repeater {
                 id: appName
                 text: fileRect.modelData.name
                 color: ColoursConf.fg1
-                font.family: DesignConf.fontFamily
-                font.pixelSize: DesignConf.smallFontSize
+                font.family: FontsConf.mainFamily
+                font.pixelSize: FontsConf.smallPixelSize
                 elide: Text.ElideRight
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter

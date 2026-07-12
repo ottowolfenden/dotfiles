@@ -45,7 +45,7 @@ Rectangle {
                     anchors.fill: parent
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    font.family: DesignConf.fontFamily
+                    font.family: FontsConf.mainFamily
                     font.pixelSize: 12
                     color: {
                         if (parent.isActive)
