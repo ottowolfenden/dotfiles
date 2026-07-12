@@ -5,6 +5,7 @@ singleton SystemConf 1.0 config/SystemConf.qml
 singleton DesignConf 1.0 config/DesignConf.qml
 singleton AudioConf 1.0 config/AudioConf.qml
 singleton SearchConf 1.0 config/SearchConf.qml
+singleton FontsConf 1.0 config/FontsConf.qml
 
 singleton HyprlandService 1.0 services/HyprlandService.qml
 singleton AudioService 1.0 services/AudioService.qml

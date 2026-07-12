@@ -15,10 +15,10 @@ Item {
 
     Text {
         id: icon
-        text: parent.iconName
+        text: parent.iconName.replace("custom:", "")
         font.pixelSize: parent.pixelSize
         color: parent.colour
-        font.family: "Material Symbols Outlined"
+        font.family: parent.iconName.startsWith("custom:") ? FontsConf.customMaterialSymbolsOutlined : FontsConf.materialSymbolsOutlined
         renderType: Text.NativeRendering
         font.variableAxes: ({
                 "FILL": parent.fill ? 1 : 0,

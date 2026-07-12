@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick
+import ".."
 
 QtObject {
     readonly property int spacing: 8
@@ -11,8 +12,8 @@ QtObject {
     readonly property int radius: 7
     readonly property int smallRadius: 4
     readonly property int blurRadius: 70
-    readonly property string fontFamily: "Google Sans Flex"
-    readonly property string monospaceFontFamily: "Consolas"
+    readonly property string fontFamily: FontsConf.googleSansFlex
+    readonly property string monospaceFontFamily: FontsConf.inconsolata
     readonly property int animationDuration: 200
     readonly property int listAnimationDuration: 150
     readonly property int buttonColourAnimationDuration: 100
