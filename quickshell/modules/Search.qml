@@ -77,7 +77,6 @@ Rectangle {
             function reset() {
                 text = "";
                 search.mode = "default";
-                appSearch.activeIndex;
                 FlyoutsService.hideFlyout(searchFlyout);
                 shiftReturn = false;
             }
@@ -92,9 +91,9 @@ Rectangle {
                 else if (e.key == Qt.Key_Tab)
                     search.cycleMode();
                 else if (e.key == Qt.Key_Down)
-                    appSearch.activeIndex = (appSearch.activeIndex + 1) % appSearch.model.length;
+                    searchColumn.activeIndex = (searchColumn.activeIndex + 1) % searchColumn.totalResults;
                 else if (e.key == Qt.Key_Up)
-                    appSearch.activeIndex = (appSearch.activeIndex - 1 + appSearch.model.length) % (appSearch.model.length);
+                    searchColumn.activeIndex = (searchColumn.activeIndex - 1 + searchColumn.totalResults) % searchColumn.totalResults;
                 else if (e.key == Qt.Key_Return && (e.modifiers & Qt.ShiftModifier))
                     shiftReturn = true;
                 else if (e.key == Qt.Key_Return || e.key == Qt.Key_Shift || e.key == Qt.Key_Control)
@@ -102,7 +101,7 @@ Rectangle {
                 else if (e.key == Qt.Key_Escape)
                     reset();
                 else
-                    appSearch.activeIndex = 0;
+                    searchColumn.activeIndex = 0;
             }
 
             Keys.onReleased: e => {
@@ -117,8 +116,16 @@ Rectangle {
             onAccepted: {
                 if (search.mode == "command")
                     Quickshell.execDetached(["/bin/sh", "-c", text]);
+                else if (appSearch.activeItem)
+                    AppSearchService.exec(appSearch.activeItem, shiftReturn);
+                else if (fileSearch.activeItem)
+                    FileSearchService.open(fileSearch.activeItem, shiftReturn);
+                else if (webSearch.activeItem)
+                    WebSearchService.open(webSearch.activeItem, shiftReturn);
+                else if (commandSearch.activeItem)
+                    CommandSearchService.exec(commandSearch.activeItem, shiftReturn);
                 else
-                    AppSearchService.exec(appSearch.model[appSearch.activeIndex], shiftReturn);
+                    return;
                 reset();
             }
         }
@@ -138,25 +145,63 @@ Rectangle {
         }
         onHoveringChanged: {
             if (!hovering)
-                appSearch.activeIndex = 0;
+                searchColumn.activeIndex = 0;
         }
 
         Pane {
             id: pane
-            padding: appSearch.model.length == 0 ? 0 : DesignConf.spacing
+            padding: searchColumn.totalResults == 0 ? 0 : DesignConf.spacing
             anchors.left: parent.left
             anchors.right: parent.right
             background: null
 
             ColumnLayout {
-                id: appsColumn
+                id: searchColumn
                 anchors.fill: parent
                 spacing: DesignConf.spacing / 2
+                readonly property list<Repeater> components: [appSearch, fileSearch, webSearch, commandSearch]
+                readonly property int totalResults: components.reduce((acc, c) => c.model.length + acc, 0)
+                property int activeIndex: 0
+                function getIndexOffset(component) {
+                    if (components.indexOf(component) == 0)
+                        return 0;
+                    return components[components.indexOf(component) - 1].model.length;
+                }
 
                 AppSearch {
                     id: appSearch
+                    property int indexOffset: searchColumn.getIndexOffset(this)
                     mode: search.mode
                     searchInput: searchInput
+                    activeIndex: searchColumn.activeIndex - indexOffset
+                    onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                }
+
+                FileSearch {
+                    id: fileSearch
+                    property int indexOffset: searchColumn.getIndexOffset(this)
+                    mode: search.mode
+                    searchInput: searchInput
+                    activeIndex: searchColumn.activeIndex - indexOffset
+                    onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                }
+
+                WebSearch {
+                    id: webSearch
+                    property int indexOffset: searchColumn.getIndexOffset(this)
+                    mode: search.mode
+                    searchInput: searchInput
+                    activeIndex: fileSearch.activeIndex - indexOffset
+                    onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                }
+
+                CommandSearch {
+                    id: commandSearch
+                    property int indexOffset: searchColumn.getIndexOffset(this)
+                    mode: search.mode
+                    searchInput: searchInput
+                    activeIndex: webSearch.activeIndex - indexOffset
+                    onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
                 }
             }
         }

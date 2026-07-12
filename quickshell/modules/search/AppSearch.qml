@@ -7,10 +7,12 @@ import "../.."
 import "../../components"
 
 Repeater {
-    id: appsRep
+    id: appSearch
     required property string mode
     required property TextField searchInput
-    property int activeIndex: 0
+    required property int activeIndex
+    readonly property DesktopEntry activeItem: model[activeIndex] ?? null
+    signal activeIndexSet(index: int)
 
     model: AppSearchService.search(searchInput.text, mode)
     delegate: Rectangle {
@@ -18,7 +20,7 @@ Repeater {
         required property DesktopEntry modelData
         required property int index
         property bool pressed: mouseArea.pressed
-        property bool active: (index == appsRep.activeIndex) || mouseArea.containsMouse
+        property bool active: (index == appSearch.activeIndex)
 
         color: {
             if (pressed)
@@ -33,17 +35,20 @@ Repeater {
 
         MouseArea {
             id: mouseArea
+            property bool hovering: containsMouse || hideButton.hovering || openInNewWsButton.hovering
             anchors.fill: parent
             anchors.margins: -DesignConf.spacing / 4
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
             acceptedButtons: Qt.LeftButton | Qt.MiddleButton
-            onContainsMouseChanged: appsRep.activeIndex = (containsMouse || hideButton.hovering || openInNewWsButton.hovering) ? appRect.index : -1
+            onHoveringChanged: {
+                if (hovering)
+                    appSearch.activeIndexSet(appRect.index);
+            }
             onClicked: mouse => {
                 if (mouse.button == Qt.LeftButton) {
                     AppSearchService.exec(appRect.modelData);
-                    AppSearchService.updateHistory(appRect.modelData);
-                    appsRep.searchInput.reset();
+                    appSearch.searchInput.reset();
                 } else if (mouse.button == Qt.MiddleButton)
                     AppSearchService.hide(appRect.modelData);
             }
@@ -66,7 +71,7 @@ Repeater {
             IconButton {
                 id: hideButton
                 isTransparentOnInactive: true
-                visible: mouseArea.containsMouse || hovering || openInNewWsButton.hovering
+                visible: mouseArea.hovering
                 opacity: visible
                 iconName: IconsConf.appSearchHideButton
                 Layout.alignment: Qt.AlignRight
@@ -81,7 +86,7 @@ Repeater {
             IconButton {
                 id: openInNewWsButton
                 isTransparentOnInactive: true
-                visible: mouseArea.containsMouse || hovering || hideButton.hovering
+                visible: mouseArea.hovering
                 opacity: visible
                 iconName: IconsConf.appSearchOpenInNewWsButton
                 Layout.alignment: Qt.AlignRight
@@ -89,7 +94,7 @@ Repeater {
                 buttonPixelSize: appRect.Layout.preferredHeight - DesignConf.spacing
                 onClicked: {
                     AppSearchService.exec(appRect.modelData, true);
-                    appsRep.searchInput.reset();
+                    appSearch.searchInput.reset();
                 }
                 Behavior on opacity {
                     NumberAnimation {
