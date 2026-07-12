@@ -252,11 +252,11 @@ QtObject {
             web: "language",
             command: "terminal"
         })
-    readonly property var fileFormats: ({
-            default: "draft",
-            txt: "article",
-            zip: "folder_zip"
-        })
+    readonly property var fileFormats: {
+        "": "draft",
+        "txt": "article",
+        "zip": "folder_zip"
+    }
     readonly property var folders: ({
             default: "folder",
             rootOwned: "custom:\uF101"

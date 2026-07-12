@@ -3,20 +3,19 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import "../.."
-import "../../types"
 
 Repeater {
     id: fileSearch
     required property string mode
     required property TextField searchInput
     required property int activeIndex
-    readonly property FsEntry activeItem: model[activeIndex] ?? null
+    readonly property var activeItem: model[activeIndex] ?? null
     signal activeIndexSet(index: int)
 
     model: FileSearchService.search(searchInput.text, mode)
     delegate: Rectangle {
         id: fileRect
-        required property FsEntry modelData
+        required property var modelData
         required property int index
 
         color: {
@@ -28,7 +27,7 @@ Repeater {
         }
         radius: DesignConf.smallRadius
         Layout.fillWidth: true
-        Layout.preferredHeight: appName.implicitHeight + DesignConf.spacing
+        Layout.preferredHeight: fileName.implicitHeight + DesignConf.spacing
 
         MouseArea {
             id: mouseArea
@@ -48,7 +47,7 @@ Repeater {
         RowLayout {
             anchors.fill: parent
             Text {
-                id: appName
+                id: fileName
                 text: fileRect.modelData.name
                 color: ColoursConf.fg1
                 font.family: FontsConf.mainFamily
