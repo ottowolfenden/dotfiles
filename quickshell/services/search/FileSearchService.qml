@@ -58,8 +58,8 @@ QtObject {
     }
 
     function search(text: string, mode: string, results: var): var {
-        if (!text || text.length <= 3)
-            return;
+        if (!text || text.length < SearchConf.modes.find(m => m.name == "files").minChars)
+            return [];
         if (!results) {
             searchProcess.text = text;
             searchProcess.mode = mode;
@@ -80,19 +80,23 @@ QtObject {
         id: searchProcess
         property var text: null
         property var mode: null
+
         property list<string> results: []
-        onExited: (exitCode, exitStatus) => {
-            console.log("EXITED " + exitCode);
-            searchProcess.text = null;
-            searchProcess.mode = null;
-            results = null;
+        property int count: 0
+
+        onExited: () => {
+            text = null;
+            mode = null;
+            results = [];
+            count = 0;
         }
         stdout: SplitParser {
             onRead: line => {
-                if (!line || line == "\n")
+                if (!line || line == "\n" || searchProcess.count > MiscService.getMaxSearchResults("files", searchProcess.mode))
                     return;
                 searchProcess.results.push(line);
                 fileSearchService.search(searchProcess.file, searchProcess.mode, searchProcess.results);
+                searchProcess.count++;
             }
         }
     }

@@ -43,7 +43,7 @@ QtObject {
 
     function search(text: string, mode: string): list<DesktopEntry> {
         let max = MiscService.getMaxSearchResults("apps", mode);
-        if (!text || text.length == 0 || max == 0)
+        if (!text || text.length < SearchConf.modes.find(m => m.name == "apps").minChars || max == 0)
             return [];
         text = text.toLowerCase();
         let apps = DesktopEntries.applications.values.filter(a => !hiddenApps.includes(a.id));

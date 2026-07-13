@@ -62,7 +62,7 @@ QtObject {
     }
 
     function search(text: string, mode: string, results: var): var {
-        if (!text || text.length <= 3)
+        if (!text || text.length < SearchConf.modes.find(m => m.name == "dirs").minChars)
             return;
         if (!results) {
             searchProcess.running = false;
@@ -90,14 +90,14 @@ QtObject {
         property int count: 0
 
         onExited: () => {
-            searchProcess.text = null;
-            searchProcess.mode = null;
+            text = null;
+            mode = null;
             results = [];
             count = 0;
         }
         stdout: SplitParser {
             onRead: line => {
-                if (!line || line == "\n" || searchProcess.count > 2)
+                if (!line || line == "\n" || searchProcess.count > MiscService.getMaxSearchResults("dirs", searchProcess.mode))
                     return;
                 searchProcess.results.push(line);
                 fileSearchService.search(searchProcess.dir, searchProcess.mode, searchProcess.results);
