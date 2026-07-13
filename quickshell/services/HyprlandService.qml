@@ -1,6 +1,7 @@
 pragma Singleton
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Hyprland
 
 QtObject {
@@ -47,6 +48,6 @@ QtObject {
     }
 
     function execWithQsTag(command: string): void {
-        Hyprland.dispatch(`hl.dsp.exec_cmd("${command}", { tag = "+qs" })`);
+        Hyprland.dispatch(`hl.dsp.exec_cmd(${JSON.stringify(command)}, { tag = "+qs" })`);
     }
 }
