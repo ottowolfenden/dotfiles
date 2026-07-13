@@ -22,7 +22,7 @@ QtObject {
             prefixes: ["files:", "f:"],
             placeholder: "Search files and folders",
             maxResults: {
-                all: 5,
+                all: 3,
                 filtered: 10
             }
         },
@@ -38,7 +38,11 @@ QtObject {
         {
             name: "command",
             prefixes: ["exec:", ">", "e:", "t:", "c:"],
-            placeholder: "Execute"
+            placeholder: "Execute",
+            maxResults: {
+                all: 0,
+                filtered: 10
+            }
         }
     ]
 

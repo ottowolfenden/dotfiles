@@ -82,11 +82,12 @@ Rectangle {
                 shiftReturn = false;
             }
 
+            property string prevText
+
             Keys.onPressed: e => {
-                if (!search.isOpen) {
-                    e.accepted = true;
+                if (!search.isOpen)
                     return;
-                }
+                prevText = text;
                 if (e.key == Qt.Key_Backspace && text == "")
                     search.mode = "default";
                 else if (e.key == Qt.Key_Tab)
@@ -106,6 +107,10 @@ Rectangle {
             }
 
             Keys.onReleased: e => {
+                console.log("prev: " + prevText);
+                console.log("now:" + text);
+                if (text == prevText && e.key == Qt.Key_Backspace)
+                    search.mode = "default";
                 let mode = SearchConf.modes.find(m => m.prefixes.some(p => text.startsWith(p)));
                 let prefix = mode?.prefixes.find(p => text.startsWith(p));
                 if (mode && search.mode != mode.name) {
