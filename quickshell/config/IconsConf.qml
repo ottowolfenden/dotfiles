@@ -261,8 +261,8 @@ QtObject {
     readonly property var dirs: ({
             default: "folder",
             rootOwned: "custom:\uF101",
-            bin: "folder_delete",
             conf: "folder_managed",
-            code: "folder_code"
+            repo: "folder_code",
+            home: "custom:\uF102"
         })
 }

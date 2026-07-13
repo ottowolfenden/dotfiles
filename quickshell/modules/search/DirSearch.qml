@@ -10,14 +10,10 @@ Repeater {
     required property string mode
     required property TextField searchInput
     required property int activeIndex
-    readonly property var activeItem: {
-        if (model)
-            return model[activeIndex] ?? null;
-        return null;
-    }
+    readonly property var activeItem: model[activeIndex] ?? null
     signal activeIndexSet(index: int)
 
-    model: DirSearchService.search(searchInput.text, mode)
+    model: DirSearchService.results
     delegate: Rectangle {
         id: dirRect
         required property var modelData
@@ -54,7 +50,7 @@ Repeater {
             anchors.fill: parent
             Text {
                 id: dirName
-                text: dirRect.modelData.name
+                text: dirRect.modelData.homeRelativePath
                 color: ColoursConf.fg1
                 font.family: FontsConf.mainFamily
                 font.pixelSize: FontsConf.smallPixelSize

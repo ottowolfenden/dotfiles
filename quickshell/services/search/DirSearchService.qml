@@ -1,107 +1,66 @@
 pragma Singleton
 import QtQuick
+import Quickshell
 import Quickshell.Io
 import "../.."
 
 QtObject {
     id: fileSearchService
 
-    property list<var> dirs: [
-        {
-            path: "/home/otto/wallpapers",
-            created: new Date(),
-            modified: new Date(),
-            accessed: new Date(),
-            byteSize: null,
-            isRootOwned: false,
-            numFiles: 20,
-            numDirs: 4,
-            get name() {
-                return getName(this);
-            },
-            get format() {
-                return getFormat(this);
-            },
-            get icon() {
-                return getIcon(this);
-            }
-        },
-        {
-            path: "/home/otto/t\\\\\\\\est",
-            created: new Date(),
-            modified: new Date(),
-            accessed: new Date(),
-            byteSize: null,
-            isRootOwned: false,
-            numFiles: 20,
-            numDirs: 4,
-            get name() {
-                return getName(this);
-            },
-            get format() {
-                return getFormat(this);
-            },
-            get icon() {
-                return getIcon(this);
-            }
-        }
-    ]
+    property var results: []
 
-    function getName(dir: var): string {
-        let parts = dir.path.split("/");
-        return parts[parts.length - 1];
-    }
-    function getFormat(file: var): string {
-        let parts = getName(file).split(".");
-        if (parts.length <= 1)
-            return "";
-        return parts[parts.length - 1].toLowerCase();
-    }
-    function getIcon(dir: var): string {
-        return IconsConf.dirs[dir.isRootOwned ? "rootOwned" : "default"];
-    }
-
-    function search(text: string, mode: string, results: var): var {
-        if (!text || text.length < SearchConf.modes.find(m => m.name == "dirs").minChars)
-            return;
-        if (!results) {
-            searchProcess.running = false;
-            searchProcess.text = text;
-            searchProcess.mode = mode;
-            searchProcess.command = ["sh", "-c", `find ~ -name ".*" -type d -prune -o -iname "${text}*" -print 2>/dev/null`];
-            searchProcess.running = true;
+    function search(text: string, mode: string): void {
+        if (text.length < SearchConf.modes.find(m => m.name == "dirs").minChars || MiscService.getMaxSearchResults("dirs", mode) == 0) {
+            results = [];
             return;
         }
-
-        console.log(JSON.stringify(results, null, 2));
-
-        let max = MiscService.getMaxSearchResults("files", mode);
-        // let searchResults = results;
-        // return MiscService.getDistinctNonNull(searchResults).slice(0, max);
-        return [];
+        searchProcess.running = false;
+        searchProcess.input = text;
+        searchProcess.mode = mode;
+        searchProcess.running = true;
     }
 
     property Process searchProcess: Process {
         id: searchProcess
-        property var text: null
+        property var input: null
         property var mode: null
-
-        property list<string> results: []
-        property int count: 0
-
-        onExited: () => {
-            text = null;
-            mode = null;
-            results = [];
-            count = 0;
-        }
-        stdout: SplitParser {
-            onRead: line => {
-                if (!line || line == "\n" || searchProcess.count > MiscService.getMaxSearchResults("dirs", searchProcess.mode))
+        readonly property var pattern: ["*", "?", "[", "]"].some(w => (input ?? "").includes(w)) ? input : `*${input}*`
+        command: [PathsConf.scripts + "find-fsentries.sh", SearchConf.dirSearchRootDir, pattern, "-d", SearchConf.searchHiddenDirs ? "--include-hidden" : ""]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                if (text.trim() == "" || !text) {
+                    results = [];
                     return;
-                searchProcess.results.push(line);
-                fileSearchService.search(searchProcess.dir, searchProcess.mode, searchProcess.results);
-                searchProcess.count++;
+                }
+
+                results = JSON.parse(text.trim()).map(r => Object.assign({}, r, {
+                        get name() {
+                            let parts = r.path.split("/");
+                            return parts[parts.length - 1];
+                        },
+                        get format() {
+                            let parts = this.name.split(".");
+                            if (parts.length <= 1)
+                                return "";
+                            return parts[parts.length - 1].toLowerCase();
+                        },
+                        get icon() {
+                            if (r.hasGit)
+                                return IconsConf.dirs.repo;
+                            if (r.path == (Quickshell.env("HOME")))
+                                return IconsConf.dirs.home;
+                            if (r.isRootOwned)
+                                return IconsConf.dirs.rootOwned;
+                            if (r.path.includes("config"))
+                                return IconsConf.dirs.conf;
+                            return IconsConf.dirs.default;
+                        },
+                        get homeRelativePath() {
+                            if (r.path.startsWith(Quickshell.env("HOME")))
+                                return r.path.replace(Quickshell.env("HOME"), "~");
+                            return r.path;
+                        }
+                    })).slice(0, MiscService.getMaxSearchResults("dirs", searchProcess.mode));
             }
         }
     }

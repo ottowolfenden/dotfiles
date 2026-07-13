@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick
+import Quickshell
 
 QtObject {
     readonly property var modes: [
@@ -23,10 +24,10 @@ QtObject {
             name: "dirs",
             prefixes: ["directories:", "folders:", "dir:", "dirs:", "d:"],
             placeholder: "Search directories",
-            minChars: 1,
+            minChars: 2,
             maxResults: {
                 all: 3,
-                filtered: 6
+                filtered: 10
             }
         },
         {
@@ -62,4 +63,8 @@ QtObject {
     ]
 
     readonly property list<string> appAttrPriority: ["name", "execString", "genericName", "comment", "categories", "keywords", "startupClass", "icon"]
+    readonly property string fileSearchRootDir: Quickshell.env("HOME")
+    readonly property string dirSearchRootDir: Quickshell.env("HOME")
+    readonly property bool searchHiddenFiles: false
+    readonly property bool searchHiddenDirs: false
 }

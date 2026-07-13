@@ -16,6 +16,7 @@ Rectangle {
         let modes = SearchConf.modes.map(m => m.name);
         mode = modes[Math.max((modes.indexOf(mode) + 1) % modes.length, 1)];
     }
+    onModeChanged: DirSearchService.search(searchInput.text, mode)
 
     color: ColoursConf.bg2
     radius: DesignConf.radius
@@ -115,6 +116,8 @@ Rectangle {
                     search.mode = mode.name;
                     text = text.replace(prefix, "");
                 }
+                if (text != prevText || e.key == Qt.Key_Tab)
+                    DirSearchService.search(text, search.mode);
             }
 
             onAccepted: {
@@ -123,7 +126,7 @@ Rectangle {
                 else if (appSearch.activeItem)
                     AppSearchService.exec(appSearch.activeItem, shiftReturn);
                 else if (dirSearch.activeItem)
-                    DirSearchService.open(appSearch.activeItem, shiftReturn);
+                    DirSearchService.open(dirSearch.activeItem, shiftReturn);
                 else if (fileSearch.activeItem)
                     FileSearchService.open(fileSearch.activeItem, shiftReturn);
                 else if (webSearch.activeItem)
@@ -176,6 +179,7 @@ Rectangle {
 
                 AppSearch {
                     id: appSearch
+                    visible: search.mode == "apps" || search.mode == "default"
                     property int indexOffset: searchColumn.getIndexOffset(this)
                     mode: search.mode
                     searchInput: searchInput
@@ -185,6 +189,7 @@ Rectangle {
 
                 DirSearch {
                     id: dirSearch
+                    visible: search.mode == "dirs" || search.mode == "default"
                     property int indexOffset: searchColumn.getIndexOffset(this)
                     mode: search.mode
                     searchInput: searchInput
@@ -194,6 +199,7 @@ Rectangle {
 
                 FileSearch {
                     id: fileSearch
+                    visible: search.mode == "files" || search.mode == "default"
                     property int indexOffset: searchColumn.getIndexOffset(this)
                     mode: search.mode
                     searchInput: searchInput
@@ -203,6 +209,7 @@ Rectangle {
 
                 WebSearch {
                     id: webSearch
+                    visible: search.mode == "web" || search.mode == "default"
                     property int indexOffset: searchColumn.getIndexOffset(this)
                     mode: search.mode
                     searchInput: searchInput
@@ -212,6 +219,7 @@ Rectangle {
 
                 CommandSearch {
                     id: commandSearch
+                    visible: search.mode == "command" || search.mode == "default"
                     property int indexOffset: searchColumn.getIndexOffset(this)
                     mode: search.mode
                     searchInput: searchInput
