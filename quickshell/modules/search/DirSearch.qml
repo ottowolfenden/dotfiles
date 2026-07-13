@@ -6,7 +6,7 @@ import "../.."
 import "../../components"
 
 Repeater {
-    id: fileSearch
+    id: dirSearch
     required property string mode
     required property TextField searchInput
     required property int activeIndex
@@ -17,22 +17,22 @@ Repeater {
     }
     signal activeIndexSet(index: int)
 
-    model: FileSearchService.search(searchInput.text, mode)
+    model: DirSearchService.search(searchInput.text, mode)
     delegate: Rectangle {
-        id: fileRect
+        id: dirRect
         required property var modelData
         required property int index
 
         color: {
             if (mouseArea.pressed)
                 return ColoursConf.buttonPressedBg;
-            else if (index == fileSearch.activeIndex)
+            else if (index == dirSearch.activeIndex)
                 return ColoursConf.buttonHoveredBg;
             return "transparent";
         }
         radius: DesignConf.smallRadius
         Layout.fillWidth: true
-        Layout.preferredHeight: fileName.implicitHeight + DesignConf.spacing
+        Layout.preferredHeight: dirName.implicitHeight + DesignConf.spacing
 
         MouseArea {
             id: mouseArea
@@ -43,18 +43,18 @@ Repeater {
             cursorShape: Qt.PointingHandCursor
             onHoveringChanged: {
                 if (hovering)
-                    fileSearch.activeIndexSet(fileRect.index);
+                    dirSearch.activeIndexSet(dirRect.index);
             }
             onClicked: mouse => {
-                FileSearchService.open(fileRect.modelData);
-                fileSearch.searchInput.reset();
+                DirSearchService.open(dirRect.modelData);
+                dirSearch.searchInput.reset();
             }
         }
         RowLayout {
             anchors.fill: parent
             Text {
-                id: fileName
-                text: fileRect.modelData.name
+                id: dirName
+                text: dirRect.modelData.name
                 color: ColoursConf.fg1
                 font.family: FontsConf.mainFamily
                 font.pixelSize: FontsConf.smallPixelSize
@@ -72,10 +72,10 @@ Repeater {
                 iconName: IconsConf.appSearchOpenInNewWsButton
                 Layout.alignment: Qt.AlignRight
                 Layout.rightMargin: DesignConf.spacing / 2
-                buttonPixelSize: fileRect.Layout.preferredHeight - DesignConf.spacing
+                buttonPixelSize: dirRect.Layout.preferredHeight - DesignConf.spacing
                 onClicked: {
-                    FileSearchService.open(fileRect.modelData, true);
-                    fileSearch.searchInput.reset();
+                    DirSearchService.open(dirRect.modelData, true);
+                    dirSearch.searchInput.reset();
                 }
                 Behavior on opacity {
                     NumberAnimation {

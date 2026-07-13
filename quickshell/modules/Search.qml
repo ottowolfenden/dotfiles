@@ -107,8 +107,6 @@ Rectangle {
             }
 
             Keys.onReleased: e => {
-                console.log("prev: " + prevText);
-                console.log("now:" + text);
                 if (text == prevText && e.key == Qt.Key_Backspace)
                     search.mode = "default";
                 let mode = SearchConf.modes.find(m => m.prefixes.some(p => text.startsWith(p)));
@@ -124,6 +122,8 @@ Rectangle {
                     Quickshell.execDetached(["/bin/sh", "-c", text]);
                 else if (appSearch.activeItem)
                     AppSearchService.exec(appSearch.activeItem, shiftReturn);
+                else if (dirSearch.activeItem)
+                    DirSearchService.open(appSearch.activeItem, shiftReturn);
                 else if (fileSearch.activeItem)
                     FileSearchService.open(fileSearch.activeItem, shiftReturn);
                 else if (webSearch.activeItem)
@@ -165,17 +165,26 @@ Rectangle {
                 id: searchColumn
                 anchors.fill: parent
                 spacing: DesignConf.spacing / 2
-                readonly property list<Repeater> components: [appSearch, fileSearch, webSearch, commandSearch]
-                readonly property int totalResults: components.reduce((acc, c) => c.model.length + acc, 0)
+                readonly property list<Repeater> components: [appSearch, dirSearch, fileSearch, webSearch, commandSearch]
+                readonly property int totalResults: components.reduce((acc, c) => (c.model?.length ?? 0) + acc, 0)
                 property int activeIndex: 0
                 function getIndexOffset(component) {
                     if (components.indexOf(component) == 0)
                         return 0;
-                    return components[components.indexOf(component) - 1].model.length;
+                    return components[components.indexOf(component) - 1]?.model?.length ?? 0;
                 }
 
                 AppSearch {
                     id: appSearch
+                    property int indexOffset: searchColumn.getIndexOffset(this)
+                    mode: search.mode
+                    searchInput: searchInput
+                    activeIndex: searchColumn.activeIndex - indexOffset
+                    onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                }
+
+                DirSearch {
+                    id: dirSearch
                     property int indexOffset: searchColumn.getIndexOffset(this)
                     mode: search.mode
                     searchInput: searchInput

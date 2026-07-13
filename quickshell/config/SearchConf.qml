@@ -5,12 +5,12 @@ QtObject {
     readonly property var modes: [
         {
             name: "default",
-            prefixes: ["default:", "none:", "d:", "n:"],
+            prefixes: ["default:", "none:", "n:"],
             placeholder: "Search"
         },
         {
             name: "apps",
-            prefixes: ["apps:", "a:"],
+            prefixes: ["apps:", "app:", "a:"],
             placeholder: "Search apps",
             maxResults: {
                 all: 3,
@@ -18,9 +18,18 @@ QtObject {
             }
         },
         {
+            name: "dirs",
+            prefixes: ["directories:", "folders:", "dir:", "dirs:", "d:"],
+            placeholder: "Search directories",
+            maxResults: {
+                all: 3,
+                filtered: 6
+            }
+        },
+        {
             name: "files",
-            prefixes: ["files:", "f:"],
-            placeholder: "Search files and folders",
+            prefixes: ["files:", "file:", "f:"],
+            placeholder: "Search files",
             maxResults: {
                 all: 3,
                 filtered: 10

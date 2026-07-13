@@ -18,3 +18,5 @@ singleton AppSearchService 1.0 services/search/AppSearchService.qml
 singleton CommandSearchService 1.0 services/search/CommandSearchService.qml
 singleton FileSearchService 1.0 services/search/FileSearchService.qml
 singleton WebSearchService 1.0 services/search/WebSearchService.qml
+singleton FileSearchService 1.0 services/search/FileSearchService.qml
+singleton DirSearchService 1.0 services/search/DirSearchService.qml

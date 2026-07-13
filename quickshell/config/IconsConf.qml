@@ -248,7 +248,8 @@ QtObject {
     readonly property var searchMode: ({
             default: "search",
             apps: "apps",
-            files: "folder",
+            dirs: "folder",
+            files: "draft",
             web: "language",
             command: "terminal"
         })
@@ -257,8 +258,11 @@ QtObject {
         "txt": "article",
         "zip": "folder_zip"
     }
-    readonly property var folders: ({
+    readonly property var dirs: ({
             default: "folder",
-            rootOwned: "custom:\uF101"
+            rootOwned: "custom:\uF101",
+            bin: "folder_delete",
+            conf: "folder_managed",
+            code: "folder_code"
         })
 }
