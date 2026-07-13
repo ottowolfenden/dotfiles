@@ -24,8 +24,9 @@ fi | while IFS= read -r -d '' path; do
         numsubdirs=$(find "$path" -maxdepth 1 -type d -mindepth 1 | wc -l)
         stats=$(stat -c "%W %Y %X %s" "$path")
         isrootowned=$( [[ $(stat -c "%u" "$path") -eq 0 ]] && echo true || echo false)
+        hasgit=$( [[ -d $path/.git ]] && echo true || echo false)
 
-        printf '%s\t%s %s %s %s\n' "$path" "$stats" "$isrootowned" "$numfiles" "$numsubdirs"
+        printf '%s\t%s %s %s %s\n' "$path" "$stats" "$isrootowned" "$numfiles" "$numsubdirs $hasgit"
 done | jq -R '
   split("\t") as $parts
   | $parts[1] | split(" ") as $stats
@@ -37,6 +38,7 @@ done | jq -R '
       byteSize: $stats[3] | tonumber,
       isRootOwned: $stats[4] | toboolean,
       numFiles: $stats[5] | tonumber,
-      numSubdirs: $stats[6] | tonumber
+      numSubdirs: $stats[6] | tonumber,
+      hasGit: $stats[7] | toboolean
     }
 ' | jq -s '.'
