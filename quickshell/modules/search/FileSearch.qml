@@ -3,6 +3,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import "../.."
+import "../../components"
 
 Repeater {
     id: fileSearch
@@ -31,12 +32,13 @@ Repeater {
 
         MouseArea {
             id: mouseArea
+            property bool hovering: containsMouse || openInNewWsButton.hovering
             anchors.fill: parent
             anchors.margins: -DesignConf.spacing / 4
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
-            onContainsMouseChanged: {
-                if (containsMouse)
+            onHoveringChanged: {
+                if (hovering)
                     fileSearch.activeIndexSet(fileRect.index);
             }
             onClicked: mouse => {
@@ -57,6 +59,25 @@ Repeater {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.leftMargin: DesignConf.spacing / 2
                 Layout.rightMargin: DesignConf.spacing / 2
+            }
+            IconButton {
+                id: openInNewWsButton
+                isTransparentOnInactive: true
+                visible: mouseArea.hovering
+                opacity: visible
+                iconName: IconsConf.appSearchOpenInNewWsButton
+                Layout.alignment: Qt.AlignRight
+                Layout.rightMargin: DesignConf.spacing / 2
+                buttonPixelSize: fileRect.Layout.preferredHeight - DesignConf.spacing
+                onClicked: {
+                    FileSearchService.open(fileRect.modelData, true);
+                    fileSearch.searchInput.reset();
+                }
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: DesignConf.buttonColourAnimationDuration
+                    }
+                }
             }
         }
 
