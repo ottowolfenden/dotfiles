@@ -78,6 +78,7 @@ Rectangle {
                 text = "";
                 search.mode = "default";
                 FlyoutsService.hideFlyout(searchFlyout);
+                searchColumn.activeIndex = 0;
                 shiftReturn = false;
             }
 
