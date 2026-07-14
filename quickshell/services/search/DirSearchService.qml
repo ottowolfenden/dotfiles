@@ -60,9 +60,19 @@ QtObject {
                                 return r.path.replace(Quickshell.env("HOME"), "~");
                             return r.path;
                         }
-                    })).sort((a, b) => b.accessed - a.accessed).slice(0, MiscService.getMaxSearchResults("dirs", searchProcess.mode));
+                    }));
+                fileSearchService.sortResults(searchProcess.input);
             }
         }
+    }
+
+    function sortResults(input: string): void {
+        let sort = array => [...array].sort((a, b) => b.accessed - a.accessed);
+        let namePrefixMatches = sort(results.filter(r => r.name.toLowerCase().startsWith(input.toLowerCase())));
+        let nameSubstringMatches = sort(results.filter(r => r.name.toLowerCase().includes(input.toLowerCase())));
+        let otherMatches = sort(results);
+        let sortedResults = MiscService.getDistinctNonNull([...namePrefixMatches, ...nameSubstringMatches, ...otherMatches]);
+        results = sortedResults.slice(0, MiscService.getMaxSearchResults("dirs", searchProcess.mode));
     }
 
     function open(dir: var, inNewWs: bool): void {
