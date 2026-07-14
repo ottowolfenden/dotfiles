@@ -1,31 +1,36 @@
 #!/bin/bash
 
 dir="$1"
-pattern="$2"
+text="$2"
 type=$3
+max=$4
 exclusions=()
 
-if [[ "$4" == "--exclude" ]]; then
+if [[ "$5" == "--exclude" ]]; then
     exclusions=("${@:5}")
 fi
 
-findargs=()
+exclargs=()
 
 if [[ ${#exclusions[@]} -gt 0 ]]; then
-    findargs+=( "(" )
-
+    exclargs+=( "(" )
     for i in "${!exclusions[@]}"; do
         if [[ $i -gt 0 ]]; then
-            findargs+=( "-o" )
+            exclargs+=( "-o" )
         fi
-        findargs+=( "-path" "${exclusions[$i]}" )
+        exclargs+=( "-path" "${exclusions[$i]}" )
     done
-
-    findargs+=( ")" "-prune" "-o" )
+    exclargs+=( ")" "-prune" "-o" )
 fi
 
+findargs=( "$dir" "${exclargs[@]}" -type $type )
 
-find "$dir" "${findargs[@]}" -type $type -ipath "$pattern" -print0 2>/dev/null |
+(
+    find "${findargs[@]}" -iname "$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
+    find "${findargs[@]}" -iname "*$text*" ! -iname "$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
+    find "${findargs[@]}" -ipath "*$text*" ! -iname "*$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
+) 2>/dev/null |
+awk -v max="$max" 'BEGIN {RS="\0"; ORS="\0"} NR > max {exit} {print}' |
 while IFS= read -r -d '' path; do
     numfiles=$(find "$path" -type f -mindepth 1 | wc -l)
     numsubdirs=$(find "$path" -maxdepth 1 -type d -mindepth 1 | wc -l)
@@ -33,7 +38,7 @@ while IFS= read -r -d '' path; do
     isrootowned=$( [[ $(stat -c "%u" "$path") -eq 0 ]] && echo true || echo false)
     hasgit=$( [[ -d $path/.git ]] && echo true || echo false)
 
-    printf '%s\t%s %s %s %s\n' "$path" "$stats" "$isrootowned" "$numfiles" "$numsubdirs $hasgit"
+    printf '%s\t%s %s %s %s %s\n' "$path" "$stats" "$isrootowned" "$numfiles" "$numsubdirs" "$hasgit"
 done |
 jq -R '
     split("\t") as $parts

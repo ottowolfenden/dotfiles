@@ -24,8 +24,7 @@ QtObject {
         id: searchProcess
         property var input: null
         property var mode: null
-        readonly property var pattern: ["*", "?", "[", "]"].some(w => (input ?? "").includes(w)) ? input : `*${input}*`
-        command: [PathsConf.scripts + "find-fsentries.sh", SearchConf.dirParentDir, pattern, "d", "--exclude", ...SearchConf.fsEntryExclusions]
+        command: [PathsConf.scripts + "find-fsentries.sh", SearchConf.dirParentDir, input, "d", MiscService.getMaxSearchResults("dirs", mode), "--exclude", ...SearchConf.fsEntryExclusions]
         stdout: StdioCollector {
             onStreamFinished: {
                 if (text.trim() == "" || !text) {
@@ -37,12 +36,6 @@ QtObject {
                         get name() {
                             let parts = r.path.split("/");
                             return parts[parts.length - 1];
-                        },
-                        get format() {
-                            let parts = this.name.split(".");
-                            if (parts.length <= 1)
-                                return "";
-                            return parts[parts.length - 1].toLowerCase();
                         },
                         get icon() {
                             if (r.hasGit)
@@ -61,18 +54,8 @@ QtObject {
                             return r.path;
                         }
                     }));
-                fileSearchService.sortResults(searchProcess.input);
             }
         }
-    }
-
-    function sortResults(input: string): void {
-        let sort = array => [...array].sort((a, b) => b.accessed - a.accessed);
-        let namePrefixMatches = sort(results.filter(r => r.name.toLowerCase().startsWith(input.toLowerCase())));
-        let nameSubstringMatches = sort(results.filter(r => r.name.toLowerCase().includes(input.toLowerCase())));
-        let otherMatches = sort(results);
-        let sortedResults = MiscService.getDistinctNonNull([...namePrefixMatches, ...nameSubstringMatches, ...otherMatches]);
-        results = sortedResults.slice(0, MiscService.getMaxSearchResults("dirs", searchProcess.mode));
     }
 
     function open(dir: var, inNewWs: bool): void {

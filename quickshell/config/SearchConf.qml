@@ -27,7 +27,7 @@ QtObject {
             minChars: 2,
             maxResults: {
                 all: 3,
-                filtered: 10
+                filtered: 15
             }
         },
         {
