@@ -1,0 +1,18 @@
+{
+    "fontName": "custom-material-symbols",
+    "css": false,
+    "addLigatures": true,
+    "unicodeStart": 61697,
+    "outSVGReact": false,
+    "outSVGReactNative": false,
+    "outSVGVue": false,
+    "outSVGPath": false,
+    "generateInfoData": false,
+    "excludeFormat": [
+        "eot",
+        "woff",
+        "woff2",
+        "svg",
+        "symbol.svg"
+    ]
+}

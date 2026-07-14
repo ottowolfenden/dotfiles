@@ -12,14 +12,14 @@ QtObject {
         source: "../assets/fonts/google-sans-flex.ttf"
     }
 
-    readonly property string materialSymbolsOutlined: materialSymbolsOutlinedLoader.name
-    readonly property FontLoader materialSymbolsOutlinedLoader: FontLoader {
-        source: "../assets/fonts/material-symbols-outlined.ttf"
+    readonly property string materialSymbols: materialSymbolsLoader.name
+    readonly property FontLoader materialSymbolsLoader: FontLoader {
+        source: "../assets/fonts/material-symbols.ttf"
     }
 
-    readonly property string customMaterialSymbolsOutlined: customMaterialSymbolsOutlinedLoader.name
-    readonly property FontLoader customMaterialSymbolsOutlinedLoader: FontLoader {
-        source: "../assets/fonts/custom-material-symbols-outlined.ttf"
+    readonly property string customMaterialSymbols: customMaterialSymbolsLoader.name
+    readonly property FontLoader customMaterialSymbolsLoader: FontLoader {
+        source: "../assets/fonts/custom-material-symbols.ttf"
     }
 
     readonly property string inconsolata: inconsolataLoader.name

@@ -1,0 +1,1 @@
+npx svgtofont -s ./svgs -o ../fonts
