@@ -35,6 +35,13 @@ brightness-rename() {
     done
 }
 
+clearscreen() {
+    printf '\033[3J'
+    zle clear-screen
+}
+zle -N clearscreen
+bindkey '^L' clearscreen
+
 alias tetris=tetriscurses
 alias suspend="systemctl suspend"
 alias code="code -n"
