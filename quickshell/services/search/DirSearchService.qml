@@ -25,7 +25,7 @@ QtObject {
         property var input: null
         property var mode: null
         readonly property var pattern: ["*", "?", "[", "]"].some(w => (input ?? "").includes(w)) ? input : `*${input}*`
-        command: [PathsConf.scripts + "find-fsentries.sh", SearchConf.dirSearchRootDir, pattern, "-d", SearchConf.searchHiddenDirs ? "--include-hidden" : ""]
+        command: [PathsConf.scripts + "find-fsentries.sh", SearchConf.dirParentDir, pattern, "d", "--exclude", ...SearchConf.fsEntryExclusions]
         stdout: StdioCollector {
             onStreamFinished: {
                 if (text.trim() == "" || !text) {

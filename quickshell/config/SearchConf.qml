@@ -63,8 +63,7 @@ QtObject {
     ]
 
     readonly property list<string> appAttrPriority: ["name", "execString", "genericName", "comment", "categories", "keywords", "startupClass", "icon"]
-    readonly property string fileSearchRootDir: Quickshell.env("HOME")
-    readonly property string dirSearchRootDir: Quickshell.env("HOME")
-    readonly property bool searchHiddenFiles: false
-    readonly property bool searchHiddenDirs: false
+    readonly property string fileParentDir: Quickshell.env("HOME")
+    readonly property string dirParentDir: Quickshell.env("HOME")
+    readonly property list<string> fsEntryExclusions: ["*/.*", Quickshell.env("HOME") + "/yay/*"]
 }
