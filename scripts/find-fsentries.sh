@@ -7,17 +7,17 @@ opt=$4
 
 if [[ $type == -f ]]; then
     if [[ $opt == --includehidden ]]; then
-        find "$dir" -type f -iname "$pattern" -print0 2>/dev/null
+        find "$dir" -type f -ipath "$pattern" -print0 2>/dev/null
     else
         find "$dir" -name ".*" -prune -o \
-            -type f -iname "$pattern" -print0 2>/dev/null
+            -type f -ipath "$pattern" -print0 2>/dev/null
     fi
 else
     if [[ $opt == --includehidden ]]; then
-        find "$dir" -type d -iname "$pattern" -print0 2>/dev/null
+        find "$dir" -type d -ipath "$pattern" -print0 2>/dev/null
     else
         find "$dir" -name ".*" -prune -o \
-            -type d -iname "$pattern" -print0 2>/dev/null
+            -type d -ipath "$pattern" -print0 2>/dev/null
     fi
 fi | while IFS= read -r -d '' path; do
         numfiles=$(find "$path" -type f -mindepth 1 | wc -l)
