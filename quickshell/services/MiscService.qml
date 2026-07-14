@@ -37,4 +37,10 @@ QtObject {
             return 0;
         return SearchConf.modes.find(m => m.name == modeProvider).maxResults[mode == "default" ? "all" : "filtered"];
     }
+
+    function getFileFormatIcon(fileExt: string): string {
+        if (fileExt.startsWith("."))
+            fileExt = fileExt.replace(".", "");
+        return Object.keys(IconsConf.fileFormats).find(icon => IconsConf.fileFormats[icon].includes(fileExt.toLowerCase())) ?? IconsConf.otherFileFormat;
+    }
 }
