@@ -60,7 +60,7 @@ QtObject {
                                 return r.path.replace(Quickshell.env("HOME"), "~");
                             return r.path;
                         }
-                    })).slice(0, MiscService.getMaxSearchResults("dirs", searchProcess.mode));
+                    })).sort((a, b) => b.accessed - a.accessed).slice(0, MiscService.getMaxSearchResults("dirs", searchProcess.mode));
             }
         }
     }
@@ -72,6 +72,7 @@ QtObject {
             openTimer.running = true;
         } else
             HyprlandService.execWithQsTag(`thunar '${dir.path}'`);
+        Quickshell.execDetached(["touch", "-a", dir.path]);
     }
 
     property Timer openTimer: Timer {
