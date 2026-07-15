@@ -24,40 +24,39 @@ if [[ ${#exclusions[@]} -gt 0 ]]; then
     exclargs+=( ")" "-prune" "-o" )
 fi
 
-findargs=( "$dir" "${exclargs[@]}" -type $type )
+filters=( "$dir" "${exclargs[@]}" -type $type )
+format=(-printf "%A@ %s %p\0")
+sorta() { sort -znr | cut -zd' ' -f2-; }
 
 (
-    find "${findargs[@]}" -iname "$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
-    find "${findargs[@]}" -iname "*$text*" ! -iname "$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
-    find "${findargs[@]}" -ipath "*$text*" ! -iname "*$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
+    find "${filters[@]}" -iname "$text" "${format[@]}" | sorta
+    find "${filters[@]}" -iname "$text*" ! -iname "$text" "${format[@]}" | sorta
+    find "${filters[@]}" -iname "*$text*" ! -iname "$text*" "${format[@]}" | sorta
+    find "${filters[@]}" -ipath "*$text*" ! -iname "*$text*" "${format[@]}" | sorta
     if [[ $appendexclusions == --appendexclusions ]]; then
-        find "$dir" -type $type -iname "$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
-        find "$dir" -type $type -iname "*$text*" ! -iname "$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
-        find "$dir" -type $type -ipath "*$text*" ! -iname "*$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
+        find "$dir" -type $type -iname "$text" "${format[@]}" | sorta
+        find "$dir" -type $type -iname "$text*" ! -iname "$text" "${format[@]}" | sorta
+        find "$dir" -type $type -iname "*$text*" ! -iname "$text*" "${format[@]}" | sorta
+        find "$dir" -type $type -ipath "*$text*" ! -iname "*$text*" "${format[@]}" | sorta
     fi
 ) 2>/dev/null |
 awk -v max="$max" 'BEGIN {RS="\0"; ORS="\0"} NR > max {exit} {print}' |
-while IFS= read -r -d '' path; do
-    numfiles=$(find "$path" -type f -mindepth 1 | wc -l)
-    numsubdirs=$(find "$path" -maxdepth 1 -type d -mindepth 1 | wc -l)
-    stats=$(stat -c "%W %Y %X %s" "$path")
-    isrootowned=$( [[ $(stat -c "%u" "$path") -eq 0 ]] && echo true || echo false)
-    hasgit=$( [[ -d $path/.git ]] && echo true || echo false)
-
-    printf '%s\t%s %s %s %s %s\n' "$path" "$stats" "$isrootowned" "$numfiles" "$numsubdirs" "$hasgit"
+while IFS=" " read -r -d '' bytesize path; do
+    if [[ $type == d ]]; then
+        shopt -s nullglob; files=( "$path"/* ); shopt -u nullglob
+        numitems=${#files[@]};
+        [[ -d $path/.git ]] && hasgit=true || hasgit=false
+        bytesize=""
+    fi
+    printf '%s\t%s %s %s\n' "$path" "$numitems" "$hasgit" "$bytesize"
 done |
 jq -R '
     split("\t") as $parts
     | $parts[1] | split(" ") as $stats
     | {
         path: $parts[0],
-        created: $stats[0] | tonumber,
-        modified: $stats[1] | tonumber,
-        accessed: $stats[2] | tonumber,
-        byteSize: $stats[3] | tonumber,
-        isRootOwned: $stats[4] | toboolean,
-        numFiles: $stats[5] | tonumber,
-        numSubdirs: $stats[6] | tonumber,
-        hasGit: $stats[7] | toboolean
+        numItems: $stats[0] | try tonumber catch null,
+        hasGit: $stats[1] | try toboolean catch null,
+        byteSize: $stats[2] | try tonumber catch null
     }
 ' | jq -s '.'
