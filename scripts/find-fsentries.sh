@@ -4,9 +4,10 @@ dir="$1"
 text="$2"
 type=$3
 max=$4
+appendexclusions=$5
 exclusions=()
 
-if [[ "$5" == "--exclude" ]]; then
+if [[ "$6" == "--exclude" ]]; then
     exclusions=("${@:5}")
 fi
 
@@ -29,6 +30,11 @@ findargs=( "$dir" "${exclargs[@]}" -type $type )
     find "${findargs[@]}" -iname "$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
     find "${findargs[@]}" -iname "*$text*" ! -iname "$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
     find "${findargs[@]}" -ipath "*$text*" ! -iname "*$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
+    if [[ $appendexclusions == --appendexclusions ]]; then
+        find "$dir" -type $type -iname "$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
+        find "$dir" -type $type -iname "*$text*" ! -iname "$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
+        find "$dir" -type $type -ipath "*$text*" ! -iname "*$text*" -printf "%A@ %p\0" | sort -znr | cut -zd' ' -f2-
+    fi
 ) 2>/dev/null |
 awk -v max="$max" 'BEGIN {RS="\0"; ORS="\0"} NR > max {exit} {print}' |
 while IFS= read -r -d '' path; do

@@ -24,7 +24,13 @@ QtObject {
         id: searchProcess
         property var input: null
         property var mode: null
-        command: [PathsConf.scripts + "find-fsentries.sh", SearchConf.dirParentDir, input, "d", MiscService.getMaxSearchResults("dirs", mode), "--exclude", ...SearchConf.fsEntryExclusions]
+        command: {
+            let c = [];
+            let script = PathsConf.scripts + "find-fsentries.sh";
+            let max = MiscService.getMaxSearchResults("dirs", mode);
+            let exclusionsFlag = mode == "dirs" ? "--appendexclusions" : "--hideexclusions";
+            return [script, SearchConf.dirParentDir, input, "d", max, exclusionsFlag, "--exclude", ...SearchConf.fsEntryExclusions];
+        }
         stdout: StdioCollector {
             onStreamFinished: {
                 if (text.trim() == "" || !text) {
