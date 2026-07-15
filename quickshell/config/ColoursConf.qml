@@ -8,8 +8,9 @@ QtObject {
     readonly property var darkTheme: ({
             bg1: "#000000",
             bg2: "#10ffffff",
+            bg3: "#0cffffff",
             fg1: "#d8ffffff",
-            fg2: "#55ffffff",
+            fg2: "#78ffffff",
             fg3: "#15ffffff",
             invfg: "#000000",
             cutoutBg: "#10ffffff",
@@ -31,8 +32,9 @@ QtObject {
     readonly property var lightTheme: ({
             bg1: "#ffffff",
             bg2: "#09000000",
+            bg3: "#07000000",
             fg1: "#d8000000",
-            fg2: "#55000000",
+            fg2: "#78000000",
             fg3: "#15000000",
             invfg: "#ffffff",
             cutoutBg: "#cff8f8f8",
@@ -53,6 +55,7 @@ QtObject {
 
     readonly property color bg1: theme.bg1
     readonly property color bg2: theme.bg2
+    readonly property color bg3: theme.bg3
     readonly property color fg1: theme.fg1
     readonly property color fg2: theme.fg2
     readonly property color fg3: theme.fg3
