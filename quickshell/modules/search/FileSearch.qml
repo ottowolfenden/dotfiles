@@ -10,6 +10,7 @@ Repeater {
     required property string mode
     required property TextField searchInput
     required property int activeIndex
+    readonly property string modeSupplied: "files"
     readonly property var activeItem: {
         if (model)
             return model[activeIndex] ?? null;

@@ -12,6 +12,7 @@ Repeater {
     required property TextField searchInput
     required property int activeIndex
     readonly property DesktopEntry activeItem: model[activeIndex] ?? null
+    readonly property string modeSupplied: "apps"
     signal activeIndexSet(index: int)
 
     model: AppSearchService.search(searchInput.text, mode)
@@ -56,14 +57,19 @@ Repeater {
             Text {
                 id: appName
                 text: appRect.modelData.name
-                color: ColoursConf.fg1
+                color: ColoursConf[appSearch.activeIndex == appRect.index ? "fg1" : "fg2"]
                 font.family: FontsConf.mainFamily
-                font.pixelSize: FontsConf.smallPixelSize
+                font.pixelSize: FontsConf.pixelSize
                 elide: Text.ElideRight
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter
                 Layout.leftMargin: DesignConf.spacing / 2
                 Layout.rightMargin: DesignConf.spacing / 2
+                Behavior on color {
+                    ColorAnimation {
+                        duration: DesignConf.buttonColourAnimationDuration
+                    }
+                }
             }
             IconButton {
                 id: hideButton
