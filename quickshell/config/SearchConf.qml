@@ -1,6 +1,7 @@
 pragma Singleton
 import QtQuick
 import Quickshell
+import "../modules/search"
 
 QtObject {
     readonly property var modes: [
@@ -18,7 +19,8 @@ QtObject {
             maxResults: {
                 all: 3,
                 filtered: 6
-            }
+            },
+            displayName: "Apps"
         },
         {
             name: "dirs",
@@ -28,7 +30,8 @@ QtObject {
             maxResults: {
                 all: 3,
                 filtered: 15
-            }
+            },
+            displayName: "Folders"
         },
         {
             name: "files",
@@ -38,7 +41,8 @@ QtObject {
             maxResults: {
                 all: 3,
                 filtered: 10
-            }
+            },
+            displayName: "Files"
         },
         {
             name: "web",
@@ -48,7 +52,8 @@ QtObject {
             maxResults: {
                 all: 2,
                 filtered: 10
-            }
+            },
+            displayName: "Web"
         },
         {
             name: "command",
@@ -58,10 +63,10 @@ QtObject {
             maxResults: {
                 all: 0,
                 filtered: 10
-            }
+            },
+            displayName: "Commands"
         }
     ]
-
     readonly property list<string> appAttrPriority: ["name", "execString", "genericName", "comment", "categories", "keywords", "startupClass", "icon"]
     readonly property string fileParentDir: Quickshell.env("HOME")
     readonly property string dirParentDir: Quickshell.env("HOME")
