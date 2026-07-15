@@ -300,15 +300,15 @@ QtObject {
             conf: "folder_managed",
             repo: "folder_code",
             home: "custom:folder_home",
-            xdgDownload: "custom:folder_downloads",
-            xdgDesktop: "custom:folder_desktop",
-            xdgTemplates: "folder",
-            xdgPublicShare: "folder_supervised",
-            xdgDocuments: "custom:folder_documents",
-            xdgMusic: "custom:folder_music",
-            xdgPictures: "custom:folder_pictures",
-            xdgVideos: "custom:folder_videos",
-            xdgProjects: "folder"
+            xdgDOWNLOAD: "custom:folder_downloads",
+            xdgDESKTOP: "custom:folder_desktop",
+            xdgTEMPLATES: "folder",
+            xdgPUBLICSHARE: "folder_supervised",
+            xdgDOCUMENTS: "custom:folder_documents",
+            xdgMUSIC: "custom:folder_music",
+            xdgPICTURES: "custom:folder_pictures",
+            xdgVIDEOS: "custom:folder_videos",
+            xdgPROJECTS: "folder"
         })
     readonly property string terminal: "terminal"
 }
