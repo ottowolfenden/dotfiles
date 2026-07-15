@@ -188,7 +188,7 @@ QtObject {
         "drive-optical": "hard_disk",
         "drive-removable-media": "hard_drive",
         "ebook-reader": "tablet_android",
-        "earbud": "earbud_left",
+        "earbud": "earbuds_2",
         "input-dialpad": "dialpad",
         "input-touchpad": "trackpad_input",
         "input-gaming": "sports_esports",
@@ -299,7 +299,16 @@ QtObject {
             rootOwned: "custom:folder_lock",
             conf: "folder_managed",
             repo: "folder_code",
-            home: "custom:folder_home"
+            home: "custom:folder_home",
+            xdgDownload: "custom:folder_downloads",
+            xdgDesktop: "custom:folder_desktop",
+            xdgTemplates: "folder",
+            xdgPublicShare: "folder_supervised",
+            xdgDocuments: "custom:folder_documents",
+            xdgMusic: "custom:folder_music",
+            xdgPictures: "custom:folder_pictures",
+            xdgVideos: "custom:folder_videos",
+            xdgProjects: "folder"
         })
     readonly property string terminal: "terminal"
 }
