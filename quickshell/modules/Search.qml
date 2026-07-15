@@ -74,13 +74,15 @@ Rectangle {
             Layout.fillWidth: true
 
             property bool shiftReturn: false
+            property bool ctrlReturn: false
 
             function reset() {
                 text = "";
                 search.mode = "default";
                 FlyoutsService.hideFlyout(searchFlyout);
+                DirSearchService.results = [];
                 searchColumn.activeIndex = 0;
-                shiftReturn = false;
+                shiftReturn = ctrlReturn = false;
             }
 
             property string prevText
@@ -89,6 +91,11 @@ Rectangle {
                 if (!search.isOpen)
                     return;
                 prevText = text;
+
+                if (e.key == Qt.Key_Return && (e.modifiers & Qt.ShiftModifier))
+                    shiftReturn = true;
+                if (e.key == Qt.Key_Return && (e.modifiers & Qt.ControlModifier))
+                    ctrlReturn = true;
                 if (e.key == Qt.Key_Backspace && text == "")
                     search.mode = "default";
                 else if (e.key == Qt.Key_Tab)
@@ -97,8 +104,6 @@ Rectangle {
                     searchColumn.activeIndex = (searchColumn.activeIndex + 1) % searchColumn.totalResults;
                 else if (e.key == Qt.Key_Up)
                     searchColumn.activeIndex = (searchColumn.activeIndex - 1 + searchColumn.totalResults) % searchColumn.totalResults;
-                else if (e.key == Qt.Key_Return && (e.modifiers & Qt.ShiftModifier))
-                    shiftReturn = true;
                 else if (e.key == Qt.Key_Return || e.key == Qt.Key_Shift || e.key == Qt.Key_Control)
                     return;
                 else if (e.key == Qt.Key_Escape)
@@ -126,7 +131,7 @@ Rectangle {
                 else if (appSearch.activeItem)
                     AppSearchService.exec(appSearch.activeItem, shiftReturn);
                 else if (dirSearch.activeItem)
-                    DirSearchService.open(dirSearch.activeItem, shiftReturn);
+                    DirSearchService.open(dirSearch.activeItem, shiftReturn, ctrlReturn);
                 else if (fileSearch.activeItem)
                     FileSearchService.open(fileSearch.activeItem, shiftReturn);
                 else if (webSearch.activeItem)
@@ -143,7 +148,7 @@ Rectangle {
     Flyout {
         id: searchFlyout
         parentX: search.x
-        rectWidth: search.width + DesignConf.spacing
+        rectWidth: 500
         rectHeight: pane.height
         focusable: false
         onIsOpenChanged: {
@@ -167,34 +172,40 @@ Rectangle {
             ColumnLayout {
                 id: searchColumn
                 anchors.fill: parent
-                spacing: DesignConf.spacing / 2
-                readonly property list<Repeater> components: [appSearch, dirSearch, fileSearch, webSearch, commandSearch]
-                readonly property int totalResults: components.reduce((acc, c) => (c.model?.length ?? 0) + acc, 0)
+                spacing: DesignConf.spacing
+                readonly property list<Repeater> repeaters: [appSearch, dirSearch, fileSearch, webSearch, commandSearch]
+                readonly property int totalResults: repeaters.reduce((acc, c) => (c.model?.length ?? 0) + acc, 0)
                 property int activeIndex: 0
-                function getIndexOffset(component) {
-                    if (components.indexOf(component) == 0)
+                function getIndexOffset(repeater) {
+                    if (repeaters.indexOf(repeater) == 0)
                         return 0;
-                    return components[components.indexOf(component) - 1]?.model?.length ?? 0;
+                    return repeaters[repeaters.indexOf(repeater) - 1]?.model?.length ?? 0;
                 }
 
-                AppSearch {
-                    id: appSearch
-                    visible: search.mode == "apps" || search.mode == "default"
-                    property int indexOffset: searchColumn.getIndexOffset(this)
-                    mode: search.mode
-                    searchInput: searchInput
-                    activeIndex: searchColumn.activeIndex - indexOffset
-                    onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                SearchColumn {
+                    child: appSearch
+                    AppSearch {
+                        id: appSearch
+                        visible: search.mode == "apps" || search.mode == "default"
+                        property int indexOffset: searchColumn.getIndexOffset(this)
+                        mode: search.mode
+                        searchInput: searchInput
+                        activeIndex: searchColumn.activeIndex - indexOffset
+                        onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                    }
                 }
 
-                DirSearch {
-                    id: dirSearch
-                    visible: search.mode == "dirs" || search.mode == "default"
-                    property int indexOffset: searchColumn.getIndexOffset(this)
-                    mode: search.mode
-                    searchInput: searchInput
-                    activeIndex: searchColumn.activeIndex - indexOffset
-                    onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                SearchColumn {
+                    child: dirSearch
+                    DirSearch {
+                        id: dirSearch
+                        visible: search.mode == "dirs" || search.mode == "default"
+                        property int indexOffset: searchColumn.getIndexOffset(this)
+                        mode: search.mode
+                        searchInput: searchInput
+                        activeIndex: searchColumn.activeIndex - indexOffset
+                        onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                    }
                 }
 
                 FileSearch {

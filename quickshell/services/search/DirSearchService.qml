@@ -58,23 +58,26 @@ QtObject {
         }
     }
 
-    function open(dir: var, inNewWs: bool): void {
+    function open(dir: var, inNewWs: bool, inTerminal: bool): void {
         if (inNewWs) {
             HyprlandService.focusWs("emptynm");
             openTimer.dirToOpen = dir;
+            openTimer.inTerminal = inTerminal;
             openTimer.running = true;
         } else
-            HyprlandService.execWithQsTag(`thunar '${dir.path}'`);
+            HyprlandService.execWithQsTag(`${inTerminal ? "kitty" : "thunar"} '${dir.path}'`);
         Quickshell.execDetached(["touch", "-a", dir.path]);
     }
 
     property Timer openTimer: Timer {
         property var dirToOpen: null
+        property var inTerminal: null
         interval: 100
         onTriggered: {
             if (dirToOpen) {
-                parent.open(dirToOpen, false);
+                parent.open(dirToOpen, false, inTerminal);
                 dirToOpen = null;
+                inTerminal = null;
             }
         }
     }
