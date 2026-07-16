@@ -99,27 +99,29 @@ QtObject {
         }
     }
 
-    function open(dir: var, inNewWs: bool, inTerminal: bool): void {
-        if (inNewWs) {
+    function open(dir: var, bindsRef: var): void {
+        const binds = UtilsService.clone(bindsRef);
+        if (binds.inNewWs.active) {
             HyprlandService.focusWs("emptynm");
             openTimer.dirToOpen = dir;
-            openTimer.inTerminal = inTerminal;
+            openTimer.binds = binds;
             openTimer.running = true;
         } else
-            HyprlandService.execWithQsTag(`${inTerminal ? "kitty" : "thunar"} '${dir.path}'`);
+            HyprlandService.execWithQsTag(`${binds.inTerminal.active ? "kitty" : "thunar"} '${dir.path}'`);
         Quickshell.execDetached(["touch", "-a", dir.path]);
     }
 
     property Timer openTimer: Timer {
         property var dirToOpen: null
-        property var inTerminal: null
+        property var binds: null
         interval: 100
         onTriggered: {
-            if (dirToOpen) {
-                parent.open(dirToOpen, false, inTerminal);
-                dirToOpen = null;
-                inTerminal = null;
-            }
+            if (!dirToOpen || !binds)
+                return;
+            binds.inNewWs.active = false;
+            parent.open(dirToOpen, binds);
+            dirToOpen = null;
+            binds = null;
         }
     }
 }

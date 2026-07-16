@@ -67,24 +67,29 @@ QtObject {
         return UtilsService.getDistinctNonNull(sortedResults).slice(0, max);
     }
 
-    function exec(app: DesktopEntry, inNewWs: bool): void {
-        if (inNewWs) {
+    function open(app: DesktopEntry, bindsRef: var): void {
+        const binds = UtilsService.clone(bindsRef);
+        if (binds.inNewWs.active) {
             HyprlandService.focusWs("emptynm");
-            execTimer.appToExec = app;
-            execTimer.running = true;
+            openTimer.appToExec = app;
+            openTimer.binds = binds;
+            openTimer.running = true;
         } else
             HyprlandService.execWithQsTag(app.runInTerminal ? `kitty --class ${app.command[0]} -e ${app.command[0]}` : app.command.join(" "));
         updateHistory(app);
     }
 
-    property Timer execTimer: Timer {
+    property Timer openTimer: Timer {
         property DesktopEntry appToExec: null
+        property var binds: null
         interval: 100
         onTriggered: {
-            if (appToExec) {
-                parent.exec(appToExec);
-                appToExec = null;
-            }
+            if (!appToExec || !binds)
+                return;
+            binds.inNewWs.active = false;
+            parent.open(appToExec, binds);
+            appToExec = null;
+            binds = null;
         }
     }
 }

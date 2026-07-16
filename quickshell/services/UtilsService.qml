@@ -43,4 +43,8 @@ QtObject {
             fileExt = fileExt.replace(".", "");
         return Object.keys(IconsConf.fileFormats).find(icon => IconsConf.fileFormats[icon].includes(fileExt.toLowerCase())) ?? IconsConf.otherFileFormat;
     }
+
+    function clone(obj: var): var {
+        return JSON.parse(JSON.stringify(obj));
+    }
 }

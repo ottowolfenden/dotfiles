@@ -73,13 +73,39 @@ Rectangle {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
+            property var binds: ({
+                    inNewWs: {
+                        active: false,
+                        key: Qt.Key_Return,
+                        set: function (e) {
+                            this.active = !!(e.key == Qt.Key_Return && (e.modifiers & Qt.ShiftModifier));
+                        }
+                    },
+                    inTerminal: {
+                        active: false,
+                        key: Qt.Key_Return,
+                        set: function (e) {
+                            this.active = !!(e.key == Qt.Key_Return && (e.modifiers & Qt.ControlModifier));
+                        }
+                    },
+                    inVsCode: {
+                        active: false,
+                        key: Qt.Key_C,
+                        set: function (e) {
+                            this.active = !!(e.key == Qt.Key_C && (e.modifiers & Qt.MetaModifier));
+                        }
+                    }
+                })
+
+            property string prevText
+
             function reset(): void {
                 text = "";
                 search.mode = "default";
                 FlyoutsService.hideFlyout(searchFlyout);
                 DirSearchService.results = [];
                 searchColumn.activeIndex = 0;
-                shiftReturn = ctrlReturn = false;
+                Object.keys(binds).forEach(k => binds[k].active = false);
             }
 
             function jumpToRepeater(direction: string): void {
@@ -98,10 +124,6 @@ Rectangle {
                     searchColumn.activeIndex = indexOffsets[UtilsService.clamp(newIndexOffset, 0, indexOffsets.length - 1)];
             }
 
-            property bool shiftReturn: false
-            property bool ctrlReturn: false
-            property string prevText
-
             Keys.onPressed: e => {
                 if (!search.isOpen) {
                     e.accepted = true;
@@ -109,13 +131,11 @@ Rectangle {
                 }
 
                 prevText = text;
-                let iOffsets = searchColumn.indexOffsets;
+                Object.keys(binds).forEach(k => binds[k].set(e));
 
-                if (e.key == Qt.Key_Return && (e.modifiers & Qt.ShiftModifier))
-                    shiftReturn = true;
-                if (e.key == Qt.Key_Return && (e.modifiers & Qt.ControlModifier))
-                    ctrlReturn = true;
-                if (e.key == Qt.Key_Backspace && text == "")
+                if (Object.keys(binds).some(b => b.active && b.key != Qt.Key_Return))
+                    searchInput.accepted = true;
+                else if (e.key == Qt.Key_Backspace && text == "")
                     search.mode = "default";
                 else if (e.key == Qt.Key_Tab)
                     search.cycleMode();
@@ -149,18 +169,16 @@ Rectangle {
             }
 
             onAccepted: {
-                if (search.mode == "command")
-                    Quickshell.execDetached(["/bin/sh", "-c", text]);
-                else if (appSearch.activeItem)
-                    AppSearchService.exec(appSearch.activeItem, shiftReturn);
+                if (appSearch.activeItem)
+                    AppSearchService.open(appSearch.activeItem, binds);
                 else if (dirSearch.activeItem)
-                    DirSearchService.open(dirSearch.activeItem, shiftReturn, ctrlReturn);
+                    DirSearchService.open(dirSearch.activeItem, binds);
                 else if (fileSearch.activeItem)
-                    FileSearchService.open(fileSearch.activeItem, shiftReturn);
+                    FileSearchService.open(fileSearch.activeItem, binds);
                 else if (webSearch.activeItem)
-                    WebSearchService.open(webSearch.activeItem, shiftReturn);
+                    WebSearchService.open(webSearch.activeItem, binds);
                 else if (commandSearch.activeItem)
-                    CommandSearchService.exec(commandSearch.activeItem, shiftReturn);
+                    CommandSearchService.exec(commandSearch.activeItem, binds);
                 else
                     return;
                 reset();
