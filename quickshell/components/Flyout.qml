@@ -38,7 +38,7 @@ PanelWindow {
         id: rect
         width: flyout.rectWidth
         height: flyout.rectHeight
-        x: MiscService.clamp(flyout.parentX - rect.width / 2, 0, flyout.width - rect.width)
+        x: UtilsService.clamp(flyout.parentX - rect.width / 2, 0, flyout.width - rect.width)
         y: flyout.isOpen ? 0 : -height
         clip: true
 

@@ -219,16 +219,16 @@ Item {
         property bool listening: false
         onMouseXChanged: {
             if (listening)
-                slider.changed(MiscService.clamp(mouseX / slider.width, 0, 1));
+                slider.changed(UtilsService.clamp(mouseX / slider.width, 0, 1));
         }
         onPressed: listening = handle.clicked = true
         onReleased: listening = handle.clicked = false
 
         onWheel: wheel => {
             if (wheel.angleDelta.y > 0)
-                slider.changed(MiscService.clamp(slider.value + 0.02, 0, 1));
+                slider.changed(UtilsService.clamp(slider.value + 0.02, 0, 1));
             else if (wheel.angleDelta.y < 0)
-                slider.changed(MiscService.clamp(slider.value - 0.02, 0, 1));
+                slider.changed(UtilsService.clamp(slider.value - 0.02, 0, 1));
 
             handle.clicked = true;
             if (wheelTimer.running)

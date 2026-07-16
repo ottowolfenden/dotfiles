@@ -43,23 +43,4 @@ QtObject {
             fileExt = fileExt.replace(".", "");
         return Object.keys(IconsConf.fileFormats).find(icon => IconsConf.fileFormats[icon].includes(fileExt.toLowerCase())) ?? IconsConf.otherFileFormat;
     }
-
-    function toOpaque(colour) {
-        if (!colour || colour.length == 7)
-            return colour;
-
-        let bg = ModeService.mode == "light" ? 0xff : 0x00;
-
-        let a = parseInt(colour.substring(1, 3), 16) / 0xff;
-        let r = parseInt(colour.substring(3, 5), 16);
-        let g = parseInt(colour.substring(5, 7), 16);
-        let b = parseInt(colour.substring(7, 9), 16);
-
-        r = Math.round((r * a) + (bg * (1 - a)));
-        g = Math.round((g * a) + (bg * (1 - a)));
-        b = Math.round((b * a) + (bg * (1 - a)));
-
-        let toHex = val => val.toString(16).padStart(2, '0').toUpperCase();
-        return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-    }
 }

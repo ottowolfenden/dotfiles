@@ -52,9 +52,9 @@ Rectangle {
 
         onWheel: wheel => {
             if (wheel.angleDelta.y > 0)
-                audio.sink.audio.volume = MiscService.clamp(audio.sink.audio.volume + 0.02, 0, 1);
+                audio.sink.audio.volume = UtilsService.clamp(audio.sink.audio.volume + 0.02, 0, 1);
             else if (wheel.angleDelta.y < 0)
-                audio.sink.audio.volume = MiscService.clamp(audio.sink.audio.volume - 0.02, 0, 1);
+                audio.sink.audio.volume = UtilsService.clamp(audio.sink.audio.volume - 0.02, 0, 1);
         }
 
         onMiddleClicked: audio.sink.audio.muted = !audio.sink.audio.muted

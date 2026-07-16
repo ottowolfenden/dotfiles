@@ -180,7 +180,7 @@ Rectangle {
                             font.family: FontsConf.mainFamily
                             text: {
                                 let secsLeft = battery.isCharging ? UPower.displayDevice.timeToFull : UPower.displayDevice.timeToEmpty;
-                                return secsLeft == 0 ? "Loading..." : MiscService.secsToHrsMins(secsLeft);
+                                return secsLeft == 0 ? "Loading..." : UtilsService.secsToHrsMins(secsLeft);
                             }
                             Layout.fillHeight: true
                             verticalAlignment: Text.AlignVCenter

@@ -37,12 +37,12 @@ QtObject {
     property list<string> hiddenApps: JSON.parse(hiddenAppsFile.text() || "[]")
 
     function hide(app: DesktopEntry): void {
-        hiddenApps = MiscService.getDistinctNonNull([...hiddenApps, app.id]);
+        hiddenApps = UtilsService.getDistinctNonNull([...hiddenApps, app.id]);
         hiddenAppsFile.setText(JSON.stringify(hiddenApps, null, 4));
     }
 
     function search(text: string, mode: string): list<DesktopEntry> {
-        let max = MiscService.getMaxSearchResults("apps", mode);
+        let max = UtilsService.getMaxSearchResults("apps", mode);
         if (!text || text.length < SearchConf.modes.find(m => m.name == "apps").minChars || max == 0)
             return [];
         text = text.toLowerCase();
@@ -64,7 +64,7 @@ QtObject {
         };
 
         let sortedResults = [...recentSearch(), ...allAttrsSearch()];
-        return MiscService.getDistinctNonNull(sortedResults).slice(0, max);
+        return UtilsService.getDistinctNonNull(sortedResults).slice(0, max);
     }
 
     function exec(app: DesktopEntry, inNewWs: bool): void {

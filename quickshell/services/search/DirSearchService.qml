@@ -10,7 +10,7 @@ QtObject {
     property var results: []
 
     function search(text: string, mode: string): void {
-        if (text.length < SearchConf.modes.find(m => m.name == "dirs").minChars || MiscService.getMaxSearchResults("dirs", mode) == 0) {
+        if (text.length < SearchConf.modes.find(m => m.name == "dirs").minChars || UtilsService.getMaxSearchResults("dirs", mode) == 0) {
             results = [];
             return;
         }
@@ -63,7 +63,7 @@ QtObject {
         command: getSearchCommand({
             dir: SearchConf.dirParentDir,
             text: input,
-            max: MiscService.getMaxSearchResults("dirs", mode),
+            max: UtilsService.getMaxSearchResults("dirs", mode),
             exclusions: SearchConf.pathExclusions.dirs.default
         })
         stdout: StdioCollector {
@@ -71,7 +71,7 @@ QtObject {
                 if (!text)
                     return;
                 results = processScriptOutput(text);
-                if (results.length < MiscService.getMaxSearchResults("dirs", searchProc1.mode) && searchProc1.mode == "dirs") {
+                if (results.length < UtilsService.getMaxSearchResults("dirs", searchProc1.mode) && searchProc1.mode == "dirs") {
                     searchProc2.running = false;
                     searchProc2.input = searchProc1.input;
                     searchProc2.mode = searchProc1.mode;
@@ -87,12 +87,12 @@ QtObject {
         command: getSearchCommand({
             dir: SearchConf.dirParentDir,
             text: input,
-            max: MiscService.getMaxSearchResults("dirs", mode) - results.length,
+            max: UtilsService.getMaxSearchResults("dirs", mode) - results.length,
             exclusions: [...results.map(r => r.path), ...SearchConf.pathExclusions.dirs.always]
         })
         stdout: StdioCollector {
             onStreamFinished: {
-                if (!text || results.length >= MiscService.getMaxSearchResults("dirs", searchProc1.mode) || searchProc1.mode != "dirs")
+                if (!text || results.length >= UtilsService.getMaxSearchResults("dirs", searchProc1.mode) || searchProc1.mode != "dirs")
                     return;
                 results = [...results, ...processScriptOutput(text)];
             }

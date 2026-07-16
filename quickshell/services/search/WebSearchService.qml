@@ -5,6 +5,6 @@ import ".."
 
 QtObject {
     function search(text: string, mode: string): list<DesktopEntry> {
-        let max = MiscService.getMaxSearchResults("web", mode);
+        let max = UtilsService.getMaxSearchResults("web", mode);
     }
 }
