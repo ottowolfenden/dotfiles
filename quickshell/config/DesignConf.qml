@@ -19,4 +19,5 @@ QtObject {
     readonly property int sliderHeight: 45
     readonly property int sliderHandleOffset: 15
     readonly property int searchBoxWidth: 320
+    readonly property int searchFlyoutWidth: 520
 }

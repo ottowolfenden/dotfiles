@@ -171,7 +171,7 @@ Rectangle {
     Flyout {
         id: searchFlyout
         parentX: search.x
-        rectWidth: 500
+        rectWidth: DesignConf.searchFlyoutWidth
         rectHeight: pane.height
         focusable: false
         onIsOpenChanged: {
