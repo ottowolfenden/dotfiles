@@ -28,7 +28,7 @@ Rectangle {
         anchors.rightMargin: DesignConf.spacing
 
         Icon {
-            colour: battery.danger ? ColoursConf.red : ColoursConf.fg1
+            colour: battery.danger ? ColoursConf.red : ColoursConf.fg1.t
             property var icons: IconsConf.battery.find(i => battery.percent <= i.max)
             iconName: battery.isCharging ? icons.charging : icons.discharging
             fill: icons.fill ?? false
@@ -37,7 +37,7 @@ Rectangle {
 
         Text {
             text: battery.percent + "%"
-            color: battery.danger ? ColoursConf.red : ColoursConf.fg1
+            color: battery.danger ? ColoursConf.red : ColoursConf.fg1.t
             font.family: FontsConf.mainFamily
             font.pixelSize: FontsConf.pixelSize
             horizontalAlignment: Text.AlignHCenter
@@ -122,7 +122,7 @@ Rectangle {
                 Rectangle {
                     implicitWidth: Math.max(220, grid.implicitWidth + DesignConf.spacing * 2)
                     implicitHeight: grid.implicitHeight + DesignConf.spacing * 2
-                    color: ColoursConf.bg2
+                    color: ColoursConf.bg3.t
                     radius: DesignConf.radius
 
                     GridLayout {
@@ -138,7 +138,7 @@ Rectangle {
                         // row 1
                         Text {
                             font.pixelSize: FontsConf.smallPixelSize
-                            color: ColoursConf.fg3
+                            color: ColoursConf.fg3.t
                             font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
                             text: "Power profile"
@@ -149,7 +149,7 @@ Rectangle {
                         }
                         Text {
                             font.pixelSize: FontsConf.smallPixelSize
-                            color: ColoursConf.fg1
+                            color: ColoursConf.fg1.t
                             font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
                             text: ["Power saver", "Balanced", "Performance"][powerProfiletoggleGroup.activeIndex] ?? "Unknown"
@@ -163,7 +163,7 @@ Rectangle {
                         Text {
                             visible: !grid.fullAndCharging
                             font.pixelSize: FontsConf.smallPixelSize
-                            color: ColoursConf.fg3
+                            color: ColoursConf.fg3.t
                             font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
                             text: battery.isCharging ? "Time until full" : "Time until empty"
@@ -176,7 +176,7 @@ Rectangle {
                         Text {
                             visible: !grid.fullAndCharging
                             font.pixelSize: FontsConf.smallPixelSize
-                            color: ColoursConf.fg1
+                            color: ColoursConf.fg1.t
                             font.family: FontsConf.mainFamily
                             text: {
                                 let secsLeft = battery.isCharging ? UPower.displayDevice.timeToFull : UPower.displayDevice.timeToEmpty;
@@ -193,7 +193,7 @@ Rectangle {
                         // row 3
                         Text {
                             font.pixelSize: FontsConf.smallPixelSize
-                            color: ColoursConf.fg3
+                            color: ColoursConf.fg3.t
                             font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
                             text: battery.isCharging ? "Charge rate" : "Discharge rate"
@@ -204,7 +204,7 @@ Rectangle {
                         }
                         Text {
                             font.pixelSize: FontsConf.smallPixelSize
-                            color: ColoursConf.fg1
+                            color: ColoursConf.fg1.t
                             font.family: FontsConf.mainFamily
                             text: {
                                 if (UPower.displayDevice.changeRate == 0 && !grid.fullAndCharging)

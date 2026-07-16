@@ -7,19 +7,23 @@ QtObject {
 
     readonly property var lightTheme: ({
             bg1: "#ffffff",
-            bg2: "#09000000",
-            bg3: "#07000000",
-            fg1: "#da000000",
+            bg2: "#03000000",
+            bg3: "#05000000",
+            bg4: "#09000000",
+            bg5: "#0c000000",
+            bg6: "#0f000000",
+            fg1: "#e0000000",
             fg2: "#a0000000",
-            fg3: "#65000000",
-            fg4: "#15000000",
+            fg3: "#7b000000",
+            fg4: "#48000000",
+            fg5: "#15000000",
             invfg: "#ffffff",
-            cutoutBg: "#cff8f8f8",
-            buttonInactiveBg: "#0a000000",
-            buttonHoveredBg: "#12000000",
-            buttonPressedBg: "#1e000000",
-            selectedBg: "#184285f4",
-            textSelectionBg: "#28000000",
+            cutoutbg: "#cff8f8f8",
+            inactivebg: "#08000000",
+            hoveredbg: "#0e000000",
+            pressedbg: "#1e000000",
+            selectedbg: "#184285f4",
+            textselectionbg: "#28000000",
             red: "#ea4335",
             orange: "#fd6132",
             yellow: "#f1b911",
@@ -32,19 +36,23 @@ QtObject {
 
     readonly property var darkTheme: ({
             bg1: "#000000",
-            bg2: "#10ffffff",
-            bg3: "#0cffffff",
-            fg1: "#daffffff",
+            bg2: "#08ffffff",
+            bg3: "#0bffffff",
+            bg4: "#0effffff",
+            bg5: "#11ffffff",
+            bg6: "#14ffffff",
+            fg1: "#e0ffffff",
             fg2: "#a0ffffff",
-            fg3: "#65ffffff",
-            fg4: "#15ffffff",
+            fg3: "#7bffffff",
+            fg4: "#48ffffff",
+            fg5: "#15ffffff",
             invfg: "#000000",
-            cutoutBg: "#10ffffff",
-            buttonInactiveBg: "#0effffff",
-            buttonHoveredBg: "#12ffffff",
-            buttonPressedBg: "#1effffff",
-            selectedBg: "#1889ddff",
-            textSelectionBg: "#28ffffff",
+            cutoutbg: "#10ffffff",
+            inactivebg: "#0effffff",
+            hoveredbg: "#12ffffff",
+            pressedbg: "#1effffff",
+            selectedbg: "#1889ddff",
+            textselectionbg: "#28ffffff",
             red: "#f07178",
             orange: "#f78c6c",
             yellow: "#ffcb6b",
@@ -55,26 +63,62 @@ QtObject {
             pink: "#ff9cac"
         })
 
-    readonly property color bg1: theme.bg1
-    readonly property color bg2: theme.bg2
-    readonly property color bg3: theme.bg3
-    readonly property color fg1: theme.fg1
-    readonly property color fg2: theme.fg2
-    readonly property color fg3: theme.fg3
-    readonly property color fg4: theme.fg4
-    readonly property color invfg: theme.invfg
-    readonly property color cutoutBg: theme.cutoutBg
-    readonly property color buttonInactiveBg: theme.buttonInactiveBg
-    readonly property color buttonHoveredBg: theme.buttonHoveredBg
-    readonly property color buttonPressedBg: theme.buttonPressedBg
-    readonly property color selectedBg: theme.selectedBg
-    readonly property color textSelectionBg: theme.textSelectionBg
-    readonly property color red: theme.red
-    readonly property color orange: theme.orange
-    readonly property color yellow: theme.yellow
-    readonly property color green: theme.green
-    readonly property color lightblue: theme.lightblue
-    readonly property color darkblue: theme.darkblue
-    readonly property color purple: theme.purple
-    readonly property color pink: theme.pink
+    function createColour(colour: string): var {
+        if (!colour || colour.length != 9)
+            return colour;
+
+        return {
+            get translucent() {
+                return colour;
+            },
+            get opaque() {
+                let bg = ModeService.mode == "light" ? 0xff : 0x00;
+
+                let a = parseInt(colour.substring(1, 3), 16) / 0xff;
+                let r = parseInt(colour.substring(3, 5), 16);
+                let g = parseInt(colour.substring(5, 7), 16);
+                let b = parseInt(colour.substring(7, 9), 16);
+
+                r = Math.round((r * a) + (bg * (1 - a)));
+                g = Math.round((g * a) + (bg * (1 - a)));
+                b = Math.round((b * a) + (bg * (1 - a)));
+
+                let toHex = val => val.toString(16).padStart(2, '0').toUpperCase();
+                return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+            },
+            get t() {
+                return this.translucent;
+            },
+            get o() {
+                return this.opaque;
+            }
+        };
+    }
+
+    readonly property var bg1: createColour(theme.bg1)
+    readonly property var bg2: createColour(theme.bg2)
+    readonly property var bg3: createColour(theme.bg3)
+    readonly property var bg4: createColour(theme.bg4)
+    readonly property var bg5: createColour(theme.bg5)
+    readonly property var bg6: createColour(theme.bg6)
+    readonly property var fg1: createColour(theme.fg1)
+    readonly property var fg2: createColour(theme.fg2)
+    readonly property var fg3: createColour(theme.fg3)
+    readonly property var fg4: createColour(theme.fg4)
+    readonly property var fg5: createColour(theme.fg5)
+    readonly property var invfg: createColour(theme.invfg)
+    readonly property var cutoutbg: createColour(theme.cutoutbg)
+    readonly property var inactivebg: createColour(theme.inactivebg)
+    readonly property var hoveredbg: createColour(theme.hoveredbg)
+    readonly property var pressedbg: createColour(theme.pressedbg)
+    readonly property var selectedbg: createColour(theme.selectedbg)
+    readonly property var textselectionbg: createColour(theme.textselectionbg)
+    readonly property var red: createColour(theme.red)
+    readonly property var orange: createColour(theme.orange)
+    readonly property var yellow: createColour(theme.yellow)
+    readonly property var green: createColour(theme.green)
+    readonly property var lightblue: createColour(theme.lightblue)
+    readonly property var darkblue: createColour(theme.darkblue)
+    readonly property var purple: createColour(theme.purple)
+    readonly property var pink: createColour(theme.pink)
 }

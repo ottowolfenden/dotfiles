@@ -35,7 +35,7 @@ Rectangle {
 
         Text {
             text: audio.percent + "%"
-            color: ColoursConf.fg1
+            color: ColoursConf.fg1.t
             font.family: FontsConf.mainFamily
             font.pixelSize: FontsConf.pixelSize
             horizontalAlignment: Text.AlignHCenter
@@ -108,7 +108,7 @@ Rectangle {
                         Rectangle {
                             Layout.preferredWidth: list.width + DesignConf.spacing * 2
                             Layout.preferredHeight: list.height + DesignConf.spacing * 2
-                            color: ColoursConf.bg2
+                            color: ColoursConf.bg3.t
                             radius: DesignConf.radius
                             clip: true
 
@@ -139,7 +139,7 @@ Rectangle {
                                         Layout.preferredWidth: buttonsContainer.implicitWidth
                                         horizontalAlignment: Text.AlignHCenter
                                         elide: Text.ElideRight
-                                        color: ColoursConf.fg1
+                                        color: ColoursConf.fg1.t
                                         font.family: FontsConf.mainFamily
                                         font.pixelSize: FontsConf.smallPixelSize
                                         MouseArea {
@@ -227,7 +227,7 @@ Rectangle {
                 Rectangle {
                     Layout.fillWidth: true
                     implicitHeight: sinkSelection.implicitHeight + DesignConf.spacing * 2
-                    color: ColoursConf.bg2
+                    color: ColoursConf.bg3.t
                     radius: DesignConf.radius
                     visible: repeater.model.length > 1
 
@@ -245,16 +245,16 @@ Rectangle {
                                 id: node
                                 required property PwNode modelData
                                 property bool isActive: node.modelData == audio.sink
-                                property color colour: isActive ? ColoursConf.lightblue : ColoursConf.fg1
+                                property string fgColour: isActive ? ColoursConf.lightblue : ColoursConf.fg1.o
                                 radius: DesignConf.radius
                                 color: {
                                     if (isActive)
-                                        return ColoursConf.selectedBg;
+                                        return ColoursConf.selectedbg.o;
                                     if (mouseArea.pressed)
-                                        return ColoursConf.buttonPressedBg;
+                                        return ColoursConf.pressedbg.o;
                                     else if (mouseArea.containsMouse)
-                                        return ColoursConf.buttonHoveredBg;
-                                    return ColoursConf.buttonInactiveBg;
+                                        return ColoursConf.hoveredbg.o;
+                                    return ColoursConf.bg3.o;
                                 }
                                 Layout.fillWidth: true
                                 Layout.preferredHeight: row.implicitHeight + DesignConf.spacing
@@ -268,17 +268,18 @@ Rectangle {
                                     anchors.rightMargin: DesignConf.spacing / 2
                                     Icon {
                                         iconName: node.isActive ? IconsConf.tick : AudioService.getSinkDetails(node.modelData).icon
-                                        colour: node.colour
+                                        colour: node.fgColour
                                         Layout.leftMargin: DesignConf.spacing / 2
+                                        pixelSize: 16
                                     }
                                     Text {
                                         id: text
                                         text: AudioService.getSinkDetails(node.modelData).name
-                                        Layout.fillWidth: true
                                         elide: Text.ElideRight
                                         font.family: FontsConf.mainFamily
                                         font.pixelSize: FontsConf.smallPixelSize
-                                        color: node.colour
+                                        color: node.fgColour
+                                        Layout.fillWidth: true
                                         Layout.leftMargin: DesignConf.spacing / 2
                                     }
                                     Item {
@@ -289,7 +290,7 @@ Rectangle {
                                         font.strikeout: node.modelData.audio.muted
                                         font.family: FontsConf.mainFamily
                                         font.pixelSize: FontsConf.smallPixelSize
-                                        color: node.colour
+                                        color: node.fgColour
                                         Layout.rightMargin: DesignConf.spacing / 2
                                     }
                                 }

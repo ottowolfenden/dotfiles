@@ -26,9 +26,9 @@ Repeater {
 
         color: {
             if (mouseArea.pressed)
-                return ColoursConf.buttonPressedBg;
+                return ColoursConf.pressedbg.t;
             else if (index == fileSearch.activeIndex)
-                return ColoursConf.buttonHoveredBg;
+                return ColoursConf.hoveredbg.t;
             return "transparent";
         }
         radius: DesignConf.smallRadius
@@ -56,7 +56,7 @@ Repeater {
             Text {
                 id: fileName
                 text: fileRect.modelData.name
-                color: ColoursConf.fg1
+                color: ColoursConf.fg1.t
                 font.family: FontsConf.mainFamily
                 font.pixelSize: FontsConf.smallPixelSize
                 elide: Text.ElideRight

@@ -15,7 +15,7 @@ Button {
     contentItem: Icon {
         iconName: button.iconName
         pixelSize: button.iconPixelSize
-        colour: button.disabled ? ColoursConf.fg4 : ColoursConf.fg1
+        colour: button.disabled ? ColoursConf.fg4.t : ColoursConf.fg1.t
     }
 
     background: Rectangle {
@@ -25,12 +25,12 @@ Button {
         border.width: 0
         color: {
             if (button.disabled)
-                return button.isTransparentOnInactive ? "transparent" : ColoursConf.buttonInactiveBg;
+                return button.isTransparentOnInactive ? "transparent" : ColoursConf.inactivebg.t;
             if (button.pressed)
-                return ColoursConf.buttonPressedBg;
+                return ColoursConf.pressedbg.t;
             else if (button.hovered)
-                return ColoursConf.buttonHoveredBg;
-            return button.isTransparentOnInactive ? "transparent" : ColoursConf.buttonInactiveBg;
+                return ColoursConf.hoveredbg.t;
+            return button.isTransparentOnInactive ? "transparent" : ColoursConf.inactivebg.t;
         }
 
         Behavior on color {

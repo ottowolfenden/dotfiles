@@ -16,15 +16,16 @@ Repeater {
 
     model: DirSearchService.results
     delegate: Rectangle {
-        id: dirRect
+        id: result
         required property var modelData
         required property int index
+        readonly property bool isActive: index == dirSearch.activeIndex
 
         color: {
             if (mouseArea.pressed)
-                return ColoursConf.buttonPressedBg;
-            else if (index == dirSearch.activeIndex)
-                return ColoursConf.buttonHoveredBg;
+                return ColoursConf.pressedbg.t;
+            else if (isActive)
+                return ColoursConf.hoveredbg.t;
             return "transparent";
         }
         radius: DesignConf.smallRadius
@@ -40,10 +41,10 @@ Repeater {
             cursorShape: Qt.PointingHandCursor
             onHoveringChanged: {
                 if (hovering)
-                    dirSearch.activeIndexSet(dirRect.index);
+                    dirSearch.activeIndexSet(result.index);
             }
             onClicked: mouse => {
-                DirSearchService.open(dirRect.modelData);
+                DirSearchService.open(result.modelData);
                 dirSearch.searchInput.reset();
             }
         }
@@ -54,7 +55,7 @@ Repeater {
                 Layout.rightMargin: DesignConf.spacing / 2
                 Icon {
                     iconName: IconsConf.dirs[(() => {
-                                let dir = dirRect.modelData;
+                                let dir = result.modelData;
                                 let xdgDirName = Object.keys(PathsConf.xdgDirs).find(k => PathsConf.xdgDirs[k] == dir.path);
                                 if (xdgDirName)
                                     return "xdg" + xdgDirName;
@@ -74,8 +75,8 @@ Repeater {
                     Layout.fillWidth: true
                     Text {
                         id: dirPathPrefix
-                        text: dirRect.modelData.split()[0]
-                        color: ColoursConf[dirSearch.activeIndex == dirRect.index ? "fg2" : "fg3"]
+                        text: result.modelData.split()[0]
+                        color: result.isActive ? ColoursConf.fg2.t : ColoursConf.fg3.t
                         font.family: FontsConf.mainFamily
                         font.pixelSize: FontsConf.pixelSize
                         width: Math.min(dirPath.width - dirName.width, implicitWidth)
@@ -88,8 +89,8 @@ Repeater {
                     }
                     Text {
                         id: dirName
-                        text: dirRect.modelData.split()[1]
-                        color: ColoursConf[dirSearch.activeIndex == dirRect.index ? "fg1" : "fg3"]
+                        text: result.modelData.split()[1]
+                        color: result.isActive ? ColoursConf.fg1.t : ColoursConf.fg3.t
                         font.family: FontsConf.mainFamily
                         font.pixelSize: FontsConf.pixelSize
                         elide: Text.ElideRight
@@ -110,9 +111,9 @@ Repeater {
                 iconName: IconsConf.terminal
                 Layout.alignment: Qt.AlignRight
                 Layout.rightMargin: DesignConf.spacing / 2
-                buttonPixelSize: dirRect.Layout.preferredHeight - DesignConf.spacing
+                buttonPixelSize: result.Layout.preferredHeight - DesignConf.spacing
                 onClicked: {
-                    DirSearchService.open(dirRect.modelData, false, true);
+                    DirSearchService.open(result.modelData, false, true);
                     dirSearch.searchInput.reset();
                 }
                 Behavior on opacity {
@@ -129,9 +130,9 @@ Repeater {
                 iconName: IconsConf.appSearchOpenInNewWsButton
                 Layout.alignment: Qt.AlignRight
                 Layout.rightMargin: DesignConf.spacing / 2
-                buttonPixelSize: dirRect.Layout.preferredHeight - DesignConf.spacing
+                buttonPixelSize: result.Layout.preferredHeight - DesignConf.spacing
                 onClicked: {
-                    DirSearchService.open(dirRect.modelData, true);
+                    DirSearchService.open(result.modelData, true);
                     dirSearch.searchInput.reset();
                 }
                 Behavior on opacity {

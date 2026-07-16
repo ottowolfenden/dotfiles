@@ -7,8 +7,8 @@ Item {
     id: slider
     required property real value
 
-    property color bgColour: ColoursConf.bg2
-    property color fgColour: ColoursConf.lightblue
+    property string bgColour: ColoursConf.bg3.t
+    property string fgColour: ColoursConf.lightblue
     property string iconName
 
     readonly property int trackWidth: width - handle.Layout.preferredWidth
@@ -204,7 +204,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
                 anchors.rightMargin: DesignConf.spacing
-                colour: ColoursConf.fg1
+                colour: ColoursConf.fg1.t
                 visible: !slider.iconOnActiveTrack
             }
         }

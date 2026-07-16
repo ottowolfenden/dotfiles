@@ -17,15 +17,16 @@ Repeater {
 
     model: AppSearchService.search(searchInput.text, mode)
     delegate: Rectangle {
-        id: appRect
+        id: result
         required property DesktopEntry modelData
         required property int index
+        readonly property bool isActive: index == appSearch.activeIndex
 
         color: {
             if (mouseArea.pressed)
-                return ColoursConf.buttonPressedBg;
-            else if (index == appSearch.activeIndex)
-                return ColoursConf.buttonHoveredBg;
+                return ColoursConf.pressedbg.t;
+            else if (isActive)
+                return ColoursConf.hoveredbg.t;
             return "transparent";
         }
         radius: DesignConf.smallRadius
@@ -42,22 +43,22 @@ Repeater {
             acceptedButtons: Qt.LeftButton | Qt.MiddleButton
             onHoveringChanged: {
                 if (hovering)
-                    appSearch.activeIndexSet(appRect.index);
+                    appSearch.activeIndexSet(result.index);
             }
             onClicked: mouse => {
                 if (mouse.button == Qt.LeftButton) {
-                    AppSearchService.exec(appRect.modelData);
+                    AppSearchService.exec(result.modelData);
                     appSearch.searchInput.reset();
                 } else if (mouse.button == Qt.MiddleButton)
-                    AppSearchService.hide(appRect.modelData);
+                    AppSearchService.hide(result.modelData);
             }
         }
         RowLayout {
             anchors.fill: parent
             Text {
                 id: appName
-                text: appRect.modelData.name
-                color: ColoursConf[appSearch.activeIndex == appRect.index ? "fg1" : "fg3"]
+                text: result.modelData.name
+                color: result.isActive ? ColoursConf.fg1.t : ColoursConf.fg3.t
                 font.family: FontsConf.mainFamily
                 font.pixelSize: FontsConf.pixelSize
                 elide: Text.ElideRight
@@ -78,8 +79,8 @@ Repeater {
                 opacity: visible
                 iconName: IconsConf.appSearchHideButton
                 Layout.alignment: Qt.AlignRight
-                buttonPixelSize: appRect.Layout.preferredHeight - DesignConf.spacing
-                onClicked: AppSearchService.hide(appRect.modelData)
+                buttonPixelSize: result.Layout.preferredHeight - DesignConf.spacing
+                onClicked: AppSearchService.hide(result.modelData)
                 Behavior on opacity {
                     NumberAnimation {
                         duration: DesignConf.buttonColourAnimationDuration
@@ -94,9 +95,9 @@ Repeater {
                 iconName: IconsConf.appSearchOpenInNewWsButton
                 Layout.alignment: Qt.AlignRight
                 Layout.rightMargin: DesignConf.spacing / 2
-                buttonPixelSize: appRect.Layout.preferredHeight - DesignConf.spacing
+                buttonPixelSize: result.Layout.preferredHeight - DesignConf.spacing
                 onClicked: {
-                    AppSearchService.exec(appRect.modelData, true);
+                    AppSearchService.exec(result.modelData, true);
                     appSearch.searchInput.reset();
                 }
                 Behavior on opacity {

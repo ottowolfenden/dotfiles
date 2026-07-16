@@ -32,7 +32,7 @@ Rectangle {
             Text {
                 id: timeText
                 text: Qt.formatDateTime(clock.date, "hh:mm ap").slice(0, -3)
-                color: ColoursConf.fg1
+                color: ColoursConf.fg1.t
                 font.family: FontsConf.mainFamily
                 font.pixelSize: FontsConf.pixelSize
             }
@@ -44,7 +44,7 @@ Rectangle {
             Text {
                 id: dateText
                 text: Qt.formatDateTime(clock.date, "ddd d MMM")
-                color: ColoursConf.fg1
+                color: ColoursConf.fg1.t
                 font.family: FontsConf.mainFamily
                 font.pixelSize: FontsConf.pixelSize
                 anchors.right: parent.right

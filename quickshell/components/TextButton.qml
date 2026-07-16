@@ -22,7 +22,7 @@ Button {
             text: button.text
             font.pixelSize: FontsConf.pixelSize
             font.family: FontsConf.mainFamily
-            color: ColoursConf.fg1
+            color: ColoursConf.fg1.t
             rightPadding: DesignConf.spacing
             leftPadding: button.iconName ? 0 : DesignConf.spacing
         }
@@ -37,10 +37,10 @@ Button {
         border.width: 0
         color: {
             if (button.pressed)
-                return ColoursConf.buttonPressedBg;
+                return ColoursConf.pressedbg.t;
             else if (button.hovered)
-                return ColoursConf.buttonHoveredBg;
-            return ColoursConf.buttonInactiveBg;
+                return ColoursConf.hoveredbg.t;
+            return ColoursConf.inactivebg.t;
         }
 
         Behavior on color {

@@ -17,7 +17,7 @@ Rectangle {
     implicitHeight: rowLayout.implicitHeight + DesignConf.spacing * 2
     implicitWidth: rowLayout.implicitWidth + DesignConf.spacing * 2
     Layout.alignment: Qt.AlignHCenter
-    color: ColoursConf.bg2
+    color: ColoursConf.bg3.t
     radius: Infinity
 
     RowLayout {
@@ -40,16 +40,16 @@ Rectangle {
                     if (index == toggleGroup.activeIndex)
                         return ColoursConf.lightblue;
                     if (mouseArea.pressed)
-                        return ColoursConf.buttonPressedBg;
+                        return ColoursConf.pressedbg.t;
                     else if (mouseArea.containsMouse)
-                        return ColoursConf.buttonHoveredBg;
-                    return ColoursConf.buttonInactiveBg;
+                        return ColoursConf.hoveredbg.t;
+                    return ColoursConf.inactivebg.t;
                 }
                 radius: Infinity
                 Icon {
                     iconName: parent.modelData
                     anchors.fill: parent
-                    colour: parent.index == toggleGroup.activeIndex ? ColoursConf.invfg : ColoursConf.fg1
+                    colour: parent.index == toggleGroup.activeIndex ? ColoursConf.invfg : ColoursConf.fg1.t
                 }
                 MouseArea {
                     id: mouseArea

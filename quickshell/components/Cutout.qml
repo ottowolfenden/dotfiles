@@ -23,7 +23,7 @@ Item {
 
         Rectangle {
             anchors.fill: parent
-            color: ColoursConf.cutoutBg
+            color: ColoursConf.cutoutbg.t
         }
     }
 

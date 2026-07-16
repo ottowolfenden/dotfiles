@@ -18,7 +18,7 @@ Rectangle {
     }
     onModeChanged: DirSearchService.search(searchInput.text, mode)
 
-    color: ColoursConf.bg2
+    color: ColoursConf.bg2.t
     radius: DesignConf.radius
     width: search.isOpen ? DesignConf.searchBoxWidth : DesignConf.componentHeight
     height: DesignConf.componentHeight
@@ -63,13 +63,13 @@ Rectangle {
 
         TextField {
             id: searchInput
-            color: ColoursConf.fg1
+            color: ColoursConf.fg1.t
             placeholderText: SearchConf.modes.find(m => m.name == search.mode).placeholder
             background: null
             font.pixelSize: FontsConf.pixelSize
             font.family: search.mode == "command" ? FontsConf.monospaceFamily : FontsConf.mainFamily
-            selectionColor: ColoursConf.textSelectionBg
-            selectedTextColor: ColoursConf.fg1
+            selectionColor: ColoursConf.textselectionbg.t
+            selectedTextColor: ColoursConf.fg1.t
             Layout.fillHeight: true
             Layout.fillWidth: true
 
