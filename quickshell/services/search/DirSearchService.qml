@@ -73,7 +73,7 @@ QtObject {
         })
         stdout: StdioCollector {
             onStreamFinished: {
-                if (!text)
+                if (!text || results.length >= MiscService.getMaxSearchResults("dirs", searchProc1.mode) || searchProc1.mode != "dirs")
                     return;
                 results = [...results, ...processScriptOutput(text)];
             }
