@@ -31,6 +31,20 @@ QtObject {
                         return r.path.replace(Quickshell.env("HOME"), "~");
                     return r.path;
                 },
+                get icon() {
+                    return IconsConf.dirs[(() => {
+                                let xdgDirName = Object.keys(PathsConf.xdgDirs).find(k => PathsConf.xdgDirs[k] == r.path);
+                                if (xdgDirName)
+                                    return "xdg" + xdgDirName;
+                                if (r.hasGit)
+                                    return "repo";
+                                if (this.homeRelativePath == "~")
+                                    return "home";
+                                if (this.name.toLowerCase().includes("config"))
+                                    return "conf";
+                                return "default";
+                            })()];
+                },
                 split() {
                     if (this.homeRelativePath == "~")
                         return ["", "~"];
