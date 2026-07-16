@@ -101,16 +101,16 @@ QtObject {
 
     function open(dir: var, bindsRef: var): void {
         const binds = UtilsService.clone(bindsRef);
-        if (binds.inNewWs.active) {
+        if (binds?.inNewWs?.active) {
             HyprlandService.focusWs("emptynm");
             openTimer.dirToOpen = dir;
             openTimer.binds = binds;
             openTimer.running = true;
         } else
             HyprlandService.execWithQsTag(`${(() => {
-                    if (binds.inTerminal.active)
+                    if (binds?.inTerminal?.active)
                         return "kitty";
-                    else if (binds.inVsCode.active)
+                    else if (binds?.inVsCode?.active)
                         return "code";
                     else
                         return "thunar";

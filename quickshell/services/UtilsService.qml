@@ -45,6 +45,7 @@ QtObject {
     }
 
     function clone(obj: var): var {
-        return JSON.parse(JSON.stringify(obj));
+        if (obj)
+            return JSON.parse(JSON.stringify(obj));
     }
 }
