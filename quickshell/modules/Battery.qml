@@ -138,7 +138,7 @@ Rectangle {
                         // row 1
                         Text {
                             font.pixelSize: FontsConf.smallPixelSize
-                            color: ColoursConf.fg2
+                            color: ColoursConf.fg3
                             font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
                             text: "Power profile"
@@ -163,7 +163,7 @@ Rectangle {
                         Text {
                             visible: !grid.fullAndCharging
                             font.pixelSize: FontsConf.smallPixelSize
-                            color: ColoursConf.fg2
+                            color: ColoursConf.fg3
                             font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
                             text: battery.isCharging ? "Time until full" : "Time until empty"
@@ -193,7 +193,7 @@ Rectangle {
                         // row 3
                         Text {
                             font.pixelSize: FontsConf.smallPixelSize
-                            color: ColoursConf.fg2
+                            color: ColoursConf.fg3
                             font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
                             text: battery.isCharging ? "Charge rate" : "Discharge rate"

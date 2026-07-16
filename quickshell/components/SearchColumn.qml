@@ -14,12 +14,12 @@ ColumnLayout {
         Layout.leftMargin: DesignConf.radius / 2
         Icon {
             iconName: IconsConf.searchMode[col.child.modeSupplied]
-            colour: ColoursConf.fg2
+            colour: ColoursConf.fg3
             pixelSize: 16
         }
         Text {
             text: SearchConf.modes.find(m => m.name == col.child.modeSupplied)?.displayName ?? ""
-            color: ColoursConf.fg2
+            color: ColoursConf.fg3
             font.pixelSize: FontsConf.smallPixelSize
             Layout.leftMargin: -2
         }

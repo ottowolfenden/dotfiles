@@ -5,37 +5,14 @@ import ".."
 QtObject {
     property var theme: ModeService.mode == "light" ? lightTheme : darkTheme
 
-    readonly property var darkTheme: ({
-            bg1: "#000000",
-            bg2: "#10ffffff",
-            bg3: "#0cffffff",
-            fg1: "#d8ffffff",
-            fg2: "#78ffffff",
-            fg3: "#15ffffff",
-            invfg: "#000000",
-            cutoutBg: "#10ffffff",
-            buttonInactiveBg: "#0effffff",
-            buttonHoveredBg: "#12ffffff",
-            buttonPressedBg: "#1effffff",
-            selectedBg: "#1889ddff",
-            textSelectionBg: "#28ffffff",
-            red: "#f07178",
-            orange: "#f78c6c",
-            yellow: "#ffcb6b",
-            green: "#c3e88d",
-            lightblue: "#89ddff",
-            darkblue: "#82aaff",
-            purple: "#c792ea",
-            pink: "#ff9cac"
-        })
-
     readonly property var lightTheme: ({
             bg1: "#ffffff",
             bg2: "#09000000",
             bg3: "#07000000",
-            fg1: "#d8000000",
-            fg2: "#78000000",
-            fg3: "#15000000",
+            fg1: "#da000000",
+            fg2: "#a0000000",
+            fg3: "#65000000",
+            fg4: "#15000000",
             invfg: "#ffffff",
             cutoutBg: "#cff8f8f8",
             buttonInactiveBg: "#0a000000",
@@ -53,12 +30,38 @@ QtObject {
             pink: "#ff80ab"
         })
 
+    readonly property var darkTheme: ({
+            bg1: "#000000",
+            bg2: "#10ffffff",
+            bg3: "#0cffffff",
+            fg1: "#daffffff",
+            fg2: "#a0ffffff",
+            fg3: "#65ffffff",
+            fg4: "#15ffffff",
+            invfg: "#000000",
+            cutoutBg: "#10ffffff",
+            buttonInactiveBg: "#0effffff",
+            buttonHoveredBg: "#12ffffff",
+            buttonPressedBg: "#1effffff",
+            selectedBg: "#1889ddff",
+            textSelectionBg: "#28ffffff",
+            red: "#f07178",
+            orange: "#f78c6c",
+            yellow: "#ffcb6b",
+            green: "#c3e88d",
+            lightblue: "#89ddff",
+            darkblue: "#82aaff",
+            purple: "#c792ea",
+            pink: "#ff9cac"
+        })
+
     readonly property color bg1: theme.bg1
     readonly property color bg2: theme.bg2
     readonly property color bg3: theme.bg3
     readonly property color fg1: theme.fg1
     readonly property color fg2: theme.fg2
     readonly property color fg3: theme.fg3
+    readonly property color fg4: theme.fg4
     readonly property color invfg: theme.invfg
     readonly property color cutoutBg: theme.cutoutBg
     readonly property color buttonInactiveBg: theme.buttonInactiveBg

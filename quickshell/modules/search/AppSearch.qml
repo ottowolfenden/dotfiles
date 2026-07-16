@@ -57,7 +57,7 @@ Repeater {
             Text {
                 id: appName
                 text: appRect.modelData.name
-                color: ColoursConf[appSearch.activeIndex == appRect.index ? "fg1" : "fg2"]
+                color: ColoursConf[appSearch.activeIndex == appRect.index ? "fg1" : "fg3"]
                 font.family: FontsConf.mainFamily
                 font.pixelSize: FontsConf.pixelSize
                 elide: Text.ElideRight

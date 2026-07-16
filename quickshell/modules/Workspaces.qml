@@ -36,7 +36,7 @@ Rectangle {
                     if (isActive)
                         return ColoursConf.lightblue;
                     if (exists)
-                        return ColoursConf.fg3;
+                        return ColoursConf.fg4;
                     return "transparent";
                 }
 
@@ -52,7 +52,7 @@ Rectangle {
                             return ColoursConf.invfg;
                         if (parent.exists)
                             return ColoursConf.fg1;
-                        return ColoursConf.fg2;
+                        return ColoursConf.fg4;
                     }
                 }
 

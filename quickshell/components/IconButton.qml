@@ -15,7 +15,7 @@ Button {
     contentItem: Icon {
         iconName: button.iconName
         pixelSize: button.iconPixelSize
-        colour: button.disabled ? ColoursConf.fg3 : ColoursConf.fg1
+        colour: button.disabled ? ColoursConf.fg4 : ColoursConf.fg1
     }
 
     background: Rectangle {
