@@ -4,7 +4,6 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import Quickshell
 import "../.."
-import "../../components"
 
 Repeater {
     id: appSearch
@@ -35,75 +34,34 @@ Repeater {
 
         MouseArea {
             id: mouseArea
-            property bool hovering: containsMouse || hideButton.hovering || openInNewWsButton.hovering
             anchors.fill: parent
             anchors.margins: -DesignConf.spacing / 4
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
             acceptedButtons: Qt.LeftButton | Qt.MiddleButton
-            onHoveringChanged: {
-                if (hovering)
-                    appSearch.activeIndexSet(result.index);
-            }
+            onContainsMouseChanged: (containsMouse ? () => appSearch.activeIndexSet(result.index) : () => {})()
             onClicked: mouse => {
                 if (mouse.button == Qt.LeftButton) {
-                    AppSearchService.exec(result.modelData);
+                    AppSearchService.open(result.modelData);
                     appSearch.searchInput.reset();
                 } else if (mouse.button == Qt.MiddleButton)
                     AppSearchService.hide(result.modelData);
             }
         }
-        RowLayout {
+        Text {
+            id: appName
+            text: result.modelData.name
+            color: result.isActive ? ColoursConf.fg1.t : ColoursConf.fg3.t
+            font.family: FontsConf.mainFamily
+            font.pixelSize: FontsConf.pixelSize
+            elide: Text.ElideRight
             anchors.fill: parent
-            Text {
-                id: appName
-                text: result.modelData.name
-                color: result.isActive ? ColoursConf.fg1.t : ColoursConf.fg3.t
-                font.family: FontsConf.mainFamily
-                font.pixelSize: FontsConf.pixelSize
-                elide: Text.ElideRight
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignVCenter
-                Layout.leftMargin: DesignConf.spacing / 2
-                Layout.rightMargin: DesignConf.spacing / 2
-                Behavior on color {
-                    ColorAnimation {
-                        duration: DesignConf.buttonColourAnimationDuration
-                    }
-                }
-            }
-            IconButton {
-                id: hideButton
-                isTransparentOnInactive: true
-                visible: mouseArea.hovering
-                opacity: visible
-                iconName: IconsConf.appSearchHideButton
-                Layout.alignment: Qt.AlignRight
-                buttonPixelSize: result.Layout.preferredHeight - DesignConf.spacing
-                onClicked: AppSearchService.hide(result.modelData)
-                Behavior on opacity {
-                    NumberAnimation {
-                        duration: DesignConf.buttonColourAnimationDuration
-                    }
-                }
-            }
-            IconButton {
-                id: openInNewWsButton
-                isTransparentOnInactive: true
-                visible: mouseArea.hovering
-                opacity: visible
-                iconName: IconsConf.appSearchOpenInNewWsButton
-                Layout.alignment: Qt.AlignRight
-                Layout.rightMargin: DesignConf.spacing / 2
-                buttonPixelSize: result.Layout.preferredHeight - DesignConf.spacing
-                onClicked: {
-                    AppSearchService.exec(result.modelData, true);
-                    appSearch.searchInput.reset();
-                }
-                Behavior on opacity {
-                    NumberAnimation {
-                        duration: DesignConf.buttonColourAnimationDuration
-                    }
+            anchors.leftMargin: DesignConf.spacing / 2
+            anchors.rightMargin: DesignConf.spacing / 2
+            verticalAlignment: Qt.AlignVCenter
+            Behavior on color {
+                ColorAnimation {
+                    duration: DesignConf.buttonColourAnimationDuration
                 }
             }
         }

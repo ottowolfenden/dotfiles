@@ -34,15 +34,11 @@ Repeater {
 
         MouseArea {
             id: mouseArea
-            property bool hovering: containsMouse || openInNewWsButton.hovering || openInTerminalButton.hovering
             anchors.fill: parent
             anchors.margins: -DesignConf.spacing / 4
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
-            onHoveringChanged: {
-                if (hovering)
-                    dirSearch.activeIndexSet(result.index);
-            }
+            onContainsMouseChanged: (containsMouse ? () => dirSearch.activeIndexSet(result.index) : () => {})()
             onClicked: mouse => {
                 DirSearchService.open(result.modelData);
                 dirSearch.searchInput.reset();
@@ -90,44 +86,6 @@ Repeater {
                                 duration: DesignConf.buttonColourAnimationDuration
                             }
                         }
-                    }
-                }
-            }
-            IconButton {
-                id: openInTerminalButton
-                isTransparentOnInactive: true
-                visible: mouseArea.hovering
-                opacity: visible
-                iconName: IconsConf.terminal
-                Layout.alignment: Qt.AlignRight
-                Layout.rightMargin: DesignConf.spacing / 2
-                buttonPixelSize: result.Layout.preferredHeight - DesignConf.spacing
-                onClicked: {
-                    DirSearchService.open(result.modelData, false, true);
-                    dirSearch.searchInput.reset();
-                }
-                Behavior on opacity {
-                    NumberAnimation {
-                        duration: DesignConf.buttonColourAnimationDuration
-                    }
-                }
-            }
-            IconButton {
-                id: openInNewWsButton
-                isTransparentOnInactive: true
-                visible: mouseArea.hovering
-                opacity: visible
-                iconName: IconsConf.appSearchOpenInNewWsButton
-                Layout.alignment: Qt.AlignRight
-                Layout.rightMargin: DesignConf.spacing / 2
-                buttonPixelSize: result.Layout.preferredHeight - DesignConf.spacing
-                onClicked: {
-                    DirSearchService.open(result.modelData, true);
-                    dirSearch.searchInput.reset();
-                }
-                Behavior on opacity {
-                    NumberAnimation {
-                        duration: DesignConf.buttonColourAnimationDuration
                     }
                 }
             }

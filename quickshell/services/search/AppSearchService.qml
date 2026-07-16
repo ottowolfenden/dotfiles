@@ -69,7 +69,7 @@ QtObject {
 
     function open(app: DesktopEntry, bindsRef: var): void {
         const binds = UtilsService.clone(bindsRef);
-        if (binds.inNewWs.active) {
+        if (binds?.inNewWs?.active) {
             HyprlandService.focusWs("emptynm");
             openTimer.appToExec = app;
             openTimer.binds = binds;
