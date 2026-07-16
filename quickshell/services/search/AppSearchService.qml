@@ -82,7 +82,7 @@ QtObject {
     property Timer openTimer: Timer {
         property DesktopEntry appToExec: null
         property var binds: null
-        interval: 100
+        interval: SearchConf.msToSwitchHyprlandWs
         onTriggered: {
             if (!appToExec || !binds)
                 return;

@@ -79,4 +79,5 @@ QtObject {
                 always: []
             }
         })
+    readonly property int msToSwitchHyprlandWs: 60
 }
