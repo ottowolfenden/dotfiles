@@ -107,7 +107,14 @@ QtObject {
             openTimer.binds = binds;
             openTimer.running = true;
         } else
-            HyprlandService.execWithQsTag(`${binds.inTerminal.active ? "kitty" : "thunar"} '${dir.path}'`);
+            HyprlandService.execWithQsTag(`${(() => {
+                    if (binds.inTerminal.active)
+                        return "kitty";
+                    else if (binds.inVsCode.active)
+                        return "code";
+                    else
+                        return "thunar";
+                })()} '${dir.path}'`);
         Quickshell.execDetached(["touch", "-a", dir.path]);
     }
 

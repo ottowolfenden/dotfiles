@@ -73,31 +73,12 @@ Rectangle {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            property var binds: ({
-                    inNewWs: {
-                        active: false,
-                        key: Qt.Key_Return,
-                        set: function (e) {
-                            this.active = !!(e.key == Qt.Key_Return && (e.modifiers & Qt.ShiftModifier));
-                        }
-                    },
-                    inTerminal: {
-                        active: false,
-                        key: Qt.Key_Return,
-                        set: function (e) {
-                            this.active = !!(e.key == Qt.Key_Return && (e.modifiers & Qt.ControlModifier));
-                        }
-                    },
-                    inVsCode: {
-                        active: false,
-                        key: Qt.Key_C,
-                        set: function (e) {
-                            this.active = !!(e.key == Qt.Key_C && (e.modifiers & Qt.MetaModifier));
-                        }
-                    }
-                })
-
             property string prevText
+            property var binds: SearchConf.binds
+
+            function setBinds(e): void {
+                Object.keys(binds).forEach(k => binds[k].active = !!(e.key == binds[k].key && (e.modifiers & binds[k].mod)));
+            }
 
             function reset(): void {
                 text = "";
@@ -124,6 +105,22 @@ Rectangle {
                     searchColumn.activeIndex = indexOffsets[UtilsService.clamp(newIndexOffset, 0, indexOffsets.length - 1)];
             }
 
+            function open() {
+                if (appSearch.activeItem)
+                    AppSearchService.open(appSearch.activeItem, binds);
+                else if (dirSearch.activeItem)
+                    DirSearchService.open(dirSearch.activeItem, binds);
+                else if (fileSearch.activeItem)
+                    FileSearchService.open(fileSearch.activeItem, binds);
+                else if (webSearch.activeItem)
+                    WebSearchService.open(webSearch.activeItem, binds);
+                else if (commandSearch.activeItem)
+                    CommandSearchService.exec(commandSearch.activeItem, binds);
+                else
+                    return;
+                reset();
+            }
+
             Keys.onPressed: e => {
                 if (!search.isOpen) {
                     e.accepted = true;
@@ -131,11 +128,13 @@ Rectangle {
                 }
 
                 prevText = text;
-                Object.keys(binds).forEach(k => binds[k].set(e));
+                // Object.keys(binds).forEach(k => binds[k].set(e));
+                setBinds(e);
 
-                if (Object.keys(binds).some(b => b.active && b.key != Qt.Key_Return))
-                    searchInput.accepted = true;
-                else if (e.key == Qt.Key_Backspace && text == "")
+                if (Object.keys(binds).some(k => binds[k].active && binds[k].key != Qt.Key_Return)) {
+                    e.accepted = true;
+                    open();
+                } else if (e.key == Qt.Key_Backspace && text == "")
                     search.mode = "default";
                 else if (e.key == Qt.Key_Tab)
                     search.cycleMode();
@@ -168,21 +167,7 @@ Rectangle {
                     DirSearchService.search(text, search.mode);
             }
 
-            onAccepted: {
-                if (appSearch.activeItem)
-                    AppSearchService.open(appSearch.activeItem, binds);
-                else if (dirSearch.activeItem)
-                    DirSearchService.open(dirSearch.activeItem, binds);
-                else if (fileSearch.activeItem)
-                    FileSearchService.open(fileSearch.activeItem, binds);
-                else if (webSearch.activeItem)
-                    WebSearchService.open(webSearch.activeItem, binds);
-                else if (commandSearch.activeItem)
-                    CommandSearchService.exec(commandSearch.activeItem, binds);
-                else
-                    return;
-                reset();
-            }
+            onAccepted: open()
         }
     }
 

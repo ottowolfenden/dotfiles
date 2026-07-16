@@ -80,4 +80,21 @@ QtObject {
             }
         })
     readonly property int msToSwitchHyprlandWs: 60
+    readonly property var binds: ({
+            inNewWs: {
+                active: false,
+                key: Qt.Key_Return,
+                mod: Qt.ShiftModifier
+            },
+            inTerminal: {
+                active: false,
+                key: Qt.Key_Return,
+                mod: Qt.ControlModifier
+            },
+            inVsCode: {
+                active: false,
+                key: Qt.Key_Return,
+                mod: Qt.MetaModifier
+            }
+        })
 }
