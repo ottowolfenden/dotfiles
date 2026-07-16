@@ -27,7 +27,7 @@ QtObject {
             placeholder: "Search directories",
             minChars: 2,
             maxResults: {
-                all: 3,
+                all: 2,
                 filtered: 15
             },
             displayName: "Folders"

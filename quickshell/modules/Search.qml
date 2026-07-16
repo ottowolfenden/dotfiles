@@ -73,10 +73,7 @@ Rectangle {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            property bool shiftReturn: false
-            property bool ctrlReturn: false
-
-            function reset() {
+            function reset(): void {
                 text = "";
                 search.mode = "default";
                 FlyoutsService.hideFlyout(searchFlyout);
@@ -85,12 +82,34 @@ Rectangle {
                 shiftReturn = ctrlReturn = false;
             }
 
+            function jumpToRepeater(direction: string): void {
+                if (!["up", "down"].includes(direction))
+                    return;
+                let visibleRepeaters = searchColumn.repeaters.filter(r => (r.model?.length ?? 0) != 0);
+                let activeRep = visibleRepeaters.find(r => r.activeItem);
+                let indexOffsets = visibleRepeaters.map(r => r.indexOffset);
+                let repIndex = visibleRepeaters.indexOf(activeRep);
+                if (indexOffsets.length < 0)
+                    return;
+                let newIndexOffset = repIndex + (direction == "up" ? -1 : 1);
+                if (repIndex == indexOffsets.length - 1 && direction == "down") {
+                    searchColumn.activeIndex = activeRep.model.length + activeRep.indexOffset - 1;
+                } else
+                    searchColumn.activeIndex = indexOffsets[UtilsService.clamp(newIndexOffset, 0, indexOffsets.length - 1)];
+            }
+
+            property bool shiftReturn: false
+            property bool ctrlReturn: false
             property string prevText
 
             Keys.onPressed: e => {
-                if (!search.isOpen)
+                if (!search.isOpen) {
+                    e.accepted = true;
                     return;
+                }
+
                 prevText = text;
+                let iOffsets = searchColumn.indexOffsets;
 
                 if (e.key == Qt.Key_Return && (e.modifiers & Qt.ShiftModifier))
                     shiftReturn = true;
@@ -100,6 +119,10 @@ Rectangle {
                     search.mode = "default";
                 else if (e.key == Qt.Key_Tab)
                     search.cycleMode();
+                else if (e.key == Qt.Key_Up && (e.modifiers & Qt.ControlModifier))
+                    jumpToRepeater("up");
+                else if (e.key == Qt.Key_Down && (e.modifiers & Qt.ControlModifier))
+                    jumpToRepeater("down");
                 else if (e.key == Qt.Key_Down)
                     searchColumn.activeIndex = (searchColumn.activeIndex + 1) % searchColumn.totalResults;
                 else if (e.key == Qt.Key_Up)
@@ -176,7 +199,7 @@ Rectangle {
                 readonly property list<Repeater> repeaters: [appSearch, dirSearch, fileSearch, webSearch, commandSearch]
                 readonly property int totalResults: repeaters.reduce((acc, c) => (c.model?.length ?? 0) + acc, 0)
                 property int activeIndex: 0
-                function getIndexOffset(repeater) {
+                function getIndexOffset(repeater: Repeater): int {
                     if (repeaters.indexOf(repeater) == 0)
                         return 0;
                     return repeaters[repeaters.indexOf(repeater) - 1]?.model?.length ?? 0;
