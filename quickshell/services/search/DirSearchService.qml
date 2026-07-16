@@ -5,7 +5,7 @@ import Quickshell.Io
 import "../.."
 
 QtObject {
-    id: fileSearchService
+    id: dirSearchService
 
     property var results: []
 
@@ -14,52 +14,68 @@ QtObject {
             results = [];
             return;
         }
-        searchProcess.running = false;
-        searchProcess.input = text;
-        searchProcess.mode = mode;
-        searchProcess.running = true;
+        searchProc1.running = false;
+        searchProc1.input = text;
+        searchProc1.mode = mode;
+        searchProc1.running = true;
     }
 
-    property Process searchProcess: Process {
-        id: searchProcess
+    function processScriptOutput(output) {
+        return JSON.parse(output).map(r => Object.assign({}, r, {
+                get name() {
+                    let parts = r.path.split("/");
+                    return parts[parts.length - 1];
+                },
+                get homeRelativePath() {
+                    if (r.path.startsWith(Quickshell.env("HOME")))
+                        return r.path.replace(Quickshell.env("HOME"), "~");
+                    return r.path;
+                }
+            }));
+    }
+
+    function getSearchCommand(opts: var): var {
+        return [PathsConf.scripts + "find-fsentries.sh", opts.dir, opts.text, "d", opts.max, "--exclude", ...opts.exclusions];
+    }
+
+    property Process searchProc1: Process {
         property var input: null
         property var mode: null
-        command: {
-            let c = [];
-            let script = PathsConf.scripts + "find-fsentries.sh";
-            let max = MiscService.getMaxSearchResults("dirs", mode);
-            let exclusionsFlag = mode == "dirs" ? "--appendexclusions" : "--hideexclusions";
-            return [script, SearchConf.dirParentDir, input, "d", max, exclusionsFlag, "--exclude", ...SearchConf.fsEntryExclusions];
-        }
+        command: getSearchCommand({
+            dir: SearchConf.dirParentDir,
+            text: input,
+            max: MiscService.getMaxSearchResults("dirs", mode),
+            exclusions: SearchConf.pathExclusions.dirs.default
+        })
         stdout: StdioCollector {
             onStreamFinished: {
-                if (text.trim() == "" || !text) {
-                    results = [];
+                if (!text)
                     return;
+                results = processScriptOutput(text);
+                if (results.length < MiscService.getMaxSearchResults("dirs", searchProc1.mode) && searchProc1.mode == "dirs") {
+                    searchProc2.running = false;
+                    searchProc2.input = searchProc1.input;
+                    searchProc2.mode = searchProc1.mode;
+                    searchProc2.running = true;
                 }
+            }
+        }
+    }
 
-                results = JSON.parse(text.trim()).map(r => Object.assign({}, r, {
-                        get name() {
-                            let parts = r.path.split("/");
-                            return parts[parts.length - 1];
-                        },
-                        get icon() {
-                            if (r.hasGit)
-                                return IconsConf.dirs.repo;
-                            if (r.path == (Quickshell.env("HOME")))
-                                return IconsConf.dirs.home;
-                            if (r.isRootOwned)
-                                return IconsConf.dirs.rootOwned;
-                            if (r.path.includes("config"))
-                                return IconsConf.dirs.conf;
-                            return IconsConf.dirs.default;
-                        },
-                        get homeRelativePath() {
-                            if (r.path.startsWith(Quickshell.env("HOME")))
-                                return r.path.replace(Quickshell.env("HOME"), "~");
-                            return r.path;
-                        }
-                    }));
+    property Process searchProc2: Process {
+        property var input: null
+        property var mode: null
+        command: getSearchCommand({
+            dir: SearchConf.dirParentDir,
+            text: input,
+            max: MiscService.getMaxSearchResults("dirs", mode) - results.length,
+            exclusions: [...results.map(r => r.path), ...SearchConf.pathExclusions.dirs.always]
+        })
+        stdout: StdioCollector {
+            onStreamFinished: {
+                if (!text)
+                    return;
+                results = [...results, ...processScriptOutput(text)];
             }
         }
     }

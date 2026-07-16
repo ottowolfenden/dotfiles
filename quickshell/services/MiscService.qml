@@ -33,7 +33,7 @@ QtObject {
     }
 
     function getMaxSearchResults(modeProvider: string, mode: string): int {
-        if (!["default", modeProvider].includes(mode))
+        if (!modeProvider || !mode || !["default", modeProvider].includes(mode))
             return 0;
         return SearchConf.modes.find(m => m.name == modeProvider).maxResults[mode == "default" ? "all" : "filtered"];
     }

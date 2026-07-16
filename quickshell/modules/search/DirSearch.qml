@@ -58,8 +58,6 @@ Repeater {
                                 let xdgDirName = Object.keys(PathsConf.xdgDirs).find(k => PathsConf.xdgDirs[k] == dir.path);
                                 if (xdgDirName)
                                     return "xdg" + xdgDirName;
-                                if (dir.rootOwned)
-                                    return "rootOwned";
                                 if (dir.hasGit)
                                     return "repo";
                                 if (dir.homeRelativePath == "~")

@@ -1,7 +1,6 @@
 pragma Singleton
 import QtQuick
 import Quickshell
-import "../modules/search"
 
 QtObject {
     readonly property var modes: [
@@ -70,5 +69,14 @@ QtObject {
     readonly property list<string> appAttrPriority: ["name", "execString", "genericName", "comment", "categories", "keywords", "startupClass", "icon"]
     readonly property string fileParentDir: Quickshell.env("HOME")
     readonly property string dirParentDir: Quickshell.env("HOME")
-    readonly property list<string> fsEntryExclusions: ["*/.*", Quickshell.env("HOME") + "/yay/*"]
+    readonly property var pathExclusions: ({
+            dirs: {
+                default: ["*/.*", Quickshell.env("HOME") + "/yay/*"],
+                always: []
+            },
+            files: {
+                default: ["*/.*", Quickshell.env("HOME") + "/yay/*"],
+                always: []
+            }
+        })
 }
