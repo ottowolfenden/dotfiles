@@ -30,6 +30,11 @@ QtObject {
                     if (r.path.startsWith(Quickshell.env("HOME")))
                         return r.path.replace(Quickshell.env("HOME"), "~");
                     return r.path;
+                },
+                split() {
+                    if (this.homeRelativePath == "~")
+                        return ["", "~"];
+                    return [this.homeRelativePath.slice(0, -this.name.length).trim(), this.name.trim()];
                 }
             }));
     }

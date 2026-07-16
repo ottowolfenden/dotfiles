@@ -66,21 +66,38 @@ Repeater {
                                     return "conf";
                                 return "default";
                             })()]
-                    colour: dirPath.color
+                    colour: dirName.color
                 }
-                Text {
+                Row {
                     id: dirPath
-                    text: dirRect.modelData.homeRelativePath
-                    color: ColoursConf[dirSearch.activeIndex == dirRect.index ? "fg1" : "fg2"]
-                    font.family: FontsConf.mainFamily
-                    font.pixelSize: FontsConf.pixelSize
-                    elide: Text.ElideRight
-                    Layout.leftMargin: DesignConf.spacing / 2
+                    spacing: 0
                     Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignVCenter
-                    Behavior on color {
-                        ColorAnimation {
-                            duration: DesignConf.buttonColourAnimationDuration
+                    Text {
+                        id: dirPathPrefix
+                        text: dirRect.modelData.split()[0]
+                        color: ColoursConf[dirSearch.activeIndex == dirRect.index ? "fg2" : "fg3"]
+                        font.family: FontsConf.mainFamily
+                        font.pixelSize: FontsConf.pixelSize
+                        width: Math.min(dirPath.width - dirName.width, implicitWidth)
+                        elide: Text.ElideRight
+                        Behavior on color {
+                            ColorAnimation {
+                                duration: DesignConf.buttonColourAnimationDuration
+                            }
+                        }
+                    }
+                    Text {
+                        id: dirName
+                        text: dirRect.modelData.split()[1]
+                        color: ColoursConf[dirSearch.activeIndex == dirRect.index ? "fg1" : "fg3"]
+                        font.family: FontsConf.mainFamily
+                        font.pixelSize: FontsConf.pixelSize
+                        elide: Text.ElideRight
+                        width: Math.min(implicitWidth, Math.max(dirPath.width / 2, dirPath.width - dirPathPrefix.implicitWidth))
+                        Behavior on color {
+                            ColorAnimation {
+                                duration: DesignConf.buttonColourAnimationDuration
+                            }
                         }
                     }
                 }
