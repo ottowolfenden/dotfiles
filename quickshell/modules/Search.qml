@@ -128,7 +128,6 @@ Rectangle {
                 }
 
                 prevText = text;
-                // Object.keys(binds).forEach(k => binds[k].set(e));
                 setBinds(e);
 
                 if (Object.keys(binds).some(k => binds[k].active && binds[k].key != Qt.Key_Return)) {
@@ -146,7 +145,7 @@ Rectangle {
                     searchColumn.activeIndex = (searchColumn.activeIndex + 1) % searchColumn.totalResults;
                 else if (e.key == Qt.Key_Up)
                     searchColumn.activeIndex = (searchColumn.activeIndex - 1 + searchColumn.totalResults) % searchColumn.totalResults;
-                else if (e.key == Qt.Key_Return || e.key == Qt.Key_Shift || e.key == Qt.Key_Control)
+                else if ([Qt.Key_Return, Qt.Key_Shift, Qt.Key_Control, Qt.Key_Meta, Qt.Key_Alt].includes(e.key))
                     return;
                 else if (e.key == Qt.Key_Escape)
                     reset();

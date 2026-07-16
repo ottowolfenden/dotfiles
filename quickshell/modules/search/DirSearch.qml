@@ -55,19 +55,6 @@ Repeater {
                 Layout.rightMargin: DesignConf.spacing / 2
 
                 Icon {
-                    // iconName: IconsConf.dirs[(() => {
-                    //             let dir = result.modelData;
-                    //             let xdgDirName = Object.keys(PathsConf.xdgDirs).find(k => PathsConf.xdgDirs[k] == dir.path);
-                    //             if (xdgDirName)
-                    //                 return "xdg" + xdgDirName;
-                    //             if (dir.hasGit)
-                    //                 return "repo";
-                    //             if (dir.homeRelativePath == "~")
-                    //                 return "home";
-                    //             if (dir.name.toLowerCase().includes("config"))
-                    //                 return "conf";
-                    //             return "default";
-                    //         })()]
                     iconName: result.modelData.icon
                     colour: dirName.color.toString()
                 }
