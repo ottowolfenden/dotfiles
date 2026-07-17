@@ -131,7 +131,7 @@ Rectangle {
                 if (Object.keys(binds).some(k => binds[k].active && binds[k].key != Qt.Key_Return)) {
                     e.accepted = true;
                     open();
-                } else if (e.key == Qt.Key_Backspace && text == "")
+                } else if ((e.key == Qt.Key_Backspace && text == "") || ([Qt.Key_Backspace, Qt.Key_Delete].includes(e.key) && (e.modifiers & Qt.MetaModifier)))
                     search.mode = "default";
                 else if (e.key == Qt.Key_Tab)
                     search.changeMode(1);
