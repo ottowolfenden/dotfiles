@@ -36,7 +36,7 @@ Rectangle {
                     if (isActive)
                         return ColoursConf.lightblue;
                     if (exists)
-                        return ColoursConf.bg4.t;
+                        return ColoursConf.bg5.t;
                     return "transparent";
                 }
 
