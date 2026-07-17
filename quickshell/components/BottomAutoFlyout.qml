@@ -19,12 +19,10 @@ PanelWindow {
     }
 
     color: "transparent"
-    anchors {
-        top: true
-        bottom: true
-        left: true
-        right: true
-    }
+    anchors.top: true
+    anchors.bottom: true
+    anchors.left: true
+    anchors.right: true
     mask: Region {
         item: rect
     }
@@ -83,8 +81,8 @@ PanelWindow {
         Behavior on y {
             enabled: baf.height > 0
             NumberAnimation {
-                duration: DesignConf.animationDuration
-                easing: DesignConf.easing
+                duration: 200
+                easing: Easing.OutCubic
             }
         }
 

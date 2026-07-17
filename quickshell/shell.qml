@@ -1,12 +1,13 @@
 import QtQuick
-import Quickshell
-import Quickshell.Wayland
+import QtQuick.Shapes
 import QtQuick.Layouts
 import QtQuick.Controls
-import QtQuick.Shapes
+import Quickshell
+import Quickshell.Wayland
 import "modules"
 import "modules/bafs"
 import "services"
+import "components"
 
 Scope {
     PanelWindow {
@@ -15,11 +16,9 @@ Scope {
         color: "transparent"
         exclusiveZone: DesignConf.barHeight - 1
         focusable: true
-        anchors {
-            top: true
-            right: true
-            left: true
-        }
+        anchors.top: true
+        anchors.right: true
+        anchors.left: true
 
         Pane {
             id: pane
@@ -32,6 +31,7 @@ Scope {
             background: Shape {
                 layer.enabled: true
                 layer.samples: 4
+
                 ShapePath {
                     fillColor: ColoursConf.bg1
                     strokeWidth: 0
@@ -81,12 +81,10 @@ Scope {
 
             RowLayout {
                 spacing: DesignConf.spacing
-                anchors {
-                    left: parent.left
-                    top: parent.top
-                    bottom: parent.bottom
-                    bottomMargin: DesignConf.radius
-                }
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: DesignConf.radius
 
                 Time {}
                 Workspaces {}
@@ -95,40 +93,38 @@ Scope {
             SearchContainer {
                 search: search
 
-                    Search {
-                        id: search
-                        Layout.fillWidth: true
-                        onIsOpenChanged: {
-                            if (isOpen) {
-                                root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive;
-                                releaseFocusTimer.running = true;
-                            } else
-                                root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.OnDemand;
-                        }
-
-                        Timer {
-                            id: releaseFocusTimer
-                            interval: 10
-                            running: false
-                            repeat: false
-                            onTriggered: root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.OnDemand
-                        }
+                Search {
+                    id: search
+                    Layout.fillWidth: true
+                    onIsOpenChanged: {
+                        if (isOpen) {
+                            root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive;
+                            releaseFocusTimer.running = true;
+                        } else
+                            root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.OnDemand;
                     }
 
-                    SearchMode {
-                        id: searchMode
-                        search: search
+                    Timer {
+                        id: releaseFocusTimer
+                        interval: 10
+                        running: false
+                        repeat: false
+                        onTriggered: root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.OnDemand
+                    }
+                }
+
+                SearchMode {
+                    id: searchMode
+                    search: search
                 }
             }
 
             RowLayout {
                 spacing: DesignConf.spacing
-                anchors {
-                    right: parent.right
-                    top: parent.top
-                    bottom: parent.bottom
-                    bottomMargin: DesignConf.radius
-                }
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: DesignConf.radius
 
                 Mode {}
                 Network {}

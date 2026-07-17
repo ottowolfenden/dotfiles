@@ -17,16 +17,14 @@ PanelWindow {
 
     color: "transparent"
     focusable: true
-    anchors {
-        top: true
-        bottom: true
-        left: true
-        right: true
-    }
+    anchors.top: true
+    anchors.bottom: true
+    anchors.left: true
+    anchors.right: true
+    visible: isOpen || rect.y > -rect.height
     mask: Region {
         item: rect
     }
-    visible: isOpen || rect.y > -rect.height
     onIsOpenChanged: {
         if (isOpen) {
             FlyoutsService.hideAllFlyoutsExcept(flyout);
