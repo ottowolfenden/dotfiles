@@ -11,12 +11,12 @@ Rectangle {
     id: search
     property bool isOpen: searchFlyout.isOpen
     property string mode: "default"
-    function changeMode(direction: int): void {
+    function changeMode(direction: int, includeDefault: bool): void {
         if (![-1, 1].includes(direction))
             return;
-        let modes = SearchConf.modes.map(m => m.name).filter(n => n != "default");
+        let modes = SearchConf.modes.map(m => m.name).filter(n => n != "default" || includeDefault);
         let offset = direction == -1 ? direction + modes.length : direction;
-        let newIndex = direction == -1 && mode == "default" ? modes.length - 1 : (modes.indexOf(mode) + offset) % modes.length;
+        let newIndex = direction == -1 && mode == "default" && !includeDefault ? modes.length - 1 : (modes.indexOf(mode) + offset) % modes.length;
         mode = modes[newIndex];
     }
     onModeChanged: {
@@ -135,9 +135,9 @@ Rectangle {
                     e.accepted = true;
                     search.mode = "default";
                 } else if (e.key == Qt.Key_Tab)
-                    search.changeMode(1);
+                    search.changeMode(1, true);
                 else if (e.key == Qt.Key_Backtab)
-                    search.changeMode(-1);
+                    search.changeMode(-1, true);
                 else if (e.key == Qt.Key_Up && (e.modifiers & Qt.ControlModifier))
                     jumpToRepeater("up");
                 else if (e.key == Qt.Key_Down && (e.modifiers & Qt.ControlModifier))
