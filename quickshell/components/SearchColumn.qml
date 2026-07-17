@@ -7,8 +7,8 @@ ColumnLayout {
     default property alias content: contentContainer.children
     required property Repeater child
 
-    visible: col.child.model.length > 0
-    spacing: DesignConf.spacing / 2
+    visible: child.model.length > 0
+    spacing: child.mode == child.modeSupplied ? 0 : DesignConf.spacing / 2
 
     RowLayout {
         visible: col.child.model.length > 0 && col.child.visible
