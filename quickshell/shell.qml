@@ -92,33 +92,8 @@ Scope {
                 Workspaces {}
             }
 
-            Item {
-                anchors {
-                    top: parent.top
-                    bottom: parent.bottom
-                    bottomMargin: DesignConf.spacing + DesignConf.radius
-                    topMargin: DesignConf.spacing
-                }
-                anchors.horizontalCenter: parent.horizontalCenter
-                width: search.isOpen ? DesignConf.searchGroupWidth : DesignConf.componentHeight
-
-                Behavior on width {
-                    NumberAnimation {
-                        duration: DesignConf.animationDuration
-                        easing: DesignConf.easing
-                    }
-                }
-
-                RowLayout {
-                    anchors.fill: parent
-                    spacing: search.mode != "default" ? DesignConf.spacing : 0
-
-                    Behavior on spacing {
-                        NumberAnimation {
-                            duration: DesignConf.animationDuration
-                            easing: DesignConf.easing
-                        }
-                    }
+            SearchContainer {
+                search: search
 
                     Search {
                         id: search
@@ -143,7 +118,6 @@ Scope {
                     SearchMode {
                         id: searchMode
                         search: search
-                    }
                 }
             }
 
