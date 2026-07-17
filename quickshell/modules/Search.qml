@@ -19,7 +19,10 @@ Rectangle {
         let newIndex = direction == -1 && mode == "default" ? modes.length - 1 : (modes.indexOf(mode) + offset) % modes.length;
         mode = modes[newIndex];
     }
-    onModeChanged: DirSearchService.search(searchInput.text, mode)
+    onModeChanged: {
+        DirSearchService.mode = mode;
+        DirSearchService.search(searchInput.text);
+    }
 
     color: ColoursConf.bg2.t
     radius: DesignConf.radius
@@ -182,10 +185,14 @@ Rectangle {
         rectHeight: pane.height
         focusable: false
         onIsOpenChanged: {
-            if (isOpen)
+            if (isOpen) {
                 searchInput.forceActiveFocus();
-            else
+                DirSearchService.searchOpen = true;
+            } else {
                 searchInput.reset();
+                DirSearchService.searchOpen = false;
+                DirSearchService.hideOutput();
+            }
         }
         onHoveringChanged: {
             if (!hovering)

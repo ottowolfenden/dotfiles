@@ -8,16 +8,22 @@ QtObject {
     id: dirSearchService
 
     property var results: []
+    property bool searchOpen: false
+    property string mode
+    property var lastHideOutputCall: null
 
-    function search(text: string, mode: string): void {
-        if (text.length < SearchConf.modes.find(m => m.name == "dirs").minChars || UtilsService.getMaxSearchResults("dirs", mode) == 0) {
+    function search(text: string): void {
+        if (text.length < SearchConf.modes.find(m => m.name == "dirs").minChars || getMax() == 0) {
             results = [];
             return;
         }
-        searchProc1.running = false;
-        searchProc1.input = text;
-        searchProc1.mode = mode;
-        searchProc1.running = true;
+        searchProc.running = false;
+        searchProc.input = text;
+        searchProc.running = true;
+    }
+
+    function getMax() {
+        return UtilsService.getMaxSearchResults("dirs", mode);
     }
 
     function processScriptOutput(output) {
@@ -57,42 +63,48 @@ QtObject {
         return [PathsConf.scripts + "find-fsentries.sh", opts.dir, opts.text, "d", opts.max, "--exclude", ...opts.exclusions];
     }
 
-    property Process searchProc1: Process {
+    function hideOutput(): void {
+        lastHideOutputCall = Date.now();
+        searchProc.running = extraSearchProc.running = false;
+    }
+
+    property Process searchProc: Process {
         property var input: null
-        property var mode: null
+        property var startedDate: null
+        onRunningChanged: startedDate = running ? Date.now() : null
         command: getSearchCommand({
             dir: SearchConf.dirParentDir,
             text: input,
-            max: UtilsService.getMaxSearchResults("dirs", mode),
+            max: getMax(),
             exclusions: SearchConf.pathExclusions.dirs.default
         })
         stdout: StdioCollector {
             onStreamFinished: {
-                if (!text)
+                if (!text || !searchOpen || lastHideOutputCall > searchProc.startedDate)
                     return;
                 results = processScriptOutput(text);
-                if (results.length < UtilsService.getMaxSearchResults("dirs", searchProc1.mode) && searchProc1.mode == "dirs") {
-                    searchProc2.running = false;
-                    searchProc2.input = searchProc1.input;
-                    searchProc2.mode = searchProc1.mode;
-                    searchProc2.running = true;
+                if (results.length < getMax() && mode == "dirs" && searchOpen) {
+                    extraSearchProc.running = false;
+                    extraSearchProc.input = searchProc.input;
+                    extraSearchProc.running = true;
                 }
             }
         }
     }
 
-    property Process searchProc2: Process {
+    property Process extraSearchProc: Process {
         property var input: null
-        property var mode: null
+        property var startedDate: null
+        onRunningChanged: startedDate = running ? Date.now() : null
         command: getSearchCommand({
             dir: SearchConf.dirParentDir,
             text: input,
-            max: UtilsService.getMaxSearchResults("dirs", mode) - results.length,
+            max: getMax() - results.length,
             exclusions: [...results.map(r => r.path), ...SearchConf.pathExclusions.dirs.always]
         })
         stdout: StdioCollector {
             onStreamFinished: {
-                if (!text || results.length >= UtilsService.getMaxSearchResults("dirs", searchProc1.mode) || searchProc1.mode != "dirs")
+                if (!text || results.length >= getMax() || mode != "dirs" || !searchOpen || lastHideOutputCall > extraSearchProc.startedDate)
                     return;
                 results = [...results, ...processScriptOutput(text)];
             }
