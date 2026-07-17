@@ -13,10 +13,14 @@ QtObject {
     property var lastHideOutputCall: null
 
     function search(text: string): void {
+        if (text.startsWith("~"))
+            text = text.replace("~", Quickshell.env("HOME"));
+
         if (text.length < SearchConf.modes.find(m => m.name == "dirs").minChars || getMax() == 0) {
             results = [];
             return;
         }
+
         searchProc.running = false;
         searchProc.input = text;
         searchProc.running = true;
@@ -60,7 +64,7 @@ QtObject {
     }
 
     function getSearchCommand(opts: var): var {
-        return [PathsConf.scripts + "find-fsentries.sh", opts.dir, opts.text, "d", opts.max, "--exclude", ...opts.exclusions];
+        return [PathsConf.scripts + "find.sh", opts.dir, opts.text, "d", opts.max, "--exclude", ...opts.exclusions];
     }
 
     function hideOutput(): void {

@@ -25,15 +25,27 @@ fi
 
 filters=( "$dir" "${exclargs[@]}" -type $type )
 format=(-printf "%A@ %s %p\0")
-sorta() { sort -znr | cut -zd' ' -f2-; }
+sort() { 
+    if [[ $1 == -accessed ]]; then
+        command sort -znr 
+    elif [[ $1 == -depth ]]; then
+        awk 'BEGIN { RS="\0"; ORS="\0" } {
+            path = $3;
+            depth = gsub(/\//, "", path);
+            print depth, $2, $3 
+        }' | command sort -zns
+    fi
+}
+cut() { command cut -zd' ' -f2-; }
 
 (
-    find "${filters[@]}" -iname "$text" "${format[@]}" | sorta
-    find "${filters[@]}" -iname "$text*" ! -iname "$text" "${format[@]}" | sorta
-    find "${filters[@]}" -iname "*$text*" ! -iname "$text*" "${format[@]}" | sorta
-    find "${filters[@]}" -ipath "*$text*" ! -iname "*$text*" "${format[@]}" | sorta
+    find "${filters[@]}" -ipath "$text*" "${format[@]}" | sort -accessed | sort -depth | cut
+    find "${filters[@]}" -iname "$text" ! -ipath "$text*" "${format[@]}" | sort -accessed | cut
+    find "${filters[@]}" -iname "$text*" ! -iname "$text" "${format[@]}" | sort -accessed | cut
+    find "${filters[@]}" -iname "*$text*" ! -iname "$text*" "${format[@]}" | sort -accessed | cut
+    find "${filters[@]}" -ipath "*$text*" ! -iname "*$text*" "${format[@]}" | sort -accessed | cut
 ) 2>/dev/null |
-awk -v max="$max" 'BEGIN {RS="\0"; ORS="\0"} NR > max {exit} {print}' |
+awk -v max="$max" 'BEGIN { RS="\0"; ORS="\0" } NR > max { exit } { print }' |
 while IFS=" " read -r -d '' bytesize path; do
     if [[ $type == d ]]; then
         shopt -s nullglob; files=( "$path"/* ); shopt -u nullglob
