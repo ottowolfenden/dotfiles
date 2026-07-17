@@ -25,4 +25,20 @@ function h.get_emptyn_id()
     return id
 end
 
+function h.qs_exec(cmd, rules)
+    return function()
+        hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideAllFlyouts"))
+        if not rules then rules = {} end
+        rules.tag = "+qs"
+        hl.dispatch(hl.dsp.exec_cmd(cmd, rules))
+    end
+end
+
+function h.qs_bind(keys, dispatcher, flags)
+    hl.bind(keys, function()
+        hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideAllFlyouts"))
+        hl.dispatch(dispatcher)
+    end, flags)
+end
+
 return h

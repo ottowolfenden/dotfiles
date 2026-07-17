@@ -20,6 +20,12 @@ QtObject {
             if (![...flyoutsService.flyouts, ...flyoutsService.bafs].some(x => x.hovering || x.isOpen))
                 HyprlandService.reload();
         }
+
+        function hideAllFlyouts(): void {
+            for (const flyout of flyoutsService.flyouts)
+                flyout.isOpen = false;
+            HyprlandService.reload();
+        }
     }
 
     property IpcHandler bafsHandler: IpcHandler {
@@ -46,12 +52,6 @@ QtObject {
             if (![...flyoutsService.flyouts, ...flyoutsService.bafs].some(x => x.hovering || x.isOpen))
                 HyprlandService.reload();
         }
-    }
-
-    function hideAllFlyouts(): void {
-        for (const flyout of flyoutsService.flyouts)
-            flyout.isOpen = false;
-        HyprlandService.reload();
     }
 
     function hideAllFlyoutsExcept(openFlyout: Flyout): void {

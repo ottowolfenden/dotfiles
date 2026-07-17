@@ -76,7 +76,7 @@ Scope {
                 width: Screen.width
                 x: -DesignConf.spacing
                 height: pane.height - DesignConf.spacing + 1
-                onClicked: FlyoutsService.hideAllFlyouts()
+                onClicked: FlyoutsService.flyoutsHandler.hideAllFlyouts()
             }
 
             RowLayout {

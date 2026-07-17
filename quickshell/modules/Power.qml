@@ -44,7 +44,7 @@ Rectangle {
                     text: "Shut down"
                     iconName: IconsConf.power.shutDown
                     onClicked: {
-                        FlyoutsService.hideAllFlyouts();
+                        FlyoutsService.flyoutsHandler.hideAllFlyouts();
                         Quickshell.execDetached(["hyprshutdown", "-t", "Shutting down...", "--post-cmd", "systemctl poweroff"]);
                     }
                 }
@@ -52,7 +52,7 @@ Rectangle {
                     text: "Restart"
                     iconName: IconsConf.power.restart
                     onClicked: {
-                        FlyoutsService.hideAllFlyouts();
+                        FlyoutsService.flyoutsHandler.hideAllFlyouts();
                         Quickshell.execDetached(["hyprshutdown", "-t", "Restarting...", "--post-cmd", "systemctl reboot"]);
                     }
                 }
@@ -60,7 +60,7 @@ Rectangle {
                     text: "Sleep"
                     iconName: IconsConf.power.sleep
                     onClicked: {
-                        FlyoutsService.hideAllFlyouts();
+                        FlyoutsService.flyoutsHandler.hideAllFlyouts();
                         Quickshell.execDetached(["systemctl", "suspend"]);
                     }
                 }
@@ -68,7 +68,7 @@ Rectangle {
                     text: "Lock"
                     iconName: IconsConf.power.lock
                     onClicked: {
-                        FlyoutsService.hideAllFlyouts();
+                        FlyoutsService.flyoutsHandler.hideAllFlyouts();
                         lockTimer.start();
                     }
                     Timer {

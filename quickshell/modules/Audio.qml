@@ -151,7 +151,7 @@ Rectangle {
                                                     item.modelData.raise();
                                                 else {
                                                     Quickshell.execDetached(["hyprctl", "dispatch", "hl.dsp.focus({ window = 'initialclass:(?i)" + item.modelData.identity.toLowerCase() + "' })"]);
-                                                    FlyoutsService.hideAllFlyouts();
+                                                    FlyoutsService.flyoutsHandler.hideAllFlyouts();
                                                 }
                                             }
                                         }

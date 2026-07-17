@@ -41,7 +41,7 @@ Rectangle {
         target: "searchHandler"
         function toggle(): void {
             if (search.isOpen)
-                FlyoutsService.hideAllFlyouts();
+                FlyoutsService.flyoutsHandler.hideAllFlyouts();
             else
                 flyoutMouseArea.open();
         }

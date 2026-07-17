@@ -5,11 +5,7 @@ local max_ws = 9
 local function changeWorkspace(type, offset)
     if offset == "emptyn" then
         offset = h.get_emptyn_id()
-        if offset > max_ws then
-            return
-        else
-            goto dispatch
-        end
+        if offset > max_ws then return else goto dispatch end
     elseif offset <= 0 then
         offset = "r-" .. math.abs(offset)
     elseif offset + hl.get_active_workspace().id <= max_ws then
@@ -25,20 +21,20 @@ local function changeWorkspace(type, offset)
     end
 end
 
-hl.bind("SUPER + tab", hl.dsp.focus({ workspace = "previous" }))
-hl.bind("SUPER + N", function() changeWorkspace("focus", "emptyn") end)
-hl.bind("SUPER + SHIFT + N", function() changeWorkspace("move", "emptyn") end)
-hl.bind("SUPER + mouse:275", function() changeWorkspace("focus", -1) end)
-hl.bind("SUPER + mouse:276", function() changeWorkspace("focus", 1) end)
-hl.bind("SUPER + SHIFT + mouse:275", function() changeWorkspace("move", -1) end)
-hl.bind("SUPER + SHIFT + mouse:276", function() changeWorkspace("move", 1) end)
-hl.bind("SUPER + CTRL + left", function() changeWorkspace("focus", -1) end, { repeating = true })
-hl.bind("SUPER + CTRL + right", function() changeWorkspace("focus", 1) end, { repeating = true })
-hl.bind("SUPER + CTRL + SHIFT + left", function() changeWorkspace("move", -1) end, { repeating = true })
-hl.bind("SUPER + CTRL + SHIFT + right", function() changeWorkspace("move", 1) end, { repeating = true })
+h.qs_bind("SUPER + tab", hl.dsp.focus({ workspace = "previous" }))
+h.qs_bind("SUPER + N", function() changeWorkspace("focus", "emptyn") end)
+h.qs_bind("SUPER + SHIFT + N", function() changeWorkspace("move", "emptyn") end)
+h.qs_bind("SUPER + mouse:275", function() changeWorkspace("focus", -1) end)
+h.qs_bind("SUPER + mouse:276", function() changeWorkspace("focus", 1) end)
+h.qs_bind("SUPER + SHIFT + mouse:275", function() changeWorkspace("move", -1) end)
+h.qs_bind("SUPER + SHIFT + mouse:276", function() changeWorkspace("move", 1) end)
+h.qs_bind("SUPER + CTRL + left", function() changeWorkspace("focus", -1) end, { repeating = true })
+h.qs_bind("SUPER + CTRL + right", function() changeWorkspace("focus", 1) end, { repeating = true })
+h.qs_bind("SUPER + CTRL + SHIFT + left", function() changeWorkspace("move", -1) end, { repeating = true })
+h.qs_bind("SUPER + CTRL + SHIFT + right", function() changeWorkspace("move", 1) end, { repeating = true })
 for i = 1, max_ws do
-    hl.bind("SUPER + " .. i, hl.dsp.focus({ workspace = i }))
-    hl.bind("SUPER + SHIFT + " .. i, hl.dsp.window.move({ workspace = i }))
+    h.qs_bind("SUPER + " .. i, hl.dsp.focus({ workspace = i }))
+    h.qs_bind("SUPER + SHIFT + " .. i, hl.dsp.window.move({ workspace = i }))
 end
 
 hl.gesture({
