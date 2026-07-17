@@ -26,15 +26,7 @@ Rectangle {
 
     color: ColoursConf.bg2.t
     radius: DesignConf.radius
-    implicitWidth: search.isOpen ? DesignConf.searchBoxWidth : DesignConf.componentHeight
     height: DesignConf.componentHeight
-
-    Behavior on implicitWidth {
-        NumberAnimation {
-            duration: DesignConf.animationDuration
-            easing: DesignConf.easing
-        }
-    }
 
     Cutout {}
 

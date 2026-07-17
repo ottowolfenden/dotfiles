@@ -20,14 +20,14 @@ Rectangle {
 
     Behavior on opacity {
         NumberAnimation {
-            duration: DesignConf.listAnimationDuration
+            duration: DesignConf.animationDuration
             easing: DesignConf.easing
         }
     }
 
     Behavior on implicitWidth {
         NumberAnimation {
-            duration: DesignConf.listAnimationDuration
+            duration: DesignConf.animationDuration
             easing: DesignConf.easing
         }
     }

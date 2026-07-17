@@ -92,46 +92,58 @@ Scope {
                 Workspaces {}
             }
 
-            RowLayout {
-                spacing: DesignConf.spacing
+            Item {
                 anchors {
-                    left: parent.left
-                    right: parent.right
                     top: parent.top
                     bottom: parent.bottom
-                    bottomMargin: DesignConf.radius
+                    bottomMargin: DesignConf.spacing + DesignConf.radius
+                    topMargin: DesignConf.spacing
                 }
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: search.isOpen ? DesignConf.searchGroupWidth : DesignConf.componentHeight
 
-                Item {
-                    Layout.fillWidth: true
-                }
-
-                Search {
-                    id: search
-                    Layout.alignment: Qt.AlignCenter
-                    onIsOpenChanged: {
-                        if (isOpen) {
-                            root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive;
-                            releaseFocusTimer.running = true;
-                        } else
-                            root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.OnDemand;
-                    }
-
-                    Timer {
-                        id: releaseFocusTimer
-                        interval: 10
-                        running: false
-                        repeat: false
-                        onTriggered: root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.OnDemand
+                Behavior on width {
+                    NumberAnimation {
+                        duration: DesignConf.animationDuration
+                        easing: DesignConf.easing
                     }
                 }
 
-                SearchMode {
-                    search: search
-                }
+                RowLayout {
+                    anchors.fill: parent
+                    spacing: search.mode != "default" ? DesignConf.spacing : 0
 
-                Item {
-                    Layout.fillWidth: true
+                    Behavior on spacing {
+                        NumberAnimation {
+                            duration: DesignConf.animationDuration
+                            easing: DesignConf.easing
+                        }
+                    }
+
+                    Search {
+                        id: search
+                        Layout.fillWidth: true
+                        onIsOpenChanged: {
+                            if (isOpen) {
+                                root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive;
+                                releaseFocusTimer.running = true;
+                            } else
+                                root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.OnDemand;
+                        }
+
+                        Timer {
+                            id: releaseFocusTimer
+                            interval: 10
+                            running: false
+                            repeat: false
+                            onTriggered: root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.OnDemand
+                        }
+                    }
+
+                    SearchMode {
+                        id: searchMode
+                        search: search
+                    }
                 }
             }
 
