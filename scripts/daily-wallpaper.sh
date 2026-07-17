@@ -2,7 +2,7 @@
 
 mode=$1
 
-dir="$HOME/wallpapers/clouds/$mode"
+dir="$HOME/images/wallpapers/clouds/$mode"
 n=$(ls "$dir" | wc -l)
 
 hash=$(date +%Y-%m-%d | md5sum | cut -c1-6)

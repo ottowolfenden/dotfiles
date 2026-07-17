@@ -8,7 +8,7 @@ if pgrep -x "slurp" > /dev/null || pgrep -x "grim" > /dev/null; then
 else
     while true; do
         filename=$(date +'%Y-%m-%d-%H-%M-%S-%N' | md5sum | cut -c 1-5)
-        if [ ! -f ~/screenshots/"${filename}.png" ]; then
+        if [ ! -f ~/images/screenshots/"${filename}.png" ]; then
             break
         fi
         sleep 0.001
@@ -16,8 +16,8 @@ else
     if [[ $mode == "region" ]]; then
         slurp=$(slurp)
         sleep 0.2
-        grim -g "$slurp" - | tee ~/screenshots/"${filename}.png" | wl-copy
+        grim -g "$slurp" - | tee ~/images/screenshots/"${filename}.png" | wl-copy
     else
-        grim - | tee ~/screenshots/"${filename}.png" | wl-copy
+        grim - | tee ~/images/screenshots/"${filename}.png" | wl-copy
     fi
 fi
