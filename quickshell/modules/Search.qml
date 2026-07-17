@@ -119,11 +119,18 @@ Rectangle {
                 reset();
             }
 
-            Keys.onPressed: e => {
-                if (!search.isOpen) {
-                    e.accepted = true;
-                    return;
+            onTextEdited: {
+                let mode = SearchConf.modes.find(m => m.prefixes.some(p => (text).startsWith(p)));
+                let prefix = mode?.prefixes.find(p => text.startsWith(p));
+                if (mode && prefix && search.mode != mode.name) {
+                    search.mode = mode.name;
+                    text = text.replace(prefix, "");
                 }
+            }
+
+            Keys.onPressed: e => {
+                if (!search.isOpen)
+                    return;
 
                 prevText = text;
                 setBinds(e);
@@ -131,7 +138,7 @@ Rectangle {
                 if (Object.keys(binds).some(k => binds[k].active && binds[k].key != Qt.Key_Return)) {
                     e.accepted = true;
                     open();
-                } else if ((e.key == Qt.Key_Backspace && text == "") || ([Qt.Key_Backspace, Qt.Key_Delete].includes(e.key) && (e.modifiers & Qt.MetaModifier))) {
+                } else if ((e.key == Qt.Key_Backspace && text == "") || (e.key == Qt.Key_Delete && (e.modifiers & Qt.ControlModifier))) {
                     e.accepted = true;
                     search.mode = "default";
                 } else if (e.key == Qt.Key_Tab)
@@ -157,12 +164,6 @@ Rectangle {
             Keys.onReleased: e => {
                 if (text == prevText && e.key == Qt.Key_Backspace)
                     search.mode = "default";
-                let mode = SearchConf.modes.find(m => m.prefixes.some(p => text.startsWith(p)));
-                let prefix = mode?.prefixes.find(p => text.startsWith(p));
-                if (mode && search.mode != mode.name) {
-                    search.mode = mode.name;
-                    text = text.replace(prefix, "");
-                }
                 if (text != prevText || e.key == Qt.Key_Tab)
                     DirSearchService.search(text, search.mode);
             }

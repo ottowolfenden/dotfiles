@@ -6,13 +6,13 @@ QtObject {
     readonly property var modes: [
         {
             name: "default",
-            prefixes: ["default:", "none:", "n:"],
+            prefixes: ["default:", "none:", "n:", "N"],
             placeholder: "Search",
             minChars: 1
         },
         {
             name: "apps",
-            prefixes: ["apps:", "app:", "a:"],
+            prefixes: ["apps:", "app:", "a:", "A"],
             placeholder: "Search apps",
             minChars: 1,
             maxResults: {
@@ -23,18 +23,18 @@ QtObject {
         },
         {
             name: "dirs",
-            prefixes: ["directories:", "folders:", "dir:", "dirs:", "d:"],
-            placeholder: "Search directories",
+            prefixes: ["directories:", "folders:", "dir:", "dirs:", "d:", "D"],
+            placeholder: "Search folders",
             minChars: 2,
             maxResults: {
-                all: 2,
+                all: 4,
                 filtered: 15
             },
             displayName: "Folders"
         },
         {
             name: "files",
-            prefixes: ["files:", "file:", "f:"],
+            prefixes: ["files:", "file:", "f:", "F"],
             placeholder: "Search files",
             minChars: 3,
             maxResults: {
@@ -45,7 +45,7 @@ QtObject {
         },
         {
             name: "web",
-            prefixes: ["web:", "browser:", "w:", "b:"],
+            prefixes: ["web:", "browser:", "w:", "b:", "W"],
             placeholder: "Search the web",
             minChars: 1,
             maxResults: {
@@ -56,8 +56,8 @@ QtObject {
         },
         {
             name: "command",
-            prefixes: ["exec:", ">", "e:", "t:", "c:"],
-            placeholder: "Execute",
+            prefixes: ["exec:", ">", "e:", "t:", "c:", "C"],
+            placeholder: "Search commands",
             minChars: 1,
             maxResults: {
                 all: 0,
