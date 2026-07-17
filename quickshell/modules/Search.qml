@@ -187,6 +187,7 @@ Rectangle {
         onIsOpenChanged: {
             if (isOpen) {
                 searchInput.forceActiveFocus();
+                DirSearchService.mode = search.mode;
                 DirSearchService.searchOpen = true;
             } else {
                 searchInput.reset();
