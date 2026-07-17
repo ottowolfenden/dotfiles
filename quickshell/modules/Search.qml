@@ -215,6 +215,7 @@ Rectangle {
 
                 SearchColumn {
                     child: appSearch
+                    onModeChanged: search.mode = mode
                     AppSearch {
                         id: appSearch
                         visible: search.mode == "apps" || search.mode == "default"
@@ -228,6 +229,7 @@ Rectangle {
 
                 SearchColumn {
                     child: dirSearch
+                    onModeChanged: search.mode = mode
                     DirSearch {
                         id: dirSearch
                         visible: search.mode == "dirs" || search.mode == "default"
