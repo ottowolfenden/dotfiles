@@ -2,7 +2,6 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import Quickshell
 import Quickshell.Io
 import ".."
 import "search"
@@ -12,9 +11,13 @@ Rectangle {
     id: search
     property bool isOpen: searchFlyout.isOpen
     property string mode: "default"
-    function cycleMode() {
-        let modes = SearchConf.modes.map(m => m.name);
-        mode = modes[Math.max((modes.indexOf(mode) + 1) % modes.length, 1)];
+    function changeMode(direction: int): void {
+        if (![-1, 1].includes(direction))
+            return;
+        let modes = SearchConf.modes.map(m => m.name).filter(n => n != "default");
+        let offset = direction == -1 ? direction + modes.length : direction;
+        let newIndex = direction == -1 && mode == "default" ? modes.length - 1 : (modes.indexOf(mode) + offset) % modes.length;
+        mode = modes[newIndex];
     }
     onModeChanged: DirSearchService.search(searchInput.text, mode)
 
@@ -136,7 +139,9 @@ Rectangle {
                 } else if (e.key == Qt.Key_Backspace && text == "")
                     search.mode = "default";
                 else if (e.key == Qt.Key_Tab)
-                    search.cycleMode();
+                    search.changeMode(1);
+                else if (e.key == Qt.Key_Backtab)
+                    search.changeMode(-1);
                 else if (e.key == Qt.Key_Up && (e.modifiers & Qt.ControlModifier))
                     jumpToRepeater("up");
                 else if (e.key == Qt.Key_Down && (e.modifiers & Qt.ControlModifier))
