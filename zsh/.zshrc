@@ -12,8 +12,6 @@ else
     ZSH_THEME="powerlevel10k/powerlevel10k"
 fi
 
-plugins=(git)
-
 source $ZSH/oh-my-zsh.sh
 
 if [[ "$TERM" != "linux" ]]; then
@@ -42,6 +40,8 @@ clearscreen() {
 zle -N clearscreen
 bindkey '^L' clearscreen
 
+zle_highlight+=(paste:none)
+
 alias tetris=tetriscurses
 alias suspend="systemctl suspend"
 alias code="code -n"
@@ -49,7 +49,6 @@ alias qs="clear; qs |& grep -v 'quickshell.bluetooth.device'"
 
 export MANPATH=/home/otto/.local/share/man:$MANPATH
 export PATH=/home/otto/.local/bin:$PATH
-
 export PATH="$PATH:/home/otto/dotfiles/scripts"
 export PATH="/usr/local/texlive/2026/bin/x86_64-linux:$PATH"
 export MANPATH="/usr/local/texlive/2026/texmf-dist/doc/man:$MANPATH"
