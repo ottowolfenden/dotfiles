@@ -196,7 +196,7 @@ Rectangle {
 
         Pane {
             id: pane
-            padding: searchColumn.totalResults == 0 ? 0 : DesignConf.spacing
+            padding: searchColumn.totalResults > 0 || progressBar.loading ? DesignConf.spacing : 0
             anchors.left: parent.left
             anchors.right: parent.right
             background: null
@@ -270,6 +270,13 @@ Rectangle {
                     searchInput: searchInput
                     activeIndex: webSearch.activeIndex - indexOffset
                     onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                }
+
+                ProgressBar {
+                    id: progressBar
+                    indeterminate: true
+                    // loading: DirSearchService.extraSearchProcRunning
+                    loading: search.isOpen
                 }
             }
         }
