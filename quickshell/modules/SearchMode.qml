@@ -57,9 +57,9 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        acceptedButtons: Qt.MiddleButton
+        acceptedButtons: Qt.MiddleButton | Qt.LeftButton
         cursorShape: Qt.PointingHandCursor
         onWheel: wheel => root.search.changeMode(wheel.angleDelta.y > 0 ? 1 : -1)
-        onClicked: root.search.mode = "default"
+        onClicked: mouse => (mouse.button == Qt.MiddleButton ? () => root.search.mode = "default" : () => {})()
     }
 }
