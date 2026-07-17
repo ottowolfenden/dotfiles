@@ -13,13 +13,13 @@ Scope {
         id: root
         implicitHeight: DesignConf.barHeight + DesignConf.radius
         color: "transparent"
+        exclusiveZone: DesignConf.barHeight - 1
+        focusable: true
         anchors {
             top: true
             right: true
             left: true
         }
-        exclusiveZone: DesignConf.barHeight - 1
-        focusable: true
 
         Pane {
             id: pane
@@ -92,7 +92,8 @@ Scope {
                 Workspaces {}
             }
 
-            Item {
+            RowLayout {
+                spacing: DesignConf.spacing
                 anchors {
                     left: parent.left
                     right: parent.right
@@ -101,10 +102,13 @@ Scope {
                     bottomMargin: DesignConf.radius
                 }
 
+                Item {
+                    Layout.fillWidth: true
+                }
+
                 Search {
                     id: search
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.verticalCenter: parent.verticalCenter
+                    Layout.alignment: Qt.AlignCenter
                     onIsOpenChanged: {
                         if (isOpen) {
                             root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.Exclusive;
@@ -120,6 +124,14 @@ Scope {
                         repeat: false
                         onTriggered: root.WlrLayershell.keyboardFocus = WlrKeyboardFocus.OnDemand
                     }
+                }
+
+                SearchMode {
+                    search: search
+                }
+
+                Item {
+                    Layout.fillWidth: true
                 }
             }
 

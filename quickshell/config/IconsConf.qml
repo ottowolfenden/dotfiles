@@ -245,6 +245,7 @@ QtObject {
             icon: "brightness_7"
         },
     ]
+    readonly property string search: "search"
     readonly property var searchMode: ({
             default: "search",
             apps: "apps",

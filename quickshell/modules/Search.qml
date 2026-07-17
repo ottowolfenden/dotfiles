@@ -23,10 +23,10 @@ Rectangle {
 
     color: ColoursConf.bg2.t
     radius: DesignConf.radius
-    width: search.isOpen ? DesignConf.searchBoxWidth : DesignConf.componentHeight
+    implicitWidth: search.isOpen ? DesignConf.searchBoxWidth : DesignConf.componentHeight
     height: DesignConf.componentHeight
 
-    Behavior on width {
+    Behavior on implicitWidth {
         NumberAnimation {
             duration: DesignConf.animationDuration
             easing: DesignConf.easing
@@ -59,7 +59,7 @@ Rectangle {
             Layout.preferredHeight: DesignConf.componentHeight
             Icon {
                 id: icon
-                iconName: IconsConf.searchMode[search.mode] ?? IconsConf.searchMode["default"]
+                iconName: IconsConf.search
                 anchors.fill: parent
             }
         }
