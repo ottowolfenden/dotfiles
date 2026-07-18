@@ -279,7 +279,7 @@ QtObject {
         "deployed_code": ["appx", "app", "dmg", "deb", "hpkg", "ipg", "msi", "rpm", "sis", "sisx", "xap", "appimage", "dll"],
         "terminal": ["sh", "bash", "zsh", "ksh", "csh", "tcsh", "fish", "command", "bat", "cmd", "ps1", "psm1", "psd1", "bashrc", "zshrc", "sed", "awk"],
         "map": ["apr", "dem", "e00", "geojson", "topojson", "geotiff", "gml", "gpx", "itn", "mxd", "ntf", "ov2", "shp", "tab", "geotiff", "dted", "kml"],
-        "font_download": ["abf", "afm", "bdf", "bmf", "brfnt", "fnt", "fon", "mgf", "otf", "pcf", "pfa", "pfb", "pfm", "fond", "sfd", "snf", "tdf", "tfm", "ttf", "ttc", "ufo", "woff"],
+        "font_download": ["abf", "afm", "bdf", "bmf", "brfnt", "fnt", "fon", "mgf", "otf", "pcf", "pfa", "pfb", "pfm", "fond", "sfd", "snf", "tdf", "tfm", "ttf", "ttc", "ufo", "woff", "woff2"],
         "video_file": ["braw", "drp", "fcp", "mswmm", "pds", "ppj", "prproj", "aep", "imovieproj", "veg", "veg-bak", "suf", "wlmp", "kdenlive", "vpj", "motn", "imoviemobile", "wfp, wve", "vproj", "flb"],
         "slideshow": ["gslides", "key", "keynote", "nb", "nbp", "odp", "otp", "pez", "pot", "prdx", "pps", "ppt", "pptx", "prz", "sdd", "shf", "show", "shw", "slp", "sspss", "sti", "sxi", "thmx", "watch"],
         "polyline": ["amf", "awg", "ai", "cgm", "cdr", "cmx", "dp", "drawio", "dxf", "e2d", "egt", "eps", "fs", "gbr", "odg", "renderman", "svg", "stl", "wrl", "x3d", "sxd", "tgax", "v2d", "vdoc", "vsd", "vsdx", "vnd", "wmf", "emf", "art", "xar"],
