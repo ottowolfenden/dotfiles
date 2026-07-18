@@ -39,6 +39,14 @@ QtObject {
         return playingPlayers.concat(pausedPlayers);
     }
 
+    function getSortedPlayers(): list<MprisPlayer> {
+        if (!Mpris.players)
+            return [];
+        let playingPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Playing);
+        let pausedPlayers = Mpris.players.values.filter(p => p.playbackState == MprisPlaybackState.Paused);
+        return playingPlayers.concat(pausedPlayers);
+    }
+
     function getSinkDetails(sink: PwNode): var {
         let unknown = {
             icon: IconsConf.devices["computer"],

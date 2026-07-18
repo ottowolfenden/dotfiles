@@ -17,7 +17,11 @@ Rectangle {
 
     readonly property PwNode sink: Pipewire.defaultAudioSink
     readonly property int percent: Math.round(sink?.audio.volume * 100)
-    property list<MprisPlayer> players: Mpris.players.values ?? []
+    property list<MprisPlayer> players: {
+        if (!Mpris.players)
+            return [];
+        return Mpris.players.values.filter(p => [MprisPlaybackState.Playing, MprisPlaybackState.Paused].includes(p.playbackState));
+    }
 
     Cutout {}
 
@@ -65,7 +69,7 @@ Rectangle {
         interval: 1000
         running: false
         repeat: false
-        onTriggered: audio.players = AudioService.getFilteredPlayers()
+        onTriggered: audio.players = AudioService.getSortedPlayers()
     }
 
     Flyout {
@@ -74,7 +78,7 @@ Rectangle {
         rectWidth: pane.implicitWidth
         rectHeight: pane.implicitHeight
         onOpened: {
-            audio.players = AudioService.getFilteredPlayers();
+            audio.players = AudioService.getSortedPlayers();
             list.highlightMoveDuration = 0;
             list.currentIndex = 0;
             list.highlightMoveDuration = DesignConf.listAnimationDuration;
