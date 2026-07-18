@@ -53,18 +53,18 @@ QtObject {
         return Math.random() * (max - min) + min;
     }
 
-    function toMetricPrefixForm(n: int, suffix: string): string {
-        let prefixes = {
-            1000: "K",
-            1e+06: "M",
-            1e+09: "T",
-            1e+12: "P",
-            1e+15: "E",
-            1e+18: "Z"
-        };
-        if (suffix)
-            suffix = " " + suffix.trim() + (n == 1 ? "" : "s");
-        let key = Object.keys(prefixes)[Object.keys(prefixes).findIndex(k => n < k) - 1];
-        return (key ? Math.trunc(n / key) + prefixes[key] : n) + (suffix ?? "");
+    function formatItems(n, itemName) {
+        if (n == 1)
+            return n + (itemName ? " " + itemName : "");
+
+        let units = ["", "K", "M", "B", "T", "Qa"];
+        let log1000 = n => Math.log(n) / Math.log(1000);
+
+        let suffix = itemName ? ` ${itemName}s` : "";
+        let i = Math.floor(log1000(n));
+        let num = (n / (1000 ** i));
+        num = num.toFixed(n > 1000 && Math.round(num).toString().length <= 2 && !num.toFixed(1).toString().endsWith("0"));
+        return num + units[i] + suffix;
+    }
     }
 }
