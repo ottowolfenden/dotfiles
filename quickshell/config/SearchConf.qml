@@ -36,10 +36,10 @@ QtObject {
             name: "files",
             prefixes: ["files:", "file:", "f:", "F"],
             placeholder: "Search files",
-            minChars: 3,
+            minChars: 2,
             maxResults: {
                 all: 3,
-                filtered: 10
+                filtered: 15
             },
             displayName: "Files"
         },
