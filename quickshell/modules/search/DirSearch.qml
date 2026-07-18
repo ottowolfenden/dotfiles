@@ -32,6 +32,12 @@ Repeater {
         Layout.fillWidth: true
         Layout.preferredHeight: dirPath.implicitHeight + DesignConf.spacing
 
+        Behavior on color {
+            ColorAnimation {
+                duration: DesignConf.buttonColourAnimationDuration
+            }
+        }
+
         MouseArea {
             id: mouseArea
             anchors.fill: parent
@@ -49,6 +55,7 @@ Repeater {
             spacing: DesignConf.spacing
 
             RowLayout {
+                spacing: DesignConf.spacing
                 Layout.leftMargin: DesignConf.spacing / 2
                 Layout.rightMargin: DesignConf.spacing / 2
 
@@ -94,9 +101,9 @@ Repeater {
             }
 
             Text {
-                text: UtilsService.toMetricPrefixForm(result.modelData.numItems, "item")
+                text: UtilsService.formatItems(result.modelData.numItems, "item")
                 font.pixelSize: FontsConf.smallPixelSize
-                color: result.isActive ? ColoursConf.fg4.t : ColoursConf.fg5.t
+                color: result.isActive ? ColoursConf.fg4.t : "transparent"
                 visible: SearchConf.metadataVisibility.numDirItems
                 Layout.alignment: Qt.AlignVCenter
                 Layout.rightMargin: DesignConf.spacing / 2
@@ -105,12 +112,6 @@ Repeater {
                         duration: DesignConf.buttonColourAnimationDuration
                     }
                 }
-            }
-        }
-
-        Behavior on color {
-            ColorAnimation {
-                duration: DesignConf.buttonColourAnimationDuration
             }
         }
     }
