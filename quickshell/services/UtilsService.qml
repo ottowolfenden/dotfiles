@@ -52,4 +52,19 @@ QtObject {
     function getRandBetween(min: real, max: real): double {
         return Math.random() * (max - min) + min;
     }
+
+    function toMetricPrefixForm(n: int, suffix: string): string {
+        let prefixes = {
+            1000: "K",
+            1e+06: "M",
+            1e+09: "T",
+            1e+12: "P",
+            1e+15: "E",
+            1e+18: "Z"
+        };
+        if (suffix)
+            suffix = " " + suffix.trim() + (n == 1 ? "" : "s");
+        let key = Object.keys(prefixes)[Object.keys(prefixes).findIndex(k => n < k) - 1];
+        return (key ? Math.trunc(n / key) + prefixes[key] : n) + (suffix ?? "");
+    }
 }

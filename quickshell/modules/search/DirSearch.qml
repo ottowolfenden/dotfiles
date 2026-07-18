@@ -46,6 +46,8 @@ Repeater {
         }
         RowLayout {
             anchors.fill: parent
+            spacing: DesignConf.spacing
+
             RowLayout {
                 Layout.leftMargin: DesignConf.spacing / 2
                 Layout.rightMargin: DesignConf.spacing / 2
@@ -59,6 +61,7 @@ Repeater {
                     id: dirPath
                     spacing: 0
                     Layout.fillWidth: true
+
                     Text {
                         id: dirPathPrefix
                         text: result.modelData.split()[0]
@@ -86,6 +89,20 @@ Repeater {
                                 duration: DesignConf.buttonColourAnimationDuration
                             }
                         }
+                    }
+                }
+            }
+
+            Text {
+                text: UtilsService.toMetricPrefixForm(result.modelData.numItems, "item")
+                font.pixelSize: FontsConf.smallPixelSize
+                color: result.isActive ? ColoursConf.fg4.t : ColoursConf.fg5.t
+                visible: SearchConf.metadataVisibility.numDirItems
+                Layout.alignment: Qt.AlignVCenter
+                Layout.rightMargin: DesignConf.spacing / 2
+                Behavior on color {
+                    ColorAnimation {
+                        duration: DesignConf.buttonColourAnimationDuration
                     }
                 }
             }

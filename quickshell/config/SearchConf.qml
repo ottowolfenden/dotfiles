@@ -97,4 +97,8 @@ QtObject {
                 mod: Qt.MetaModifier
             }
         })
+    readonly property var metadataVisibility: ({
+            numDirItems: true,
+            fileSize: true
+        })
 }
