@@ -45,7 +45,7 @@ QtObject {
             fg2: "#a0ffffff",
             fg3: "#7bffffff",
             fg4: "#48ffffff",
-            fg5: "#15ffffff",
+            fg5: "#1fffffff",
             invfg: "#000000",
             cutoutbg: "#10ffffff",
             inactivebg: "#0effffff",
