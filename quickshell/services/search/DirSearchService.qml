@@ -11,7 +11,7 @@ QtObject {
     property bool searchOpen: false
     property string mode
     property var lastHideOutputCall: null
-    property bool extraSearchProcRunning: false
+    property bool loading: false
 
     function search(text: string): void {
         if (text.startsWith("~"))
@@ -71,6 +71,7 @@ QtObject {
     function hideOutput(): void {
         lastHideOutputCall = Date.now();
         searchProc.running = extraSearchProc.running = false;
+        dirSearchService.loading = false;
     }
 
     property Process searchProc: Process {
@@ -92,7 +93,7 @@ QtObject {
                     extraSearchProc.running = false;
                     extraSearchProc.input = searchProc.input;
                     extraSearchProc.running = true;
-                    dirSearchService.extraSearchProcRunning = true;
+                    dirSearchService.loading = true;
                 }
             }
         }
@@ -110,9 +111,9 @@ QtObject {
         })
         stdout: StdioCollector {
             onStreamFinished: {
-                dirSearchService.extraSearchProcRunning = false;
                 if (!text || results.length >= getMax() || mode != "dirs" || !searchOpen || lastHideOutputCall > extraSearchProc.startedDate)
                     return;
+                dirSearchService.loading = false;
                 results = [...results, ...processScriptOutput(text)];
             }
         }

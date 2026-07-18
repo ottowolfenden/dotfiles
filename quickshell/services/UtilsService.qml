@@ -48,4 +48,8 @@ QtObject {
         if (obj)
             return JSON.parse(JSON.stringify(obj));
     }
+
+    function getRandBetween(min: real, max: real): double {
+        return Math.random() * (max - min) + min;
+    }
 }
