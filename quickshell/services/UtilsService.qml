@@ -38,12 +38,6 @@ QtObject {
         return SearchConf.modes.find(m => m.name == modeProvider).maxResults[mode == "default" ? "all" : "filtered"];
     }
 
-    function getFileFormatIcon(fileExt: string): string {
-        if (fileExt.startsWith("."))
-            fileExt = fileExt.replace(".", "");
-        return Object.keys(IconsConf.fileFormats).find(icon => IconsConf.fileFormats[icon].includes(fileExt.toLowerCase())) ?? IconsConf.otherFileFormat;
-    }
-
     function clone(obj: var): var {
         if (obj)
             return JSON.parse(JSON.stringify(obj));
@@ -66,5 +60,17 @@ QtObject {
         num = num.toFixed(n > 1000 && Math.round(num).toString().length <= 2 && !num.toFixed(1).toString().endsWith("0"));
         return num + units[i] + suffix;
     }
+
+    function formatBytes(bytes) {
+        if (bytes < 1024)
+            return `${bytes} B`;
+
+        let units = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB"];
+        let log1024 = n => Math.log(n) / Math.log(1024);
+
+        let i = Math.floor(log1024(bytes));
+        let num = (bytes / (1024 ** i));
+        num = num.toFixed(Math.round(num).toString().length <= 2 && !num.toFixed(1).toString().endsWith("0"));
+        return `${num} ${units[i]}`;
     }
 }
