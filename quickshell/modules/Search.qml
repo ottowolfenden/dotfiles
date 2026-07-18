@@ -164,8 +164,10 @@ Rectangle {
             Keys.onReleased: e => {
                 if (text == prevText && e.key == Qt.Key_Backspace)
                     search.mode = "default";
-                if (text != prevText || e.key == Qt.Key_Tab)
+                if ((text != prevText || e.key == Qt.Key_Tab) && search.mode == "dirs") {
+                    DirSearchService.hideOutput();
                     DirSearchService.search(text, search.mode);
+                }
             }
 
             onAccepted: open()
