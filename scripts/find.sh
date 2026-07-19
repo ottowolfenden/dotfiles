@@ -30,9 +30,13 @@ sort() {
         command sort -znr 
     elif [[ $1 == -depth ]]; then
         awk 'BEGIN { RS="\0"; ORS="\0" } {
-            path = $2;
-            depth = gsub(/\//, "", path);
-            print depth, $2 
+            firstspace = index($0, " ")
+            if (firstspace > 0) {
+                path = substr($0, firstspace + 1)
+                temp = path
+                depth = gsub(/\//, "", temp)
+                print depth " " path
+            }
         }' | command sort -zns
     fi
 }
