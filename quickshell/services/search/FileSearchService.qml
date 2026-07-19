@@ -12,6 +12,11 @@ QtObject {
     property string mode
     property var lastHideOutputCall: null
     property bool loading: false
+    onModeChanged: {
+        if (loading && mode != "files")
+            loading = false;
+    }
+    onLoadingChanged: console.log("FILES loading: " + loading)
 
     function search(text: string): void {
         if (text.startsWith("~"))
