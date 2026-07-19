@@ -27,7 +27,7 @@ QtObject {
             placeholder: "Search folders",
             minChars: 2,
             maxResults: {
-                all: 4,
+                all: 3,
                 filtered: 15
             },
             displayName: "Folders"
@@ -76,7 +76,7 @@ QtObject {
             },
             files: {
                 default: ["*/.*", Quickshell.env("HOME") + "/yay/*"],
-                always: []
+                always: [Quickshell.env("HOME") + "/.local/share/Trash/*"]
             }
         })
     readonly property int msToSwitchHyprlandWs: 60
@@ -97,8 +97,5 @@ QtObject {
                 mod: Qt.MetaModifier
             }
         })
-    readonly property var metadataVisibility: ({
-            numDirItems: true,
-            fileSize: true
-        })
+    readonly property real maxFileNameWidthProportion: 0.6
 }

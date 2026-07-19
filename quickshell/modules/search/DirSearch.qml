@@ -50,66 +50,49 @@ Repeater {
                 dirSearch.searchInput.reset();
             }
         }
+
         RowLayout {
             anchors.fill: parent
             spacing: DesignConf.spacing
+            anchors.leftMargin: DesignConf.spacing / 2
+            anchors.rightMargin: DesignConf.spacing / 2
 
-            RowLayout {
-                spacing: DesignConf.spacing
-                Layout.leftMargin: DesignConf.spacing / 2
-                Layout.rightMargin: DesignConf.spacing / 2
-
-                Icon {
-                    iconName: result.modelData.icon
-                    colour: dirName.color.toString()
-                }
-
-                Row {
-                    id: dirPath
-                    spacing: 0
-                    Layout.fillWidth: true
-
-                    Text {
-                        id: dirPathPrefix
-                        text: result.modelData.split()[0]
-                        color: result.isActive ? ColoursConf.fg2.t : ColoursConf.fg3.t
-                        font.family: FontsConf.mainFamily
-                        font.pixelSize: FontsConf.pixelSize
-                        width: Math.min(dirPath.width - dirName.width, implicitWidth)
-                        elide: Text.ElideRight
-                        Behavior on color {
-                            ColorAnimation {
-                                duration: DesignConf.buttonColourAnimationDuration
-                            }
-                        }
-                    }
-                    Text {
-                        id: dirName
-                        text: result.modelData.split()[1]
-                        color: result.isActive ? ColoursConf.fg1.t : ColoursConf.fg3.t
-                        font.family: FontsConf.mainFamily
-                        font.pixelSize: FontsConf.pixelSize
-                        elide: Text.ElideRight
-                        width: Math.min(implicitWidth, Math.max(dirPath.width / 2, dirPath.width - dirPathPrefix.implicitWidth))
-                        Behavior on color {
-                            ColorAnimation {
-                                duration: DesignConf.buttonColourAnimationDuration
-                            }
-                        }
-                    }
-                }
+            Icon {
+                iconName: result.modelData.icon
+                colour: dirName.color.toString()
             }
 
-            Text {
-                text: UtilsService.formatItems(result.modelData.numItems, "item")
-                font.pixelSize: FontsConf.smallPixelSize
-                color: result.isActive ? ColoursConf.fg4.t : "transparent"
-                visible: SearchConf.metadataVisibility.numDirItems
-                Layout.alignment: Qt.AlignVCenter
-                Layout.rightMargin: DesignConf.spacing / 2
-                Behavior on color {
-                    ColorAnimation {
-                        duration: DesignConf.buttonColourAnimationDuration
+            Row {
+                id: dirPath
+                spacing: 0
+                Layout.fillWidth: true
+
+                Text {
+                    id: dirPathPrefix
+                    text: result.modelData.split()[0]
+                    color: result.isActive ? ColoursConf.fg2.t : ColoursConf.fg3.t
+                    font.family: FontsConf.mainFamily
+                    font.pixelSize: FontsConf.pixelSize
+                    width: Math.min(dirPath.width - dirName.width, implicitWidth)
+                    elide: Text.ElideRight
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: DesignConf.buttonColourAnimationDuration
+                        }
+                    }
+                }
+                Text {
+                    id: dirName
+                    text: result.modelData.split()[1]
+                    color: result.isActive ? ColoursConf.fg1.t : ColoursConf.fg3.t
+                    font.family: FontsConf.mainFamily
+                    font.pixelSize: FontsConf.pixelSize
+                    width: Math.min(implicitWidth, Math.max(dirPath.width / 2, dirPath.width - dirPathPrefix.implicitWidth))
+                    elide: Text.ElideRight
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: DesignConf.buttonColourAnimationDuration
+                        }
                     }
                 }
             }

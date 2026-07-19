@@ -20,8 +20,9 @@ Rectangle {
         mode = modes[newIndex];
     }
     onModeChanged: {
-        DirSearchService.mode = mode;
+        DirSearchService.mode = FileSearchService.mode = mode;
         DirSearchService.search(searchInput.text);
+        FileSearchService.search(searchInput.text);
     }
 
     color: ColoursConf.bg2.t
@@ -82,7 +83,7 @@ Rectangle {
                 text = "";
                 search.mode = "default";
                 FlyoutsService.hideFlyout(searchFlyout);
-                DirSearchService.results = [];
+                DirSearchService.results = FileSearchService.results = [];
                 searchColumn.activeIndex = 0;
                 Object.keys(binds).forEach(k => binds[k].active = false);
             }
@@ -167,7 +168,10 @@ Rectangle {
                 if (text != prevText || e.key == Qt.Key_Tab) {
                     if (search.mode == "dirs")
                         DirSearchService.hideOutput();
+                    else if (search.mode == "files")
+                        FileSearchService.hideOutput();
                     DirSearchService.search(text, search.mode);
+                    FileSearchService.search(text, search.mode);
                 }
             }
 
@@ -184,12 +188,13 @@ Rectangle {
         onIsOpenChanged: {
             if (isOpen) {
                 searchInput.forceActiveFocus();
-                DirSearchService.mode = search.mode;
-                DirSearchService.searchOpen = true;
+                DirSearchService.mode = FileSearchService.mode = search.mode;
+                DirSearchService.searchOpen = FileSearchService.searchOpen = true;
             } else {
                 searchInput.reset();
-                DirSearchService.searchOpen = false;
+                DirSearchService.searchOpen = FileSearchService.searchOpen = false;
                 DirSearchService.hideOutput();
+                FileSearchService.hideOutput();
             }
         }
         onHoveringChanged: {
@@ -223,7 +228,7 @@ Rectangle {
                     AppSearch {
                         id: appSearch
                         visible: search.mode == "apps" || search.mode == "default"
-                        property int indexOffset: searchColumn.getIndexOffset(this)
+                        property int indexOffset: 0
                         mode: search.mode
                         searchInput: searchInput
                         activeIndex: searchColumn.activeIndex - indexOffset
@@ -237,7 +242,7 @@ Rectangle {
                     DirSearch {
                         id: dirSearch
                         visible: search.mode == "dirs" || search.mode == "default"
-                        property int indexOffset: searchColumn.getIndexOffset(this)
+                        property int indexOffset: appSearch.model.length
                         mode: search.mode
                         searchInput: searchInput
                         activeIndex: searchColumn.activeIndex - indexOffset
@@ -245,14 +250,18 @@ Rectangle {
                     }
                 }
 
-                FileSearch {
-                    id: fileSearch
-                    visible: search.mode == "files" || search.mode == "default"
-                    property int indexOffset: searchColumn.getIndexOffset(this)
-                    mode: search.mode
-                    searchInput: searchInput
-                    activeIndex: searchColumn.activeIndex - indexOffset
-                    onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                SearchColumn {
+                    child: fileSearch
+                    onModeChanged: search.mode = mode
+                    FileSearch {
+                        id: fileSearch
+                        visible: search.mode == "files" || search.mode == "default"
+                        property int indexOffset: dirSearch.indexOffset + dirSearch.model.length
+                        mode: search.mode
+                        searchInput: searchInput
+                        activeIndex: searchColumn.activeIndex - indexOffset
+                        onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                    }
                 }
 
                 WebSearch {
@@ -277,7 +286,7 @@ Rectangle {
 
                 LoadingBar {
                     id: loadingBar
-                    visible: DirSearchService.loading
+                    visible: DirSearchService.loading || FileSearchService.loading
                 }
             }
         }

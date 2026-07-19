@@ -22,4 +22,5 @@ QtObject {
     readonly property int progressBarHeight: smallRadius * 2
     readonly property int searchGroupWidth: 420
     readonly property int searchFlyoutWidth: 520
+    readonly property int resultantSearchPadding: 75
 }
