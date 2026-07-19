@@ -16,7 +16,6 @@ QtObject {
         if (loading && mode != "dirs")
             loading = false;
     }
-    onLoadingChanged: console.log("DIRS loading: " + loading)
 
     function search(text: string): void {
         if (text.startsWith("~"))
