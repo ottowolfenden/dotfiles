@@ -46,31 +46,4 @@ QtObject {
     function getRandBetween(min: real, max: real): double {
         return Math.random() * (max - min) + min;
     }
-
-    function formatItems(n, itemName) {
-        if (n == 1)
-            return n + (itemName ? " " + itemName : "");
-
-        let units = ["", "K", "M", "B", "T", "Qa"];
-        let log1000 = n => Math.log(n) / Math.log(1000);
-
-        let suffix = itemName ? ` ${itemName}s` : "";
-        let i = Math.floor(log1000(n));
-        let num = (n / (1000 ** i));
-        num = num.toFixed(n > 1000 && Math.round(num).toString().length <= 2 && !num.toFixed(1).toString().endsWith("0"));
-        return num + units[i] + suffix;
-    }
-
-    function formatBytes(bytes) {
-        if (bytes < 1024)
-            return `${bytes} B`;
-
-        let units = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB"];
-        let log1024 = n => Math.log(n) / Math.log(1024);
-
-        let i = Math.floor(log1024(bytes));
-        let num = (bytes / (1024 ** i));
-        num = num.toFixed(Math.round(num).toString().length <= 2 && !num.toFixed(1).toString().endsWith("0"));
-        return `${num} ${units[i]}`;
-    }
 }
