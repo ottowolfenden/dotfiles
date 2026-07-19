@@ -51,7 +51,7 @@ QtObject {
                                     return "repo";
                                 if (this.homeRelativePath == "~")
                                     return "home";
-                                if (this.name.toLowerCase().includes("config"))
+                                if (["conf", "setting"].some(s => this.name.toLowerCase().includes(s)))
                                     return "conf";
                                 return "default";
                             })()];
