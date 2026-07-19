@@ -24,19 +24,19 @@ if [[ ${#exclusions[@]} -gt 0 ]]; then
 fi
 
 filters=( "$dir" "${exclargs[@]}" -type $type )
-format=(-printf "%A@ %s %p\0")
+format=(-printf "%A@ %p\0")
 sort() { 
     if [[ $1 == -accessed ]]; then
         command sort -znr 
     elif [[ $1 == -depth ]]; then
         awk 'BEGIN { RS="\0"; ORS="\0" } {
-            path = $3;
+            path = $2;
             depth = gsub(/\//, "", path);
-            print depth, $2, $3 
+            print depth, $2 
         }' | command sort -zns
     fi
 }
-cut() { command cut -zd' ' -f2-; }
+cut() { command cut -zd' ' -f1-; }
 
 (
     find "${filters[@]}" -ipath "$text*" "${format[@]}" | sort -accessed | sort -depth | cut
@@ -48,20 +48,15 @@ cut() { command cut -zd' ' -f2-; }
 awk -v max="$max" 'BEGIN { RS="\0"; ORS="\0" } NR > max { exit } { print }' |
 while IFS=" " read -r -d '' bytesize path; do
     if [[ $type == d ]]; then
-        shopt -s nullglob; files=( "$path"/* ); shopt -u nullglob
-        numitems=${#files[@]};
         [[ -d $path/.git ]] && hasgit=true || hasgit=false
-        bytesize=""
     fi
-    printf '%s\t%s %s %s\n' "$path" "$numitems" "$hasgit" "$bytesize"
+    printf '%s\t%s\n' "$path" "$hasgit"
 done |
 jq -R '
     split("\t") as $parts
     | $parts[1] | split(" ") as $stats
     | {
         path: $parts[0],
-        numItems: $stats[0] | try tonumber catch null,
-        hasGit: $stats[1] | try toboolean catch null,
-        byteSize: $stats[2] | try tonumber catch null
+        hasGit: $stats[0] | try toboolean catch null,
     }
 ' | jq -s '.'
