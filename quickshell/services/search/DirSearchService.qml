@@ -134,7 +134,7 @@ QtObject {
             HyprlandService.execWithQsTag(`${(() => {
                     if (binds?.inTerminal?.active)
                         return "kitty";
-                    else if (binds?.inVsCode?.active)
+                    else if (binds?.inVsCode?.active || dir.hasGit)
                         return "code";
                     else
                         return "thunar";
