@@ -14,7 +14,7 @@ Repeater {
     readonly property string modeSupplied: "apps"
     signal activeIndexSet(index: int)
 
-    model: AppSearchService.search(searchInput.text, mode)
+    model: AppSearchService.search(searchInput.text.trim(), mode)
     delegate: Rectangle {
         id: result
         required property DesktopEntry modelData

@@ -21,8 +21,8 @@ Rectangle {
     }
     onModeChanged: {
         DirSearchService.mode = FileSearchService.mode = mode;
-        DirSearchService.search(searchInput.text);
-        FileSearchService.search(searchInput.text);
+        DirSearchService.search(searchInput.text.trim());
+        FileSearchService.search(searchInput.text.trim());
     }
 
     color: ColoursConf.bg2.t
@@ -146,7 +146,13 @@ Rectangle {
                     search.changeMode(1, true);
                 else if (e.key == Qt.Key_Backtab)
                     search.changeMode(-1, true);
-                else if (e.key == Qt.Key_Up && (e.modifiers & Qt.ControlModifier))
+                else if (e.modifiers & Qt.ShiftModifier) {
+                    let mode = SearchConf.modes.find(m => m.shiftKey == e.key)?.name;
+                    if (mode) {
+                        search.mode = mode;
+                        e.accepted = true;
+                    }
+                } else if (e.key == Qt.Key_Up && (e.modifiers & Qt.ControlModifier))
                     jumpToRepeater("up");
                 else if (e.key == Qt.Key_Down && (e.modifiers & Qt.ControlModifier))
                     jumpToRepeater("down");
@@ -170,8 +176,8 @@ Rectangle {
                         DirSearchService.hideOutput();
                     else if (search.mode == "files")
                         FileSearchService.hideOutput();
-                    DirSearchService.search(text, search.mode);
-                    FileSearchService.search(text, search.mode);
+                    DirSearchService.search(text.trim(), search.mode);
+                    FileSearchService.search(text.trim(), search.mode);
                 }
             }
 

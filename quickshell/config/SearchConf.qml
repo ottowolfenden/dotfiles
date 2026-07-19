@@ -7,12 +7,14 @@ QtObject {
         {
             name: "default",
             prefixes: ["default:", "none:", "n:", "N"],
+            shiftKey: Qt.Key_N,
             placeholder: "Search",
             minChars: 1
         },
         {
             name: "apps",
             prefixes: ["apps:", "app:", "a:", "A"],
+            shiftKey: Qt.Key_A,
             placeholder: "Search apps",
             minChars: 1,
             maxResults: {
@@ -24,6 +26,7 @@ QtObject {
         {
             name: "dirs",
             prefixes: ["directories:", "folders:", "dir:", "dirs:", "d:", "D"],
+            shiftKey: Qt.Key_D,
             placeholder: "Search folders",
             minChars: 2,
             maxResults: {
@@ -35,6 +38,7 @@ QtObject {
         {
             name: "files",
             prefixes: ["files:", "file:", "f:", "F"],
+            shiftKey: Qt.Key_F,
             placeholder: "Search files",
             minChars: 2,
             maxResults: {
@@ -46,6 +50,7 @@ QtObject {
         {
             name: "web",
             prefixes: ["web:", "browser:", "w:", "b:", "W"],
+            shiftKey: Qt.Key_W,
             placeholder: "Search the web",
             minChars: 1,
             maxResults: {
@@ -57,6 +62,7 @@ QtObject {
         {
             name: "command",
             prefixes: ["exec:", ">", "e:", "t:", "c:", "C"],
+            shiftKey: Qt.Key_C,
             placeholder: "Search commands",
             minChars: 1,
             maxResults: {
