@@ -43,7 +43,7 @@ cut() { command cut -zd' ' -f1-; }
     find "${filters[@]}" -iname "$text" ! -ipath "$text*" "${format[@]}" | sort -accessed | cut
     find "${filters[@]}" -iname "$text*" ! -iname "$text" "${format[@]}" | sort -accessed | cut
     find "${filters[@]}" -iname "*$text*" ! -iname "$text*" "${format[@]}" | sort -accessed | cut
-    find "${filters[@]}" -ipath "*$text*" ! -iname "*$text*" "${format[@]}" | sort -accessed | cut
+    find "${filters[@]}" -ipath "*$text*" ! -iname "*$text*" ! -ipath "$text*" "${format[@]}" | sort -accessed | cut
 ) 2>/dev/null |
 awk -v max="$max" 'BEGIN { RS="\0"; ORS="\0" } NR > max { exit } { print }' |
 while IFS=" " read -r -d '' bytesize path; do

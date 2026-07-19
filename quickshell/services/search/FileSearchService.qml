@@ -14,6 +14,9 @@ QtObject {
     property bool loading: false
 
     function search(text: string): void {
+        if (text.startsWith("~"))
+            text = text.replace("~", Quickshell.env("HOME"));
+
         if (text.length < SearchConf.modes.find(m => m.name == "files").minChars || getMax() == 0) {
             results = [];
             return;
