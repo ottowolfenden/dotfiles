@@ -16,10 +16,8 @@ Repeater {
     signal activeIndexSet(index: int)
 
     model: {
-        if (![NetworkConnectivity.Full, NetworkConnectivity.Unknown].includes(Networking.connectivity))
+        if (!["default", "web"].includes(mode) || !searchInput.text || ![NetworkConnectivity.Full, NetworkConnectivity.Unknown].includes(Networking.connectivity))
             return [];
-        if (!searchInput.text)
-            return WebSearchService.results;
         return UtilsService.getDistinctNonNull([searchInput.text, ...WebSearchService.results]);
     }
     delegate: Rectangle {
