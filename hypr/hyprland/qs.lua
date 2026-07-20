@@ -1,5 +1,3 @@
-local h = require("helpers")
-
 local function is_from_qs(tags)
     for _, tag in pairs(tags) do
         if string.find(tag, "qs") then
@@ -10,10 +8,10 @@ local function is_from_qs(tags)
 end
 
 hl.on("window.open", function(w)
-    hl.exec_scheduled_prop_refresh_immediately()
-    if w.tags and is_from_qs(w.tags) then
-        hl.dispatch(hl.dsp.focus({ window = w }))
-    end
+    -- hl.exec_scheduled_prop_refresh_immediately()
+    -- if w.tags and is_from_qs(w.tags) then
+    hl.dispatch(hl.dsp.focus({ window = w }))
+    -- end
 end)
 
 hl.bind("SUPER + SHIFT + F23", hl.dsp.exec_cmd("qs ipc call searchHandler toggle"))
