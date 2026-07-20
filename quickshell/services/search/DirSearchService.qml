@@ -75,7 +75,6 @@ QtObject {
     function hideOutput(): void {
         lastHideOutputCall = Date.now();
         searchProc.running = extraSearchProc.running = false;
-        dirSearchService.loading = false;
     }
 
     property Process searchProc: Process {

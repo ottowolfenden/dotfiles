@@ -71,7 +71,6 @@ QtObject {
     function hideOutput(): void {
         lastHideOutputCall = Date.now();
         searchProc.running = extraSearchProc.running = false;
-        fileSearchService.loading = false;
     }
 
     property Process searchProc: Process {
@@ -114,6 +113,7 @@ QtObject {
                 if (!text || results.length >= getMax() || mode != "files" || !searchOpen || lastHideOutputCall > extraSearchProc.startedDate)
                     return;
                 fileSearchService.loading = false;
+                console.log("loading set to false by onstreamfinished");
                 results = [...results, ...processScriptOutput(text)];
             }
         }
