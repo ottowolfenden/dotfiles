@@ -31,11 +31,11 @@ QtObject {
         searchProc.running = true;
     }
 
-    function getMax() {
+    function getMax(): int {
         return UtilsService.getMaxSearchResults("files", mode);
     }
 
-    function processScriptOutput(output) {
+    function processScriptOutput(output: string): var {
         return JSON.parse(output).map(r => Object.assign({}, r, {
                 get name() {
                     let parts = r.path.split("/");
@@ -113,7 +113,6 @@ QtObject {
                 if (!text || results.length >= getMax() || mode != "files" || !searchOpen || lastHideOutputCall > extraSearchProc.startedDate)
                     return;
                 fileSearchService.loading = false;
-                console.log("loading set to false by onstreamfinished");
                 results = [...results, ...processScriptOutput(text)];
             }
         }
