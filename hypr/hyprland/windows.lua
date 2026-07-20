@@ -34,12 +34,22 @@ hl.bind("SUPER + SHIFT + I", function()
     hl.notification.create({ text = hl.get_active_window().title, timeout = 5000 })
 end)
 
-h.qs_bind("SUPER + mouse_up", function()
-    hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "down" }))
-    hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
-end)
+h.qs_bind("CTRL + mouse_up", function()
+    local w = hl.get_active_window()
+    if not w or w.class ~= "kitty" then
+        return
+    else
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
+    end
+end, { non_consuming = true })
 
-h.qs_bind("SUPER + mouse_down", function()
-    hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
-    hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
-end)
+h.qs_bind("CTRL + mouse_down", function()
+    local w = hl.get_active_window()
+    if not w or w.class ~= "kitty" then
+        return
+    else
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "down" }))
+        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
+    end
+end, { non_consuming = true })
