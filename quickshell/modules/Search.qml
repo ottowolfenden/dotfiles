@@ -122,6 +122,8 @@ Rectangle {
             }
 
             onTextEdited: {
+                if (search.mode == "command")
+                    return;
                 let mode = SearchConf.modes.find(m => m.prefixes.some(p => (text).startsWith(p)));
                 let prefix = mode?.prefixes.find(p => text.startsWith(p));
                 if (mode && prefix && search.mode != mode.name) {
@@ -147,7 +149,7 @@ Rectangle {
                     search.changeMode(1, true);
                 else if (e.key == Qt.Key_Backtab)
                     search.changeMode(-1, true);
-                else if (e.modifiers & Qt.ShiftModifier) {
+                else if (SearchConf.shiftBindsEnabled && search.mode != "command" && (e.modifiers & Qt.ShiftModifier)) {
                     let mode = SearchConf.modes.find(m => m.shiftKey == e.key)?.name;
                     if (mode) {
                         search.mode = mode;
