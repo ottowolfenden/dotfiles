@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import Quickshell.Networking
 import "../.."
 import "../../components"
 
@@ -15,6 +16,8 @@ Repeater {
     signal activeIndexSet(index: int)
 
     model: {
+        if (![NetworkConnectivity.Full, NetworkConnectivity.Unknown].includes(Networking.connectivity))
+            return [];
         if (!searchInput.text)
             return WebSearchService.results;
         return UtilsService.getDistinctNonNull([searchInput.text, ...WebSearchService.results]);
