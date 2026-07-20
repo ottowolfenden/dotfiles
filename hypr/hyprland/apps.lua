@@ -21,7 +21,6 @@ hl.bind("SUPER + Q", function()
         hl.dispatch(h.qs_exec("kitty"))
     else
         hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideAllFlyouts"))
-        hl.dispatch(hl.dsp.focus({ window = w }))
         hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "Q", state = "down" }))
         hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "Q", state = "up" }))
     end
