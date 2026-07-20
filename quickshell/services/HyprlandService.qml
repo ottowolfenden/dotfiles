@@ -1,7 +1,6 @@
 pragma Singleton
 import QtQuick
 import Quickshell
-import Quickshell.Io
 import Quickshell.Hyprland
 
 QtObject {
@@ -14,6 +13,12 @@ QtObject {
             return [];
         let maxId = Math.max(...Hyprland.workspaces.values.map(value => value.id));
         return [...Array(maxId)].map((_, i) => i + 1);
+    }
+
+    function getActiveWs(): HyprlandWorkspace {
+        if (!Hyprland.workspaces?.values || Hyprland.workspaces.values.length == 0)
+            return null;
+        return Hyprland.workspaces.values.find(ws => ws.active);
     }
 
     function reload(): void {
