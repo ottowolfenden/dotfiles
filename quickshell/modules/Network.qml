@@ -15,7 +15,7 @@ Rectangle {
     property WifiDevice wifiDevice: Networking.devices.values.find(d => d.type == DeviceType.Wifi) ?? null
     property WifiNetwork wifiNetwork: wifiDevice?.networks?.values.find(n => n.connected) ?? null
     property real wifiStrength: wifiNetwork?.signalStrength ?? 0
-    property bool isWifiSecured: ![WifiSecurityType.Open, WifiSecurityType.Owe, WifiSecurityType.Unknown].includes(wifiNetwork?.security ?? WifiSecurityType.Unknown)
+    property bool isWifiSecured: ![WifiSecurityType.Open, WifiSecurityType.Owe, WifiSecurityType.Unknown].includes(wifiNetwork?.security)
     property bool isVpnConnected: false
 
     Cutout {}
@@ -28,13 +28,15 @@ Rectangle {
         anchors.rightMargin: DesignConf.spacing
 
         Icon {
-            property var icons: IconsConf.wifi.find(i => i.connectivity == (Networking.connectivity ?? NetworkConnectivity.Unknown)).icons.find(j => network.wifiStrength <= (j.max ?? 1))
-            iconName: (network.isWifiSecured ? icons.secured : icons.open)
-            // fill: icons.fill ?? false
+            iconName: {
+                let conn = Networking.connectivity ?? NetworkConnectivity.Unknown;
+                let icons = IconsConf.wifi.find(i => i.connectivity == conn).icons.find(j => network.wifiStrength <= (j.max ?? 1));
+                return network.isWifiSecured ? icons.secured : icons.open;
+            }
         }
 
         Icon {
-            iconName: network.isVpnConnected ? IconsConf.vpn.on : IconsConf.vpn.off
+            iconName: IconsConf.vpn[network.isVpnConnected ? "on" : "off"]
             opacity: 1
 
             MouseArea {
@@ -102,8 +104,7 @@ Rectangle {
         onExited: exitCode => {
             if (exitCode == 0) {
                 vpnPulse.running = false;
-                resetVpnOpacity.running = true;
-                network.isVpnConnected = true;
+                resetVpnOpacity.running = network.isVpnConnected = true;
             }
         }
     }
@@ -113,9 +114,8 @@ Rectangle {
         command: ["protonvpn", "disconnect"]
         onExited: exitCode => {
             if (exitCode == 0) {
-                vpnPulse.running = false;
+                vpnPulse.running = network.isVpnConnected = false;
                 resetVpnOpacity.running = true;
-                network.isVpnConnected = false;
             }
         }
     }

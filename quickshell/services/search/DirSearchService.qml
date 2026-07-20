@@ -95,8 +95,7 @@ QtObject {
                 if (results.length < getMax() && mode == "dirs" && searchOpen) {
                     extraSearchProc.running = false;
                     extraSearchProc.input = searchProc.input;
-                    extraSearchProc.running = true;
-                    dirSearchService.loading = true;
+                    extraSearchProc.running = dirSearchService.loading = true;
                 }
             }
         }
@@ -150,8 +149,7 @@ QtObject {
                 return;
             binds.inNewWs.active = false;
             parent.open(dirToOpen, binds);
-            dirToOpen = null;
-            binds = null;
+            dirToOpen = binds = null;
         }
     }
 }

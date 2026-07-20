@@ -91,8 +91,7 @@ QtObject {
                 if (results.length < getMax() && mode == "files" && searchOpen) {
                     extraSearchProc.running = false;
                     extraSearchProc.input = searchProc.input;
-                    extraSearchProc.running = true;
-                    fileSearchService.loading = true;
+                    extraSearchProc.running = fileSearchService.loading = true;
                 }
             }
         }
@@ -150,8 +149,7 @@ QtObject {
         stdout: StdioCollector {
             onStreamFinished: {
                 fileSearchService.open(checkCanOpenProcess.file, checkCanOpenProcess.binds, text.trim() == "" ? "fail" : "success");
-                checkCanOpenProcess.file = null;
-                checkCanOpenProcess.binds = null;
+                checkCanOpenProcess.file = checkCanOpenProcess.binds = null;
             }
         }
     }
@@ -166,9 +164,7 @@ QtObject {
                 return;
             binds.inNewWs.active = false;
             parent.open(fileToOpen, binds, checkStatus);
-            fileToOpen = null;
-            binds = null;
-            checkStatus = null;
+            fileToOpen = binds = checkStatus = null;
         }
     }
 }

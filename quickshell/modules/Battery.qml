@@ -29,9 +29,10 @@ Rectangle {
 
         Icon {
             colour: battery.danger ? ColoursConf.red : ColoursConf.fg1.t
-            property var icons: IconsConf.battery.find(i => battery.percent <= i.max)
-            iconName: battery.isCharging ? icons.charging : icons.discharging
-            // fill: icons.fill ?? false
+            iconName: {
+                let icons = IconsConf.battery.find(i => battery.percent <= i.max);
+                return battery.isCharging ? icons.charging : icons.discharging;
+            }
             horizontalMargin: -5
         }
 
