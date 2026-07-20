@@ -30,7 +30,7 @@ Rectangle {
         Icon {
             property var icons: IconsConf.wifi.find(i => i.connectivity == (Networking.connectivity ?? NetworkConnectivity.Unknown)).icons.find(j => network.wifiStrength <= (j.max ?? 1))
             iconName: (network.isWifiSecured ? icons.secured : icons.open)
-            fill: icons.fill ?? false
+            // fill: icons.fill ?? false
         }
 
         Icon {

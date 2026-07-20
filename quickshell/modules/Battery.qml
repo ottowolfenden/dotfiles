@@ -31,7 +31,7 @@ Rectangle {
             colour: battery.danger ? ColoursConf.red : ColoursConf.fg1.t
             property var icons: IconsConf.battery.find(i => battery.percent <= i.max)
             iconName: battery.isCharging ? icons.charging : icons.discharging
-            fill: icons.fill ?? false
+            // fill: icons.fill ?? false
             horizontalMargin: -5
         }
 

@@ -46,9 +46,8 @@ QtObject {
         },
         {
             max: 100,
-            charging: "battery_charging_full",
-            discharging: "battery_full",
-            fill: true
+            charging: "fill:battery_charging_full",
+            discharging: "fill:battery_full"
         },
     ]
     readonly property var wifi: [
@@ -113,9 +112,8 @@ QtObject {
                 },
                 {
                     max: 1,
-                    secured: "wifi_lock",
-                    open: "signal_wifi_4_bar",
-                    fill: true
+                    secured: "fill:wifi_lock",
+                    open: "fill:signal_wifi_4_bar"
                 },
             ]
         }
@@ -265,21 +263,21 @@ QtObject {
         "custom:file_cursor": ["ani", "cur", "smes"],
         "web": ["mhtml", "maff", "webarchive", "dtd", "chm"],
         "downloading": ["!ut", "crdownload", "opdownload", "part", "partial"],
-        "link": ["alias", "appref-ms", "desktop", "jnlp", "lnk", "nal", "pif", "sym", "url", "webloc", "website"],
         "key": ["gxk", "ssh", "pub", "ppk", "nsign", "cer", "crt", "der", "p7b", "p7c", "p12", "pfx", "pem"],
+        "link": ["alias", "appref-ms", "desktop", "jnlp", "lnk", "nal", "pif", "sym", "url", "webloc", "website"],
+        "map": ["apr", "dem", "e00", "geojson", "topojson", "geotiff", "gpx", "itn", "mxd", "ov2", "shp", "dted", "kml"],
         "deployed_code": ["appx", "app", "dmg", "deb", "hpkg", "ipg", "msi", "rpm", "sis", "sisx", "xap", "appimage", "dll"],
         "terminal": ["sh", "bash", "zsh", "ksh", "csh", "tcsh", "fish", "command", "bat", "cmd", "ps1", "psm1", "psd1", "bashrc", "zshrc"],
-        "map": ["apr", "dem", "e00", "geojson", "topojson", "geotiff", "gpx", "itn", "mxd", "ov2", "shp", "dted", "kml"],
         "custom:file_font": ["abf", "bmf", "brfnt", "fnt", "fon", "mgf", "otf", "pfa", "pfb", "pfm", "fond", "sfd", "snf", "tdf", "tfm", "ttf", "ttc", "ufo", "woff", "woff2"],
-        "video_file": ["braw", "drp", "fcp", "mswmm", "pds", "ppj", "prproj", "aep", "imovieproj", "veg", "veg-bak", "suf", "wlmp", "kdenlive", "vpj", "motn", "imoviemobile", "wfp, wve", "vproj", "flb"],
         "custom:presentation": ["gslides", "key", "keynote", "odp", "otp", "pez", "pot", "prdx", "pps", "ppt", "pptx", "prz", "sdd", "shf", "show", "shw", "slp", "sspss", "sti", "sxi", "thmx", "watch"],
+        "video_file": ["braw", "drp", "fcp", "mswmm", "pds", "ppj", "prproj", "aep", "imovieproj", "veg", "veg-bak", "suf", "wlmp", "kdenlive", "vpj", "motn", "imoviemobile", "wfp, wve", "vproj", "flb"],
         "polyline": ["awg", "ai", "cgm", "cmx", "dp", "drawio", "dxf", "e2d", "eps", "gbr", "odg", "renderman", "svg", "stl", "wrl", "sxd", "tgax", "v2d", "vdoc", "vsd", "vsdx", "vnd", "wmf", "emf", "xar"],
         "custom:spreadsheet": ["123", "ab2", "ab3", "aws", "bcsv", "clf", "cell", "gsheet", "numbers", "gnumeric", "lcw", "ods", "ots", "qpw", "pmdx", "sdc", "slk", "stc", "sxc", "tab", "vc", "wk1", "wk3", "wk4", "wks", "wq1", "xlk", "xls", "xlsb", "xlsm", "xlsx", "xlr", "xlt", "xltm", "xlw"],
         "folder_zip": ["7z", "ace", "alz", "arc", "arj", "bz2", "cab", "sea", "ecab", "ezip", "flipchart", "fun", "gz", "g3fc", "lawrence", "lbr", "lzh", "lz", "lzo", "lzma", "lzx", "mbw", "mcaddon", "oar", "pak", "par", "par2", "paf", "pea", "pkg", "pyk", "rar", "rax", "sitx", "tar", "wax", "xz", "z", "zoo", "zip"],
         "movie": ["mp4", "3gp", "aaf", "at3", "asf", "avchd", "avi", "bik", "bk", "cam", "collab", "dvr-ms", "flv", "gmv", "mpeg-1", "mpeg-2", "noa", "fla", "flr", "sol", "str", "m4v", "mkv", "wrap", "mng", "mov", "mpeg", "mpg", "mpe", "thp", "mpeg-4", "mxf", "roq", "nsv", "qmg", "rm", "rmvb", "svi", "smk", "swf", "wmv", "wtv", "yuv", "webm"],
         "music_note": ["8svx", "16svx", "aiff", "aif", "aifc", "au", "bwf", "cdda", "dsf", "wav", "cwav", "qau", "queyeaudio", "qau0", "ra", "flac", "la", "pac", "ape", "ofr", "ofs", "rka", "shn", "tak", "thd", "tta", "wv", "bcwav", "brstm", "dtshd", "dtsma", "ast", "aw", "psf", "ac3", "amr", "mp1", "mp2", "mp3", "spx", "gsm", "wma", "aac", "mpc", "vqf", "swa", "vox", "voc", "smp", "ogg"],
-        "description": ["0", "1st", "600", "602", "abw", "acl", "afp", "ami", "ans", "asc", "aww", "bbeb", "ccf", "cwk", "dbk", "dita", "doc", "docm", "docx", "dot", "dotx", "dwd", "epub", "evtx", "ezw", "fdx", "ftx", "gdoc", "guide", "hwp", "hwpml", "kpub", "log", "lwp", "mbp", "me", "mcw", "mobi", "neis", "nt", "nq", "odm", "odoc", "odt", "osheet", "ott", "omm", "pages", "pap", "per", "pdr", "pdax", "pdf", "protondoc", "quox", "rtf", "rpt", "sdw", "se", "stw", "sxw", "tex", "tmdx", "info", "troff", "uof", "uoml", "via", "wpd", "wps", "wpt", "wrd", "wrf", "wri", "wrix", "xps"],
         "database": ["4db", "4dc", "4dd", "4dindy", "4dindx", "4dr", "4dz", "accdb", "accde", "adt", "box", "chml", "daf", "db", "dbf", "dta", "eap", "fdb", "fp", "fp3", "fp5", "fp7", "g3k", "gdb", "gtable", "kexi", "kexic", "kexis", "lbx", "ldb", "lirs", "mda", "mdb", "adp", "mde", "mdf", "myd", "myi", "nv2", "odb", "ora", "pcontact", "pdb", "pdx", "sql", "rec", "rel", "sdb", "sdf", "sqlite", "udl", "wadata", "waindx", "wamodel", "wajournal", "wdb", "wmdb", "avro", "parquet", "orc"],
+        "description": ["0", "1st", "600", "602", "abw", "acl", "afp", "ami", "ans", "asc", "aww", "bbeb", "ccf", "cwk", "dbk", "dita", "doc", "docm", "docx", "dot", "dotx", "dwd", "epub", "evtx", "ezw", "fdx", "ftx", "gdoc", "guide", "hwp", "hwpml", "kpub", "log", "lwp", "mbp", "me", "mcw", "mobi", "neis", "nt", "nq", "odm", "odoc", "odt", "osheet", "ott", "omm", "pages", "pap", "per", "pdr", "pdax", "pdf", "protondoc", "quox", "rtf", "rpt", "sdw", "se", "stw", "sxw", "tex", "tmdx", "info", "troff", "uof", "uoml", "via", "wpd", "wps", "wpt", "wrd", "wrf", "wri", "wrix", "xps"],
         "custom:file_3d": ["3dmf", "3dm", "3mf", "3ds", "ac", "amf", "an8", "aoi", "b3d", "bbmodel", "blend", "block", "bmd3", "bdl4", "brres", "bfres", "bcres", "c4d", "cal3d", "ccp4", "cfl", "core3d", "ctm", "dae", "dn", "dpm", "fact", "fbx", "g", "glb", "glm", "gltf", "hec", "io", "iob", "jas", "jmesh", "ldr", "lwo", "lws", "lxf", "lxo", "m3d", "ma", "max", "mb", "mpd", "md2", "md3", "md5", "mesh", "miobject", "miparticle", "mimodel", "mm3d", "mpo", "nif", "nwc", "nwd", "nwf", "obj", "ogex", "ply", "prt", "pov", "r3d", "rwx", "sia", "sldasm", "sldprt", "smd", "tres", "u3d", "usd", "usda", "usdc", "usdz", "vim", "vrml97", "vwx", "wings", "w3d", "x", "x3d", "z3d", "zbmx"],
         "audio_file": ["mod", "mt2", "s3m", "xm", "it", "sng", "gbs", "mid, midi", "fur", "darms", "etf", "gp", "kern", "ly", "mei", "midi", "mus", "musx", "mxl", "mscx", "mscz", "smdl", "cust", "gym", "jam", "niff", "ptb", "pvd", "rmj", "sf2", "sf3", "sf4", "sid", "spc", "txm", "vgm", "ym", "aimppl", "asx", "ram", "xspf", "zpl", "m3u", "pls", "qaua", "als", "alc", "alp", "atmos", "audio", "metadata", "aup", "aup3", "band", "cel", "cau", "cpr", "cwp", "drm", "dwp", "dmkit", "ens", "flm", "grir", "logic", "mmp", "mmr", "mx6hs", "npr", "omf", "omfi", "ptx", "ptf", "pts", "rpp", "rpp-bak", "reapeaks", "ses", "sfk", "sfl", "stf", "snd", "syn", "svp", "ust", "ustx", "vcls", "vpr", "vsq", "vsqx"],
         "image": ["art", "avif", "blp", "bmp", "bti", "c4", "cals", "cd5", "cit", "clip", "cpl", "dds", "dib", "djvu", "exif", "flif", "grf", "icns", "heif", "heic", "ico", "iff", "ilbm", "lbm", "jng", "jbig", "jpeg", "jpg", "jfif", "jp2", "jai", "jaic", "jd", "jfm", "jls", "jnft", "jpp", "jrf", "jps", "jsy", "jxl", "jxr", "jxs", "jxt", "kra", "miff", "msp", "nef", "nitf", "otb", "pbm", "pc1", "pc2", "pc3", "pcx", "pdd", "pdn", "pgf", "pgm", "pi1", "pi2", "pi3", "pict", "pct", "png", "pnj", "pnm", "pns", "ppm", "procreate", "psp", "px", "pxm", "pxr", "pxz", "qfx", "qoi", "rle", "sct", "sgi", "rgb", "int", "bw", "tga", "targa", "icb", "vda", "vst", "pix", "tiff", "tif", "vtf", "webp", "xbm", "xcf", "xpm", "zif"],

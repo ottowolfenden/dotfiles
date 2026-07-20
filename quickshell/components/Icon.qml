@@ -6,7 +6,6 @@ Item {
 
     property int pixelSize: 18
     property string colour: ColoursConf.fg1.t
-    property bool fill: false
     property int horizontalMargin: 0
     property int verticalMargin: 0
 
@@ -15,13 +14,13 @@ Item {
 
     Text {
         id: icon
-        text: parent.iconName.replace("custom:", "")
+        text: parent.iconName.replace("custom:", "").replace("fill:", "")
         font.pixelSize: parent.pixelSize
         color: parent.colour
         font.family: parent.iconName.startsWith("custom:") ? FontsConf.customMaterialSymbols : FontsConf.materialSymbols
         renderType: Text.NativeRendering
         font.variableAxes: ({
-                "FILL": parent.fill ? 1 : 0,
+                "FILL": parent.iconName.startsWith("fill:") ? 1 : 0,
                 "wght": 400,
                 "GRAD": 0,
                 "opsz": 24
