@@ -20,9 +20,10 @@ Rectangle {
         mode = modes[newIndex];
     }
     onModeChanged: {
-        DirSearchService.mode = FileSearchService.mode = mode;
+        DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = mode;
         DirSearchService.search(searchInput.text.trim());
         FileSearchService.search(searchInput.text.trim());
+        WebSearchService.search(searchInput.text.trim(), search.mode);
     }
 
     color: ColoursConf.bg2.t
@@ -83,7 +84,7 @@ Rectangle {
                 text = "";
                 search.mode = "default";
                 FlyoutsService.hideFlyout(searchFlyout);
-                DirSearchService.results = FileSearchService.results = [];
+                DirSearchService.results = FileSearchService.results = WebSearchService.results = [];
                 searchColumn.activeIndex = 0;
                 Object.keys(binds).forEach(k => binds[k].active = false);
             }
@@ -178,6 +179,7 @@ Rectangle {
                         FileSearchService.hideOutput();
                     DirSearchService.search(text.trim(), search.mode);
                     FileSearchService.search(text.trim(), search.mode);
+                    WebSearchService.search(text.trim(), search.mode);
                 }
             }
 
@@ -194,7 +196,7 @@ Rectangle {
         onIsOpenChanged: {
             if (isOpen) {
                 searchInput.forceActiveFocus();
-                DirSearchService.mode = FileSearchService.mode = search.mode;
+                DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = search.mode;
                 DirSearchService.searchOpen = FileSearchService.searchOpen = true;
             } else {
                 searchInput.reset();
@@ -222,11 +224,6 @@ Rectangle {
                 readonly property list<Repeater> repeaters: [appSearch, dirSearch, fileSearch, webSearch, commandSearch]
                 readonly property int totalResults: repeaters.reduce((acc, c) => (c.model?.length ?? 0) + acc, 0)
                 property int activeIndex: 0
-                function getIndexOffset(repeater: Repeater): int {
-                    if (repeaters.indexOf(repeater) == 0)
-                        return 0;
-                    return repeaters[repeaters.indexOf(repeater) - 1]?.model?.length ?? 0;
-                }
 
                 SearchColumn {
                     child: appSearch
@@ -270,23 +267,27 @@ Rectangle {
                     }
                 }
 
-                WebSearch {
-                    id: webSearch
-                    visible: search.mode == "web" || search.mode == "default"
-                    property int indexOffset: searchColumn.getIndexOffset(this)
-                    mode: search.mode
-                    searchInput: searchInput
-                    activeIndex: fileSearch.activeIndex - indexOffset
-                    onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                SearchColumn {
+                    child: webSearch
+                    onModeChanged: search.mode = mode
+                    WebSearch {
+                        id: webSearch
+                        visible: search.mode == "web" || search.mode == "default"
+                        property int indexOffset: fileSearch.indexOffset + fileSearch.model.length
+                        mode: search.mode
+                        searchInput: searchInput
+                        activeIndex: searchColumn.activeIndex - indexOffset
+                        onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                    }
                 }
 
                 CommandSearch {
                     id: commandSearch
                     visible: search.mode == "command" || search.mode == "default"
-                    property int indexOffset: searchColumn.getIndexOffset(this)
+                    property int indexOffset: webSearch.indexOffset + webSearch.model.length
                     mode: search.mode
                     searchInput: searchInput
-                    activeIndex: webSearch.activeIndex - indexOffset
+                    activeIndex: searchColumn.activeIndex - indexOffset
                     onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
                 }
 

@@ -304,4 +304,6 @@ QtObject {
             xdgPROJECTS: "folder"
         })
     readonly property string terminal: "terminal"
+    readonly property string webSearch: "custom:web_search"
+    readonly property string history: "history"
 }

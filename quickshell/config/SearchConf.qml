@@ -104,4 +104,6 @@ QtObject {
             }
         })
     readonly property real maxFileNameWidthProportion: 0.6
+    readonly property string searchEngineRegion: "uk-en"
+    readonly property string browserCommand: "helium-browser"
 }
