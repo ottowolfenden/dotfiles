@@ -67,7 +67,7 @@ Rectangle {
             placeholderText: SearchConf.modes.find(m => m.name == root.mode).placeholder
             background: null
             font.pixelSize: FontsConf.pixelSize
-            font.family: root.mode == "command" ? FontsConf.monospaceFamily : FontsConf.mainFamily
+            font.family: root.mode == "commands" ? FontsConf.monospaceFamily : FontsConf.mainFamily
             selectionColor: ColoursConf.textselectionbg.t
             selectedTextColor: ColoursConf.fg1.t
             Layout.fillHeight: true
@@ -123,7 +123,7 @@ Rectangle {
             }
 
             onTextEdited: {
-                if (root.mode == "command")
+                if (root.mode == "commands")
                     return;
                 let mode = SearchConf.modes.find(m => m.prefixes.some(p => (text).startsWith(p)));
                 let prefix = mode?.prefixes.find(p => text.startsWith(p));
@@ -150,7 +150,7 @@ Rectangle {
                     root.changeMode(1, true);
                 else if (e.key == Qt.Key_Backtab)
                     root.changeMode(-1, true);
-                else if (SearchConf.shiftBindsEnabled && root.mode != "command" && (e.modifiers & Qt.ShiftModifier)) {
+                else if (SearchConf.shiftBindsEnabled && root.mode != "commands" && (e.modifiers & Qt.ShiftModifier)) {
                     let mode = SearchConf.modes.find(m => m.shiftKey == e.key)?.name;
                     if (mode) {
                         root.mode = mode;
@@ -289,7 +289,7 @@ Rectangle {
                     onModeChanged: root.mode = mode
                     CommandSearch {
                         id: commandSearch
-                        visible: root.mode == "command" || root.mode == "default"
+                        visible: root.mode == "commands" || root.mode == "default"
                         property int indexOffset: webSearch.indexOffset + webSearch.model.length
                         mode: root.mode
                         searchInput: searchInput

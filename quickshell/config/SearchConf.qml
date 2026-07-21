@@ -60,7 +60,7 @@ QtObject {
             displayName: "Web"
         },
         {
-            name: "command",
+            name: "commands",
             prefixes: ["exec:", ">", "e:", "t:", "c:", "C"],
             shiftKey: Qt.Key_C,
             placeholder: "Search commands",

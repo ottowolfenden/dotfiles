@@ -250,7 +250,7 @@ QtObject {
             dirs: "folder",
             files: "draft",
             web: "language",
-            command: "terminal"
+            commands: "terminal"
         })
     readonly property var fileFormats: {
         "markdown": ["md"],
