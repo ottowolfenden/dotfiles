@@ -6,7 +6,6 @@ import "../.."
 
 QtObject {
     id: root
-    property var results: [...browserHistoryResults, ...suggestionResults].slice(0, getMax())
     property var suggestionResults: []
     property var browserHistoryResults: []
     property string mode
