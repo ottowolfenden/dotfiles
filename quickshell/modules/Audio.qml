@@ -138,7 +138,7 @@ Rectangle {
 
                                     Text {
                                         id: identityText
-                                        text: AudioConf.playerIdentityNames[item.modelData.identity] ?? item.modelData.identity
+                                        text: AudioConf.playerIdentityNames[item?.modelData?.identity] ?? item?.modelData?.identity ?? ""
                                         Layout.fillWidth: true
                                         Layout.preferredWidth: buttonsContainer.implicitWidth
                                         horizontalAlignment: Text.AlignHCenter
@@ -166,7 +166,7 @@ Rectangle {
                                         property bool validPlayerPresent: {
                                             if (audio.players.length == 0)
                                                 return false;
-                                            let isActive = [MprisPlaybackState.Paused, MprisPlaybackState.Playing].includes(item.modelData.playbackState);
+                                            let isActive = [MprisPlaybackState.Paused, MprisPlaybackState.Playing].includes(item?.modelData?.playbackState);
                                             return isActive && AudioConf.playerRequirements.every(r => item.modelData[r]);
                                         }
                                         onValidPlayerPresentChanged: {
@@ -179,7 +179,7 @@ Rectangle {
 
                                         IconButton {
                                             iconName: IconsConf.media.skipBack
-                                            disabled: !item.modelData.canGoPrevious && !visibilityTimer.running
+                                            disabled: !item?.modelData?.canGoPrevious && !visibilityTimer.running
                                             buttonPixelSize: DesignConf.circleButtonDiameter * 0.9
                                             onClicked: {
                                                 if (!disabled)
@@ -187,13 +187,13 @@ Rectangle {
                                             }
                                         }
                                         IconButton {
-                                            iconName: IconsConf.media[item.modelData.isPlaying || visibilityTimer.running ? "pause" : "play"]
+                                            iconName: IconsConf.media[item?.modelData?.isPlaying || visibilityTimer.running ? "pause" : "play"]
                                             buttonPixelSize: DesignConf.circleButtonDiameter * 1.2
                                             onClicked: item.modelData.togglePlaying()
                                         }
                                         IconButton {
                                             iconName: IconsConf.media.skip
-                                            disabled: !item.modelData.canGoNext && !visibilityTimer.running
+                                            disabled: !item?.modelData?.canGoNext && !visibilityTimer.running
                                             buttonPixelSize: DesignConf.circleButtonDiameter * 0.9
                                             onClicked: {
                                                 if (!disabled)
