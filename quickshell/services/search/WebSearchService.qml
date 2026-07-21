@@ -74,8 +74,9 @@ QtObject {
         }
 
         if (!activeClients) {
-            activeWsClientsProcess.leftParams = [result, false, false];
-            activeWsClientsProcess.running = true;
+            HyprlandService.activeWsClientsProcess.callbackFunc = WebSearchService.open;
+            HyprlandService.activeWsClientsProcess.leftParams = [result, false, false];
+            HyprlandService.activeWsClientsProcess.running = true;
         } else {
             let flag = activeClients.map(c => c.class).includes(SearchConf.browserClass) ? "" : "--new-window";
             HyprlandService.execWithQsTag(`${SearchConf.browserCommand} ${flag} '${getSearchURL(result)}'`);
@@ -91,19 +92,6 @@ QtObject {
                 return;
             webSearchService.open(resultToOpen, binds, true);
             resultToOpen = binds = null;
-        }
-    }
-
-    property Process activeWsClientsProcess: Process {
-        id: activeWsClientsProcess
-        property var leftParams: null
-        command: ["hyprctl", "clients", "-j"]
-        stdout: StdioCollector {
-            onStreamFinished: {
-                let clients = JSON.parse(text);
-                let activeClients = clients.filter(c => c.workspace.id == HyprlandService.getActiveWs()?.id);
-                webSearchService.open(...activeWsClientsProcess.leftParams, activeClients);
-            }
         }
     }
 }

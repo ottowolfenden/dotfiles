@@ -154,7 +154,7 @@ Rectangle {
                                                 if (item.modelData.canRaise)
                                                     item.modelData.raise();
                                                 else {
-                                                    Quickshell.execDetached(["hyprctl", "dispatch", "hl.dsp.focus({ window = 'initialclass:(?i)" + item.modelData.identity.toLowerCase() + "' })"]);
+                                                    HyprlandService.focusWindow("initialclass:(?i)" + item.modelData.identity.toLowerCase());
                                                     FlyoutsService.flyoutsHandler.hideAllFlyouts();
                                                 }
                                             }

@@ -1,6 +1,7 @@
 pragma Singleton
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Hyprland
 
 QtObject {
@@ -29,6 +30,10 @@ QtObject {
         Hyprland.dispatch(`hl.dsp.focus({ workspace = "${selector}" })`);
     }
 
+    function focusWindow(selector: var): void {
+        Hyprland.dispatch(`hl.dsp.focus({ window = "${selector}" })`);
+    }
+
     function applyFlyoutConf(): void {
         Quickshell.execDetached(["hyprctl", "eval", `
                 hl.config({
@@ -54,5 +59,21 @@ QtObject {
 
     function execWithQsTag(command: string): void {
         Hyprland.dispatch(`hl.dsp.exec_cmd(${JSON.stringify(command)}, { tag = "+qs" })`);
+    }
+
+    property Process activeWsClientsProcess: Process {
+        id: activeWsClientsProcess
+        property var callbackFunc: null
+        property var leftParams: null
+        command: ["hyprctl", "clients", "-j"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                if (!activeWsClientsProcess.callbackFunc)
+                    return;
+                let clients = JSON.parse(text);
+                let activeClients = clients.filter(c => c.workspace.id == HyprlandService.getActiveWs()?.id);
+                activeWsClientsProcess.callbackFunc(...activeWsClientsProcess.leftParams, activeClients);
+            }
+        }
     }
 }
