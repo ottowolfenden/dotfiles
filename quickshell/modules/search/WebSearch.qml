@@ -40,7 +40,7 @@ Repeater {
         }
         radius: DesignConf.smallRadius
         Layout.fillWidth: true
-        Layout.preferredHeight: text.implicitHeight + DesignConf.spacing
+        Layout.preferredHeight: title.implicitHeight + DesignConf.spacing
 
         MouseArea {
             id: mouseArea
@@ -63,21 +63,40 @@ Repeater {
 
             Icon {
                 iconName: result.modelData.type == "history" ? IconsConf.history : IconsConf.webSearch
-                colour: text.color.toString()
+                colour: title.color.toString()
             }
 
-            Text {
-                id: text
-                text: result.modelData.text
-                color: result.isActive ? ColoursConf.fg1.t : ColoursConf.fg3.t
-                font.family: FontsConf.mainFamily
-                font.pixelSize: FontsConf.pixelSize
-                elide: Text.ElideRight
-                verticalAlignment: Qt.AlignVCenter
-                Layout.fillWidth: true
-                Behavior on color {
-                    ColorAnimation {
-                        duration: DesignConf.buttonColourAnimationDuration
+            RowLayout {
+                id: textRow
+                spacing: DesignConf.spacing
+                property int resultantWidth: DesignConf.searchFlyoutWidth - DesignConf.resultantSearchPadding
+
+                Text {
+                    id: title
+                    text: result.modelData.text
+                    Layout.preferredWidth: Math.min(title.implicitWidth, textRow.resultantWidth * SearchConf.maxHistoryTitleWidthProportion)
+                    color: result.isActive ? ColoursConf.fg1.t : ColoursConf.fg3.t
+                    font.family: FontsConf.mainFamily
+                    font.pixelSize: FontsConf.pixelSize
+                    elide: Text.ElideRight
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: DesignConf.buttonColourAnimationDuration
+                        }
+                    }
+                }
+
+                Text {
+                    text: result.modelData.trimmedUrl ?? ""
+                    Layout.preferredWidth: textRow.resultantWidth - title.Layout.preferredWidth
+                    color: result.isActive ? ColoursConf.fg3.t : ColoursConf.fg4.t
+                    font.family: FontsConf.mainFamily
+                    font.pixelSize: FontsConf.smallPixelSize
+                    elide: Text.ElideRight
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: DesignConf.buttonColourAnimationDuration
+                        }
                     }
                 }
             }
