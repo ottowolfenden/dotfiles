@@ -9,6 +9,7 @@ QtObject {
     readonly property string appHistory: Quickshell.env("HOME") + "/.cache/qs-app-history.json"
     readonly property string hiddenApps: Quickshell.env("HOME") + "/.config/qs-hidden-apps.json"
     readonly property string chromiumHistory: Quickshell.env("HOME") + "/.config/net.imput.helium/Default/History"
+    readonly property string zshHistory: Quickshell.env("HOME") + "/.zsh_history"
     readonly property var xdgDirs: {
         "DOWNLOAD": "",
         "DESKTOP": "",

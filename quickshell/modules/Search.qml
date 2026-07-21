@@ -20,10 +20,11 @@ Rectangle {
         mode = modes[newIndex];
     }
     onModeChanged: {
-        DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = mode;
+        DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = CommandSearchService.mode = mode;
         DirSearchService.search(searchInput.text.trim());
         FileSearchService.search(searchInput.text.trim());
         WebSearchService.search(searchInput.text.trim(), root.mode);
+        CommandSearchService.search(searchInput.text.trim(), root.mode);
     }
 
     color: ColoursConf.bg2.t
@@ -86,6 +87,7 @@ Rectangle {
                 FlyoutsService.hideFlyout(searchFlyout);
                 DirSearchService.results = FileSearchService.results = [];
                 WebSearchService.reset();
+                CommandSearchService.reset();
                 searchColumn.activeIndex = 0;
                 Object.keys(binds).forEach(k => binds[k].active = false);
             }
@@ -180,9 +182,10 @@ Rectangle {
                         DirSearchService.hideOutput();
                     else if (root.mode == "files")
                         FileSearchService.hideOutput();
-                    DirSearchService.search(text.trim(), root.mode);
-                    FileSearchService.search(text.trim(), root.mode);
+                    DirSearchService.search(text.trim());
+                    FileSearchService.search(text.trim());
                     WebSearchService.search(text.trim(), root.mode);
+                    CommandSearchService.search(text.trim(), root.mode);
                 }
             }
 
@@ -199,7 +202,7 @@ Rectangle {
         onIsOpenChanged: {
             if (isOpen) {
                 searchInput.forceActiveFocus();
-                DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = root.mode;
+                DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = CommandSearchService.mode = root.mode;
                 DirSearchService.searchOpen = FileSearchService.searchOpen = true;
             } else {
                 searchInput.reset();

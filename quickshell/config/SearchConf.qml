@@ -66,8 +66,8 @@ QtObject {
             placeholder: "Search commands",
             minChars: 1,
             maxResults: {
-                all: 0,
-                filtered: 10
+                all: 3,
+                filtered: 15
             },
             displayName: "Commands"
         }
