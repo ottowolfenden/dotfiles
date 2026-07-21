@@ -55,7 +55,7 @@ QtObject {
             minChars: 1,
             maxResults: {
                 all: 4,
-                filtered: 15
+                filtered: 7
             },
             displayName: "Web"
         },
@@ -109,6 +109,7 @@ QtObject {
     readonly property string searchEngineRegion: "uk-en"
     readonly property string browserCommand: "helium-browser"
     readonly property string browserClass: "helium"
-    readonly property list<string> searchHistorySqlExclusions: ["https://duckduckgo.com/%", "https://www.youtube.com/_%", "%google.com/search%"]
-    readonly property real browserHistoryProportion: 0.6
+    readonly property var searchHistorySqlExclusions: ["https://duckduckgo.com/%", "https://www.youtube.com/_%", "https://www.google.com/search%"]
+    readonly property real browserHistoryProportion: 0.4
+    readonly property string secondaryHistoryProperty: "hostName" // "hostName", "trimmedUrl", "url" or "type"
 }

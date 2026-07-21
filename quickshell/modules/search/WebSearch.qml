@@ -87,7 +87,7 @@ Repeater {
                 }
 
                 Text {
-                    text: result.modelData.trimmedUrl ?? ""
+                    text: result.modelData[SearchConf.secondaryHistoryProperty] ?? ""
                     Layout.preferredWidth: textRow.resultantWidth - title.Layout.preferredWidth
                     color: result.isActive ? ColoursConf.fg3.t : ColoursConf.fg4.t
                     font.family: FontsConf.mainFamily
