@@ -123,7 +123,13 @@ QtObject {
         history = history.map(h => ({
                     type: "history",
                     text: h.title.trim(),
-                    url: h.url
+                    url: h.url,
+                    get trimmedUrl() {
+                        let protocolRemoved = this.url.replace(/^[^:]+:\/\//, "");
+                        if (protocolRemoved.endsWith("/"))
+                            return protocolRemoved.slice(0, -1);
+                        return protocolRemoved;
+                    }
                 }));
 
         return UtilsService.getDistinctByAnyKeys(history, ["text", "url"]).slice(0, getMax("history"));
