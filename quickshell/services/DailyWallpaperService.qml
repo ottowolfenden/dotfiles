@@ -5,7 +5,7 @@ import Quickshell.Io
 import ".."
 
 QtObject {
-    id: dailyWallpaperService
+    id: root
 
     property string path
 
@@ -14,7 +14,7 @@ QtObject {
         running: ModeService.mode != null
         stdout: StdioCollector {
             onStreamFinished: {
-                dailyWallpaperService.path = text.trim();
+                root.path = text.trim();
                 Quickshell.execDetached(["awww", "img", text.trim(), "--transition-type", "none"]);
             }
         }
@@ -24,7 +24,7 @@ QtObject {
         running: true
         interval: new Date(new Date().setHours(24, 0, 0, 0)) - new Date()
         onTriggered: {
-            dailyWallpaperService.dailyWallpaperProcess.running = true;
+            root.dailyWallpaperProcess.running = true;
             interval = 24 * 60 * 60 * 1000;
             restart();
         }
@@ -33,7 +33,7 @@ QtObject {
     property IpcHandler dailyWallpaperHandler: IpcHandler {
         target: "dailyWallpaperHandler"
         function refresh() {
-            dailyWallpaperService.dailyWallpaperProcess.running = true;
+            root.dailyWallpaperProcess.running = true;
         }
     }
 }

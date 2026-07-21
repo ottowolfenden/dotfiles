@@ -4,7 +4,6 @@ import ".."
 import "../components"
 
 Rectangle {
-    id: mode
     color: "transparent"
     radius: DesignConf.radius
     implicitWidth: DesignConf.componentHeight

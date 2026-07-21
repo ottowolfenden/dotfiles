@@ -4,8 +4,7 @@ import QtQuick.Layouts
 import ".."
 
 Button {
-    id: button
-    text: "Lorem ipsum"
+    id: root
     property string iconName
     property int radius: DesignConf.radius
 
@@ -13,18 +12,18 @@ Button {
 
     contentItem: RowLayout {
         Icon {
-            iconName: button.iconName
-            visible: button.iconName
+            iconName: root.iconName
+            visible: root.iconName
             horizontalMargin: 4
             pixelSize: 16
         }
         Text {
-            text: button.text
+            text: root.text
             font.pixelSize: FontsConf.pixelSize
             font.family: FontsConf.mainFamily
             color: ColoursConf.fg1.t
             rightPadding: DesignConf.spacing
-            leftPadding: button.iconName ? 0 : DesignConf.spacing
+            leftPadding: root.iconName ? 0 : DesignConf.spacing
         }
         Item {
             Layout.fillWidth: true
@@ -32,13 +31,13 @@ Button {
     }
 
     background: Rectangle {
-        implicitHeight: button.contentItem.implicitHeight
-        radius: button.radius
+        implicitHeight: root.contentItem.implicitHeight
+        radius: root.radius
         border.width: 0
         color: {
-            if (button.pressed)
+            if (root.pressed)
                 return ColoursConf.pressedbg.t;
-            else if (button.hovered)
+            else if (root.hovered)
                 return ColoursConf.hoveredbg.t;
             return ColoursConf.inactivebg.t;
         }

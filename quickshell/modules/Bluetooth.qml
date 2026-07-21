@@ -5,7 +5,6 @@ import ".."
 import "../components"
 
 Rectangle {
-    id: bluetooth
     color: "transparent"
     radius: DesignConf.radius
     implicitWidth: DesignConf.componentHeight
@@ -20,7 +19,7 @@ Rectangle {
         id: icon
         anchors.centerIn: parent
         iconName: {
-            if (bluetooth.on)
+            if (parent.on)
                 return parent.numConnected <= 0 ? IconsConf.bluetooth.enabled : IconsConf.bluetooth.connected;
             return IconsConf.bluetooth.disabled;
         }

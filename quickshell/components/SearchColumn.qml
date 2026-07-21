@@ -3,7 +3,7 @@ import QtQuick.Layouts
 import ".."
 
 ColumnLayout {
-    id: col
+    id: root
     default property alias content: contentContainer.children
     required property Repeater child
     property string mode
@@ -12,11 +12,11 @@ ColumnLayout {
     spacing: child.mode == child.modeSupplied ? 0 : DesignConf.spacing / 2
 
     Item {
-        visible: col.child.model.length > 0 && col.child.visible
+        visible: root.child.model.length > 0 && root.child.visible
         Layout.leftMargin: DesignConf.radius / 2
-        Layout.preferredHeight: col.child.mode == col.child.modeSupplied ? 0 : label.implicitHeight
+        Layout.preferredHeight: root.child.mode == root.child.modeSupplied ? 0 : label.implicitHeight
         Layout.preferredWidth: label.implicitWidth
-        opacity: col.child.mode != col.child.modeSupplied
+        opacity: root.child.mode != root.child.modeSupplied
 
         Behavior on Layout.preferredHeight {
             NumberAnimation {
@@ -37,13 +37,13 @@ ColumnLayout {
             anchors.fill: parent
 
             Icon {
-                iconName: IconsConf.searchMode[col.child.modeSupplied]
+                iconName: IconsConf.searchMode[root.child.modeSupplied]
                 colour: ColoursConf.fg3.t
                 pixelSize: 16
             }
 
             Text {
-                text: SearchConf.modes.find(m => m.name == col.child.modeSupplied)?.displayName ?? ""
+                text: SearchConf.modes.find(m => m.name == root.child.modeSupplied)?.displayName ?? ""
                 color: ColoursConf.fg3.t
                 font.pixelSize: FontsConf.smallPixelSize
                 Layout.leftMargin: -2
@@ -54,14 +54,14 @@ ColumnLayout {
             anchors.fill: parent
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
-            onClicked: col.mode = col.child.modeSupplied
+            onClicked: root.mode = root.child.modeSupplied
         }
     }
 
     Rectangle {
         Layout.fillWidth: true
-        Layout.preferredHeight: contentContainer.implicitHeight + DesignConf.spacing * (col.child.model.length > 0 ? 2 : 0)
-        visible: col.child.model.length > 0
+        Layout.preferredHeight: contentContainer.implicitHeight + DesignConf.spacing * (root.child.model.length > 0 ? 2 : 0)
+        visible: root.child.model.length > 0
         color: ColoursConf.bg3.t
         radius: DesignConf.radius
 

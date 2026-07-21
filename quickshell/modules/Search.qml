@@ -8,7 +8,7 @@ import "search"
 import "../components"
 
 Rectangle {
-    id: search
+    id: root
     property bool isOpen: searchFlyout.isOpen
     property string mode: "default"
     function changeMode(direction: int, includeDefault: bool): void {
@@ -23,7 +23,7 @@ Rectangle {
         DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = mode;
         DirSearchService.search(searchInput.text.trim());
         FileSearchService.search(searchInput.text.trim());
-        WebSearchService.search(searchInput.text.trim(), search.mode);
+        WebSearchService.search(searchInput.text.trim(), root.mode);
     }
 
     color: ColoursConf.bg2.t
@@ -40,7 +40,7 @@ Rectangle {
     IpcHandler {
         target: "searchHandler"
         function toggle(): void {
-            if (search.isOpen)
+            if (root.isOpen)
                 FlyoutsService.flyoutsHandler.hideAllFlyouts();
             else
                 flyoutMouseArea.open();
@@ -64,10 +64,10 @@ Rectangle {
         TextField {
             id: searchInput
             color: ColoursConf.fg1.t
-            placeholderText: SearchConf.modes.find(m => m.name == search.mode).placeholder
+            placeholderText: SearchConf.modes.find(m => m.name == root.mode).placeholder
             background: null
             font.pixelSize: FontsConf.pixelSize
-            font.family: search.mode == "command" ? FontsConf.monospaceFamily : FontsConf.mainFamily
+            font.family: root.mode == "command" ? FontsConf.monospaceFamily : FontsConf.mainFamily
             selectionColor: ColoursConf.textselectionbg.t
             selectedTextColor: ColoursConf.fg1.t
             Layout.fillHeight: true
@@ -82,7 +82,7 @@ Rectangle {
 
             function reset(): void {
                 text = "";
-                search.mode = "default";
+                root.mode = "default";
                 FlyoutsService.hideFlyout(searchFlyout);
                 DirSearchService.results = FileSearchService.results = [];
                 WebSearchService.reset();
@@ -123,18 +123,18 @@ Rectangle {
             }
 
             onTextEdited: {
-                if (search.mode == "command")
+                if (root.mode == "command")
                     return;
                 let mode = SearchConf.modes.find(m => m.prefixes.some(p => (text).startsWith(p)));
                 let prefix = mode?.prefixes.find(p => text.startsWith(p));
-                if (mode && prefix && search.mode != mode.name) {
-                    search.mode = mode.name;
+                if (mode && prefix && root.mode != mode.name) {
+                    root.mode = mode.name;
                     text = text.replace(prefix, "");
                 }
             }
 
             Keys.onPressed: e => {
-                if (!search.isOpen)
+                if (!root.isOpen)
                     return;
 
                 prevText = text;
@@ -145,15 +145,15 @@ Rectangle {
                     open();
                 } else if ((e.key == Qt.Key_Backspace && text == "") || (e.key == Qt.Key_Delete && (e.modifiers & Qt.ControlModifier))) {
                     e.accepted = true;
-                    search.mode = "default";
+                    root.mode = "default";
                 } else if (e.key == Qt.Key_Tab)
-                    search.changeMode(1, true);
+                    root.changeMode(1, true);
                 else if (e.key == Qt.Key_Backtab)
-                    search.changeMode(-1, true);
-                else if (SearchConf.shiftBindsEnabled && search.mode != "command" && (e.modifiers & Qt.ShiftModifier)) {
+                    root.changeMode(-1, true);
+                else if (SearchConf.shiftBindsEnabled && root.mode != "command" && (e.modifiers & Qt.ShiftModifier)) {
                     let mode = SearchConf.modes.find(m => m.shiftKey == e.key)?.name;
                     if (mode) {
-                        search.mode = mode;
+                        root.mode = mode;
                         e.accepted = true;
                     }
                 } else if (e.key == Qt.Key_Up && (e.modifiers & Qt.ControlModifier))
@@ -174,15 +174,15 @@ Rectangle {
 
             Keys.onReleased: e => {
                 if (text == prevText && e.key == Qt.Key_Backspace)
-                    search.mode = "default";
+                    root.mode = "default";
                 if (text != prevText || e.key == Qt.Key_Tab) {
-                    if (search.mode == "dirs")
+                    if (root.mode == "dirs")
                         DirSearchService.hideOutput();
-                    else if (search.mode == "files")
+                    else if (root.mode == "files")
                         FileSearchService.hideOutput();
-                    DirSearchService.search(text.trim(), search.mode);
-                    FileSearchService.search(text.trim(), search.mode);
-                    WebSearchService.search(text.trim(), search.mode);
+                    DirSearchService.search(text.trim(), root.mode);
+                    FileSearchService.search(text.trim(), root.mode);
+                    WebSearchService.search(text.trim(), root.mode);
                 }
             }
 
@@ -192,14 +192,14 @@ Rectangle {
 
     Flyout {
         id: searchFlyout
-        parentX: search.x
+        parentX: root.x
         rectWidth: DesignConf.searchFlyoutWidth
         rectHeight: pane.height
         focusable: false
         onIsOpenChanged: {
             if (isOpen) {
                 searchInput.forceActiveFocus();
-                DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = search.mode;
+                DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = root.mode;
                 DirSearchService.searchOpen = FileSearchService.searchOpen = true;
             } else {
                 searchInput.reset();
@@ -230,12 +230,12 @@ Rectangle {
 
                 SearchColumn {
                     child: appSearch
-                    onModeChanged: search.mode = mode
+                    onModeChanged: root.mode = mode
                     AppSearch {
                         id: appSearch
-                        visible: search.mode == "apps" || search.mode == "default"
+                        visible: root.mode == "apps" || root.mode == "default"
                         property int indexOffset: 0
-                        mode: search.mode
+                        mode: root.mode
                         searchInput: searchInput
                         activeIndex: searchColumn.activeIndex - indexOffset
                         onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
@@ -244,12 +244,12 @@ Rectangle {
 
                 SearchColumn {
                     child: dirSearch
-                    onModeChanged: search.mode = mode
+                    onModeChanged: root.mode = mode
                     DirSearch {
                         id: dirSearch
-                        visible: search.mode == "dirs" || search.mode == "default"
+                        visible: root.mode == "dirs" || root.mode == "default"
                         property int indexOffset: appSearch.model.length
-                        mode: search.mode
+                        mode: root.mode
                         searchInput: searchInput
                         activeIndex: searchColumn.activeIndex - indexOffset
                         onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
@@ -258,12 +258,12 @@ Rectangle {
 
                 SearchColumn {
                     child: fileSearch
-                    onModeChanged: search.mode = mode
+                    onModeChanged: root.mode = mode
                     FileSearch {
                         id: fileSearch
-                        visible: search.mode == "files" || search.mode == "default"
+                        visible: root.mode == "files" || root.mode == "default"
                         property int indexOffset: dirSearch.indexOffset + dirSearch.model.length
-                        mode: search.mode
+                        mode: root.mode
                         searchInput: searchInput
                         activeIndex: searchColumn.activeIndex - indexOffset
                         onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
@@ -272,26 +272,30 @@ Rectangle {
 
                 SearchColumn {
                     child: webSearch
-                    onModeChanged: search.mode = mode
+                    onModeChanged: root.mode = mode
                     WebSearch {
                         id: webSearch
-                        visible: search.mode == "web" || search.mode == "default"
+                        visible: root.mode == "web" || root.mode == "default"
                         property int indexOffset: fileSearch.indexOffset + fileSearch.model.length
-                        mode: search.mode
+                        mode: root.mode
                         searchInput: searchInput
                         activeIndex: searchColumn.activeIndex - indexOffset
                         onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
                     }
                 }
 
-                CommandSearch {
-                    id: commandSearch
-                    visible: search.mode == "command" || search.mode == "default"
-                    property int indexOffset: webSearch.indexOffset + webSearch.model.length
-                    mode: search.mode
-                    searchInput: searchInput
-                    activeIndex: searchColumn.activeIndex - indexOffset
-                    onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                SearchColumn {
+                    child: commandSearch
+                    onModeChanged: root.mode = mode
+                    CommandSearch {
+                        id: commandSearch
+                        visible: root.mode == "command" || root.mode == "default"
+                        property int indexOffset: webSearch.indexOffset + webSearch.model.length
+                        mode: root.mode
+                        searchInput: searchInput
+                        activeIndex: searchColumn.activeIndex - indexOffset
+                        onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
+                    }
                 }
 
                 LoadingBar {

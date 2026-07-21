@@ -7,7 +7,7 @@ import ".."
 import "../components"
 
 Rectangle {
-    id: toggleGroup
+    id: root
     required property list<string> icons
     property var onClickedCommands
     property Timer checkTimer
@@ -27,7 +27,7 @@ Rectangle {
 
         Repeater {
             id: repeater
-            model: toggleGroup.icons
+            model: root.icons
 
             delegate: Rectangle {
                 required property int index
@@ -37,7 +37,7 @@ Rectangle {
                 implicitHeight: DesignConf.circleButtonDiameter
 
                 color: {
-                    if (index == toggleGroup.activeIndex)
+                    if (index == root.activeIndex)
                         return ColoursConf.lightblue;
                     if (mouseArea.pressed)
                         return ColoursConf.pressedbg.t;
@@ -49,29 +49,29 @@ Rectangle {
                 Icon {
                     iconName: parent.modelData
                     anchors.fill: parent
-                    colour: parent.index == toggleGroup.activeIndex ? ColoursConf.invfg : ColoursConf.fg1.t
+                    colour: parent.index == root.activeIndex ? ColoursConf.invfg : ColoursConf.fg1.t
                 }
                 MouseArea {
                     id: mouseArea
-                    cursorShape: toggleGroup.activeIndex == parent.index ? undefined : Qt.PointingHandCursor
+                    cursorShape: root.activeIndex == parent.index ? undefined : Qt.PointingHandCursor
                     anchors.fill: parent
                     hoverEnabled: true
                     onClicked: {
-                        toggleGroup.activeIndex = parent.index;
-                        toggleGroup.ignoreUpdates = true;
+                        root.activeIndex = parent.index;
+                        root.ignoreUpdates = true;
                         cooldownTimer.restart();
 
-                        if (toggleGroup.onClickedCommands)
-                            Quickshell.execDetached(toggleGroup.onClickedCommands[parent.index]);
+                        if (root.onClickedCommands)
+                            Quickshell.execDetached(root.onClickedCommands[parent.index]);
 
-                        if (toggleGroup.checkTimer)
-                            toggleGroup.checkTimer.restart();
+                        if (root.checkTimer)
+                            root.checkTimer.restart();
                     }
                 }
                 Timer {
                     id: cooldownTimer
                     interval: 1000
-                    onTriggered: toggleGroup.ignoreUpdates = false
+                    onTriggered: root.ignoreUpdates = false
                 }
                 Behavior on color {
                     ColorAnimation {

@@ -6,7 +6,7 @@ import ".."
 import "../components"
 
 Rectangle {
-    id: network
+    id: root
     color: "transparent"
     radius: DesignConf.radius
     implicitWidth: container.implicitWidth + (DesignConf.spacing * 2)
@@ -30,13 +30,13 @@ Rectangle {
         Icon {
             iconName: {
                 let conn = Networking.connectivity ?? NetworkConnectivity.Unknown;
-                let icons = IconsConf.wifi.find(i => i.connectivity == conn).icons.find(j => network.wifiStrength <= (j.max ?? 1));
-                return network.isWifiSecured ? icons.secured : icons.open;
+                let icons = IconsConf.wifi.find(i => i.connectivity == conn).icons.find(j => root.wifiStrength <= (j.max ?? 1));
+                return root.isWifiSecured ? icons.secured : icons.open;
             }
         }
 
         Icon {
-            iconName: IconsConf.vpn[network.isVpnConnected ? "on" : "off"]
+            iconName: IconsConf.vpn[root.isVpnConnected ? "on" : "off"]
             opacity: 1
 
             MouseArea {
@@ -46,7 +46,7 @@ Rectangle {
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
                     vpnPulse.running = true;
-                    if (network.isVpnConnected)
+                    if (root.isVpnConnected)
                         disableVpn.running = true;
                     else
                         enableVpn.running = true;
@@ -87,7 +87,7 @@ Rectangle {
         id: vpnCheck
         command: ["nmcli", "connection", "show", "--active"]
         stdout: StdioCollector {
-            onStreamFinished: network.isVpnConnected = SystemConf.vpnIdentifiers.some(i => text.toLowerCase().includes(i))
+            onStreamFinished: root.isVpnConnected = SystemConf.vpnIdentifiers.some(i => text.toLowerCase().includes(i))
         }
     }
 
@@ -104,7 +104,7 @@ Rectangle {
         onExited: exitCode => {
             if (exitCode == 0) {
                 vpnPulse.running = false;
-                resetVpnOpacity.running = network.isVpnConnected = true;
+                resetVpnOpacity.running = root.isVpnConnected = true;
             }
         }
     }
@@ -114,7 +114,7 @@ Rectangle {
         command: ["protonvpn", "disconnect"]
         onExited: exitCode => {
             if (exitCode == 0) {
-                vpnPulse.running = network.isVpnConnected = false;
+                vpnPulse.running = root.isVpnConnected = false;
                 resetVpnOpacity.running = true;
             }
         }

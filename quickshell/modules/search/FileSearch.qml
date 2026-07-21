@@ -6,7 +6,7 @@ import "../.."
 import "../../components"
 
 Repeater {
-    id: fileSearch
+    id: root
     required property string mode
     required property TextField searchInput
     required property int activeIndex
@@ -19,12 +19,12 @@ Repeater {
         id: result
         required property var modelData
         required property int index
-        readonly property bool isActive: index == fileSearch.activeIndex
+        readonly property bool isActive: index == root.activeIndex
 
         color: {
             if (mouseArea.pressed)
                 return ColoursConf.pressedbg.t;
-            else if (index == fileSearch.activeIndex)
+            else if (index == root.activeIndex)
                 return ColoursConf.hoveredbg.t;
             return "transparent";
         }
@@ -44,10 +44,10 @@ Repeater {
             anchors.margins: -DesignConf.spacing / 4
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
-            onContainsMouseChanged: (containsMouse ? () => fileSearch.activeIndexSet(result.index) : () => {})()
+            onContainsMouseChanged: (containsMouse ? () => root.activeIndexSet(result.index) : () => {})()
             onClicked: mouse => {
                 FileSearchService.open(result.modelData);
-                fileSearch.searchInput.reset();
+                root.searchInput.reset();
             }
         }
 

@@ -7,7 +7,7 @@ import Quickshell.Wayland
 import ".."
 
 PanelWindow {
-    id: baf
+    id: root
     default property alias content: contentContainer.children
     required property string type
     property bool hovering: false
@@ -15,7 +15,7 @@ PanelWindow {
     property Timer autoHideTimer: Timer {
         interval: DesignConf.bafMsDelay
         repeat: false
-        onTriggered: FlyoutsService.hideBaf(baf)
+        onTriggered: FlyoutsService.hideBaf(root)
     }
 
     color: "transparent"
@@ -26,19 +26,19 @@ PanelWindow {
     mask: Region {
         item: rect
     }
-    WlrLayershell.namespace: "quickshell-baf"
+    WlrLayershell.namespace: "quickshell-root"
     WlrLayershell.layer: WlrLayer.Overlay
 
     Shape {
         id: rect
         width: pane.implicitWidth
         height: pane.implicitHeight
-        x: baf.width / 2 - width / 2
-        opacity: baf.isOpen || rect.y < baf.height ? 1 : 0
+        x: root.width / 2 - width / 2
+        opacity: root.isOpen || rect.y < root.height ? 1 : 0
         y: {
-            if (baf.height <= 0)
+            if (root.height <= 0)
                 return Screen.height;
-            return baf.isOpen ? (baf.height - height) : baf.height;
+            return root.isOpen ? (root.height - height) : root.height;
         }
 
         ShapePath {
@@ -79,7 +79,7 @@ PanelWindow {
         }
 
         Behavior on y {
-            enabled: baf.height > 0
+            enabled: root.height > 0
             NumberAnimation {
                 duration: 200
                 easing: Easing.OutCubic
@@ -87,7 +87,7 @@ PanelWindow {
         }
 
         HoverHandler {
-            onHoveredChanged: baf.hovering = this.hovered
+            onHoveredChanged: root.hovering = this.hovered
         }
 
         Pane {
@@ -106,21 +106,21 @@ PanelWindow {
 
     Shape {
         id: middleInvRounding
-        property int scaledHeight: Math.max(rect.y + DesignConf.radius, baf.height - DesignConf.radius)
+        property int scaledHeight: Math.max(rect.y + DesignConf.radius, root.height - DesignConf.radius)
         layer.enabled: true
         layer.samples: 20
-        opacity: baf.isOpen || rect.y < baf.height ? 1 : 0
+        opacity: root.isOpen || rect.y < root.height ? 1 : 0
 
         ShapePath {
             fillColor: ColoursConf.bg1
             strokeWidth: 0
 
             startX: rect.x
-            startY: baf.height
+            startY: root.height
 
             PathLine {
                 x: rect.x - DesignConf.radius
-                y: baf.height
+                y: root.height
             }
             PathArc {
                 x: rect.x
@@ -131,7 +131,7 @@ PanelWindow {
             }
             PathLine {
                 x: rect.x
-                y: baf.height
+                y: root.height
             }
         }
         ShapePath {
@@ -139,11 +139,11 @@ PanelWindow {
             strokeWidth: 0
 
             startX: rect.x + rect.width
-            startY: baf.height
+            startY: root.height
 
             PathLine {
                 x: rect.x + rect.width + DesignConf.radius
-                y: baf.height
+                y: root.height
             }
             PathArc {
                 x: rect.x + rect.width
@@ -153,7 +153,7 @@ PanelWindow {
             }
             PathLine {
                 x: rect.x + rect.width
-                y: baf.height
+                y: root.height
             }
         }
     }

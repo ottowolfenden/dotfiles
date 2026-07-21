@@ -6,7 +6,7 @@ import Quickshell
 import "../.."
 
 Repeater {
-    id: appSearch
+    id: root
     required property string mode
     required property TextField searchInput
     required property int activeIndex
@@ -19,7 +19,7 @@ Repeater {
         id: result
         required property DesktopEntry modelData
         required property int index
-        readonly property bool isActive: index == appSearch.activeIndex
+        readonly property bool isActive: index == root.activeIndex
 
         color: {
             if (mouseArea.pressed)
@@ -39,11 +39,11 @@ Repeater {
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
             acceptedButtons: Qt.LeftButton | Qt.MiddleButton
-            onContainsMouseChanged: (containsMouse ? () => appSearch.activeIndexSet(result.index) : () => {})()
+            onContainsMouseChanged: (containsMouse ? () => root.activeIndexSet(result.index) : () => {})()
             onClicked: mouse => {
                 if (mouse.button == Qt.LeftButton) {
                     AppSearchService.open(result.modelData);
-                    appSearch.searchInput.reset();
+                    root.searchInput.reset();
                 } else if (mouse.button == Qt.MiddleButton)
                     AppSearchService.hide(result.modelData);
             }

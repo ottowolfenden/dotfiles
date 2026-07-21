@@ -5,6 +5,7 @@ import "../../components"
 
 BottomAutoFlyout {
     type: "volume"
+
     Slider {
         value: Pipewire.defaultAudioSink?.audio?.volume ?? 0
         onChanged: newValue => Pipewire.defaultAudioSink.audio.volume = newValue

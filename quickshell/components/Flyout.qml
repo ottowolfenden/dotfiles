@@ -4,14 +4,14 @@ import Quickshell
 import ".."
 
 PanelWindow {
-    id: flyout
+    id: root
     default property alias content: contentContainer.children
     required property int parentX
     required property int rectWidth
     required property int rectHeight
     signal opened
 
-    property string pos: rect.x == 0 ? "left" : (rect.x + rect.width == flyout.width ? "right" : "middle")
+    property string pos: rect.x == 0 ? "left" : (rect.x + rect.width == root.width ? "right" : "middle")
     property bool isOpen: false
     property bool hovering: false
 
@@ -27,17 +27,17 @@ PanelWindow {
     }
     onIsOpenChanged: {
         if (isOpen) {
-            FlyoutsService.hideAllFlyoutsExcept(flyout);
+            FlyoutsService.hideAllFlyoutsExcept(root);
             opened();
         }
     }
 
     Shape {
         id: rect
-        width: flyout.rectWidth
-        height: flyout.rectHeight
-        x: UtilsService.clamp(flyout.parentX - rect.width / 2, 0, flyout.width - rect.width)
-        y: flyout.isOpen ? 0 : -height
+        width: root.rectWidth
+        height: root.rectHeight
+        x: UtilsService.clamp(root.parentX - rect.width / 2, 0, root.width - rect.width)
+        y: root.isOpen ? 0 : -height
         clip: true
 
         ShapePath {
@@ -92,7 +92,7 @@ PanelWindow {
         }
 
         HoverHandler {
-            onHoveredChanged: flyout.hovering = this.hovered
+            onHoveredChanged: root.hovering = this.hovered
         }
 
         Item {

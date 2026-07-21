@@ -6,7 +6,6 @@ import "../../components"
 
 Scope {
     id: root
-
     property int brightness: 0
     property bool increasing: false
 

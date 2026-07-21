@@ -6,7 +6,7 @@ import "../.."
 import "../../components"
 
 Repeater {
-    id: webSearch
+    id: root
     required property string mode
     required property TextField searchInput
     required property int activeIndex
@@ -29,7 +29,7 @@ Repeater {
         id: result
         required property var modelData
         required property int index
-        readonly property bool isActive: index == webSearch.activeIndex
+        readonly property bool isActive: index == root.activeIndex
 
         color: {
             if (mouseArea.pressed)
@@ -48,10 +48,10 @@ Repeater {
             anchors.margins: -DesignConf.spacing / 4
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
-            onContainsMouseChanged: (containsMouse ? () => webSearch.activeIndexSet(result.index) : () => {})()
+            onContainsMouseChanged: (containsMouse ? () => root.activeIndexSet(result.index) : () => {})()
             onClicked: {
                 WebSearchService.open(result.modelData);
-                webSearch.searchInput.reset();
+                root.searchInput.reset();
             }
         }
 

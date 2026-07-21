@@ -1,10 +1,10 @@
 pragma Singleton
 import QtQuick
-import Quickshell
 import ".."
+import "../.."
 
 QtObject {
-    function search(text: string, mode: string): list<DesktopEntry> {
+    function search(text: string, mode: string) {
         let max = UtilsService.getMaxSearchResults("command", mode);
     }
 }

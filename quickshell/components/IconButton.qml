@@ -3,7 +3,7 @@ import QtQuick.Controls
 import ".."
 
 Button {
-    id: button
+    id: root
     property string iconName
     property real radius: Infinity
     property int buttonPixelSize: DesignConf.circleButtonDiameter
@@ -13,24 +13,24 @@ Button {
     property bool isTransparentOnInactive: false
 
     contentItem: Icon {
-        iconName: button.iconName
-        pixelSize: button.iconPixelSize
-        colour: button.disabled ? ColoursConf.fg4.t : ColoursConf.fg1.t
+        iconName: root.iconName
+        pixelSize: root.iconPixelSize
+        colour: root.disabled ? ColoursConf.fg4.t : ColoursConf.fg1.t
     }
 
     background: Rectangle {
-        implicitHeight: button.buttonPixelSize
-        implicitWidth: button.buttonPixelSize
-        radius: button.radius
+        implicitHeight: root.buttonPixelSize
+        implicitWidth: root.buttonPixelSize
+        radius: root.radius
         border.width: 0
         color: {
-            if (button.disabled)
-                return button.isTransparentOnInactive ? "transparent" : ColoursConf.inactivebg.t;
-            if (button.pressed)
+            if (root.disabled)
+                return root.isTransparentOnInactive ? "transparent" : ColoursConf.inactivebg.t;
+            if (root.pressed)
                 return ColoursConf.pressedbg.t;
-            else if (button.hovered)
+            else if (root.hovered)
                 return ColoursConf.hoveredbg.t;
-            return button.isTransparentOnInactive ? "transparent" : ColoursConf.inactivebg.t;
+            return root.isTransparentOnInactive ? "transparent" : ColoursConf.inactivebg.t;
         }
 
         Behavior on color {
@@ -42,12 +42,12 @@ Button {
 
     HoverHandler {
         onHoveredChanged: {
-            if (hovered && !button.disabled) {
+            if (hovered && !root.disabled) {
                 this.cursorShape = Qt.PointingHandCursor;
-                button.hovering = true;
+                root.hovering = true;
             } else {
                 this.cursorShape = Qt.ArrowCursor;
-                button.hovering = false;
+                root.hovering = false;
             }
         }
     }

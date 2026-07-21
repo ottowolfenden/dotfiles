@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import ".."
 
 Item {
-    id: slider
+    id: root
     required property real value
 
     property string bgColour: ColoursConf.bg3.t
@@ -14,7 +14,7 @@ Item {
     readonly property int trackWidth: width - handle.Layout.preferredWidth
     readonly property int trackHeight: height - handle.extraHeight
     readonly property int smallRadius: 2
-    readonly property bool iconOnActiveTrack: slider.trackWidth * (1 - slider.value) < activeTrackIcon.width + DesignConf.spacing * 2
+    readonly property bool iconOnActiveTrack: root.trackWidth * (1 - root.value) < activeTrackIcon.width + DesignConf.spacing * 2
 
     signal changed(real newValue)
 
@@ -29,10 +29,10 @@ Item {
 
         Item {
             id: activeTrack
-            property int smallRadius: slider.value > 0.02 ? 2 : 0
+            property int smallRadius: root.value > 0.02 ? 2 : 0
 
-            Layout.preferredWidth: Math.round(slider.trackWidth * slider.value)
-            Layout.preferredHeight: slider.trackHeight
+            Layout.preferredWidth: Math.round(root.trackWidth * root.value)
+            Layout.preferredHeight: root.trackHeight
             Layout.alignment: Qt.AlignVCenter
 
             Behavior on Layout.preferredWidth {
@@ -47,7 +47,7 @@ Item {
                 anchors.fill: parent
 
                 ShapePath {
-                    fillColor: slider.fgColour
+                    fillColor: root.fgColour
                     strokeWidth: 0
 
                     startX: DesignConf.radius
@@ -97,9 +97,9 @@ Item {
             }
             Icon {
                 id: activeTrackIcon
-                iconName: slider.iconName
+                iconName: root.iconName
                 colour: ColoursConf.invfg
-                visible: slider.iconOnActiveTrack
+                visible: root.iconOnActiveTrack
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
@@ -113,14 +113,14 @@ Item {
             property int margins: 4
             property bool clicked
             Layout.preferredWidth: handleRect.initialWidth + margins * 2
-            Layout.preferredHeight: slider.trackHeight + extraHeight
+            Layout.preferredHeight: root.trackHeight + extraHeight
             Layout.alignment: Qt.AlignVCenter
 
             Rectangle {
                 id: handleRect
                 property int initialWidth: 4
                 property int clickedWidth: 2
-                color: slider.fgColour
+                color: root.fgColour
                 width: handle.clicked ? clickedWidth : initialWidth
                 height: handle.height
                 radius: Infinity
@@ -136,9 +136,9 @@ Item {
 
         Item {
             id: inactiveTrack
-            property int smallRadius: slider.value < 0.98 ? slider.smallRadius : 0
+            property int smallRadius: root.value < 0.98 ? root.smallRadius : 0
 
-            Layout.preferredHeight: slider.trackHeight
+            Layout.preferredHeight: root.trackHeight
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
 
@@ -148,7 +148,7 @@ Item {
                 anchors.fill: parent
 
                 ShapePath {
-                    fillColor: slider.bgColour
+                    fillColor: root.bgColour
                     strokeWidth: 0
 
                     startX: DesignConf.radius
@@ -199,13 +199,13 @@ Item {
 
             Icon {
                 id: inactiveTrackIcon
-                iconName: slider.iconName
+                iconName: root.iconName
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
                 anchors.rightMargin: DesignConf.spacing
                 colour: ColoursConf.fg1.t
-                visible: !slider.iconOnActiveTrack
+                visible: !root.iconOnActiveTrack
             }
         }
     }
@@ -219,16 +219,16 @@ Item {
         property bool listening: false
         onMouseXChanged: {
             if (listening)
-                slider.changed(UtilsService.clamp(mouseX / slider.width, 0, 1));
+                root.changed(UtilsService.clamp(mouseX / root.width, 0, 1));
         }
         onPressed: listening = handle.clicked = true
         onReleased: listening = handle.clicked = false
 
         onWheel: wheel => {
             if (wheel.angleDelta.y > 0)
-                slider.changed(UtilsService.clamp(slider.value + 0.02, 0, 1));
+                root.changed(UtilsService.clamp(root.value + 0.02, 0, 1));
             else if (wheel.angleDelta.y < 0)
-                slider.changed(UtilsService.clamp(slider.value - 0.02, 0, 1));
+                root.changed(UtilsService.clamp(root.value - 0.02, 0, 1));
 
             handle.clicked = true;
             if (wheelTimer.running)

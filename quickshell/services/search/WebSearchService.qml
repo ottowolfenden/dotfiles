@@ -5,7 +5,7 @@ import ".."
 import "../.."
 
 QtObject {
-    id: webSearchService
+    id: root
     property var results: [...browserHistoryResults, ...suggestionResults].slice(0, getMax())
     property var suggestionResults: []
     property var browserHistoryResults: []
@@ -69,9 +69,9 @@ QtObject {
     property Process webSearchProcess: Process {
         id: webSearchProcess
         property var input: null
-        command: input ? ["curl", webSearchService.getSuggestionsURL(input)] : []
+        command: input ? ["curl", root.getSuggestionsURL(input)] : []
         stdout: StdioCollector {
-            onStreamFinished: webSearchService.suggestionResults = webSearchService.processSuggestionsOutput(text)
+            onStreamFinished: root.suggestionResults = root.processSuggestionsOutput(text)
         }
     }
 
@@ -140,9 +140,9 @@ QtObject {
 
     property Process browserHistoryProcess: Process {
         property var input: null
-        command: webSearchService.getBrowserHistoryCommand(input)
+        command: root.getBrowserHistoryCommand(input)
         stdout: StdioCollector {
-            onStreamFinished: webSearchService.browserHistoryResults = webSearchService.processHistoryOutput(text)
+            onStreamFinished: root.browserHistoryResults = root.processHistoryOutput(text)
         }
     }
 
@@ -176,7 +176,7 @@ QtObject {
         onTriggered: {
             if (!resultToOpen || !binds)
                 return;
-            webSearchService.open(resultToOpen, binds, true);
+            root.open(resultToOpen, binds, true);
             resultToOpen = binds = null;
         }
     }

@@ -4,7 +4,7 @@ import ".."
 import "../modules"
 
 Item {
-    id: searchContainer
+    id: root
     required property Search search
     default property alias content: contentContainer.children
 
@@ -25,7 +25,7 @@ Item {
     RowLayout {
         id: contentContainer
         anchors.fill: parent
-        spacing: searchContainer.search.mode != "default" ? DesignConf.spacing : 0
+        spacing: root.search.mode != "default" ? DesignConf.spacing : 0
 
         Behavior on spacing {
             NumberAnimation {

@@ -3,7 +3,7 @@ import QtQuick
 import Quickshell.Io
 
 QtObject {
-    id: modeService
+    id: root
 
     property var mode: null
     readonly property list<string> modes: ["light", "dark"]
@@ -16,7 +16,7 @@ QtObject {
         command: "gsettings get org.gnome.desktop.interface color-scheme".split(" ")
         running: true
         stdout: StdioCollector {
-            onStreamFinished: modeService.mode = text.trim() == "'prefer-light'" ? "light" : "dark"
+            onStreamFinished: root.mode = text.trim() == "'prefer-light'" ? "light" : "dark"
         }
     }
 }

@@ -5,7 +5,7 @@ import Quickshell.Io
 import "../.."
 
 QtObject {
-    id: dirSearchService
+    id: root
 
     property var results: []
     property bool searchOpen: false
@@ -95,7 +95,7 @@ QtObject {
                 if (results.length < getMax() && mode == "dirs" && searchOpen) {
                     extraSearchProc.running = false;
                     extraSearchProc.input = searchProc.input;
-                    extraSearchProc.running = dirSearchService.loading = true;
+                    extraSearchProc.running = root.loading = true;
                 }
             }
         }
@@ -115,7 +115,7 @@ QtObject {
             onStreamFinished: {
                 if (!text || results.length >= getMax() || mode != "dirs" || !searchOpen || lastHideOutputCall > extraSearchProc.startedDate)
                     return;
-                dirSearchService.loading = false;
+                root.loading = false;
                 results = [...results, ...processScriptOutput(text)];
             }
         }

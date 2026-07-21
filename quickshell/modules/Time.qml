@@ -6,7 +6,6 @@ import ".."
 import "../components"
 
 Rectangle {
-    id: time
     color: "transparent"
     radius: DesignConf.radius
     implicitWidth: container.width + (DesignConf.spacing * 2)

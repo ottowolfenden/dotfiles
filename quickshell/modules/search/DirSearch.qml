@@ -6,7 +6,7 @@ import "../.."
 import "../../components"
 
 Repeater {
-    id: dirSearch
+    id: root
     required property string mode
     required property TextField searchInput
     required property int activeIndex
@@ -19,7 +19,7 @@ Repeater {
         id: result
         required property var modelData
         required property int index
-        readonly property bool isActive: index == dirSearch.activeIndex
+        readonly property bool isActive: index == root.activeIndex
 
         color: {
             if (mouseArea.pressed)
@@ -44,10 +44,10 @@ Repeater {
             anchors.margins: -DesignConf.spacing / 4
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
-            onContainsMouseChanged: (containsMouse ? () => dirSearch.activeIndexSet(result.index) : () => {})()
+            onContainsMouseChanged: (containsMouse ? () => root.activeIndexSet(result.index) : () => {})()
             onClicked: mouse => {
                 DirSearchService.open(result.modelData);
-                dirSearch.searchInput.reset();
+                root.searchInput.reset();
             }
         }
 

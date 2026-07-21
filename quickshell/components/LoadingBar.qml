@@ -3,7 +3,7 @@ import QtQuick.Layouts
 import ".."
 
 Item {
-    id: bar
+    id: root
     property string bgColour: ColoursConf.bg4.t
     property string fgColour: ColoursConf.lightblue
 
@@ -17,14 +17,14 @@ Item {
         anchors.bottom: parent.bottom
         anchors.right: activeTrack.left
         anchors.rightMargin: DesignConf.spacing
-        color: bar.bgColour
+        color: root.bgColour
         radius: Infinity
     }
     Rectangle {
         id: activeTrack
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        color: bar.fgColour
+        color: root.fgColour
         radius: Infinity
     }
     Rectangle {
@@ -34,7 +34,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.leftMargin: DesignConf.spacing
-        color: bar.bgColour
+        color: root.bgColour
         radius: Infinity
     }
 
@@ -43,21 +43,21 @@ Item {
 
         property int trackWidth
         property int duration
-        property int distance: bar.width + trackWidth
+        property int distance: root.width + trackWidth
         property int entryDuration: (trackWidth / distance) * duration
-        property int midDuration: ((bar.width - trackWidth) / distance) * duration
+        property int midDuration: ((root.width - trackWidth) / distance) * duration
         property int exitDuration: (trackWidth / distance) * duration
 
         function setRandValues() {
             let r = UtilsService.getRandBetween(0.2, 1);
-            trackWidth = r * bar.width * 0.7;
+            trackWidth = r * root.width * 0.7;
             duration = r * DesignConf.indefProgressBarMaxDuration;
         }
 
-        running: bar.visible
+        running: root.visible
         onStarted: setRandValues()
         onFinished: {
-            if (bar.visible) {
+            if (root.visible) {
                 setRandValues();
                 Qt.callLater(anim.start);
             }
@@ -73,11 +73,11 @@ Item {
                 to: 0
             }
             NumberAnimation {
-                to: bar.width - anim.trackWidth
+                to: root.width - anim.trackWidth
                 duration: anim.midDuration
             }
             NumberAnimation {
-                to: bar.width
+                to: root.width
                 duration: anim.exitDuration
             }
         }

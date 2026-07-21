@@ -2,14 +2,13 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import Quickshell
 import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
 import ".."
 import "../components"
 
 Rectangle {
-    id: audio
+    id: root
     color: "transparent"
     radius: DesignConf.radius
     implicitWidth: container.implicitWidth + (DesignConf.spacing * 2)
@@ -34,11 +33,11 @@ Rectangle {
 
         Icon {
             id: barIcon
-            iconName: IconsConf.volume?.find(i => i.muted == audio.sink?.audio?.muted || audio.percent <= i.max)?.icon
+            iconName: IconsConf.volume?.find(i => i.muted == root.sink?.audio?.muted || root.percent <= i.max)?.icon
         }
 
         Text {
-            text: audio.percent + "%"
+            text: root.percent + "%"
             color: ColoursConf.fg1.t
             font.family: FontsConf.mainFamily
             font.pixelSize: FontsConf.pixelSize
@@ -56,12 +55,12 @@ Rectangle {
 
         onWheel: wheel => {
             if (wheel.angleDelta.y > 0)
-                audio.sink.audio.volume = UtilsService.clamp(audio.sink.audio.volume + 0.02, 0, 1);
+                root.sink.audio.volume = UtilsService.clamp(root.sink.audio.volume + 0.02, 0, 1);
             else if (wheel.angleDelta.y < 0)
-                audio.sink.audio.volume = UtilsService.clamp(audio.sink.audio.volume - 0.02, 0, 1);
+                root.sink.audio.volume = UtilsService.clamp(root.sink.audio.volume - 0.02, 0, 1);
         }
 
-        onMiddleClicked: audio.sink.audio.muted = !audio.sink.audio.muted
+        onMiddleClicked: root.sink.audio.muted = !root.sink.audio.muted
     }
 
     Timer {
@@ -69,16 +68,16 @@ Rectangle {
         interval: 1000
         running: false
         repeat: false
-        onTriggered: audio.players = AudioService.getSortedPlayers()
+        onTriggered: root.players = AudioService.getSortedPlayers()
     }
 
     Flyout {
         id: volumeFlyout
-        parentX: audio.x
+        parentX: root.x
         rectWidth: pane.implicitWidth
         rectHeight: pane.implicitHeight
         onOpened: {
-            audio.players = AudioService.getSortedPlayers();
+            root.players = AudioService.getSortedPlayers();
             list.highlightMoveDuration = 0;
             list.currentIndex = 0;
             list.highlightMoveDuration = DesignConf.listAnimationDuration;
@@ -97,7 +96,7 @@ Rectangle {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.preferredWidth: mediaContainer.width
                     Layout.preferredHeight: mediaContainer.height
-                    visible: audio.players.length != 0
+                    visible: root.players.length != 0
 
                     RowLayout {
                         id: mediaContainer
@@ -106,7 +105,7 @@ Rectangle {
                             buttonPixelSize: 23
                             onClicked: list.decrementCurrentIndex()
                             disabled: list.currentIndex == 0
-                            visible: audio.players.length > 1
+                            visible: root.players.length > 1
                             Layout.alignment: Qt.AlignTop
                         }
                         Rectangle {
@@ -118,7 +117,7 @@ Rectangle {
 
                             ListView {
                                 id: list
-                                visible: audio.players.length != 0
+                                visible: root.players.length != 0
                                 width: currentItem?.width ?? 0
                                 height: currentItem?.height ?? 0
                                 anchors.centerIn: parent
@@ -130,7 +129,7 @@ Rectangle {
                                 highlightRangeMode: ListView.StrictlyEnforceRange
                                 highlightMoveDuration: DesignConf.listAnimationDuration
 
-                                model: audio.players
+                                model: root.players
                                 delegate: ColumnLayout {
                                     id: item
                                     required property MprisPlayer modelData
@@ -164,7 +163,7 @@ Rectangle {
                                     RowLayout {
                                         id: buttonsContainer
                                         property bool validPlayerPresent: {
-                                            if (audio.players.length == 0)
+                                            if (root.players.length == 0)
                                                 return false;
                                             let isActive = [MprisPlaybackState.Paused, MprisPlaybackState.Playing].includes(item?.modelData?.playbackState);
                                             return isActive && AudioConf.playerRequirements.every(r => item.modelData[r]);
@@ -216,16 +215,16 @@ Rectangle {
                             buttonPixelSize: 23
                             onClicked: list.incrementCurrentIndex()
                             disabled: list.currentIndex == list.count - 1
-                            visible: audio.players.length > 1
+                            visible: root.players.length > 1
                             Layout.alignment: Qt.AlignTop
                         }
                     }
                 }
 
                 Slider {
-                    value: audio.sink?.audio?.volume ?? 0
-                    onChanged: newValue => audio.sink.audio.volume = newValue
-                    iconName: repeater.model.length > 1 ? AudioService.getSinkDetails(audio.sink).icon : barIcon.iconName
+                    value: root.sink?.audio?.volume ?? 0
+                    onChanged: newValue => root.sink.audio.volume = newValue
+                    iconName: repeater.model.length > 1 ? AudioService.getSinkDetails(root.sink).icon : barIcon.iconName
                 }
 
                 Rectangle {
@@ -248,7 +247,7 @@ Rectangle {
                             delegate: Rectangle {
                                 id: node
                                 required property PwNode modelData
-                                property bool isActive: node.modelData == audio.sink
+                                property bool isActive: node.modelData == root.sink
                                 property string fgColour: isActive ? ColoursConf.lightblue : ColoursConf.fg1.o
                                 radius: DesignConf.radius
                                 color: {

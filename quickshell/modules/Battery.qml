@@ -8,7 +8,7 @@ import ".."
 import "../components"
 
 Rectangle {
-    id: battery
+    id: root
     color: "transparent"
     radius: DesignConf.radius
     implicitWidth: container.implicitWidth + (DesignConf.spacing * 2)
@@ -18,7 +18,7 @@ Rectangle {
 
     property bool isCharging: false
     property int percent: Math.round(UPower.displayDevice.percentage * 100)
-    property bool danger: battery.percent <= 10 && !battery.isCharging
+    property bool danger: root.percent <= 10 && !root.isCharging
 
     RowLayout {
         id: container
@@ -28,17 +28,17 @@ Rectangle {
         anchors.rightMargin: DesignConf.spacing
 
         Icon {
-            colour: battery.danger ? ColoursConf.red : ColoursConf.fg1.t
+            colour: root.danger ? ColoursConf.red : ColoursConf.fg1.t
             iconName: {
-                let icons = IconsConf.battery.find(i => battery.percent <= i.max);
-                return battery.isCharging ? icons.charging : icons.discharging;
+                let icons = IconsConf.battery.find(i => root.percent <= i.max);
+                return root.isCharging ? icons.charging : icons.discharging;
             }
             horizontalMargin: -5
         }
 
         Text {
-            text: battery.percent + "%"
-            color: battery.danger ? ColoursConf.red : ColoursConf.fg1.t
+            text: root.percent + "%"
+            color: root.danger ? ColoursConf.red : ColoursConf.fg1.t
             font.family: FontsConf.mainFamily
             font.pixelSize: FontsConf.pixelSize
             horizontalAlignment: Text.AlignHCenter
@@ -51,7 +51,7 @@ Rectangle {
         command: ["cat", "/sys/class/power_supply/BAT0/status"]
 
         stdout: StdioCollector {
-            onStreamFinished: battery.isCharging = ["Charging", "Not charging", "Full"].includes(text.toString().trim())
+            onStreamFinished: root.isCharging = ["Charging", "Not charging", "Full"].includes(text.toString().trim())
         }
     }
 
@@ -64,7 +64,7 @@ Rectangle {
     }
 
     onIsChargingChanged: {
-        if (battery.isCharging)
+        if (root.isCharging)
             Quickshell.execDetached(["tlpctl", "performance"]);
     }
 
@@ -74,7 +74,7 @@ Rectangle {
 
     Flyout {
         id: batteryFlyout
-        parentX: battery.x
+        parentX: root.x
         rectWidth: pane.implicitWidth
         rectHeight: pane.implicitHeight
 
@@ -134,7 +134,7 @@ Rectangle {
                         rowSpacing: DesignConf.spacing
                         columnSpacing: DesignConf.spacing
 
-                        property bool fullAndCharging: battery.percent == 100 && battery.isCharging
+                        property bool fullAndCharging: root.percent == 100 && root.isCharging
 
                         // row 1
                         Text {
@@ -167,7 +167,7 @@ Rectangle {
                             color: ColoursConf.fg3.t
                             font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
-                            text: battery.isCharging ? "Time until full" : "Time until empty"
+                            text: root.isCharging ? "Time until full" : "Time until empty"
                             verticalAlignment: Text.AlignVCenter
                         }
                         Item {
@@ -180,7 +180,7 @@ Rectangle {
                             color: ColoursConf.fg1.t
                             font.family: FontsConf.mainFamily
                             text: {
-                                let secsLeft = battery.isCharging ? UPower.displayDevice.timeToFull : UPower.displayDevice.timeToEmpty;
+                                let secsLeft = root.isCharging ? UPower.displayDevice.timeToFull : UPower.displayDevice.timeToEmpty;
                                 return secsLeft == 0 ? "Loading..." : UtilsService.secsToHrsMins(secsLeft);
                             }
                             Layout.fillHeight: true
@@ -197,7 +197,7 @@ Rectangle {
                             color: ColoursConf.fg3.t
                             font.family: FontsConf.mainFamily
                             Layout.fillHeight: true
-                            text: battery.isCharging ? "Charge rate" : "Discharge rate"
+                            text: root.isCharging ? "Charge rate" : "Discharge rate"
                             verticalAlignment: Text.AlignVCenter
                         }
                         Item {

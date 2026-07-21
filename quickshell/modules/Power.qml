@@ -6,7 +6,7 @@ import ".."
 import "../components"
 
 Rectangle {
-    id: power
+    id: root
     color: "transparent"
     radius: DesignConf.radius
     implicitWidth: DesignConf.componentHeight
@@ -28,7 +28,7 @@ Rectangle {
 
     Flyout {
         id: powerFlyout
-        parentX: power.x
+        parentX: root.x
         rectWidth: pane.width
         rectHeight: pane.height
 

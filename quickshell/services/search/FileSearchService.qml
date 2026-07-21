@@ -5,7 +5,7 @@ import Quickshell.Io
 import "../.."
 
 QtObject {
-    id: fileSearchService
+    id: root
 
     property var results: []
     property bool searchOpen: false
@@ -91,7 +91,7 @@ QtObject {
                 if (results.length < getMax() && mode == "files" && searchOpen) {
                     extraSearchProc.running = false;
                     extraSearchProc.input = searchProc.input;
-                    extraSearchProc.running = fileSearchService.loading = true;
+                    extraSearchProc.running = root.loading = true;
                 }
             }
         }
@@ -111,7 +111,7 @@ QtObject {
             onStreamFinished: {
                 if (!text || results.length >= getMax() || mode != "files" || !searchOpen || lastHideOutputCall > extraSearchProc.startedDate)
                     return;
-                fileSearchService.loading = false;
+                root.loading = false;
                 results = [...results, ...processScriptOutput(text)];
             }
         }
@@ -148,7 +148,7 @@ QtObject {
         command: file?.path ? ["sh", "-c", `xdg-mime query default $(xdg-mime query filetype '${file.path}')`] : []
         stdout: StdioCollector {
             onStreamFinished: {
-                fileSearchService.open(checkCanOpenProcess.file, checkCanOpenProcess.binds, text.trim() == "" ? "fail" : "success");
+                root.open(checkCanOpenProcess.file, checkCanOpenProcess.binds, text.trim() == "" ? "fail" : "success");
                 checkCanOpenProcess.file = checkCanOpenProcess.binds = null;
             }
         }
