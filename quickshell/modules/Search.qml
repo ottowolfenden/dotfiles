@@ -84,7 +84,8 @@ Rectangle {
                 text = "";
                 search.mode = "default";
                 FlyoutsService.hideFlyout(searchFlyout);
-                DirSearchService.results = FileSearchService.results = WebSearchService.results = [];
+                DirSearchService.results = FileSearchService.results = [];
+                WebSearchService.reset();
                 searchColumn.activeIndex = 0;
                 Object.keys(binds).forEach(k => binds[k].active = false);
             }

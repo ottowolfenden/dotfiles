@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick
+import Quickshell.Networking
 import ".."
 
 QtObject {
@@ -32,6 +33,20 @@ QtObject {
         return [...new Set(array.filter(el => el != null))];
     }
 
+    function getDistinctByAnyKeys(array: var, keys: var): var {
+        for (const key of keys) {
+            let seen = new Set();
+            array = array.filter(el => {
+                const value = el[key];
+                if (seen.has(value))
+                    return false;
+                seen.add(value);
+                return true;
+            });
+        }
+        return array;
+    }
+
     function getMaxSearchResults(modeProvider: string, mode: string): int {
         if (!modeProvider || !mode || !["default", modeProvider].includes(mode))
             return 0;
@@ -45,5 +60,17 @@ QtObject {
 
     function getRandBetween(min: real, max: real): double {
         return Math.random() * (max - min) + min;
+    }
+
+    function replaceAll(str: string, pattern: string, replacement: string): string {
+        return str.replace(new RegExp(pattern, 'g'), replacement);
+    }
+
+    function escapeSqlWildcards(str) {
+        return str.replace(/\\/g, "\\\\").replace(/%/g, "\\%").replace(/_/g, "\\_");
+    }
+
+    function isInternetDisconnected() {
+        return ![NetworkConnectivity.Full, NetworkConnectivity.Unknown].includes(Networking.connectivity);
     }
 }

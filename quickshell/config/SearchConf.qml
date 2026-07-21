@@ -54,8 +54,8 @@ QtObject {
             placeholder: "Search the web",
             minChars: 1,
             maxResults: {
-                all: 2,
-                filtered: 10
+                all: 4,
+                filtered: 15
             },
             displayName: "Web"
         },
@@ -108,4 +108,6 @@ QtObject {
     readonly property string searchEngineRegion: "uk-en"
     readonly property string browserCommand: "helium-browser"
     readonly property string browserClass: "helium"
+    readonly property list<string> searchHistorySqlExclusions: ["https://duckduckgo.com/%", "https://www.youtube.com/_%"]
+    readonly property real browserHistoryProportion: 0.6
 }

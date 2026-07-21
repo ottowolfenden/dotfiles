@@ -2,7 +2,6 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import Quickshell.Networking
 import "../.."
 import "../../components"
 
@@ -16,9 +15,15 @@ Repeater {
     signal activeIndexSet(index: int)
 
     model: {
-        if (!["default", "web"].includes(mode) || !searchInput.text || ![NetworkConnectivity.Full, NetworkConnectivity.Unknown].includes(Networking.connectivity))
+        if (!["default", "web"].includes(mode) || !searchInput.text || UtilsService.isInternetDisconnected())
             return [];
-        return UtilsService.getDistinctNonNull([searchInput.text, ...WebSearchService.results]);
+        let firstSuggestionResult = {
+            type: "suggestion",
+            text: searchInput.text,
+            url: WebSearchService.getSearchURL(searchInput.text)
+        };
+        let groupedResults = [...WebSearchService.browserHistoryResults, firstSuggestionResult, ...WebSearchService.suggestionResults];
+        return UtilsService.getDistinctByAnyKeys(groupedResults, ["text", "url"]).slice(0, WebSearchService.getMax());
     }
     delegate: Rectangle {
         id: result
@@ -57,13 +62,13 @@ Repeater {
             anchors.rightMargin: DesignConf.spacing / 2
 
             Icon {
-                iconName: IconsConf.webSearch
+                iconName: result.modelData.type == "history" ? IconsConf.history : IconsConf.webSearch
                 colour: text.color.toString()
             }
 
             Text {
                 id: text
-                text: result.modelData
+                text: result.modelData.text
                 color: result.isActive ? ColoursConf.fg1.t : ColoursConf.fg3.t
                 font.family: FontsConf.mainFamily
                 font.pixelSize: FontsConf.pixelSize
