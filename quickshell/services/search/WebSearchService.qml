@@ -29,10 +29,9 @@ QtObject {
         let total = UtilsService.getMaxSearchResults("web", mode);
         if (type == "history")
             return Math.round(total * SearchConf.browserHistoryProportion);
-        else if (type == "suggestion")
+        if (type == "suggestion")
             return Math.round(total * (1 - SearchConf.browserHistoryProportion));
-        else
-            return total;
+        return total;
     }
 
     function getSuggestionsURL(input: string): string {
@@ -84,28 +83,25 @@ QtObject {
             SELECT url, title
             FROM (
                 SELECT url, title FROM urls
-                WHERE (
-                    url LIKE '%${input}%'
-                    OR title LIKE '%${input}%'
-                )
+                WHERE (url LIKE '%${input}%' OR title LIKE '%${input}%')
                 AND NOT (
                     hidden = 1
                     OR title = ''
                     OR title IS NULL
                     ${SearchConf.searchHistorySqlExclusions.map(s => `OR url LIKE '${s}'`).join(" ")}
                 )
-                ORDER BY (visit_count * 200) + (last_visit_time / 500000000000) DESC
-                LIMIT ${getMax("history") * 10}
+                ORDER BY (visit_count * 150) + (last_visit_time / 500000000000) DESC
+                LIMIT 60
             )
             ORDER BY
                 CASE
                     WHEN url LIKE 'http%://${input}%' THEN 1
-                    WHEN url LIKE 'http%://www.${input}%' THEN 1
-                    WHEN title LIKE '${input}%' THEN 1
-                    WHEN url LIKE '%${input}%' THEN 2
-                    WHEN title LIKE '%${input}%' THEN 3
+                    WHEN url LIKE 'http%://%.${input}%' THEN 1
+                    WHEN title LIKE '${input}%' THEN 2
+                    WHEN url LIKE '%${input}%' THEN 3
+                    WHEN title LIKE '%${input}%' THEN 4
                 END ASC
-            LIMIT ${getMax("history")};
+            LIMIT 60;
         `;
 
         return ["sqlite3", "-json", uri, sqlQuery];
@@ -129,10 +125,17 @@ QtObject {
                         if (protocolRemoved.endsWith("/"))
                             return protocolRemoved.slice(0, -1);
                         return protocolRemoved;
+                    },
+                    get hostName() {
+                        try {
+                            return new URL(this.url).hostname;
+                        } catch (e) {
+                            return this.trimmedUrl;
+                        }
                     }
                 }));
 
-        return UtilsService.getDistinctByAnyKeys(history, ["text", "url"]).slice(0, getMax("history"));
+        return UtilsService.getDistinctByAnyKeys(history, ["text", "url", "hostName"]).slice(0, getMax("history"));
     }
 
     property Process browserHistoryProcess: Process {
