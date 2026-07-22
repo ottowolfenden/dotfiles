@@ -75,7 +75,7 @@ QtObject {
             openTimer.running = true;
         } else {
             Quickshell.execDetached(["zsh", "-ic", `print -s "${result.command}"`]);
-            HyprlandService.execWithQsTag(`kitty -- zsh -ic "${result.command}; exec zsh"`);
+            HyprlandService.execWithQsTag(`kitty -- zsh -ic '${result.command}; echo "\n"; exec zsh'`);
         }
     }
 
