@@ -66,14 +66,14 @@ QtObject {
             placeholder: "Search commands",
             minChars: 1,
             maxResults: {
-                all: 3,
+                all: 2,
                 filtered: 15
             },
             displayName: "Commands"
         }
     ]
     readonly property bool shiftBindsEnabled: true
-    readonly property list<string> appAttrPriority: ["name", "execString", "genericName", "comment", "categories", "keywords", "startupClass", "icon"]
+    readonly property list<string> appAttrPriority: ["name", "execString", "genericName", "categories", "keywords"]
     readonly property string fileParentDir: Quickshell.env("HOME")
     readonly property string dirParentDir: Quickshell.env("HOME")
     readonly property var pathExclusions: ({
