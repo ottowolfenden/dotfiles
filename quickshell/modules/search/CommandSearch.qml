@@ -14,7 +14,17 @@ Repeater {
     readonly property string modeSupplied: "commands"
     signal activeIndexSet(index: int)
 
-    model: CommandSearchService.results
+    model: {
+        if (CommandSearchService.results.length == 0 && mode == "commands" && searchInput.text.length != 0)
+            return [
+                {
+                    type: "input",
+                    command: searchInput.text
+                }
+            ];
+
+        return CommandSearchService.results;
+    }
     delegate: Rectangle {
         id: result
         required property var modelData
