@@ -11,7 +11,11 @@ end
 
 function qs.bind(keys, func, flags)
     hl.bind(keys, function()
-        if flags.repeating then hl.dispatch(func) else qs.dispatch(func) end
+        if flags and flags.repeating then
+            hl.dispatch(func)
+        else
+            qs.dispatch(func)
+        end
     end, flags)
 end
 
