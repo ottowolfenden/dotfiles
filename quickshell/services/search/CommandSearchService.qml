@@ -34,40 +34,52 @@ QtObject {
         return total;
     }
 
-    function processHistoryOutput(output: string) {
-        let entries = output.split("\n: ").map(l => ({
-                    type: "history",
-                    time: parseInt(l.split(";")[0].slice(0, -2)),
-                    command: l.split(";")[1].trim()
-                })).filter(e => e.time && e.command);
-        let entriesCopy = [...entries];
-        let seenCommands = new Set();
-        let results = [];
+    function processHistoryOutput(input: string, output: string) {
+        let entries = UtilsService.getDistinctNonNull(output.trim().split("\n").map(line => {
+            let prefix = line.slice(0, line.indexOf(";"));
+            let command = line.slice(line.indexOf(";") + 1);
+            let time = prefix.split(":")[1];
+            if (!time || !command)
+                return;
+            return {
+                type: "history",
+                time: parseInt(time.trim()),
+                command: command.trim()
+            };
+        })).filter(entry => {
+            let isExcluded = SearchConf.commandSubstrExclusions.some(ex => entry.command.includes(ex));
+            let isTooLong = entry.command.length > SearchConf.maxCommandChars;
+            let isMultiLine = entry.command.endsWith("\\");
+            return !isExcluded && !isTooLong && !isMultiLine;
+        });
 
-        entriesCopy.forEach(entry => {
+        let recencySort = array => [...array].sort((a, b) => b.time - a.time);
+        let isPrefixMatch = r => r.command.toLowerCase().startsWith(input.toLowerCase());
+        let seenCommands = new Set();
+        let prefixMatches = [];
+        let substringMatches = [];
+
+        [...entries].forEach(entry => {
             if (seenCommands.has(entry.command))
                 return;
-
-            let excluded = SearchConf.commandSubstrExclusions.some(ex => entry.command.includes(ex));
-
-            let matchingEntries = entries.filter(e => entry.command == e.command && !excluded);
-            matchingEntries.sort((a, b) => b.time - a.time);
-
-            matchingEntries.forEach(e => e.command = e.command.trim());
-
-            results.push(matchingEntries[0]);
+            let matchingEntries = entries.filter(e => entry.command == e.command);
+            let mostRecentEntry = recencySort(matchingEntries)[0];
+            if (isPrefixMatch(mostRecentEntry))
+                prefixMatches.push(mostRecentEntry);
+            else
+                substringMatches.push(mostRecentEntry);
             seenCommands.add(entry.command);
         });
 
-        results.sort((a, b) => b.time - a.time);
-        root.historyResults = UtilsService.getDistinctNonNull(results);
+        root.historyResults = [...recencySort(prefixMatches), ...recencySort(substringMatches)];
     }
 
     property Process historyProcess: Process {
+        id: historyProcess
         property var input: null
-        command: ["sh", "-c", `cat '${PathsConf.zshHistory}' | grep ";${input}.*"`]
+        command: ["sh", "-c", `grep -Ei ':[ 0-9]+:[0-9]+;.*${input}' ${PathsConf.zshHistory}`]
         stdout: StdioCollector {
-            onStreamFinished: root.processHistoryOutput(text.trim())
+            onStreamFinished: root.processHistoryOutput(historyProcess.input, text)
         }
     }
 
