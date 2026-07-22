@@ -7,3 +7,19 @@ hl.bind("XF86AudioMicMute",
     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
     { locked = true, repeating = true }
 )
+
+hl.gesture({
+    fingers = 2,
+    direction = "pinchin",
+    mods = "SUPER",
+    action = "cursorZoom",
+    mode = "live",
+})
+
+hl.gesture({
+    fingers = 2,
+    direction = "pinchout",
+    mods = "SUPER",
+    action = "cursorZoom",
+    mode = "live",
+})

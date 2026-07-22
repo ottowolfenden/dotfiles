@@ -37,8 +37,31 @@ for i = 1, max_ws do
     h.qs_bind("SUPER + SHIFT + " .. i, hl.dsp.window.move({ workspace = i }))
 end
 
-hl.gesture({
-    fingers = 3,
-    direction = "horizontal",
-    action = "workspace"
-})
+local last_right = 0
+local last_left = 0
+local minDelta = 6
+local delay = 230
+
+local function getWorkspaceGesture(type)
+    return {
+        fingers = 3,
+        direction = "horizontal",
+        mods = type == "move" and "SHIFT" or nil,
+        action = {
+            update = function(e)
+                if (math.abs(e.delta.x) < minDelta) then return end
+                if e.delta.x < 0 then
+                    if (e.time_ms < last_left + delay) then return end
+                    last_left = e.time_ms
+                elseif e.delta.x > 0 then
+                    if (e.time_ms < last_right + delay) then return end
+                    last_right = e.time_ms
+                end
+                changeWorkspace(type, (e.delta.x > 0 and -1 or 1))
+            end
+        }
+    }
+end
+
+hl.gesture(getWorkspaceGesture("move"))
+hl.gesture(getWorkspaceGesture("focus"))
