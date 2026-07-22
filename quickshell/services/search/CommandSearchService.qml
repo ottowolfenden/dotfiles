@@ -34,35 +34,40 @@ QtObject {
         return total;
     }
 
+    function processHistoryOutput(output: string) {
+        let entries = output.split("\n: ").map(l => ({
+                    type: "history",
+                    time: parseInt(l.split(";")[0].slice(0, -2)),
+                    command: l.split(";")[1].trim()
+                })).filter(e => e.time && e.command);
+        let entriesCopy = [...entries];
+        let seenCommands = new Set();
+        let results = [];
+
+        entriesCopy.forEach(entry => {
+            if (seenCommands.has(entry.command))
+                return;
+
+            let excluded = SearchConf.commandSubstrExclusions.some(ex => entry.command.includes(ex));
+
+            let matchingEntries = entries.filter(e => entry.command == e.command && !excluded);
+            matchingEntries.sort((a, b) => b.time - a.time);
+
+            matchingEntries.forEach(e => e.command = e.command.trim());
+
+            results.push(matchingEntries[0]);
+            seenCommands.add(entry.command);
+        });
+
+        results.sort((a, b) => b.time - a.time);
+        root.historyResults = UtilsService.getDistinctNonNull(results);
+    }
+
     property Process historyProcess: Process {
         property var input: null
         command: ["sh", "-c", `cat '${PathsConf.zshHistory}' | grep ";${input}.*"`]
         stdout: StdioCollector {
-            onStreamFinished: {
-                let entries = text.split("\n: ").map(l => ({
-                            type: "history",
-                            time: parseInt(l.split(";")[0].slice(0, -2)),
-                            command: l.split(";")[1]
-                        })).filter(e => e.time && e.command && !SearchConf.commandSubstrExclusions.some(ex => e.command.includes(ex)));
-                let entriesCopy = [...entries];
-                let seenCommands = new Set();
-                let results = [];
-
-                entriesCopy.forEach(entry => {
-                    if (seenCommands.has(entry.command))
-                        return;
-
-                    let matchingEntries = entries.filter(e => entry.command == e.command);
-                    matchingEntries.sort((a, b) => b.time - a.time);
-                    let mostRecent = matchingEntries[0];
-
-                    results.push(matchingEntries[0]);
-                    seenCommands.add(entry.command);
-                });
-
-                results.sort((a, b) => b.time - a.time);
-                root.historyResults = results;
-            }
+            onStreamFinished: root.processHistoryOutput(text.trim())
         }
     }
 
@@ -75,7 +80,7 @@ QtObject {
             openTimer.running = true;
         } else {
             Quickshell.execDetached(["zsh", "-ic", `print -s "${result.command}"`]);
-            HyprlandService.execWithQsTag(`kitty -- zsh -ic '${result.command}; echo "\n"; exec zsh'`);
+            HyprlandService.execWithQsTag(`kitty -- zsh -ic '${result.command}; echo; exec zsh'`);
         }
     }
 
