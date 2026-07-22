@@ -1,67 +1,55 @@
 local h = require("helpers")
 
-h.qs_bind("SUPER + mouse:274", hl.dsp.window.close())
-h.qs_bind("SUPER + SHIFT + right", hl.dsp.window.swap({ direction = "right" }))
-h.qs_bind("SUPER + SHIFT + left", hl.dsp.window.swap({ direction = "left" }))
-h.qs_bind("SUPER + SHIFT + up", hl.dsp.window.swap({ direction = "up" }))
-h.qs_bind("SUPER + SHIFT + down", hl.dsp.window.swap({ direction = "down" }))
-h.qs_bind("SUPER + F", hl.dsp.window.float({ action = "toggle" }))
-h.qs_bind("SUPER + slash", hl.dsp.layout("togglesplit"))
-h.qs_bind("SUPER + left", hl.dsp.focus({ direction = "left" }))
-h.qs_bind("SUPER + right", hl.dsp.focus({ direction = "right" }))
-h.qs_bind("SUPER + up", hl.dsp.focus({ direction = "up" }))
-h.qs_bind("SUPER + down", hl.dsp.focus({ direction = "down" }))
-hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
-hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
-hl.bind("SUPER + SHIFT + mouse:272", hl.dsp.window.resize(), { mouse = true })
-h.qs_bind("SUPER + M", hl.dsp.window.move({ monitor = "+1", follow = true }))
-h.qs_bind("F11", hl.dsp.window.fullscreen_state({ internal = 0, client = 3, action = "toggle" }))
-h.qs_bind("SUPER + F11", hl.dsp.window.fullscreen_state({ internal = 3, client = 3, action = "toggle" }))
-hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh region"))
-hl.bind("Print", hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh"))
-
-h.qs_bind("SUPER + W", function()
-    local w = hl.get_active_window()
-    if not w then return end
-    if w.title == "qalc" then
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "C", state = "down" }))
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "C", state = "up" }))
+local qs_binds = {
+    ["SUPER + F"] = hl.dsp.window.float({ action = "toggle" }),
+    ["SUPER + slash"] = hl.dsp.layout("togglesplit"),
+    ["SUPER + mouse:272"] = { hl.dsp.window.drag(), { mouse = true } },
+    ["SUPER + mouse:273"] = { hl.dsp.window.resize(), { mouse = true } },
+    ["SUPER + SHIFT + mouse:272"] = { hl.dsp.window.resize(), { mouse = true } },
+    ["SUPER + M"] = hl.dsp.window.move({ monitor = "+1", follow = true }),
+    ["F11"] = hl.dsp.window.fullscreen_state({ internal = 0, client = 2, action = "toggle" }),
+    ["SUPER + F11"] = hl.dsp.window.fullscreen_state({ internal = 3, client = 3, action = "toggle" }),
+    [{ "SUPER + mouse:274", "SUPER + W" }] = function()
+        local w = hl.get_active_window()
+        if not w then return end
+        if w.title == "qalc" then
+            h.press_key("CTRL", "C")
+        else
+            hl.dispatch(hl.dsp.window.close())
+        end
     end
-    hl.dispatch(hl.dsp.window.close())
-end)
+}
 
-hl.bind("SUPER + SHIFT + I", function()
-    hl.notification.create({ text = hl.get_active_window().title, timeout = 5000 })
-end)
+for _, d in ipairs({ "right", "left", "up", "down" }) do
+    qs_binds["SUPER + " .. d] = hl.dsp.focus({ direction = d })
+    qs_binds["SUPER + SHIFT + " .. d] = hl.dsp.window.swap({ direction = d })
+end
 
-h.qs_bind("CTRL + mouse_up", function()
-    local w = hl.get_active_window()
-    if not w or w.class ~= "kitty" then
-        return
-    else
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "down" }))
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "equal", state = "up" }))
-    end
-end, { non_consuming = true })
+local binds = {
+    ["SUPER + SHIFT + S"] = hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh region"),
+    [{ "Print", "XF86SelectiveScreenshot" }] = hl.dsp.exec_cmd("~/dotfiles/scripts/screenshot.sh"),
+    ["SUPER + SHIFT + I"] = function() hl.notification.create({ text = hl.get_active_window().title, timeout = 5000 }) end
+}
 
-h.qs_bind("CTRL + mouse_down", function()
-    local w = hl.get_active_window()
-    if not w or w.class ~= "kitty" then
-        return
-    else
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "down" }))
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
-    end
-end, { non_consuming = true })
+for mouse, key in pairs({ ["mouse_up"] = "equal", ["mouse_down"] = "minus" }) do
+    binds["CTRL + " .. mouse] = { function()
+        local w = hl.get_active_window()
+        if not w or w.class ~= "kitty" then return end
+        h.press_key("CTRL", key)
+    end, { non_consuming = true } }
+end
+
+h.qs_binds(qs_binds)
+h.binds(binds)
 
 local no_autofocus_classes = {}
 local no_fullscreen_classes = { "helium" }
 
 hl.on("window.open", function(w)
-    if not h.tbl_includes(no_autofocus_classes, w.class) then
+    if not h.arr_includes(no_autofocus_classes, w.class) then
         hl.dispatch(hl.dsp.focus({ window = w }))
     end
-    if not h.tbl_includes(no_fullscreen_classes, w.class) then
+    if not h.arr_includes(no_fullscreen_classes, w.class) then
         hl.dispatch(hl.dsp.window.fullscreen_state({
             internal = 0,
             client = 2,

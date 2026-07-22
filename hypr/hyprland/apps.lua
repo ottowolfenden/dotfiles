@@ -1,27 +1,25 @@
 local h = require("helpers")
+local qs = require("qs")
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("qs")
-    hl.exec_cmd("awww-daemon")
-    hl.exec_cmd("swaync")
-    hl.exec_cmd("clipse -listen")
+    h.exec_cmds({ "qs", "awww-daemon", "swaync", "clipse -listen" })
 end)
 
-hl.bind("SUPER + B", h.qs_exec("helium-browser"))
-hl.bind("SUPER + C", h.qs_exec("code"))
-hl.bind("SUPER + V", hl.dsp.exec_cmd("pkill clipse || kitty --class clipse -e clipse", { float = true }))
-hl.bind("SUPER + equal", h.qs_exec("kitty qalc", { float = true }))
-hl.bind("XF86Calculator", h.qs_exec("kitty qalc", { float = true }))
-hl.bind("SUPER + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"))
-hl.bind("SUPER + T", h.qs_exec("thunar"))
-hl.bind("CTRL + SHIFT + escape", h.qs_exec("kitty --class btop -e btop"))
-hl.bind("SUPER + Q", function()
-    local w = hl.get_active_window()
-    if not w or w.class ~= "code" then
-        hl.dispatch(h.qs_exec("kitty"))
-    else
-        hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideAllFlyouts"))
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "Q", state = "down" }))
-        hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL + SHIFT", key = "Q", state = "up" }))
+h.binds({
+    ["SUPER + B"] = qs.exec_cmd("helium-browser"),
+    ["SUPER + C"] = qs.exec_cmd("code"),
+    ["SUPER + V"] = hl.dsp.exec_cmd("pkill clipse || kitty --class clipse -e clipse", { float = true }),
+    [{ "SUPER + equal", "XF86Calculator" }] = qs.exec_cmd("kitty qalc", { float = true }),
+    ["SUPER + SHIFT + C"] = hl.dsp.exec_cmd("hyprpicker -a"),
+    ["SUPER + T"] = qs.exec_cmd("thunar"),
+    ["CTRL + SHIFT + escape"] = qs.exec_cmd("kitty --class btop -e btop"),
+    ["SUPER + Q"] = function()
+        local w = hl.get_active_window()
+        if w and w.class == "code" then
+            qs.dispatch(hl.dsp.focus({ window = w }))
+            h.press_key("CTRL + SHIFT", "Q")
+        else
+            hl.dispatch(qs.exec_cmd("kitty"))
+        end
     end
-end)
+})

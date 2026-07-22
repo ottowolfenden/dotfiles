@@ -1,25 +1,33 @@
-hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
-hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
-hl.bind("SUPER + space", hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.sh"), { locked = true })
-hl.bind("XF86AudioMicMute",
-    hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
-    { locked = true, repeating = true }
-)
+local h = require("helpers")
 
-hl.gesture({
-    fingers = 2,
-    direction = "pinchin",
-    mods = "SUPER",
-    action = "cursorZoom",
-    mode = "live",
+h.binds({
+    ["XF86AudioNext"] = { hl.dsp.exec_cmd("playerctl next"), { locked = true } },
+    [{ "XF86AudioPause", "XF86AudioPlay" }] = { hl.dsp.exec_cmd("playerctl play-pause"), { locked = true } },
+    ["XF86AudioPrev"] = { hl.dsp.exec_cmd("playerctl previous"), { locked = true } },
+    ["SUPER + space"] = { hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.sh"), { locked = true } },
+    ["XF86AudioMicMute"] = { hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true } },
 })
 
-hl.gesture({
-    fingers = 2,
-    direction = "pinchout",
-    mods = "SUPER",
-    action = "cursorZoom",
-    mode = "live",
+
+h.gestures((function()
+    local t = {}
+    for _, d in ipairs { "pinchin", "pinchout" } do
+        t[#t + 1] = {
+            fingers = 2,
+            direction = d,
+            mods = "SUPER",
+            action = "cursorZoom",
+            mode = "live"
+        }
+    end
+    return t
+end)())
+
+
+hl.config({
+    misc = {
+        force_default_wallpaper = 0,
+        disable_hyprland_logo = true,
+        focus_on_activate = true
+    }
 })
