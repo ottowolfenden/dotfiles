@@ -42,7 +42,7 @@ QtObject {
                             type: "history",
                             time: parseInt(l.split(";")[0].slice(0, -2)),
                             command: l.split(";")[1]
-                        })).filter(e => e.time && e.command && !e.command.endsWith("\n"));
+                        })).filter(e => e.time && e.command && !SearchConf.commandSubstrExclusions.some(ex => e.command.includes(ex)));
                 let entriesCopy = [...entries];
                 let seenCommands = new Set();
                 let results = [];

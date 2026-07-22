@@ -112,4 +112,5 @@ QtObject {
     readonly property var searchHistorySqlExclusions: ["https://duckduckgo.com/%", "https://www.youtube.com/_%", "https://www.google.com/search%"]
     readonly property real browserHistoryProportion: 0.4
     readonly property string secondaryHistoryProperty: "hostName" // "hostName", "trimmedUrl", "url" or "type"
+    readonly property list<string> commandSubstrExclusions: ["\n", "\\"]
 }
