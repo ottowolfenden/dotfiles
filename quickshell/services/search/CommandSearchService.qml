@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick
+import Quickshell
 import Quickshell.Io
 import ".."
 import "../.."
@@ -61,8 +62,6 @@ QtObject {
 
                 results.sort((a, b) => b.time - a.time);
                 root.historyResults = results;
-
-                console.log(JSON.stringify(results, null, 2));
             }
         }
     }
@@ -74,8 +73,10 @@ QtObject {
             openTimer.resultToOpen = result;
             openTimer.binds = binds;
             openTimer.running = true;
-        } else
-            HyprlandService.execWithQsTag(`kitty --hold -- zsh -ic "${result.command}"`);
+        } else {
+            Quickshell.execDetached(["zsh", "-ic", `print -s "${result.command}"`]);
+            HyprlandService.execWithQsTag(`kitty -- zsh -ic "${result.command}; exec zsh"`);
+        }
     }
 
     property Timer openTimer: Timer {
