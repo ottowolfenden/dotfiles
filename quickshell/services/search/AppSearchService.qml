@@ -75,7 +75,7 @@ QtObject {
             openTimer.binds = binds;
             openTimer.running = true;
         } else
-            HyprlandService.execWithQsTag(app.runInTerminal ? `kitty --class ${app.command[0]} -e ${app.command[0]}` : app.command.join(" "));
+            Quickshell.execDetached(["zsh", "-c", app.runInTerminal ? `kitty --class ${app.command[0]} -e ${app.command[0]}` : app.command.join(" ")]);
         updateHistory(app);
     }
 

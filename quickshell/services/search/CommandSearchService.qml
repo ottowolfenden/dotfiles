@@ -123,10 +123,10 @@ QtObject {
             openTimer.binds = binds;
             openTimer.running = true;
         } else if (["whence", "input"].includes(result.type) || SearchConf.alwaysPrefillCommands)
-            HyprlandService.execWithQsTag(`kitty env ZSH_PREFILL='${result.command + " "}' zsh`);
+            Quickshell.execDetached(["zsh", "-c", `kitty env ZSH_PREFILL='${result.command + " "}' zsh`]);
         else if (result.type == "history") {
             Quickshell.execDetached(["zsh", "-ic", `print -s "${result.command}"`]);
-            HyprlandService.execWithQsTag(`kitty -- zsh -ic '${result.command}; echo; exec zsh'`);
+            Quickshell.execDetached(["zsh", "-c", `kitty -- zsh -ic '${result.command}; echo; exec zsh'`]);
         }
     }
 

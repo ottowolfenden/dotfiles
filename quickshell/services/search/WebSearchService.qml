@@ -154,7 +154,7 @@ QtObject {
             openTimer.running = true;
             return;
         } else if (binds?.inNewWs?.active && timerFinished) {
-            HyprlandService.execWithQsTag(`${SearchConf.browserCommand} --new-window '${result.url}'`);
+            Quickshell.execDetached(["zsh", "-c", `${SearchConf.browserCommand} --new-window '${result.url}'`]);
             return;
         }
 
@@ -164,7 +164,7 @@ QtObject {
             HyprlandService.activeWsClientsProcess.running = true;
         } else {
             let flag = activeClients.map(c => c.class).includes(SearchConf.browserClass) ? "" : "--new-window";
-            HyprlandService.execWithQsTag(`${SearchConf.browserCommand} ${flag} '${result.url}'`);
+            Quickshell.execDetached(["zsh", "-c", `${SearchConf.browserCommand} ${flag} '${result.url}'`]);
         }
     }
 

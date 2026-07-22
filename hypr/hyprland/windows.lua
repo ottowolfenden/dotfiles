@@ -53,3 +53,20 @@ h.qs_bind("CTRL + mouse_down", function()
         hl.dispatch(hl.dsp.send_key_state({ mods = "CTRL", key = "minus", state = "up" }))
     end
 end, { non_consuming = true })
+
+local no_autofocus_classes = {}
+local no_fullscreen_classes = { "helium" }
+
+hl.on("window.open", function(w)
+    if not h.tbl_includes(no_autofocus_classes, w.class) then
+        hl.dispatch(hl.dsp.focus({ window = w }))
+    end
+    if not h.tbl_includes(no_fullscreen_classes, w.class) then
+        hl.dispatch(hl.dsp.window.fullscreen_state({
+            internal = 0,
+            client = 2,
+            action = "set",
+            window = w
+        }))
+    end
+end)

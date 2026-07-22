@@ -27,18 +27,23 @@ end
 
 function h.qs_exec(cmd, rules)
     return function()
-        hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideAllFlyouts"))
-        if not rules then rules = {} end
-        rules.tag = "+qs"
         hl.dispatch(hl.dsp.exec_cmd(cmd, rules))
+        hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideAllFlyouts"))
     end
 end
 
 function h.qs_bind(keys, dispatcher, flags)
     hl.bind(keys, function()
-        hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideAllFlyouts"))
         hl.dispatch(dispatcher)
+        hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideAllFlyouts"))
     end, flags)
+end
+
+function h.tbl_includes(tbl, val)
+    for _, item in ipairs(tbl) do
+        if item == val then return true end
+    end
+    return false
 end
 
 return h

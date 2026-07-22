@@ -129,15 +129,13 @@ QtObject {
             openTimer.binds = binds;
             openTimer.running = true;
         } else
-            HyprlandService.execWithQsTag(`${(() => {
-                    if (binds?.inTerminal?.active)
-                        return "kitty";
-                    else if (binds?.inVsCode?.active || dir.hasGit)
-                        return "code";
-                    else
+            Quickshell.execDetached(["zsh", "-c", `${(() => {
+                        if (binds?.inTerminal?.active)
+                            return "kitty";
+                        else if (binds?.inVsCode?.active || dir.hasGit)
+                            return "code";
                         return "thunar";
-                })()} '${dir.path}'`);
-        Quickshell.execDetached(["touch", "-a", dir.path]);
+                    })()} '${dir.path}'; touch -a ${dir.path}`]);
     }
 
     property Timer openTimer: Timer {

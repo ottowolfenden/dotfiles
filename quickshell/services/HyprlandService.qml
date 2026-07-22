@@ -57,10 +57,6 @@ QtObject {
             `]);
     }
 
-    function execWithQsTag(command: string): void {
-        Hyprland.dispatch(`hl.dsp.exec_cmd(${JSON.stringify(command)}, { tag = "+qs" })`);
-    }
-
     property Process activeWsClientsProcess: Process {
         id: activeWsClientsProcess
         property var callbackFunc: null

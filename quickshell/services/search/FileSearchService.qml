@@ -130,15 +130,14 @@ QtObject {
             openTimer.binds = binds;
             openTimer.running = true;
         } else
-            HyprlandService.execWithQsTag(`${(() => {
-                    if (binds?.inVsCode?.active)
-                        return "code";
-                    if (checkStatus == "success")
-                        return "xdg-open";
-                    if (checkStatus == "fail")
-                        return "thunar";
-                })()} '${file.path}'`);
-        Quickshell.execDetached(["touch", "-a", file.path]);
+            Quickshell.execDetached(["zsh", "-c", `${(() => {
+                        if (binds?.inVsCode?.active)
+                            return "code";
+                        if (checkStatus == "success")
+                            return "xdg-open";
+                        if (checkStatus == "fail")
+                            return "thunar";
+                    })()} '${file.path}'; touch -a ${file.path}`]);
     }
 
     property Process checkCanOpenProcess: Process {
