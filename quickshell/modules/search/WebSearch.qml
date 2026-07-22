@@ -62,7 +62,7 @@ Repeater {
             anchors.rightMargin: DesignConf.spacing / 2
 
             Icon {
-                iconName: result.modelData.type == "history" ? IconsConf.history : IconsConf.webSearch
+                iconName: result.modelData.type == "history" ? IconsConf.webHistory : IconsConf.webSearch
                 colour: title.color.toString()
             }
 
