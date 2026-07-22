@@ -7,30 +7,31 @@ import "../.."
 
 QtObject {
     id: root
-    property var results: [...historyResults].slice(0, getMax())
+    property var results: UtilsService.getDistinctByAnyKeys([...historyResults, ...whenceResults], ["command"]).slice(0, getMax())
     property var historyResults: []
+    property var whenceResults: []
     property string mode
 
     function search(text: string, mode: string): var {
         if (text.length < SearchConf.modes.find(m => m.name == "commands").minChars || getMax() == 0) {
-            historyResults = [];
+            reset();
             return;
         }
 
-        historyProcess.input = text;
-        historyProcess.running = true;
+        historyProcess.input = whenceProcess.input = text;
+        historyProcess.running = whenceProcess.running = true;
     }
 
     function reset() {
-        historyResults = [];
+        historyResults = whenceResults = [];
     }
 
     function getMax(type): int {
         let total = UtilsService.getMaxSearchResults("commands", mode);
         if (type == "history")
-            return Math.round(total * SearchConf.browserHistoryProportion);
+            return Math.round(total * SearchConf.commandHistoryProportion);
         if (type == "whence")
-            return Math.round(total * (1 - SearchConf.browserHistoryProportion));
+            return Math.round(total * (1 - SearchConf.commandHistoryProportion));
         return total;
     }
 
@@ -59,7 +60,7 @@ QtObject {
         let prefixMatches = [];
         let substringMatches = [];
 
-        [...entries].forEach(entry => {
+        entries.forEach(entry => {
             if (seenCommands.has(entry.command))
                 return;
             let matchingEntries = entries.filter(e => entry.command == e.command);
@@ -71,15 +72,46 @@ QtObject {
             seenCommands.add(entry.command);
         });
 
-        root.historyResults = [...recencySort(prefixMatches), ...recencySort(substringMatches)];
+        root.historyResults = [...recencySort(prefixMatches), ...recencySort(substringMatches)].slice(0, getMax("history"));
     }
 
     property Process historyProcess: Process {
-        id: historyProcess
         property var input: null
         command: ["sh", "-c", `grep -Ei ':[ 0-9]+:[0-9]+;.*${input}' ${PathsConf.zshHistory}`]
         stdout: StdioCollector {
-            onStreamFinished: root.processHistoryOutput(historyProcess.input, text)
+            onStreamFinished: root.processHistoryOutput(root.historyProcess.input, text)
+        }
+    }
+
+    function processWhenceOutput(input: string, output: string) {
+        let entries = UtilsService.getDistinctNonNull(output.trim().split("\n").map(line => {
+            if (line != "")
+                return {
+                    type: "whence",
+                    get command() {
+                        let parts = line.split("/");
+                        return parts[parts.length - 1];
+                    }
+                };
+        })).filter(e => !SearchConf.whencePrefixExclusions.some(ex => e.command.startsWith(ex)));
+        let isPrefixMatch = r => r.command?.toLowerCase()?.startsWith(input.toLowerCase());
+        let prefixMatches = [];
+        let substringMatches = [];
+        entries.forEach(entry => {
+            if (isPrefixMatch(entry))
+                prefixMatches.push(entry);
+            else if (SearchConf.searchWhenceSubstrings)
+                substringMatches.push(entry);
+        });
+
+        root.whenceResults = [...prefixMatches, ...substringMatches].slice(0, getMax("whence"));
+    }
+
+    property Process whenceProcess: Process {
+        property var input: null
+        command: input ? ["zsh", "-ic", `whence -m "*${input.toLowerCase()}*"`] : []
+        stdout: StdioCollector {
+            onStreamFinished: root.processWhenceOutput(root.whenceProcess.input, text)
         }
     }
 
@@ -90,7 +122,9 @@ QtObject {
             openTimer.resultToOpen = result;
             openTimer.binds = binds;
             openTimer.running = true;
-        } else {
+        } else if (["whence", "input"].includes(result.type) || SearchConf.alwaysPrefillCommands)
+            HyprlandService.execWithQsTag(`kitty env ZSH_PREFILL='${result.command + " "}' zsh`);
+        else if (result.type == "history") {
             Quickshell.execDetached(["zsh", "-ic", `print -s "${result.command}"`]);
             HyprlandService.execWithQsTag(`kitty -- zsh -ic '${result.command}; echo; exec zsh'`);
         }
