@@ -1,4 +1,5 @@
 local h = require("helpers")
+local qs = require("qs")
 
 local max_ws = 9
 
@@ -51,7 +52,7 @@ local last_left = 0
 local minDelta = 6
 local delay = 230
 
-local function getWorkspaceGesture(action)
+local function get_ws_gesture(action)
     return {
         fingers = 3,
         direction = "horizontal",
@@ -67,9 +68,10 @@ local function getWorkspaceGesture(action)
                     last_right = e.time_ms
                 end
                 changeWorkspace(action, (e.delta.x > 0 and -1 or 1))
-            end
+            end,
+            finish = function() qs.dispatch() end
         }
     }
 end
 
-h.gestures({ getWorkspaceGesture("move"), getWorkspaceGesture("focus") })
+h.gestures({ get_ws_gesture("move"), get_ws_gesture("focus") })
