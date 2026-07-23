@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Shapes
 import Quickshell
+import Quickshell.Wayland
 import ".."
 
 PanelWindow {
@@ -14,6 +15,8 @@ PanelWindow {
     property string pos: rect.x == 0 ? "left" : (rect.x + rect.width == root.width ? "right" : "middle")
     property bool isOpen: false
     property bool hovering: false
+
+    WlrLayershell.namespace: "qs-flyout"
 
     color: "transparent"
     focusable: true

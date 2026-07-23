@@ -23,11 +23,10 @@ PanelWindow {
     anchors.bottom: true
     anchors.left: true
     anchors.right: true
+    WlrLayershell.layer: WlrLayer.Overlay
     mask: Region {
         item: rect
     }
-    WlrLayershell.namespace: "quickshell-root"
-    WlrLayershell.layer: WlrLayer.Overlay
 
     Shape {
         id: rect

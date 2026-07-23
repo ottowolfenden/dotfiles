@@ -39,6 +39,18 @@ function h.press_key(mods, key)
     hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "up" }))
 end
 
+function h.is_cursor_in_qs()
+    local barHeight = 44
+    for _, layer in ipairs(hl.get_layers()) do
+        if layer.namespace == "qs-flyout" then
+            return true
+        end
+    end
+    local m = hl.get_active_monitor()
+    if not m or not m.position then return end
+    return hl.get_cursor_pos().y - m.position.y <= barHeight
+end
+
 local function apply_binds(binds, binds_func)
     for keys, params in pairs(binds) do
         local func = type(params) == "table" and params[1] or params
