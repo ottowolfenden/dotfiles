@@ -4,7 +4,7 @@ local keys_to_hide_flyouts = { "mouse:272", "mouse:273", "mouse:274" }
 
 for _, input in ipairs(keys_to_hide_flyouts) do
     hl.bind(input, function()
-        if not h.is_cursor_in_qs() then
+        if not h.is_cursor_in_qs_bar() then
             hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideNonHoveredFlyouts"))
         end
         hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler hideAllBafs"))

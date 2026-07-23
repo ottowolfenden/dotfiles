@@ -39,6 +39,14 @@ function h.press_key(mods, key)
     hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "up" }))
 end
 
+function h.is_cursor_in_qs_bar()
+    local w = hl.get_active_window()
+    local c = hl.get_cursor_pos()
+    if not w or not c then return false end
+    return c.x < w.at.x or c.x > (w.at.x + w.size.x) or
+        c.y < w.at.y or c.y > (w.at.y + w.size.y)
+end
+
 function h.is_cursor_in_qs()
     local barHeight = 44
     for _, layer in ipairs(hl.get_layers()) do
