@@ -34,6 +34,10 @@ QtObject {
         Hyprland.dispatch(`hl.dsp.focus({ window = "${selector}" })`);
     }
 
+    function focusActiveWindow(): void {
+        Hyprland.dispatch(`hl.dsp.focus({ window = hl.get_active_window() })`);
+    }
+
     function applyFlyoutConf(): void {
         Quickshell.execDetached(["hyprctl", "eval", `
                 hl.config({

@@ -136,8 +136,11 @@ Rectangle {
             }
 
             Keys.onPressed: e => {
-                if (!root.isOpen)
+                if (!root.isOpen) {
+                    e.accepted = true;
+                    HyprlandService.focusActiveWindow();
                     return;
+                }
 
                 prevText = text;
                 setBinds(e);
