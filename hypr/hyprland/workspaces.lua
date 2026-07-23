@@ -47,10 +47,18 @@ end
 
 h.qs_binds(qs_binds)
 
-local last_right = 0
-local last_left = 0
-local minDelta = 6
-local delay = 230
+local last_time = 0
+local minDelta = 0.5
+local delay = 150
+local choice = nil
+
+local function get_choice(delta)
+    if delta < 0 then
+        return "left"
+    elseif delta > 0 then
+        return "right"
+    end
+end
 
 local function get_ws_gesture(action)
     return {
@@ -59,17 +67,22 @@ local function get_ws_gesture(action)
         mods = action == "move" and "SHIFT" or nil,
         action = {
             update = function(e)
-                if (math.abs(e.delta.x) < minDelta) then return end
-                if e.delta.x < 0 then
-                    if (e.time_ms < last_left + delay) then return end
-                    last_left = e.time_ms
-                elseif e.delta.x > 0 then
-                    if (e.time_ms < last_right + delay) then return end
-                    last_right = e.time_ms
+                if
+                    math.abs(e.delta.x) < minDelta
+                    or get_choice(e.delta.x) == choice
+                    or e.time_ms < last_time + delay
+                then
+                    return
                 end
+
+                last_time = e.time_ms
+                choice = get_choice(e.delta.x)
                 changeWorkspace(action, (e.delta.x > 0 and -1 or 1))
             end,
-            finish = function() qs.dispatch() end
+            finish = function()
+                qs.dispatch()
+                choice = nil
+            end
         }
     }
 end
