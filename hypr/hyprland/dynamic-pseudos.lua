@@ -1,87 +1,139 @@
+local h = require("helpers")
+local qs = require("qs")
+
 local dynamic_pseudos = {
     classes = {
         "kitty",
-        "[Tt]hunar",
-        "blueman",
-        "[Oo]verskride",
-        "com%.github%.th%-ch%.youtube%-music"
+        "thunar",
+        "com.github.th-ch.youtube-music"
     },
-    initial_titles = {}
+    initial_titles = { "overskride" }
 }
+local pseudo_size = { x = 1100, y = 700 }
 
-hl.bind("SUPER + P", function()
-    hl.dispatch(hl.dsp.window.pseudo())
-    if hl.get_active_window() then
-        hl.dispatch(hl.dsp.window.resize({ x = 1000, y = 625 }))
+local function is_dynamic_pseudo(window)
+    return h.arr_includes(dynamic_pseudos.classes, window.class) or
+        h.arr_includes(dynamic_pseudos.initial_titles, window.initial_title)
+end
+
+local function is_pseudo(window)
+    return h.arr_includes(window.tags, "pseudo")
+end
+
+local function is_manually_disabled(window)
+    return h.arr_includes(window.tags, "manually_disabled")
+end
+
+local function get_remaining_windows(window_to_exclude, ws)
+    local windows = hl.get_workspace_windows(ws and ws.id or hl.get_active_workspace().id)
+    local remaining_windows = {}
+    for _, w in ipairs(windows) do
+        if not w.floating and (not window_to_exclude or w.address ~= window_to_exclude.address) then
+            table.insert(remaining_windows, w)
+        end
+    end
+    return remaining_windows
+end
+
+local function pseudo(action, window)
+    if not window then window = hl.get_active_window() end
+    if not window then return end
+    hl.dispatch(hl.dsp.window.pseudo({ window = window, action = action }))
+
+    if action == "toggle" then
+        hl.dispatch(hl.dsp.window.tag({ tag = "pseudo", window = window }))
+        if is_pseudo(window) then
+            hl.dispatch(hl.dsp.window.resize({ x = pseudo_size.x, y = pseudo_size.y, window = window }))
+        end
+    elseif action == "enable" then
+        hl.dispatch(hl.dsp.window.resize({ x = pseudo_size.x, y = pseudo_size.y, window = window }))
+        hl.dispatch(hl.dsp.window.tag({ tag = "+pseudo", window = window }))
+    elseif action == "disable" and is_pseudo(window) then
+        hl.dispatch(hl.dsp.window.tag({ tag = "-pseudo", window = window }))
+    end
+end
+
+
+qs.bind("SUPER + O", function()
+    if is_pseudo(hl.get_active_window()) then
+        h.notif("PSEUDO = TRUE")
+    else
+        h.notif("PSEUDO = FALSE")
     end
 end)
 
-local pseudo_size = { x = 1000, y = 625 }
-local ms_before_resize = 50
-
-local function is_dynamic_pseudo(window)
-    for _, regex in ipairs(dynamic_pseudos.classes) do
-        if string.match(window.class, regex) then return true end
-    end
-    for _, regex in ipairs(dynamic_pseudos.initial_titles) do
-        if string.match(window.initial_title, regex) then return true end
-    end
-    return false
-end
-
-local function non_floating(windows)
-    local result = {}
-    for _, win in ipairs(windows) do
-        if not win.floating then
-            table.insert(result, win)
+hl.on("window.open", function(opened_window)
+    local wins = get_remaining_windows()
+    if is_dynamic_pseudo(opened_window) and #wins == 1 then
+        pseudo("enable", opened_window)
+    elseif #wins > 1 then
+        for _, w in ipairs(wins) do
+            if is_dynamic_pseudo(w) then pseudo("disable", w) end
         end
     end
-    return result
-end
+end)
 
-local function refresh_dynamic_pseudo_state(window, workspace)
-    local windows = non_floating(hl.get_workspace_windows(workspace.id))
-    if #windows == 1 and is_dynamic_pseudo(window) then
-        hl.dispatch(hl.dsp.window.pseudo({ action = "enable", window = window }))
-        hl.dispatch(hl.dsp.window.resize({ x = pseudo_size.x, y = pseudo_size.y, window = window }))
-    elseif #windows > 1 then
-        for _, win in ipairs(windows) do
-            if is_dynamic_pseudo(win) then
-                hl.dispatch(hl.dsp.window.pseudo({ action = "disable", window = win }))
+hl.on("window.close", function(closed_window)
+    hl.timer(function()
+        local wins = get_remaining_windows(closed_window)
+        if #wins ~= 1 then return end
+        local remaining_window = wins[1]
+        if is_dynamic_pseudo(remaining_window) then
+            pseudo("enable", remaining_window)
+        end
+    end, { timeout = 10, type = "oneshot" })
+end)
+
+hl.on("window.move_to_workspace", function(moved_window, new_ws)
+    hl.timer(function()
+        local prev_ws_windows = get_remaining_windows(moved_window, hl.get_last_workspace())
+        local new_ws_windows = get_remaining_windows(nil, new_ws)
+
+        if #prev_ws_windows == 1 then
+            local remaining_win = prev_ws_windows[1]
+            if is_dynamic_pseudo(remaining_win) then pseudo("enable", remaining_win) end
+        elseif #prev_ws_windows > 1 then
+            for _, w in ipairs(prev_ws_windows) do
+                if is_dynamic_pseudo(w) then pseudo("disable", w) end
+            end
+        end
+
+        if #new_ws_windows == 1 then
+            local remaining_win = new_ws_windows[1]
+            if is_dynamic_pseudo(remaining_win) then pseudo("enable", remaining_win) end
+        elseif #new_ws_windows > 1 then
+            for _, w in ipairs(new_ws_windows) do
+                if is_dynamic_pseudo(w) then pseudo("disable", w) end
+            end
+        end
+    end, { timeout = 10, type = "oneshot" })
+end)
+
+local function toggle_float()
+    local window = hl.get_active_window()
+    if not window then return end
+    hl.dispatch(hl.dsp.window.float({ window = window, action = "toggle" }))
+    if window.floating then
+        hl.dispatch(hl.dsp.window.tag({ tag = "-pseudo", window = window }))
+        -- window.close
+        local wins = get_remaining_windows(window)
+        if #wins ~= 1 then return end
+        local remaining_window = wins[1]
+        if is_dynamic_pseudo(remaining_window) then
+            pseudo("enable", remaining_window)
+        end
+    else
+        -- window.open
+        local wins = get_remaining_windows()
+        if is_dynamic_pseudo(window) and #wins == 1 then
+            pseudo("enable", window)
+        elseif #wins > 1 then
+            for _, w in ipairs(wins) do
+                if is_dynamic_pseudo(w) then pseudo("disable", w) end
             end
         end
     end
 end
 
-hl.on("window.open", function(window)
-    refresh_dynamic_pseudo_state(window, hl.get_active_workspace())
-end)
-hl.on("window.move_to_workspace", function(window, workspace)
-    hl.timer(function()
-        refresh_dynamic_pseudo_state(window, workspace)
-    end, { timeout = ms_before_resize, type = "oneshot" })
-end)
-
-hl.on("window.close", function()
-    hl.timer(function()
-        local windows = hl.get_workspace_windows(hl.get_active_workspace().id)
-        if #windows ~= 1 then return end
-        if is_dynamic_pseudo(windows[1]) then
-            hl.dispatch(hl.dsp.window.pseudo({ action = "enable", window = windows[1] }))
-            hl.dispatch(hl.dsp.window.resize({ x = pseudo_size.x, y = pseudo_size.y, window = windows[1] }))
-        end
-    end, { timeout = ms_before_resize, type = "oneshot" })
-end)
-
-hl.on("window.move_to_workspace", function()
-    hl.timer(function()
-        local workspace = hl.get_last_workspace()
-        if not workspace then return end
-        local windows = hl.get_workspace_windows(workspace.id)
-        if #windows ~= 1 then return end
-        if is_dynamic_pseudo(windows[1]) then
-            hl.dispatch(hl.dsp.window.pseudo({ action = "enable", window = windows[1] }))
-            hl.dispatch(hl.dsp.window.resize({ x = pseudo_size.x, y = pseudo_size.y, window = windows[1] }))
-        end
-    end, { timeout = ms_before_resize, type = "oneshot" })
-end)
+qs.bind("SUPER + P", function() pseudo("toggle") end)
+qs.bind("SUPER + F", function() toggle_float() end)

@@ -1,7 +1,6 @@
 local h = require("helpers")
 
 local qs_binds = {
-    ["SUPER + F"] = hl.dsp.window.float({ action = "toggle" }),
     ["SUPER + slash"] = hl.dsp.layout("togglesplit"),
     ["SUPER + mouse:272"] = { hl.dsp.window.drag(), { mouse = true } },
     ["SUPER + mouse:273"] = { hl.dsp.window.resize(), { mouse = true } },
