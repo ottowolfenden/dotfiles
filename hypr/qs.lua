@@ -20,11 +20,8 @@ function qs.bind(keys, func, flags)
 end
 
 function qs.is_cursor_in_qs_bar()
-    local w = hl.get_active_window()
-    local c = hl.get_cursor_pos()
-    if not w or not c then return false end
-    return c.x < w.at.x or c.x > (w.at.x + w.size.x) or
-        c.y < w.at.y or c.y > (w.at.y + w.size.y)
+    local barHeight = 44
+    return hl.get_cursor_pos().y - hl.get_active_monitor().position.y < barHeight
 end
 
 function qs.is_cursor_in_qs()
