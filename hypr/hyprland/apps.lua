@@ -16,7 +16,7 @@ h.binds({
     ["SUPER + Q"] = function()
         local w = hl.get_active_window()
         if w and w.class == "code" then
-            if h.is_cursor_in_qs() then
+            if qs.is_cursor_in_qs() then
                 qs.dispatch(hl.dsp.focus({ window = w }))
             end
             h.press_key("CTRL + SHIFT", "Q")
