@@ -20,120 +20,146 @@ local function is_pseudo(window)
     return h.arr_includes(window.tags, "pseudo")
 end
 
-local function is_manually_disabled(window)
-    return h.arr_includes(window.tags, "manually_disabled")
+local function is_dp_disabled(window)
+    return h.arr_includes(window.tags, "dp_disabled")
 end
 
-local function get_remaining_windows(window_to_exclude, ws)
-    local windows = hl.get_workspace_windows(ws and ws.id or hl.get_active_workspace().id)
-    local remaining_windows = {}
-    for _, w in ipairs(windows) do
-        if not w.floating and (not window_to_exclude or w.address ~= window_to_exclude.address) then
-            table.insert(remaining_windows, w)
+local prefixes = {
+    toggle = "",
+    enable = "+",
+    disable = "-"
+}
+
+local function tag(name, action, window)
+    hl.dispatch(hl.dsp.window.tag({ tag = prefixes[action] .. name, window = window }))
+end
+
+local function resize(window)
+    hl.dispatch(hl.dsp.window.resize({ x = pseudo_size.x, y = pseudo_size.y, window = window }))
+end
+
+local function get_dp_windows(opts)
+    if not opts then opts = {} end
+    local all_windows = hl.get_workspace_windows(opts.ws_id and opts.ws_id or hl.get_active_workspace().id)
+    local windows = {}
+    for _, w in ipairs(all_windows) do
+        if
+            not w.floating
+            and (not opts.exclude_window or w.address ~= opts.exclude_window.address)
+            and (not is_dp_disabled(w) or opts.include_disabled)
+        then
+            table.insert(windows, w)
         end
     end
-    return remaining_windows
+    return windows
 end
 
 local function pseudo(action, window)
-    if not window then window = hl.get_active_window() end
-    if not window then return end
+    if not action or not window then return end
     hl.dispatch(hl.dsp.window.pseudo({ window = window, action = action }))
-
     if action == "toggle" then
-        hl.dispatch(hl.dsp.window.tag({ tag = "pseudo", window = window }))
-        if is_pseudo(window) then
-            hl.dispatch(hl.dsp.window.resize({ x = pseudo_size.x, y = pseudo_size.y, window = window }))
-        end
+        tag("pseudo", "toggle", window)
+        if is_pseudo(window) then resize(window) end
     elseif action == "enable" then
-        hl.dispatch(hl.dsp.window.resize({ x = pseudo_size.x, y = pseudo_size.y, window = window }))
-        hl.dispatch(hl.dsp.window.tag({ tag = "+pseudo", window = window }))
-    elseif action == "disable" and is_pseudo(window) then
-        hl.dispatch(hl.dsp.window.tag({ tag = "-pseudo", window = window }))
+        resize(window)
+        tag("pseudo", "enable", window)
+    elseif action == "disable" then
+        tag("pseudo", "disable", window)
     end
 end
 
-
-qs.bind("SUPER + O", function()
-    if is_pseudo(hl.get_active_window()) then
-        h.notif("PSEUDO = TRUE")
-    else
-        h.notif("PSEUDO = FALSE")
-    end
-end)
-
-hl.on("window.open", function(opened_window)
-    local wins = get_remaining_windows()
-    if is_dynamic_pseudo(opened_window) and #wins == 1 then
+local function window_open(opened_window)
+    local windows = get_dp_windows({ include_disabled = true })
+    if is_dynamic_pseudo(opened_window) and #windows == 1 then
         pseudo("enable", opened_window)
-    elseif #wins > 1 then
-        for _, w in ipairs(wins) do
-            if is_dynamic_pseudo(w) then pseudo("disable", w) end
+    elseif #windows > 1 then
+        for _, w in ipairs(windows) do
+            if is_dynamic_pseudo(w) and not is_dp_disabled(w) then pseudo("disable", w) end
         end
     end
+end
+
+local function window_close(closed_window)
+    local windows = get_dp_windows({ exclude_window = closed_window })
+    if #windows == 1 then
+        local remaining_window = windows[1]
+        if is_dynamic_pseudo(remaining_window) then pseudo("enable", remaining_window) end
+    end
+end
+
+hl.on("window.open", function(opened_window)
+    window_open(opened_window)
 end)
 
 hl.on("window.close", function(closed_window)
     hl.timer(function()
-        local wins = get_remaining_windows(closed_window)
-        if #wins ~= 1 then return end
-        local remaining_window = wins[1]
-        if is_dynamic_pseudo(remaining_window) then
-            pseudo("enable", remaining_window)
-        end
+        window_close(closed_window)
     end, { timeout = 10, type = "oneshot" })
+end)
+
+Previous_ws_id = nil
+Current_ws_id = hl.get_active_workspace().id
+
+hl.on("workspace.active", function(ws)
+    if not Current_ws_id then
+        Current_ws_id = ws.id
+    else
+        Previous_ws_id = Current_ws_id
+        Current_ws_id = ws.id
+    end
 end)
 
 hl.on("window.move_to_workspace", function(moved_window, new_ws)
     hl.timer(function()
-        local prev_ws_windows = get_remaining_windows(moved_window, hl.get_last_workspace())
-        local new_ws_windows = get_remaining_windows(nil, new_ws)
+        local prev_ws_windows = get_dp_windows({ ws_id = Previous_ws_id })
+        local new_ws_windows = get_dp_windows({ ws_id = new_ws.id, include_disabled = true })
 
-        if #prev_ws_windows == 1 then
-            local remaining_win = prev_ws_windows[1]
-            if is_dynamic_pseudo(remaining_win) then pseudo("enable", remaining_win) end
-        elseif #prev_ws_windows > 1 then
-            for _, w in ipairs(prev_ws_windows) do
-                if is_dynamic_pseudo(w) then pseudo("disable", w) end
+        if #new_ws_windows == 1 then
+            local only_window = new_ws_windows[1]
+            if is_dynamic_pseudo(only_window) and not is_dp_disabled(only_window) then pseudo("enable", only_window) end
+        elseif #new_ws_windows > 1 then
+            for _, w in ipairs(new_ws_windows) do
+                if is_dynamic_pseudo(w) and not is_dp_disabled(w) then
+                    pseudo("disable", w)
+                end
             end
         end
 
-        if #new_ws_windows == 1 then
-            local remaining_win = new_ws_windows[1]
-            if is_dynamic_pseudo(remaining_win) then pseudo("enable", remaining_win) end
-        elseif #new_ws_windows > 1 then
-            for _, w in ipairs(new_ws_windows) do
-                if is_dynamic_pseudo(w) then pseudo("disable", w) end
-            end
+        if #prev_ws_windows == 1 then
+            local remaining_window = prev_ws_windows[1]
+            if is_dynamic_pseudo(remaining_window) then pseudo("enable", remaining_window) end
         end
     end, { timeout = 10, type = "oneshot" })
 end)
 
-local function toggle_float()
+local function should_be_pseudo(window)
+    if not window or not is_dynamic_pseudo(window) then return false end
+    local other_windows = get_dp_windows({ exclude_window = window, include_disabled = true })
+    return #other_windows == 0
+end
+
+qs.bind("SUPER + P", function()
+    local window = hl.get_active_window()
+    pseudo("toggle", window)
+    if is_dynamic_pseudo(window) and (
+            (is_pseudo(window) and not should_be_pseudo(window))
+            or (not is_pseudo(window) and should_be_pseudo(window))
+        )
+    then
+        tag("dp_disabled", "enable", window)
+    else
+        tag("dp_disabled", "disable", window)
+    end
+end)
+
+qs.bind("SUPER + F", function()
     local window = hl.get_active_window()
     if not window then return end
     hl.dispatch(hl.dsp.window.float({ window = window, action = "toggle" }))
     if window.floating then
-        hl.dispatch(hl.dsp.window.tag({ tag = "-pseudo", window = window }))
-        -- window.close
-        local wins = get_remaining_windows(window)
-        if #wins ~= 1 then return end
-        local remaining_window = wins[1]
-        if is_dynamic_pseudo(remaining_window) then
-            pseudo("enable", remaining_window)
-        end
+        tag("pseudo", "disable", window)
+        window_close(window)
     else
-        -- window.open
-        local wins = get_remaining_windows()
-        if is_dynamic_pseudo(window) and #wins == 1 then
-            pseudo("enable", window)
-        elseif #wins > 1 then
-            for _, w in ipairs(wins) do
-                if is_dynamic_pseudo(w) then pseudo("disable", w) end
-            end
-        end
+        window_open(window)
     end
-end
-
-qs.bind("SUPER + P", function() pseudo("toggle") end)
-qs.bind("SUPER + F", function() toggle_float() end)
+end)
