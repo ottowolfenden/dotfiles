@@ -42,19 +42,21 @@ end
 h.qs_binds(qs_binds)
 h.binds(binds)
 
-local no_autofocus_classes = {}
 local no_fullscreen_classes = { "helium" }
 
 hl.on("window.open", function(w)
-    if not h.arr_includes(no_autofocus_classes, w.class) then
-        hl.dispatch(hl.dsp.focus({ window = w }))
-    end
-    if not h.arr_includes(no_fullscreen_classes, w.class) then
-        hl.dispatch(hl.dsp.window.fullscreen_state({
-            internal = 0,
-            client = 2,
-            action = "set",
-            window = w
-        }))
-    end
+    hl.timer(function()
+        local a_w = hl.get_active_window()
+        if not a_w or w.address ~= a_w.address then
+            hl.dispatch(hl.dsp.focus({ window = w }))
+        end
+        if not h.arr_includes(no_fullscreen_classes, w.class) then
+            hl.dispatch(hl.dsp.window.fullscreen_state({
+                internal = 0,
+                client = 2,
+                action = "set",
+                window = w
+            }))
+        end
+    end, { timeout = 1, type = "oneshot" })
 end)
