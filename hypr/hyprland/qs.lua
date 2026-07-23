@@ -3,11 +3,8 @@ local h = require("helpers")
 local keys_to_hide_flyouts = { "mouse:272", "mouse:273", "mouse:274" }
 
 for _, input in ipairs(keys_to_hide_flyouts) do
-    local barHeight = 44
     hl.bind(input, function()
-        local m = hl.get_active_monitor()
-        if not m or not m.position then return end
-        if hl.get_cursor_pos().y - m.position.y > barHeight then
+        if not h.is_cursor_in_qs() then
             hl.dispatch(hl.dsp.exec_cmd("qs ipc call flyoutsHandler hideNonHoveredFlyouts"))
         end
         hl.dispatch(hl.dsp.exec_cmd("qs ipc call bafsHandler hideAllBafs"))
