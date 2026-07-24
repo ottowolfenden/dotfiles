@@ -68,14 +68,20 @@ local function pseudo(action, window)
     end
 end
 
+local function unpseudo_windows(windows)
+    for _, w in ipairs(windows) do
+        if is_dynamic_pseudo(w) and not is_dp_disabled(w) then
+            pseudo("disable", w)
+        end
+    end
+end
+
 local function window_open(opened_window)
     local windows = get_dp_windows({ include_disabled = true })
     if is_dynamic_pseudo(opened_window) and #windows == 1 then
         pseudo("enable", opened_window)
     elseif #windows > 1 then
-        for _, w in ipairs(windows) do
-            if is_dynamic_pseudo(w) and not is_dp_disabled(w) then pseudo("disable", w) end
-        end
+        unpseudo_windows(windows)
     end
 end
 
@@ -83,7 +89,9 @@ local function window_close(closed_window)
     local windows = get_dp_windows({ exclude_window = closed_window, include_disabled = true })
     if #windows == 1 then
         local remaining_window = windows[1]
-        if is_dynamic_pseudo(remaining_window) then pseudo("enable", remaining_window) end
+        if is_dynamic_pseudo(remaining_window) then
+            pseudo("enable", remaining_window)
+        end
     end
 end
 
@@ -114,11 +122,7 @@ hl.on("window.move_to_workspace", function(_, new_ws)
             local only_window = new_ws_windows[1]
             if is_dynamic_pseudo(only_window) and not is_dp_disabled(only_window) then pseudo("enable", only_window) end
         elseif #new_ws_windows > 1 then
-            for _, w in ipairs(new_ws_windows) do
-                if is_dynamic_pseudo(w) and not is_dp_disabled(w) then
-                    pseudo("disable", w)
-                end
-            end
+            unpseudo_windows(new_ws_windows)
         end
 
         if #prev_ws_windows == 1 then
@@ -137,15 +141,13 @@ end
 qs.bind("SUPER + P", function()
     local window = hl.get_active_window()
     pseudo("toggle", window)
-    if is_dynamic_pseudo(window) and (
+    tag(
+        "dp_disabled",
+        is_dynamic_pseudo(window) and (
             (is_pseudo(window) and not should_be_pseudo(window))
             or (not is_pseudo(window) and should_be_pseudo(window))
-        )
-    then
-        tag("dp_disabled", "enable", window)
-    else
-        tag("dp_disabled", "disable", window)
-    end
+        ) and "enable" or "disable",
+        window)
 end)
 
 qs.bind("SUPER + F", function()
