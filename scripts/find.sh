@@ -40,7 +40,7 @@ sort() {
         }' | command sort -zns
     fi
 }
-cut() { command cut -zd' ' -f1-; }
+cut() { command cut -zd' ' -f2-; }
 
 (
     find "${filters[@]}" -ipath "$text*" "${format[@]}" | sort -accessed | sort -depth | cut
@@ -50,9 +50,13 @@ cut() { command cut -zd' ' -f1-; }
     find "${filters[@]}" -ipath "*$text*" ! -iname "*$text*" ! -ipath "$text*" "${format[@]}" | sort -accessed | cut
 ) 2>/dev/null |
 awk -v max="$max" 'BEGIN { RS="\0"; ORS="\0" } NR > max { exit } { print }' |
-while IFS=" " read -r -d '' bytesize path; do
+while IFS=" " read -r -d '' path; do
     if [[ $type == d ]]; then
-        [[ -d $path/.git ]] && hasgit=true || hasgit=false
+        if git ls-files --error-unmatch "$path" &>/dev/null; then
+            hasgit=true
+        else
+            hasgit=false
+        fi
     fi
     printf '%s\t%s\n' "$path" "$hasgit"
 done |
