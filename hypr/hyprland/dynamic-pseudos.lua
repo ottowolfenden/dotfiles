@@ -98,7 +98,7 @@ hl.on("window.close", function(closed_window)
 end)
 
 Previous_ws_id = nil
-Current_ws_id = hl.get_active_workspace().id
+Current_ws_id = nil
 
 hl.on("workspace.active", function(ws)
     if not Current_ws_id then
@@ -109,7 +109,7 @@ hl.on("workspace.active", function(ws)
     end
 end)
 
-hl.on("window.move_to_workspace", function(moved_window, new_ws)
+hl.on("window.move_to_workspace", function(_, new_ws)
     hl.timer(function()
         local prev_ws_windows = get_dp_windows({ ws_id = Previous_ws_id })
         local new_ws_windows = get_dp_windows({ ws_id = new_ws.id, include_disabled = true })
