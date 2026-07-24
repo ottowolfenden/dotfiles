@@ -98,15 +98,11 @@ hl.on("window.close", function(closed_window)
 end)
 
 Previous_ws_id = nil
-Current_ws_id = nil
+Current_ws_id = hl.get_active_workspace() and hl.get_active_workspace().id or nil
 
 hl.on("workspace.active", function(ws)
-    if not Current_ws_id then
-        Current_ws_id = ws.id
-    else
-        Previous_ws_id = Current_ws_id
-        Current_ws_id = ws.id
-    end
+    Previous_ws_id = Current_ws_id
+    Current_ws_id = ws.id
 end)
 
 hl.on("window.move_to_workspace", function(_, new_ws)
