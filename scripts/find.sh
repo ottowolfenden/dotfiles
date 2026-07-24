@@ -4,10 +4,11 @@ dir="$1"
 text="$2"
 type=$3
 max=$4
+isextra=$5
 exclusions=()
 
-if [[ "$5" == "--exclude" ]]; then
-    exclusions=("${@:5}")
+if [[ "$6" == "--exclude" ]]; then
+    exclusions=("${@:7}")
 fi
 
 exclargs=()
@@ -51,8 +52,9 @@ cut() { command cut -zd' ' -f2-; }
 ) 2>/dev/null |
 awk -v max="$max" 'BEGIN { RS="\0"; ORS="\0" } NR > max { exit } { print }' |
 while IFS=" " read -r -d '' path; do
-    if [[ $type == d ]]; then
-        if git ls-files --error-unmatch "$path" &>/dev/null; then
+    if [[ $type == d && $isextra == "false" ]]; then
+      if git -C "$path" rev-parse --is-inside-work-tree &>/dev/null && \
+        [ -n "$(git -C "$path" ls-files . 2>/dev/null)" ]; then
             hasgit=true
         else
             hasgit=false

@@ -69,7 +69,7 @@ QtObject {
     }
 
     function getSearchCommand(opts: var): var {
-        return [PathsConf.scripts + "find.sh", opts.dir, opts.text, "d", opts.max, "--exclude", ...opts.exclusions];
+        return [PathsConf.scripts + "find.sh", opts.dir, opts.text, "d", opts.max, opts.isExtraSearch, "--exclude", ...opts.exclusions];
     }
 
     function hideOutput(): void {
@@ -85,6 +85,7 @@ QtObject {
             dir: SearchConf.dirParentDir,
             text: input,
             max: getMax(),
+            isExtraSearch: false,
             exclusions: SearchConf.pathExclusions.dirs.default
         })
         stdout: StdioCollector {
@@ -109,6 +110,7 @@ QtObject {
             dir: SearchConf.dirParentDir,
             text: input,
             max: getMax() - results.length,
+            isExtraSearch: true,
             exclusions: [...results.map(r => r.path), ...SearchConf.pathExclusions.dirs.always]
         })
         stdout: StdioCollector {
