@@ -24,6 +24,6 @@ h.window_rules({
 })
 
 hl.layer_rule({
-    match = { namespace = "quickshell" },
+    match = { namespace = "quickshell|qs-flyout" },
     no_anim = true
 })
