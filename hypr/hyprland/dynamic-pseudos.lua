@@ -80,7 +80,7 @@ local function window_open(opened_window)
 end
 
 local function window_close(closed_window)
-    local windows = get_dp_windows({ exclude_window = closed_window })
+    local windows = get_dp_windows({ exclude_window = closed_window, include_disabled = true })
     if #windows == 1 then
         local remaining_window = windows[1]
         if is_dynamic_pseudo(remaining_window) then pseudo("enable", remaining_window) end
