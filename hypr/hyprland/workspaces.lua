@@ -29,13 +29,15 @@ local qs_binds = {}
 for mod, action in pairs({ [""] = "focus", ["SHIFT + "] = "move" }) do
     qs_binds["SUPER + " .. mod .. "tab"] = function() changeWorkspace(action, "previous") end
     qs_binds["SUPER + " .. mod .. "N"] = function() changeWorkspace(action, "emptyn") end
+    qs_binds["SUPER + CTRL + " .. mod .. "right"] = { function() changeWorkspace(action, 1) end, { repeating = true } }
+    qs_binds["SUPER + CTRL + " .. mod .. "left"] = { function() changeWorkspace(action, -1) end, { repeating = true } }
 
     for offset, binds in pairs({
-        [1] = { "mouse:276", "mouse_up", "CTRL + right" },
-        [-1] = { "mouse:275", "mouse_down", "CTRL + left" }
+        [1] = { "mouse:276", "mouse_up" },
+        [-1] = { "mouse:275", "mouse_down" }
     }) do
         for _, bind in ipairs(binds) do
-            qs_binds["SUPER + " .. mod .. bind] = { function() changeWorkspace(action, offset) end, { repeating = true } }
+            qs_binds["SUPER + " .. mod .. bind] = function() changeWorkspace(action, offset) end
         end
     end
 end
