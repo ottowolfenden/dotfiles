@@ -5,7 +5,9 @@ local dynamic_pseudos = {
     classes = {
         "kitty",
         "thunar",
-        "com.github.th-ch.youtube-music"
+        "com.github.th-ch.youtube-music",
+        "localsend",
+        "btop"
     },
     initial_titles = { "overskride" }
 }
@@ -24,13 +26,12 @@ local function is_dp_disabled(window)
     return h.arr_includes(window.tags, "dp_disabled")
 end
 
-local prefixes = {
-    toggle = "",
-    enable = "+",
-    disable = "-"
-}
-
 local function tag(name, action, window)
+    local prefixes = {
+        toggle = "",
+        enable = "+",
+        disable = "-"
+    }
     hl.dispatch(hl.dsp.window.tag({ tag = prefixes[action] .. name, window = window }))
 end
 
