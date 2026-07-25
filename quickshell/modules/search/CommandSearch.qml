@@ -15,8 +15,8 @@ Repeater {
     signal activeIndexSet(index: int)
 
     model: {
-        if (CommandSearchService.results.length == 0 && mode == "commands" && searchInput.text.length != 0)
-            return [
+        if (mode == "commands" && searchInput.text.length != 0)
+            return [...CommandSearchService.results,
                 {
                     type: "input",
                     command: searchInput.text
