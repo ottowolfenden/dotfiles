@@ -117,16 +117,17 @@ QtObject {
 
     function exec(result: var, bindsRef: var) {
         const binds = UtilsService.clone(bindsRef);
+        const command = result.command.replace(/'/g, "'\\''");
         if (binds?.inNewWs?.active) {
             HyprlandService.focusWs("emptynm");
             openTimer.resultToOpen = result;
             openTimer.binds = binds;
             openTimer.running = true;
         } else if (["whence", "input"].includes(result.type) || SearchConf.alwaysPrefillCommands)
-            Quickshell.execDetached(["zsh", "-c", `kitty -d ~ env ZSH_PREFILL='${result.command + " "}' zsh`]);
+            Quickshell.execDetached(["zsh", "-c", `kitty -d ~ env ZSH_PREFILL='${command}' zsh`]);
         else if (result.type == "history") {
             Quickshell.execDetached(["zsh", "-ic", `print -s "${result.command}"`]);
-            Quickshell.execDetached(["zsh", "-c", `kitty -d ~ -- zsh -ic '${result.command}; echo; exec zsh'`]);
+            Quickshell.execDetached(["zsh", "-c", `kitty -d ~ -- zsh -ic '${command}; echo; exec zsh'`]);
         }
     }
 
@@ -143,3 +144,16 @@ QtObject {
         }
     }
 }
+
+/*
+
+Quickshell.execDetached([
+    "kitty",
+    "-d", "~",
+    "zsh",
+    "-i",
+    "-c",
+    `print -z ${(JSON.stringify(result.command))}; exec zsh`
+]);
+
+*/
