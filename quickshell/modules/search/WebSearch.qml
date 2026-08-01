@@ -19,7 +19,7 @@ Repeater {
             return [];
         let firstSuggestionResult = {
             type: "suggestion",
-            text: searchInput.text,
+            text: searchInput.text.trim(),
             url: WebSearchService.getSearchURL(searchInput.text)
         };
         let groupedResults = [...WebSearchService.browserHistoryResults, firstSuggestionResult, ...WebSearchService.suggestionResults];
