@@ -35,7 +35,9 @@ QtObject {
     }
 
     function focusActiveWindow(): void {
-        Hyprland.dispatch(`hl.dsp.focus({ window = hl.get_active_window() })`);
+        Hyprland.dispatch(`
+            hl.dsp[hl.get_active_window() and "focus" or "no_op"]({ window = hl.get_active_window() })
+        `);
     }
 
     function applyFlyoutConf(): void {
