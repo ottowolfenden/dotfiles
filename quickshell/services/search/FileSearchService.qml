@@ -139,7 +139,7 @@ QtObject {
                             return "xdg-open";
                         if (checkStatus == "fail")
                             return "thunar";
-                    })()} '${file.path}'; touch -a ${file.path}`]);
+                    })()} '${file.path}'; touch -a '${file.path}'`]);
     }
 
     property Process checkCanOpenProcess: Process {

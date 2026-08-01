@@ -137,7 +137,7 @@ QtObject {
                         else if (binds?.inVsCode?.active || dir.hasGit)
                             return "code";
                         return "thunar";
-                    })()} '${dir.path}'; touch -a ${dir.path}`]);
+                    })()} '${dir.path}'; touch -a '${dir.path}'`]);
     }
 
     property Timer openTimer: Timer {
