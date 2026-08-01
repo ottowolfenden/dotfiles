@@ -5,6 +5,7 @@ local dynamic_pseudos = {
     classes = {
         "kitty",
         "thunar",
+        "Thunar",
         "com.github.th-ch.youtube-music",
         "localsend",
         "btop"
