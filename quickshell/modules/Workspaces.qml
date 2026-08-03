@@ -10,8 +10,15 @@ Rectangle {
     radius: DesignConf.radius
     implicitWidth: container.implicitWidth + DesignConf.spacing
     implicitHeight: DesignConf.componentHeight
-    visible: Hyprland.workspaces.values.length != 1 || (Hyprland.focusedWorkspace?.id ?? 1) != 1
+    opacity: Hyprland.workspaces.values.length != 1 || (Hyprland.focusedWorkspace?.id ?? 1) != 1
     clip: true
+
+    Behavior on opacity {
+        NumberAnimation {
+            duration: DesignConf.animationDuration
+            easing: DesignConf.easing
+        }
+    }
 
     Cutout {}
 
