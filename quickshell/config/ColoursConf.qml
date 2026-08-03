@@ -52,7 +52,7 @@ QtObject {
             cutoutbg: "#10ffffff",
             inactivebg: "#0effffff",
             hoveredbg: "#12ffffff",
-            pressedbg: "#1effffff",
+            pressedbg: "#27ffffff",
             selectedbg: "#1889ddff",
             textselectionbg: "#28ffffff",
             red: "#f07178",
