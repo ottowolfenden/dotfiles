@@ -41,22 +41,32 @@ Rectangle {
 
                 radius: Infinity
                 color: {
+                    if (mouseArea.containsPress)
+                        return ColoursConf.pressedbg.t;
+                    if (mouseArea.containsMouse && isEmpty)
+                        return ColoursConf.hoveredbg.t;
+                    if (mouseArea.containsMouse && !isEmpty)
+                        return ColoursConf.bg7.t;
                     if (!isEmpty)
-                        return ColoursConf.bg5.t;
+                        return ColoursConf.bg4.t;
                     return "transparent";
                 }
                 opacity: !isActive
+                Layout.preferredWidth: displayed ? DesignConf.wsCircleDiameter : 0
+                Layout.preferredHeight: displayed ? DesignConf.wsCircleDiameter : 0
+                Layout.rightMargin: displayed ? DesignConf.spacing : 0
+
                 Behavior on opacity {
                     NumberAnimation {
                         duration: circle.opacity ? DesignConf.listAnimationDuration : 0
                         easing: DesignConf.easing
                     }
                 }
-
-                Layout.preferredWidth: displayed ? DesignConf.wsCircleDiameter : 0
-                Layout.preferredHeight: displayed ? DesignConf.wsCircleDiameter : 0
-                Layout.rightMargin: displayed ? DesignConf.spacing : 0
-
+                Behavior on color {
+                    ColorAnimation {
+                        duration: DesignConf.buttonColourAnimationDuration
+                    }
+                }
                 Behavior on Layout.preferredWidth {
                     NumberAnimation {
                         duration: DesignConf.listAnimationDuration
@@ -83,11 +93,7 @@ Rectangle {
                     verticalAlignment: Text.AlignVCenter
                     font.family: FontsConf.mainFamily
                     font.pixelSize: 12
-                    color: {
-                        if (!parent.isEmpty)
-                            return ColoursConf.fg1.t;
-                        return ColoursConf.fg4.t;
-                    }
+                    color: parent.isEmpty ? ColoursConf.fg4.t : ColoursConf.fg1.t
                     opacity: !parent.isActive && parent.displayed
                     Behavior on opacity {
                         NumberAnimation {
@@ -98,6 +104,7 @@ Rectangle {
                 }
 
                 MouseArea {
+                    id: mouseArea
                     anchors.fill: parent
                     anchors.margins: -4
                     hoverEnabled: true
