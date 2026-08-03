@@ -75,9 +75,14 @@ QtObject {
     }
 
     property FontMetrics fontMetrics: FontMetrics {}
-    function getMaxTextWidth(font: var, strings: var): int {
+    function getMaxTextWidth(font: var, strings: var, zeroPadding: var): int {
         fontMetrics.font = font;
-        return Math.max(...strings.map(text => fontMetrics.advanceWidth(text)));
+        let sanitise = text => {
+            if (typeof text == "number")
+                return text.toString().padStart(zeroPadding ?? 0, "0");
+            return text;
+        };
+        return Math.max(...strings.map(text => fontMetrics.advanceWidth(sanitise(text))));
     }
 
     function getRangeArray(min: int, max: int, step: int): var {
