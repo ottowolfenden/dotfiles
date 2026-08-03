@@ -30,7 +30,7 @@ Rectangle {
                 required property int modelData
                 property bool isActive: modelData == (Hyprland.focusedWorkspace?.id ?? -1)
                 property bool isEmpty: HyprlandService.getWsIsEmpty(modelData)
-                property bool displayed: modelData <= Hyprland.focusedWorkspace?.id || HyprlandService.getMaxWsId() >= modelData
+                property bool displayed: modelData <= Hyprland.focusedWorkspace?.id || HyprlandService.getLastWsId() >= modelData
 
                 radius: Infinity
                 color: {
