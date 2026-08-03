@@ -8,15 +8,7 @@ local qs_binds = {
     ["SUPER + M"] = hl.dsp.window.move({ monitor = "+1", follow = true }),
     ["F11"] = hl.dsp.window.fullscreen_state({ internal = 0, client = 2, action = "toggle" }),
     ["SUPER + F11"] = hl.dsp.window.fullscreen_state({ internal = 3, client = 3, action = "toggle" }),
-    [{ "SUPER + mouse:274", "SUPER + W" }] = function()
-        local w = hl.get_active_window()
-        if not w then return end
-        if w.title == "qalc" then
-            h.press_key("CTRL", "C")
-        else
-            hl.dispatch(hl.dsp.window.close())
-        end
-    end
+    [{ "SUPER + mouse:274", "SUPER + W" }] = hl.dsp.window.close()
 }
 
 for _, d in ipairs({ "right", "left", "up", "down" }) do
