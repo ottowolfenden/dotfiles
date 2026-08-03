@@ -9,11 +9,20 @@ QtObject {
         return Hyprland.workspaces?.values.some(ws => ws.id == id);
     }
 
+    function getWsIsEmpty(id: int): bool {
+        let ws = Hyprland.workspaces.values.find(ws => ws.id == id);
+        return !ws || ws.toplevels.values.length == 0;
+    }
+
     function getFilteredWsIds(): list<int> {
         if (!Hyprland.workspaces?.values || Hyprland.workspaces.values.length == 0)
             return [];
         let maxId = Math.max(...Hyprland.workspaces.values.map(value => value.id));
         return [...Array(maxId)].map((_, i) => i + 1);
+    }
+
+    function getMaxWsId(): int {
+        return Math.max(...Hyprland.workspaces.values.map(v => v.id));
     }
 
     function getActiveWs(): HyprlandWorkspace {
