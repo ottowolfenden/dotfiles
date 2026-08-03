@@ -6,6 +6,7 @@ QtObject {
     readonly property int iconTextSpacing: 4
     readonly property int componentHeight: 30
     readonly property int barHeight: componentHeight + spacing * 2
+    readonly property int wsCircleDiameter: 16
     readonly property int radius: 7
     readonly property int smallRadius: 4
     readonly property int blurRadius: 70

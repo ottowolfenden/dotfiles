@@ -53,8 +53,8 @@ Rectangle {
                     }
                 }
 
-                Layout.preferredWidth: displayed ? 16 : 0
-                Layout.preferredHeight: displayed ? 16 : 0
+                Layout.preferredWidth: displayed ? DesignConf.wsCircleDiameter : 0
+                Layout.preferredHeight: displayed ? DesignConf.wsCircleDiameter : 0
                 Layout.rightMargin: displayed ? DesignConf.spacing : 0
 
                 Behavior on Layout.preferredWidth {
@@ -110,11 +110,11 @@ Rectangle {
 
     Rectangle {
         color: ColoursConf.lightblue
-        width: 16
-        height: 16
+        width: DesignConf.wsCircleDiameter
+        height: DesignConf.wsCircleDiameter
         radius: Infinity
-        x: DesignConf.spacing + (16 + DesignConf.spacing) * (Hyprland.focusedWorkspace?.id - 1)
-        y: DesignConf.spacing - 1
+        x: DesignConf.spacing + (DesignConf.wsCircleDiameter + DesignConf.spacing) * (Hyprland.focusedWorkspace?.id - 1)
+        y: (container.height - height) / 2
 
         Behavior on x {
             NumberAnimation {
