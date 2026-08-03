@@ -31,7 +31,7 @@ Rectangle {
         anchors.leftMargin: DesignConf.spacing
 
         Repeater {
-            model: UtilsService.getRangeArray(1, 9, 1)
+            model: UtilsService.getRangeArray(1, 9)
             delegate: Rectangle {
                 id: circle
                 required property int modelData
