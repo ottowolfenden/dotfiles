@@ -1,6 +1,7 @@
 singleton AudioConf 1.0 config/AudioConf.qml
 singleton ColoursConf 1.0 config/ColoursConf.qml
 singleton DesignConf 1.0 config/DesignConf.qml
+singleton DateTimeConf 1.0 config/DateTimeConf.qml
 singleton FontsConf 1.0 config/FontsConf.qml
 singleton IconsConf 1.0 config/IconsConf.qml
 singleton PathsConf 1.0 config/PathsConf.qml
