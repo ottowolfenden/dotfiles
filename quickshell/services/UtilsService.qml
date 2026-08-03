@@ -79,4 +79,10 @@ QtObject {
         fontMetrics.font = font;
         return Math.max(...strings.map(text => fontMetrics.advanceWidth(text)));
     }
+
+    function getRangeArray(min: int, max: int, step: int): var {
+        return Array.from({
+            length: Math.floor((max - min) / (step ?? 1)) + 1
+        }, (_, i) => min + i * step);
+    }
 }
