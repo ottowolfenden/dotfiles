@@ -89,16 +89,9 @@ Rectangle {
                         return ColoursConf.fg4.t;
                     }
                     opacity: !parent.isActive && parent.displayed
-                    scale: parent.displayed
                     Behavior on opacity {
                         NumberAnimation {
                             duration: circle.opacity ? DesignConf.listAnimationDuration : 0
-                            easing: DesignConf.easing
-                        }
-                    }
-                    Behavior on scale {
-                        NumberAnimation {
-                            duration: DesignConf.listAnimationDuration
                             easing: DesignConf.easing
                         }
                     }
