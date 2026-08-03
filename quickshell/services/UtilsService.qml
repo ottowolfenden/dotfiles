@@ -66,11 +66,17 @@ QtObject {
         return str.replace(new RegExp(pattern, 'g'), replacement);
     }
 
-    function escapeSqlWildcards(str) {
+    function escapeSqlWildcards(str: string): string {
         return str.replace(/\\/g, "\\\\").replace(/%/g, "\\%").replace(/_/g, "\\_");
     }
 
-    function isInternetDisconnected() {
+    function isInternetDisconnected(): bool {
         return ![NetworkConnectivity.Full, NetworkConnectivity.Unknown].includes(Networking.connectivity);
+    }
+
+    property FontMetrics fontMetrics: FontMetrics {}
+    function getMaxTextWidth(font: var, strings: var): int {
+        fontMetrics.font = font;
+        return Math.max(...strings.map(text => fontMetrics.advanceWidth(text)));
     }
 }
