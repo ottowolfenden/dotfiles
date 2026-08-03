@@ -86,7 +86,7 @@ Scope {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: DesignConf.radius
 
-                Time {}
+                DateTime {}
                 Workspaces {}
             }
 
