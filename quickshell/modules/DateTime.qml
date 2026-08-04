@@ -20,7 +20,6 @@ Rectangle {
 
     SystemClock {
         id: clock
-        precision: SystemClock.Seconds
     }
 
     Item {
@@ -30,6 +29,8 @@ Rectangle {
         anchors.top: parent.top
         anchors.leftMargin: DesignConf.spacing
         width: {
+            if (DateTimeConf.variableTimeWidth)
+                return timeText.implicitWidth;
             let getMaxW = (strings, pad) => UtilsService.getMaxTextWidth(timeText.font, strings, pad ? 2 : 0);
             let getMaxWRange = (min, max, pad) => getMaxW(UtilsService.getRangeArray(min, max), pad);
             let result = getMaxWRange(0, 59, true) + getMaxW([":"]);
@@ -37,16 +38,16 @@ Rectangle {
                 result += getMaxWRange(0, 23, true);
             else
                 result += getMaxWRange(1, 12, DateTimeConf.time0Padding) + getMaxW([" am", " pm"]);
-            if (showSeconds)
+            if (isSecondsFormat)
                 result += getMaxWRange(0, 59, true) + getMaxW([":"]);
             return result;
         }
 
-        property bool showSeconds: DateTimeConf.showSecondsByDefault
+        property bool isSecondsFormat: DateTimeConf.showSecondsByDefault
         property string format: {
             let hrs = DateTimeConf.time0Padding ? "hh" : "h";
             let mins = ":mm";
-            let secs = showSeconds ? ":ss" : "";
+            let secs = isSecondsFormat ? ":ss" : "";
             let suffix = DateTimeConf.is24hrFormat ? "" : " ap";
             return hrs + mins + secs + suffix;
         }
@@ -66,7 +67,7 @@ Rectangle {
             anchors.fill: parent
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
-            onClicked: parent.showSeconds = !parent.showSeconds
+            onClicked: parent.isSecondsFormat = !parent.isSecondsFormat
         }
     }
 
@@ -78,9 +79,11 @@ Rectangle {
         anchors.leftMargin: DesignConf.spacing
         anchors.rightMargin: DesignConf.spacing
         width: {
+            if (DateTimeConf.variableDateWidth || (DateTimeConf.variableWordDateWidth && !isNumberFormat))
+                return dateText.implicitWidth;
             let getMaxW = (strings, pad) => UtilsService.getMaxTextWidth(dateText.font, strings, pad ? 2 : 0);
             let getMaxWRange = (min, max, pad) => getMaxW(UtilsService.getRangeArray(min, max), pad);
-            if (showNumberDate) {
+            if (isNumberFormat) {
                 let maxDayW = getMaxWRange(1, 31, DateTimeConf.date0Padding);
                 let maxMonthW = getMaxWRange(1, 12, DateTimeConf.date0Padding);
                 let maxYrW = getMaxWRange(0, 99, true);
@@ -95,12 +98,12 @@ Rectangle {
             }
         }
 
-        property bool showNumberDate: DateTimeConf.showNumberDateByDefault
+        property bool isNumberFormat: DateTimeConf.showNumberDateByDefault
         property string format: {
             let days = DateTimeConf.date0Padding ? "dd" : "d";
             let months = DateTimeConf.date0Padding ? "MM" : "M";
             let yrs = "yy";
-            return showNumberDate ? [days, months, yrs].join(`'${DateTimeConf.dateSeparator}'`) : "ddd d MMM";
+            return isNumberFormat ? [days, months, yrs].join(`'${DateTimeConf.dateSeparator}'`) : "ddd d MMM";
         }
 
         Text {
@@ -118,7 +121,7 @@ Rectangle {
             anchors.fill: parent
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
-            onClicked: parent.showNumberDate = !parent.showNumberDate
+            onClicked: parent.isNumberFormat = !parent.isNumberFormat
         }
     }
 }

@@ -8,4 +8,7 @@ QtObject {
     readonly property string dateSeparator: "/"
     readonly property bool time0Padding: true
     readonly property bool date0Padding: true
+    readonly property bool variableTimeWidth: false
+    readonly property bool variableDateWidth: false
+    readonly property bool variableWordDateWidth: true
 }
