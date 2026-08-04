@@ -19,6 +19,7 @@ Rectangle {
     property bool isCharging: false
     property int percent: Math.round(UPower.displayDevice.percentage * 100)
     property bool danger: root.percent <= 10 && !root.isCharging
+    property var tlpModes: ["power-saver", "balanced", "performance"]
 
     RowLayout {
         id: container
@@ -56,7 +57,7 @@ Rectangle {
     }
 
     Timer {
-        interval: 300
+        interval: 1000
         running: true
         repeat: true
         triggeredOnStart: true
@@ -89,7 +90,7 @@ Rectangle {
                 ToggleGroup {
                     id: powerProfiletoggleGroup
                     icons: IconsConf.powerProfiles
-                    onClickedCommands: ["power-saver", "balanced", "performance"].map(p => ["tlpctl", p])
+                    onClickedCommands: root.tlpModes.map(p => ["tlpctl", p])
                     checkTimer: tlpctlTimer
                 }
 
@@ -101,13 +102,7 @@ Rectangle {
                         onStreamFinished: {
                             if (powerProfiletoggleGroup.ignoreUpdates)
                                 return;
-
-                            if (text.trim() == "power-saver")
-                                powerProfiletoggleGroup.activeIndex = 0;
-                            else if (text.trim() == "balanced")
-                                powerProfiletoggleGroup.activeIndex = 1;
-                            else if (text.trim() == "performance")
-                                powerProfiletoggleGroup.activeIndex = 2;
+                            powerProfiletoggleGroup.activeIndex = root.tlpModes.indexOf(text.trim());
                         }
                     }
                 }
