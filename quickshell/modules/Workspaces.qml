@@ -15,8 +15,8 @@ Rectangle {
 
     Behavior on opacity {
         NumberAnimation {
-            duration: DesignConf.animationDuration
-            easing: DesignConf.easing
+            duration: AnimConf.durations.default
+            easing: AnimConf.easing
         }
     }
 
@@ -63,31 +63,31 @@ Rectangle {
 
                 Behavior on opacity {
                     NumberAnimation {
-                        duration: circle.opacity ? DesignConf.listAnimationDuration : 0
-                        easing: DesignConf.easing
+                        duration: circle.opacity ? AnimConf.durations.short : 0
+                        easing: AnimConf.easing
                     }
                 }
                 Behavior on color {
                     ColorAnimation {
-                        duration: DesignConf.buttonColourAnimationDuration
+                        duration: AnimConf.durations.buttonState
                     }
                 }
                 Behavior on Layout.preferredWidth {
                     NumberAnimation {
-                        duration: DesignConf.listAnimationDuration
-                        easing: DesignConf.easing
+                        duration: AnimConf.durations.short
+                        easing: AnimConf.easing
                     }
                 }
                 Behavior on Layout.preferredHeight {
                     NumberAnimation {
-                        duration: DesignConf.listAnimationDuration
-                        easing: DesignConf.easing
+                        duration: AnimConf.durations.short
+                        easing: AnimConf.easing
                     }
                 }
                 Behavior on Layout.rightMargin {
                     NumberAnimation {
-                        duration: DesignConf.listAnimationDuration
-                        easing: DesignConf.easing
+                        duration: AnimConf.durations.short
+                        easing: AnimConf.easing
                     }
                 }
 
@@ -102,8 +102,8 @@ Rectangle {
                     opacity: !parent.isActive && parent.displayed
                     Behavior on opacity {
                         NumberAnimation {
-                            duration: circle.opacity ? DesignConf.listAnimationDuration : 0
-                            easing: DesignConf.easing
+                            duration: circle.opacity ? AnimConf.durations.short : 0
+                            easing: AnimConf.easing
                         }
                     }
                 }
@@ -130,8 +130,8 @@ Rectangle {
 
         Behavior on x {
             NumberAnimation {
-                duration: DesignConf.listAnimationDuration
-                easing: DesignConf.easing
+                duration: AnimConf.durations.short
+                easing: AnimConf.easing
             }
         }
 

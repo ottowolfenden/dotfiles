@@ -80,7 +80,7 @@ Rectangle {
             root.players = AudioService.getSortedPlayers();
             list.highlightMoveDuration = 0;
             list.currentIndex = 0;
-            list.highlightMoveDuration = DesignConf.listAnimationDuration;
+            list.highlightMoveDuration = AnimConf.durations.short;
             refilterPlayersTimer.restart();
         }
 
@@ -127,7 +127,7 @@ Rectangle {
                                 boundsBehavior: Flickable.StopAtBounds
                                 snapMode: ListView.SnapToItem
                                 highlightRangeMode: ListView.StrictlyEnforceRange
-                                highlightMoveDuration: DesignConf.listAnimationDuration
+                                highlightMoveDuration: AnimConf.durations.short
 
                                 model: root.players
                                 delegate: ColumnLayout {
@@ -308,7 +308,7 @@ Rectangle {
 
                                 Behavior on color {
                                     ColorAnimation {
-                                        duration: DesignConf.buttonColourAnimationDuration
+                                        duration: AnimConf.durations.buttonState
                                     }
                                 }
                             }

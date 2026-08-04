@@ -61,14 +61,14 @@ Repeater {
             verticalAlignment: Qt.AlignVCenter
             Behavior on color {
                 ColorAnimation {
-                    duration: DesignConf.buttonColourAnimationDuration
+                    duration: AnimConf.durations.buttonState
                 }
             }
         }
 
         Behavior on color {
             ColorAnimation {
-                duration: DesignConf.buttonColourAnimationDuration
+                duration: AnimConf.durations.buttonState
             }
         }
     }

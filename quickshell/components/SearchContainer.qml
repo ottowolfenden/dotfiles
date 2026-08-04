@@ -17,8 +17,8 @@ Item {
 
     Behavior on width {
         NumberAnimation {
-            duration: DesignConf.animationDuration
-            easing: DesignConf.easing
+            duration: AnimConf.durations.default
+            easing: AnimConf.easing
         }
     }
 
@@ -29,8 +29,8 @@ Item {
 
         Behavior on spacing {
             NumberAnimation {
-                duration: DesignConf.animationDuration
-                easing: DesignConf.easing
+                duration: AnimConf.durations.default
+                easing: AnimConf.easing
             }
         }
     }

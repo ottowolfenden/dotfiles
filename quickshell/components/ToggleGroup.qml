@@ -46,14 +46,14 @@ Rectangle {
 
                 Behavior on color {
                     ColorAnimation {
-                        duration: DesignConf.buttonColourAnimationDuration
+                        duration: AnimConf.durations.buttonState
                     }
                 }
 
                 Behavior on opacity {
                     NumberAnimation {
-                        duration: item.opacity ? DesignConf.listAnimationDuration : 0
-                        easing: DesignConf.easing
+                        duration: item.opacity ? AnimConf.durations.short : 0
+                        easing: AnimConf.easing
                     }
                 }
 
@@ -100,8 +100,8 @@ Rectangle {
 
         Behavior on x {
             NumberAnimation {
-                duration: DesignConf.listAnimationDuration
-                easing: DesignConf.easing
+                duration: AnimConf.durations.short
+                easing: AnimConf.easing
             }
         }
 

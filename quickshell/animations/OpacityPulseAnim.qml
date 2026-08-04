@@ -6,29 +6,29 @@ Item {
     property Item target: root.parent
     property bool running: false
 
+    Component.onCompleted: [minOpacityAnim, maxOpacityAnim, resetAnim].forEach(na => {
+        na.target = target;
+        na.property = "opacity";
+        na.duration = AnimConf.durations.pulse;
+    })
+
     SequentialAnimation {
         loops: Animation.Infinite
         running: root.running
 
         NumberAnimation {
-            target: root.target
-            property: "opacity"
+            id: minOpacityAnim
             to: 0.3
-            duration: DesignConf.pulseAnimationDuration
         }
         NumberAnimation {
-            target: root.target
-            property: "opacity"
+            id: maxOpacityAnim
             to: 1
-            duration: DesignConf.pulseAnimationDuration
         }
     }
 
-    PropertyAnimation {
+    NumberAnimation {
+        id: resetAnim
         running: !root.running
-        target: root.target
-        property: "opacity"
         to: 1
-        duration: DesignConf.pulseAnimationDuration
     }
 }

@@ -81,7 +81,7 @@ Repeater {
                     elide: Text.ElideRight
                     Behavior on color {
                         ColorAnimation {
-                            duration: DesignConf.buttonColourAnimationDuration
+                            duration: AnimConf.durations.buttonState
                         }
                     }
                 }
@@ -95,7 +95,7 @@ Repeater {
                     elide: Text.ElideRight
                     Behavior on color {
                         ColorAnimation {
-                            duration: DesignConf.buttonColourAnimationDuration
+                            duration: AnimConf.durations.buttonState
                         }
                     }
                 }
@@ -104,7 +104,7 @@ Repeater {
 
         Behavior on color {
             ColorAnimation {
-                duration: DesignConf.buttonColourAnimationDuration
+                duration: AnimConf.durations.buttonState
             }
         }
     }

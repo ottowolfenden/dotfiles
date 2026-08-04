@@ -1,3 +1,4 @@
+singleton AnimConf 1.0 config/AnimConf.qml
 singleton AudioConf 1.0 config/AudioConf.qml
 singleton ColoursConf 1.0 config/ColoursConf.qml
 singleton DesignConf 1.0 config/DesignConf.qml

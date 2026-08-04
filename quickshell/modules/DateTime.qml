@@ -11,8 +11,8 @@ Rectangle {
 
     Behavior on implicitWidth {
         NumberAnimation {
-            duration: DesignConf.listAnimationDuration
-            easing: DesignConf.easing
+            duration: AnimConf.durations.short
+            easing: AnimConf.easing
         }
     }
 

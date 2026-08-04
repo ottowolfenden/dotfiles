@@ -82,15 +82,15 @@ PanelWindow {
 
         Behavior on y {
             NumberAnimation {
-                duration: DesignConf.animationDuration
-                easing: DesignConf.easing
+                duration: AnimConf.durations.default
+                easing: AnimConf.easing
             }
         }
 
         Behavior on height {
             NumberAnimation {
-                duration: DesignConf.animationDuration
-                easing: DesignConf.easing
+                duration: AnimConf.durations.default
+                easing: AnimConf.easing
             }
         }
 

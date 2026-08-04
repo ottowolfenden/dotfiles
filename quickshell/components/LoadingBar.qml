@@ -51,7 +51,7 @@ Item {
         function setRandValues() {
             let r = UtilsService.getRandBetween(0.2, 1);
             trackWidth = r * root.width * 0.7;
-            duration = r * DesignConf.indefProgressBarMaxDuration;
+            duration = r * AnimConf.durations.indefProgress;
         }
 
         running: root.visible

@@ -35,7 +35,7 @@ Button {
 
         Behavior on color {
             ColorAnimation {
-                duration: DesignConf.buttonColourAnimationDuration
+                duration: AnimConf.durations.buttonState
             }
         }
     }

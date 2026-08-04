@@ -20,15 +20,15 @@ ColumnLayout {
 
         Behavior on Layout.preferredHeight {
             NumberAnimation {
-                duration: DesignConf.animationDuration
-                easing: DesignConf.easing
+                duration: AnimConf.durations.default
+                easing: AnimConf.easing
             }
         }
 
         Behavior on opacity {
             NumberAnimation {
-                duration: DesignConf.buttonColourAnimationDuration
-                easing: DesignConf.easing
+                duration: AnimConf.durations.buttonState
+                easing: AnimConf.easing
             }
         }
 
