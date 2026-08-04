@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell.Io
 import ".."
 import "../components"
+import "../animations"
 
 Rectangle {
     id: root
@@ -18,26 +19,8 @@ Rectangle {
         anchors.centerIn: parent
         iconName: IconsConf.vpn[root.isVpnConnected ? "on" : "off"]
 
-        SequentialAnimation on opacity {
-            id: vpnPulse
-            loops: Animation.Infinite
+        OpacityPulseAnim {
             running: setVpnProcess.running
-
-            PropertyAnimation {
-                to: 0.3
-                duration: DesignConf.pulseAnimationDuration
-            }
-            PropertyAnimation {
-                to: 1
-                duration: DesignConf.pulseAnimationDuration
-            }
-        }
-
-        PropertyAnimation on opacity {
-            id: resetVpnOpacity
-            running: false
-            to: 1
-            duration: DesignConf.pulseAnimationDuration
         }
     }
 
@@ -73,9 +56,6 @@ Rectangle {
         id: setVpnProcess
         property var action: null
         command: action ? NetworkConf.vpnCommands[action] : []
-        onExited: exitCode => {
-            resetVpnOpacity.running = true;
-            root.isVpnConnected = action == "connect";
-        }
+        onExited: exitCode => root.isVpnConnected = action == "connect" && exitCode == 0
     }
 }
