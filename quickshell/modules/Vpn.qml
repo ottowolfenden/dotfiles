@@ -21,47 +21,41 @@ Rectangle {
         SequentialAnimation on opacity {
             id: vpnPulse
             loops: Animation.Infinite
-            running: false
+            running: setVpnProcess.running
 
             PropertyAnimation {
                 to: 0.3
-                duration: 350
-                easing.type: Easing.Linear
+                duration: DesignConf.pulseAnimationDuration
             }
             PropertyAnimation {
                 to: 1
-                duration: 350
-                easing.type: Easing.Linear
+                duration: DesignConf.pulseAnimationDuration
             }
         }
 
-        SequentialAnimation on opacity {
+        PropertyAnimation on opacity {
             id: resetVpnOpacity
             running: false
-
-            PropertyAnimation {
-                to: 1
-                duration: 350
-                easing.type: Easing.Linear
-            }
+            to: 1
+            duration: DesignConf.pulseAnimationDuration
         }
     }
 
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        cursorShape: Qt.PointingHandCursor
+        cursorShape: setVpnProcess.running ? Qt.ArrowCursor : Qt.PointingHandCursor
         onClicked: {
-            vpnPulse.running = true;
-            if (root.isVpnConnected)
-                disableVpn.running = true;
-            else
-                enableVpn.running = true;
+            if (setVpnProcess.running)
+                return;
+            setVpnProcess.action = root.isVpnConnected ? "disconnect" : "connect";
+            setVpnProcess.running = true;
         }
     }
 
     Process {
-        id: vpnCheck
+        id: vpnCheckProcess
+        running: true
         command: ["nmcli", "connection", "show", "--active"]
         stdout: StdioCollector {
             onStreamFinished: root.isVpnConnected = SystemConf.vpnIdentifiers.some(i => text.toLowerCase().includes(i))
@@ -72,28 +66,16 @@ Rectangle {
         interval: 3000
         running: true
         repeat: true
-        onTriggered: vpnCheck.running = true
+        onTriggered: vpnCheckProcess.running = !setVpnProcess.running
     }
 
     Process {
-        id: enableVpn
-        command: ["protonvpn", "connect"]
+        id: setVpnProcess
+        property var action: null
+        command: action ? NetworkConf.vpnCommands[action] : []
         onExited: exitCode => {
-            if (exitCode == 0) {
-                vpnPulse.running = false;
-                resetVpnOpacity.running = root.isVpnConnected = true;
-            }
-        }
-    }
-
-    Process {
-        id: disableVpn
-        command: ["protonvpn", "disconnect"]
-        onExited: exitCode => {
-            if (exitCode == 0) {
-                vpnPulse.running = root.isVpnConnected = false;
-                resetVpnOpacity.running = true;
-            }
+            resetVpnOpacity.running = true;
+            root.isVpnConnected = action == "connect";
         }
     }
 }

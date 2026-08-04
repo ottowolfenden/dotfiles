@@ -13,6 +13,7 @@ QtObject {
     readonly property int animationDuration: 200
     readonly property int listAnimationDuration: 150
     readonly property int buttonColourAnimationDuration: 100
+    readonly property int pulseAnimationDuration: 350
     readonly property int indefProgressBarMaxDuration: 3000
     readonly property int easing: Easing.OutCubic
     readonly property int circleButtonDiameter: 33
