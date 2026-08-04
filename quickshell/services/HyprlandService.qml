@@ -102,10 +102,7 @@ QtObject {
         command: ["hyprctl", "repl", "print(Max_ws)"]
         running: true
         stdout: StdioCollector {
-            onStreamFinished: {
-                HyprlandService.maxWs = isNaN(text.trim()) ? 9 : text.trim();
-                console.log(HyprlandService.maxWs);
-            }
+            onStreamFinished: HyprlandService.maxWs = isNaN(text.trim()) ? 9 : text.trim()
         }
     }
 }
