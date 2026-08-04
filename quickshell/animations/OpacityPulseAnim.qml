@@ -3,11 +3,10 @@ import ".."
 
 Item {
     id: root
-    property Item target: root.parent
     property bool running: false
 
     Component.onCompleted: [minOpacityAnim, maxOpacityAnim, resetAnim].forEach(na => {
-        na.target = target;
+        na.target = parent;
         na.property = "opacity";
         na.duration = AnimConf.durations.pulse;
     })
