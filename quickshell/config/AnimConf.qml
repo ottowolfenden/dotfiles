@@ -7,7 +7,7 @@ QtObject {
             short: 150,
             buttonState: 100,
             pulse: 350,
-            indefProgress: 3000
+            maxLoadingBar: 3000
         })
     readonly property int easing: Easing.OutCubic
 
