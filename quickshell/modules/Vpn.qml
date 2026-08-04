@@ -56,6 +56,6 @@ Rectangle {
         id: setVpnProcess
         property var action: null
         command: action ? NetworkConf.vpnCommands[action] : []
-        onExited: exitCode => root.isVpnConnected = action == "connect" && exitCode == 0
+        onExited: exitCode => root.isVpnConnected = exitCode == 0 ? action == "connect" : root.isVpnConnected
     }
 }
