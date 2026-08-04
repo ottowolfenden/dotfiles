@@ -1,20 +1,15 @@
 import QtQuick
-import QtQuick.Shapes
 import QtQuick.Layouts
 import ".."
 import "../animations/transitions"
+import "../shapes"
 
 Item {
     id: root
     required property real value
-
-    property string bgColour: ColoursConf.bg3.t
-    property string fgColour: ColoursConf.lightblue
     property string iconName
-
     readonly property int trackWidth: width - handle.Layout.preferredWidth
     readonly property int trackHeight: height - handle.extraHeight
-    readonly property int smallRadius: 2
     readonly property bool iconOnActiveTrack: root.trackWidth * (1 - root.value) < activeTrackIcon.width + DesignConf.spacing * 2
 
     signal changed(real newValue)
@@ -40,60 +35,11 @@ Item {
                 duration: 40
             }
 
-            Shape {
-                layer.enabled: true
-                layer.samples: 20
-                anchors.fill: parent
-
-                ShapePath {
-                    fillColor: root.fgColour
-                    strokeWidth: 0
-
-                    startX: DesignConf.radius
-                    startY: 0
-
-                    PathLine {
-                        x: activeTrack.width - activeTrack.smallRadius
-                        y: 0
-                    }
-                    PathArc {
-                        x: activeTrack.width
-                        y: activeTrack.smallRadius
-                        radiusX: activeTrack.smallRadius
-                        radiusY: activeTrack.smallRadius
-                    }
-                    PathLine {
-                        x: activeTrack.width
-                        y: activeTrack.height - activeTrack.smallRadius
-                    }
-                    PathArc {
-                        x: activeTrack.width - activeTrack.smallRadius
-                        y: activeTrack.height
-                        radiusX: activeTrack.smallRadius
-                        radiusY: activeTrack.smallRadius
-                    }
-                    PathLine {
-                        x: DesignConf.radius
-                        y: activeTrack.height
-                    }
-                    PathArc {
-                        x: 0
-                        y: activeTrack.height - DesignConf.radius
-                        radiusX: DesignConf.radius
-                        radiusY: DesignConf.radius
-                    }
-                    PathLine {
-                        x: 0
-                        y: DesignConf.radius
-                    }
-                    PathArc {
-                        x: DesignConf.radius
-                        y: 0
-                        radiusX: DesignConf.radius
-                        radiusY: DesignConf.radius
-                    }
-                }
+            SliderTrackShape {
+                isActiveTrack: true
+                value: root.value
             }
+
             Icon {
                 id: activeTrackIcon
                 iconName: root.iconName
@@ -119,7 +65,7 @@ Item {
                 id: handleRect
                 property int initialWidth: 4
                 property int clickedWidth: 2
-                color: root.fgColour
+                color: ColoursConf.lightblue
                 width: handle.clicked ? clickedWidth : initialWidth
                 height: handle.height
                 radius: Infinity
@@ -133,65 +79,15 @@ Item {
 
         Item {
             id: inactiveTrack
-            property int smallRadius: root.value < 0.98 ? root.smallRadius : 0
+            property int smallRadius: root.value < 0.98 ? 2 : 0
 
             Layout.preferredHeight: root.trackHeight
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
 
-            Shape {
-                layer.enabled: true
-                layer.samples: 20
-                anchors.fill: parent
-
-                ShapePath {
-                    fillColor: root.bgColour
-                    strokeWidth: 0
-
-                    startX: DesignConf.radius
-                    startY: 0
-
-                    PathLine {
-                        x: inactiveTrack.width - DesignConf.radius
-                        y: 0
-                    }
-                    PathArc {
-                        x: inactiveTrack.width
-                        y: DesignConf.radius
-                        radiusX: DesignConf.radius
-                        radiusY: DesignConf.radius
-                    }
-                    PathLine {
-                        x: inactiveTrack.width
-                        y: inactiveTrack.height - DesignConf.radius
-                    }
-                    PathArc {
-                        x: inactiveTrack.width - DesignConf.radius
-                        y: inactiveTrack.height
-                        radiusX: DesignConf.radius
-                        radiusY: DesignConf.radius
-                    }
-                    PathLine {
-                        x: inactiveTrack.smallRadius
-                        y: inactiveTrack.height
-                    }
-                    PathArc {
-                        x: 0
-                        y: inactiveTrack.height - inactiveTrack.smallRadius
-                        radiusX: inactiveTrack.smallRadius
-                        radiusY: inactiveTrack.smallRadius
-                    }
-                    PathLine {
-                        x: 0
-                        y: inactiveTrack.smallRadius
-                    }
-                    PathArc {
-                        x: inactiveTrack.smallRadius
-                        y: 0
-                        radiusX: inactiveTrack.smallRadius
-                        radiusY: inactiveTrack.smallRadius
-                    }
-                }
+            SliderTrackShape {
+                isActiveTrack: false
+                value: root.value
             }
 
             Icon {

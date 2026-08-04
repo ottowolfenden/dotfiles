@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Shapes
 import QtQuick.Layouts
 import QtQuick.Controls
 import Quickshell
@@ -8,6 +7,7 @@ import "modules"
 import "modules/bafs"
 import "services"
 import "components"
+import "shapes"
 
 Scope {
     PanelWindow {
@@ -28,49 +28,7 @@ Scope {
             bottomPadding: 0
             leftPadding: DesignConf.spacing
             rightPadding: DesignConf.spacing
-            background: Shape {
-                layer.enabled: true
-                layer.samples: 4
-
-                ShapePath {
-                    fillColor: ColoursConf.bg1
-                    strokeWidth: 0
-
-                    startX: 0
-                    startY: 0
-
-                    PathLine {
-                        x: pane.width
-                        y: 0
-                    }
-                    PathLine {
-                        x: pane.width
-                        y: pane.height
-                    }
-                    PathArc {
-                        x: pane.width - DesignConf.radius
-                        y: pane.height - DesignConf.radius
-                        radiusX: DesignConf.radius
-                        radiusY: DesignConf.radius
-                        direction: PathArc.Counterclockwise
-                    }
-                    PathLine {
-                        x: DesignConf.radius
-                        y: pane.height - DesignConf.radius
-                    }
-                    PathArc {
-                        x: 0
-                        y: pane.height
-                        radiusX: DesignConf.radius
-                        radiusY: DesignConf.radius
-                        direction: PathArc.Counterclockwise
-                    }
-                    PathLine {
-                        x: 0
-                        y: 0
-                    }
-                }
-            }
+            background: BarShape {}
 
             MouseArea {
                 width: Screen.width

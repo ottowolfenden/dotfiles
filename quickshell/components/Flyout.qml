@@ -1,9 +1,8 @@
 import QtQuick
-import QtQuick.Shapes
 import Quickshell
 import Quickshell.Wayland
 import ".."
-import "../animations/transitions"
+import "../shapes"
 
 PanelWindow {
     id: root
@@ -13,9 +12,14 @@ PanelWindow {
     required property int rectHeight
     signal opened
 
-    property string pos: rect.x == 0 ? "left" : (rect.x + rect.width == root.width ? "right" : "middle")
+    property string pos: {
+        if (flyoutContainer.x == 0)
+            return "left";
+        else
+            return (flyoutContainer.x + flyoutContainer.width) == root.width ? "right" : "middle";
+    }
     property bool isOpen: false
-    property bool hovering: false
+    property bool hovering: hoverHandler.hovered
 
     WlrLayershell.namespace: "qs-flyout"
 
@@ -25,9 +29,9 @@ PanelWindow {
     anchors.bottom: true
     anchors.left: true
     anchors.right: true
-    visible: isOpen || rect.y > -rect.height
+    visible: isOpen || flyoutContainer.y > -flyoutContainer.height
     mask: Region {
-        item: rect
+        item: flyoutContainer
     }
     onIsOpenChanged: {
         if (isOpen) {
@@ -36,56 +40,15 @@ PanelWindow {
         }
     }
 
-    Shape {
-        id: rect
+    FlyoutContainerShape {
+        id: flyoutContainer
         width: root.rectWidth
         height: root.rectHeight
-        x: UtilsService.clamp(root.parentX - rect.width / 2, 0, root.width - rect.width)
-        y: root.isOpen ? 0 : -height
-        clip: true
-
-        DefaultTrans on y {}
-        DefaultTrans on height {}
-
-        ShapePath {
-            fillColor: ColoursConf.bg1
-            strokeWidth: 0
-
-            startX: 0
-            startY: 0
-
-            PathLine {
-                x: rect.width
-                y: 0
-            }
-            PathLine {
-                x: rect.width
-                y: rect.height - DesignConf.radius
-            }
-            PathArc {
-                x: rect.width - DesignConf.radius
-                y: rect.height
-                radiusX: DesignConf.radius
-                radiusY: DesignConf.radius
-            }
-            PathLine {
-                x: DesignConf.radius
-                y: rect.height
-            }
-            PathArc {
-                x: 0
-                y: rect.height - DesignConf.radius
-                radiusX: DesignConf.radius
-                radiusY: DesignConf.radius
-            }
-            PathLine {
-                x: 0
-                y: 0
-            }
-        }
+        isOpen: root.isOpen
+        parentX: root.parentX
 
         HoverHandler {
-            onHoveredChanged: root.hovering = this.hovered
+            id: hoverHandler
         }
 
         Item {
@@ -94,55 +57,8 @@ PanelWindow {
         }
     }
 
-    Shape {
-        id: middleInvRounding
-        property int scaledHeight: Math.min(rect.height + rect.y - DesignConf.radius, DesignConf.radius)
-
-        ShapePath {
-            fillColor: ColoursConf.bg1
-            strokeWidth: 0
-
-            startX: rect.x
-            startY: 0
-
-            PathLine {
-                x: rect.x - DesignConf.radius
-                y: 0
-            }
-            PathArc {
-                x: rect.x
-                y: middleInvRounding.scaledHeight
-                radiusX: DesignConf.radius
-                radiusY: DesignConf.radius
-            }
-            PathLine {
-                x: rect.x
-                y: 0
-            }
-        }
-        ShapePath {
-            fillColor: ColoursConf.bg1
-            strokeWidth: 0
-
-            startX: rect.x + rect.width
-            startY: 0
-
-            PathLine {
-                x: rect.x + rect.width + DesignConf.radius
-                y: 0
-            }
-            PathArc {
-                x: rect.x + rect.width
-                y: middleInvRounding.scaledHeight
-                radiusX: DesignConf.radius
-                radiusY: DesignConf.radius
-                direction: PathArc.Counterclockwise
-            }
-            PathLine {
-                x: rect.x + rect.width
-                y: 0
-            }
-        }
+    FlyoutInvRoundingShape {
+        flyoutContainer: flyoutContainer
     }
 
     Component.onCompleted: FlyoutsService.flyouts.push(this)

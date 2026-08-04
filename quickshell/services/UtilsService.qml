@@ -91,4 +91,11 @@ QtObject {
             length: Math.floor((max - min) / step) + 1
         }, (_, i) => min + i * step);
     }
+
+    function setAllPathArcRadii(pathElements: var): void {
+        pathElements.forEach(p => {
+            if (p instanceof PathArc)
+                p.radiusX = p.radiusY = DesignConf.radius;
+        });
+    }
 }
