@@ -10,4 +10,7 @@ QtObject {
             indefProgress: 3000
         })
     readonly property int easing: Easing.OutCubic
+
+    readonly property int durationScale: 1
+    Component.onCompleted: Object.keys(durations).forEach(k => durations[k] = durations[k] * durationScale)
 }
