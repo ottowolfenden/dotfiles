@@ -1,17 +1,16 @@
 local h = require("helpers")
-local qs = require("qs")
 
-local max_ws = 9
+Max_ws = 9
 
 local function changeWorkspace(action, offset)
     if offset == "emptyn" then
         offset = h.get_emptyn_id()
-        if offset > max_ws then return else goto dispatch end
+        if offset > Max_ws then return else goto dispatch end
     elseif type(offset) == "string" then
         goto dispatch
     elseif offset <= 0 then
         offset = "r-" .. math.abs(offset)
-    elseif offset + hl.get_active_workspace().id <= max_ws then
+    elseif offset + hl.get_active_workspace().id <= Max_ws then
         offset = "r+" .. offset
     else
         return
@@ -42,7 +41,7 @@ for mod, action in pairs({ [""] = "focus", ["SHIFT + "] = "move" }) do
     end
 end
 
-for i = 1, max_ws do
+for i = 1, Max_ws do
     qs_binds["SUPER + " .. i] = hl.dsp.focus({ workspace = i })
     qs_binds["SUPER + SHIFT + " .. i] = hl.dsp.window.move({ workspace = i })
 end
@@ -67,10 +66,10 @@ hl.gesture({
 hl.on("workspace.active", function(ws)
     hl.config({
         gestures = {
-            workspace_swipe_create_new = ws.id ~= max_ws
+            workspace_swipe_create_new = ws.id ~= Max_ws
         }
     })
-    if hl.get_active_workspace().id == max_ws and #hl.get_workspace_windows(max_ws - 1) == 0 then
+    if hl.get_active_workspace().id == Max_ws and #hl.get_workspace_windows(Max_ws - 1) == 0 then
         h.gestures({
             {
                 fingers = 3,

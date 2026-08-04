@@ -31,6 +31,8 @@ QtObject {
     }
 
     function focusWs(selector: var): void {
+        if (typeof selector == "number" && selector > maxWs)
+            return;
         Hyprland.dispatch(`hl.dsp.focus({ workspace = "${selector}" })`);
     }
 
@@ -91,6 +93,18 @@ QtObject {
                 let clients = JSON.parse(text);
                 let activeClients = clients.filter(c => c.workspace.id == HyprlandService.getActiveWs()?.id);
                 activeWsClientsProcess.callbackFunc(...activeWsClientsProcess.leftParams, activeClients);
+            }
+        }
+    }
+
+    property var maxWs: null
+    property Process maxWsProcess: Process {
+        command: ["hyprctl", "repl", "print(Max_ws)"]
+        running: true
+        stdout: StdioCollector {
+            onStreamFinished: {
+                HyprlandService.maxWs = isNaN(text.trim()) ? 9 : text.trim();
+                console.log(HyprlandService.maxWs);
             }
         }
     }

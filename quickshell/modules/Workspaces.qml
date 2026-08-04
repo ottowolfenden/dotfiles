@@ -22,6 +22,11 @@ Rectangle {
 
     Cutout {}
 
+    MouseArea {
+        anchors.fill: parent
+        onWheel: wheel => HyprlandService.focusWs(Hyprland.focusedWorkspace.id + (wheel.angleDelta.y > 0 ? 1 : -1))
+    }
+
     RowLayout {
         id: container
         spacing: 0
@@ -31,7 +36,7 @@ Rectangle {
         anchors.leftMargin: DesignConf.spacing
 
         Repeater {
-            model: UtilsService.getRangeArray(1, 9)
+            model: UtilsService.getRangeArray(1, HyprlandService.maxWs)
             delegate: Rectangle {
                 id: circle
                 required property int modelData
