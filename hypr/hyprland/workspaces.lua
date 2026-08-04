@@ -82,7 +82,9 @@ hl.on("workspace.active", function(ws)
                 direction = "horizontal",
                 action = {
                     start = function(e)
-                        if e.delta.x > -20 then changeWorkspace("focus", -1) end
+                        if e.delta.x > 0 and math.abs(e.delta.x) > 20 then
+                            changeWorkspace("focus", -1)
+                        end
                     end
                 }
             }
