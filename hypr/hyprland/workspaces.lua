@@ -49,44 +49,56 @@ end
 
 h.qs_binds(qs_binds)
 
-local last_time = 0
-local minDelta = 0.5
-local delay = 150
-local choice = nil
-
-local function get_choice(delta)
-    if delta < 0 then
-        return "left"
-    elseif delta > 0 then
-        return "right"
-    end
-end
-
-local function get_ws_gesture(action)
-    return {
-        fingers = 3,
-        direction = "horizontal",
-        mods = action == "move" and "SHIFT" or nil,
-        action = {
-            update = function(e)
-                if
-                    math.abs(e.delta.x) < minDelta
-                    or get_choice(e.delta.x) == choice
-                    or e.time_ms < last_time + delay
-                then
-                    return
-                end
-
-                last_time = e.time_ms
-                choice = get_choice(e.delta.x)
-                changeWorkspace(action, (e.delta.x > 0 and -1 or 1))
-            end,
-            finish = function()
-                qs.dispatch()
-                choice = nil
-            end
-        }
+hl.config({
+    gestures = {
+        workspace_swipe_use_r = true,
+        workspace_swipe_min_speed_to_force = 5,
+        workspace_swipe_distance = 800,
+        workspace_swipe_cancel_ratio = 0.1
     }
-end
+})
 
-h.gestures({ get_ws_gesture("move"), get_ws_gesture("focus") })
+hl.gesture({
+    fingers = 3,
+    direction = "horizontal",
+    action = "workspace"
+})
+
+hl.on("workspace.active", function(ws)
+    hl.config({
+        gestures = {
+            workspace_swipe_create_new = ws.id ~= max_ws
+        }
+    })
+    if hl.get_active_workspace().id == max_ws and #hl.get_workspace_windows(max_ws - 1) == 0 then
+        h.gestures({
+            {
+                fingers = 3,
+                direction = "horizontal",
+                action = "unset"
+            },
+            {
+                fingers = 3,
+                direction = "horizontal",
+                action = {
+                    start = function(e)
+                        if e.delta.x > -20 then changeWorkspace("focus", -1) end
+                    end
+                }
+            }
+        })
+    else
+        h.gestures({
+            {
+                fingers = 3,
+                direction = "horizontal",
+                action = "unset"
+            },
+            {
+                fingers = 3,
+                direction = "horizontal",
+                action = "workspace"
+            }
+        })
+    end
+end)
