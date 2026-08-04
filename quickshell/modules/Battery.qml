@@ -105,7 +105,9 @@ Rectangle {
                         onStreamFinished: {
                             if (powerProfiletoggleGroup.ignoreUpdates)
                                 return;
-                            powerProfiletoggleGroup.activeIndex = root.tlpModes.indexOf(text.trim());
+                            let modeName = text.trim();
+                            powerProfiletoggleGroup.activeIndex = root.tlpModes.indexOf(modeName);
+                            BatteryService.actions[modeName]();
                         }
                     }
                 }
