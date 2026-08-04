@@ -1,7 +1,5 @@
 import QtQuick
-import QtQuick.Layouts
 import Quickshell.Networking
-import Quickshell.Io
 import ".."
 import "../components"
 
@@ -9,114 +7,22 @@ Rectangle {
     id: root
     color: "transparent"
     radius: DesignConf.radius
-    implicitWidth: container.implicitWidth + (DesignConf.spacing * 2)
-    Layout.preferredHeight: DesignConf.componentHeight
+    implicitWidth: DesignConf.componentHeight
+    implicitHeight: DesignConf.componentHeight
 
     property WifiDevice wifiDevice: Networking.devices.values.find(d => d.type == DeviceType.Wifi) ?? null
     property WifiNetwork wifiNetwork: wifiDevice?.networks?.values.find(n => n.connected) ?? null
     property real wifiStrength: wifiNetwork?.signalStrength ?? 0
     property bool isWifiSecured: ![WifiSecurityType.Open, WifiSecurityType.Owe, WifiSecurityType.Unknown].includes(wifiNetwork?.security)
-    property bool isVpnConnected: false
 
     Cutout {}
 
-    RowLayout {
-        id: container
-        spacing: DesignConf.spacing
-        anchors.fill: parent
-        anchors.leftMargin: DesignConf.spacing
-        anchors.rightMargin: DesignConf.spacing
-
-        Icon {
-            iconName: {
-                let conn = Networking.connectivity ?? NetworkConnectivity.Unknown;
-                let icons = IconsConf.wifi.find(i => i.connectivity == conn).icons.find(j => root.wifiStrength <= (j.max ?? 1));
-                return root.isWifiSecured ? icons.secured : icons.open;
-            }
-        }
-
-        Icon {
-            iconName: IconsConf.vpn[root.isVpnConnected ? "on" : "off"]
-            opacity: 1
-
-            MouseArea {
-                anchors.fill: parent
-                anchors.margins: -4
-                hoverEnabled: true
-                cursorShape: Qt.PointingHandCursor
-                onClicked: {
-                    vpnPulse.running = true;
-                    if (root.isVpnConnected)
-                        disableVpn.running = true;
-                    else
-                        enableVpn.running = true;
-                }
-            }
-
-            SequentialAnimation on opacity {
-                id: vpnPulse
-                loops: Animation.Infinite
-                running: false
-
-                PropertyAnimation {
-                    to: 0.3
-                    duration: 350
-                    easing.type: Easing.Linear
-                }
-                PropertyAnimation {
-                    to: 1
-                    duration: 350
-                    easing.type: Easing.Linear
-                }
-            }
-
-            SequentialAnimation on opacity {
-                id: resetVpnOpacity
-                running: false
-
-                PropertyAnimation {
-                    to: 1
-                    duration: 350
-                    easing.type: Easing.Linear
-                }
-            }
-        }
-    }
-
-    Process {
-        id: vpnCheck
-        command: ["nmcli", "connection", "show", "--active"]
-        stdout: StdioCollector {
-            onStreamFinished: root.isVpnConnected = SystemConf.vpnIdentifiers.some(i => text.toLowerCase().includes(i))
-        }
-    }
-
-    Timer {
-        interval: 3000
-        running: true
-        repeat: true
-        onTriggered: vpnCheck.running = true
-    }
-
-    Process {
-        id: enableVpn
-        command: ["protonvpn", "connect"]
-        onExited: exitCode => {
-            if (exitCode == 0) {
-                vpnPulse.running = false;
-                resetVpnOpacity.running = root.isVpnConnected = true;
-            }
-        }
-    }
-
-    Process {
-        id: disableVpn
-        command: ["protonvpn", "disconnect"]
-        onExited: exitCode => {
-            if (exitCode == 0) {
-                vpnPulse.running = root.isVpnConnected = false;
-                resetVpnOpacity.running = true;
-            }
+    Icon {
+        anchors.centerIn: parent
+        iconName: {
+            let conn = Networking.connectivity ?? NetworkConnectivity.Unknown;
+            let icons = IconsConf.wifi.find(i => i.connectivity == conn).icons.find(j => root.wifiStrength <= (j.max ?? 1));
+            return root.isWifiSecured ? icons.secured : icons.open;
         }
     }
 }

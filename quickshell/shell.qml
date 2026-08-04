@@ -128,6 +128,7 @@ Scope {
 
                 Mode {}
                 Network {}
+                Vpn {}
                 Audio {}
                 Bluetooth {}
                 Battery {}
