@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Shapes
 import QtQuick.Layouts
 import ".."
+import "../animations/transitions"
 
 Item {
     id: root
@@ -35,10 +36,8 @@ Item {
             Layout.preferredHeight: root.trackHeight
             Layout.alignment: Qt.AlignVCenter
 
-            Behavior on Layout.preferredWidth {
-                NumberAnimation {
-                    duration: 40
-                }
+            Trans on Layout.preferredWidth {
+                duration: 40
             }
 
             Shape {
@@ -126,10 +125,8 @@ Item {
                 radius: Infinity
                 anchors.horizontalCenter: handle.horizontalCenter
 
-                Behavior on width {
-                    NumberAnimation {
-                        duration: 25
-                    }
+                Trans on width {
+                    duration: 25
                 }
             }
         }

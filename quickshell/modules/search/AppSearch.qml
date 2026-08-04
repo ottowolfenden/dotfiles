@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import Quickshell
 import "../.."
+import "../../animations/transitions"
 
 Repeater {
     id: root
@@ -32,6 +33,8 @@ Repeater {
         Layout.fillWidth: true
         Layout.preferredHeight: appName.implicitHeight + DesignConf.spacing
 
+        ButtonStateTrans on color {}
+
         MouseArea {
             id: mouseArea
             anchors.fill: parent
@@ -48,6 +51,7 @@ Repeater {
                     AppSearchService.hide(result.modelData);
             }
         }
+
         Text {
             id: appName
             text: result.modelData.name
@@ -59,17 +63,7 @@ Repeater {
             anchors.leftMargin: DesignConf.spacing / 2
             anchors.rightMargin: DesignConf.spacing / 2
             verticalAlignment: Qt.AlignVCenter
-            Behavior on color {
-                ColorAnimation {
-                    duration: AnimConf.durations.buttonState
-                }
-            }
-        }
-
-        Behavior on color {
-            ColorAnimation {
-                duration: AnimConf.durations.buttonState
-            }
+            ButtonStateTrans on color {}
         }
     }
 }

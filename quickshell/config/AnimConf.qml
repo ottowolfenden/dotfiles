@@ -4,8 +4,8 @@ import QtQuick
 QtObject {
     readonly property var durations: ({
             default: 200,
-            buttonState: 100,
             short: 150,
+            buttonState: 100,
             pulse: 350,
             indefProgress: 3000
         })

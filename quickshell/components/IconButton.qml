@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import ".."
+import "../animations/transitions"
 
 Button {
     id: root
@@ -33,11 +34,7 @@ Button {
             return root.isTransparentOnInactive ? "transparent" : ColoursConf.inactivebg.t;
         }
 
-        Behavior on color {
-            ColorAnimation {
-                duration: AnimConf.durations.buttonState
-            }
-        }
+        ButtonStateTrans on color {}
     }
 
     HoverHandler {

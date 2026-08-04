@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import "../.."
 import "../../components"
+import "../../animations/transitions"
 
 Repeater {
     id: root
@@ -32,11 +33,7 @@ Repeater {
         Layout.fillWidth: true
         Layout.preferredHeight: textRow.implicitHeight + DesignConf.spacing
 
-        Behavior on color {
-            ColorAnimation {
-                duration: AnimConf.durations.buttonState
-            }
-        }
+        ButtonStateTrans on color {}
 
         MouseArea {
             id: mouseArea
@@ -81,11 +78,7 @@ Repeater {
                         font.family: FontsConf.mainFamily
                         font.pixelSize: FontsConf.pixelSize
                         elide: Text.ElideRight
-                        Behavior on color {
-                            ColorAnimation {
-                                duration: AnimConf.durations.buttonState
-                            }
-                        }
+                        ButtonStateTrans on color {}
                     }
                     Text {
                         id: fileExt
@@ -95,11 +88,7 @@ Repeater {
                         font.family: FontsConf.mainFamily
                         font.pixelSize: FontsConf.pixelSize
                         elide: Text.ElideRight
-                        Behavior on color {
-                            ColorAnimation {
-                                duration: AnimConf.durations.buttonState
-                            }
-                        }
+                        ButtonStateTrans on color {}
                     }
                 }
 
@@ -111,11 +100,7 @@ Repeater {
                     font.family: FontsConf.mainFamily
                     font.pixelSize: FontsConf.smallPixelSize
                     elide: Text.ElideRight
-                    Behavior on color {
-                        ColorAnimation {
-                            duration: AnimConf.durations.buttonState
-                        }
-                    }
+                    ButtonStateTrans on color {}
                 }
             }
         }

@@ -6,6 +6,7 @@ import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
 import ".."
 import "../components"
+import "../animations/transitions"
 
 Rectangle {
     id: root
@@ -306,11 +307,7 @@ Rectangle {
                                     onClicked: Pipewire.preferredDefaultAudioSink = node.modelData
                                 }
 
-                                Behavior on color {
-                                    ColorAnimation {
-                                        duration: AnimConf.durations.buttonState
-                                    }
-                                }
+                                ButtonStateTrans on color {}
                             }
                         }
                     }

@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import ".."
 import "../components"
+import "../animations/transitions"
 
 Rectangle {
     id: root
@@ -18,19 +19,8 @@ Rectangle {
     onModeChanged: cachedMode = mode == "default" ? cachedMode : mode
     opacity: root.search.mode != "default"
 
-    Behavior on opacity {
-        NumberAnimation {
-            duration: AnimConf.durations.default
-            easing: AnimConf.easing
-        }
-    }
-
-    Behavior on implicitWidth {
-        NumberAnimation {
-            duration: AnimConf.durations.default
-            easing: AnimConf.easing
-        }
-    }
+    DefaultTrans on opacity {}
+    DefaultTrans on implicitWidth {}
 
     Cutout {}
 

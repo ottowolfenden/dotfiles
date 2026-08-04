@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import ".."
+import "../animations/transitions"
 
 ColumnLayout {
     id: root
@@ -18,19 +19,8 @@ ColumnLayout {
         Layout.preferredWidth: label.implicitWidth
         opacity: root.child.mode != root.child.modeSupplied
 
-        Behavior on Layout.preferredHeight {
-            NumberAnimation {
-                duration: AnimConf.durations.default
-                easing: AnimConf.easing
-            }
-        }
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: AnimConf.durations.buttonState
-                easing: AnimConf.easing
-            }
-        }
+        DefaultTrans on Layout.preferredHeight {}
+        DefaultTrans on opacity {}
 
         RowLayout {
             id: label

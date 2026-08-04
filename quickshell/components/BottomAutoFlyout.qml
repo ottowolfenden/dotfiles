@@ -5,6 +5,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 import ".."
+import "../animations/transitions"
 
 PanelWindow {
     id: root
@@ -77,12 +78,8 @@ PanelWindow {
             }
         }
 
-        Behavior on y {
+        DefaultTrans on y {
             enabled: root.height > 0
-            NumberAnimation {
-                duration: 200
-                easing: Easing.OutCubic
-            }
         }
 
         HoverHandler {
@@ -92,7 +89,10 @@ PanelWindow {
         Pane {
             id: pane
             verticalPadding: DesignConf.spacing
-            horizontalPadding: contentContainer.children.every(c => c.toString().includes("Slider")) ? DesignConf.sliderHandleOffset : DesignConf.spacing
+            horizontalPadding: {
+                let isSlider = contentContainer.children.every(c => c.toString().includes("Slider"));
+                return isSlider ? DesignConf.sliderHandleOffset : DesignConf.spacing;
+            }
             background: null
             anchors.fill: parent
 

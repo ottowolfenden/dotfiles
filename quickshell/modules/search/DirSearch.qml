@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import "../.."
 import "../../components"
+import "../../animations/transitions"
 
 Repeater {
     id: root
@@ -32,11 +33,7 @@ Repeater {
         Layout.fillWidth: true
         Layout.preferredHeight: dirPath.implicitHeight + DesignConf.spacing
 
-        Behavior on color {
-            ColorAnimation {
-                duration: AnimConf.durations.buttonState
-            }
-        }
+        ButtonStateTrans on color {}
 
         MouseArea {
             id: mouseArea
@@ -75,11 +72,7 @@ Repeater {
                     font.pixelSize: FontsConf.pixelSize
                     width: Math.min(dirPath.width - dirName.width, implicitWidth)
                     elide: Text.ElideRight
-                    Behavior on color {
-                        ColorAnimation {
-                            duration: AnimConf.durations.buttonState
-                        }
-                    }
+                    ButtonStateTrans on color {}
                 }
                 Text {
                     id: dirName
@@ -89,11 +82,7 @@ Repeater {
                     font.pixelSize: FontsConf.pixelSize
                     width: Math.min(implicitWidth, Math.max(dirPath.width / 2, dirPath.width - dirPathPrefix.implicitWidth))
                     elide: Text.ElideRight
-                    Behavior on color {
-                        ColorAnimation {
-                            duration: AnimConf.durations.buttonState
-                        }
-                    }
+                    ButtonStateTrans on color {}
                 }
             }
         }

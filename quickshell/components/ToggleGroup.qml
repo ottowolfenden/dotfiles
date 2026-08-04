@@ -3,6 +3,7 @@ import QtQuick
 import QtQuick.Layouts
 import ".."
 import "../components"
+import "../animations/transitions"
 
 Rectangle {
     id: root
@@ -44,17 +45,10 @@ Rectangle {
                 radius: Infinity
                 opacity: root.activeIndex != index
 
-                Behavior on color {
-                    ColorAnimation {
-                        duration: AnimConf.durations.buttonState
-                    }
-                }
+                ButtonStateTrans on color {}
 
-                Behavior on opacity {
-                    NumberAnimation {
-                        duration: item.opacity ? AnimConf.durations.short : 0
-                        easing: AnimConf.easing
-                    }
+                ShortTrans on opacity {
+                    enabled: root.activeIndex != item.index
                 }
 
                 Icon {
@@ -98,12 +92,7 @@ Rectangle {
         x: DesignConf.spacing + (DesignConf.circleButtonDiameter + DesignConf.spacing) * root.activeIndex
         y: (root.implicitHeight - height) / 2
 
-        Behavior on x {
-            NumberAnimation {
-                duration: AnimConf.durations.short
-                easing: AnimConf.easing
-            }
-        }
+        ShortTrans on x {}
 
         Icon {
             iconName: root.icons[root.activeIndex] ?? ""

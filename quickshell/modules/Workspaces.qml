@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import Quickshell.Hyprland
 import ".."
 import "../components"
+import "../animations/transitions"
 
 Rectangle {
     color: "transparent"
@@ -13,12 +14,7 @@ Rectangle {
     opacity: Hyprland.workspaces.values.length != 1 || (Hyprland.focusedWorkspace?.id ?? 1) != 1
     clip: true
 
-    Behavior on opacity {
-        NumberAnimation {
-            duration: AnimConf.durations.default
-            easing: AnimConf.easing
-        }
-    }
+    DefaultTrans on opacity {}
 
     Cutout {}
 
@@ -61,34 +57,12 @@ Rectangle {
                 Layout.preferredHeight: displayed ? DesignConf.wsCircleDiameter : 0
                 Layout.rightMargin: displayed ? DesignConf.spacing : 0
 
-                Behavior on opacity {
-                    NumberAnimation {
-                        duration: circle.opacity ? AnimConf.durations.short : 0
-                        easing: AnimConf.easing
-                    }
-                }
-                Behavior on color {
-                    ColorAnimation {
-                        duration: AnimConf.durations.buttonState
-                    }
-                }
-                Behavior on Layout.preferredWidth {
-                    NumberAnimation {
-                        duration: AnimConf.durations.short
-                        easing: AnimConf.easing
-                    }
-                }
-                Behavior on Layout.preferredHeight {
-                    NumberAnimation {
-                        duration: AnimConf.durations.short
-                        easing: AnimConf.easing
-                    }
-                }
-                Behavior on Layout.rightMargin {
-                    NumberAnimation {
-                        duration: AnimConf.durations.short
-                        easing: AnimConf.easing
-                    }
+                ButtonStateTrans on color {}
+                ShortTrans on Layout.preferredWidth {}
+                ShortTrans on Layout.preferredHeight {}
+                ShortTrans on Layout.rightMargin {}
+                ShortTrans on opacity {
+                    enabled: !circle.isActive
                 }
 
                 Text {
@@ -100,11 +74,8 @@ Rectangle {
                     font.pixelSize: 12
                     color: parent.isEmpty ? ColoursConf.fg4.t : ColoursConf.fg1.t
                     opacity: !parent.isActive && parent.displayed
-                    Behavior on opacity {
-                        NumberAnimation {
-                            duration: circle.opacity ? AnimConf.durations.short : 0
-                            easing: AnimConf.easing
-                        }
+                    ShortTrans on opacity {
+                        enabled: !circle.isActive
                     }
                 }
 
@@ -128,12 +99,7 @@ Rectangle {
         x: DesignConf.spacing + (DesignConf.wsCircleDiameter + DesignConf.spacing) * (Hyprland.focusedWorkspace?.id - 1)
         y: (container.height - height) / 2
 
-        Behavior on x {
-            NumberAnimation {
-                duration: AnimConf.durations.short
-                easing: AnimConf.easing
-            }
-        }
+        ShortTrans on x {}
 
         Text {
             text: Hyprland.focusedWorkspace?.id ?? 1

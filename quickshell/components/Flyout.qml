@@ -3,6 +3,7 @@ import QtQuick.Shapes
 import Quickshell
 import Quickshell.Wayland
 import ".."
+import "../animations/transitions"
 
 PanelWindow {
     id: root
@@ -43,6 +44,9 @@ PanelWindow {
         y: root.isOpen ? 0 : -height
         clip: true
 
+        DefaultTrans on y {}
+        DefaultTrans on height {}
+
         ShapePath {
             fillColor: ColoursConf.bg1
             strokeWidth: 0
@@ -77,20 +81,6 @@ PanelWindow {
             PathLine {
                 x: 0
                 y: 0
-            }
-        }
-
-        Behavior on y {
-            NumberAnimation {
-                duration: AnimConf.durations.default
-                easing: AnimConf.easing
-            }
-        }
-
-        Behavior on height {
-            NumberAnimation {
-                duration: AnimConf.durations.default
-                easing: AnimConf.easing
             }
         }
 

@@ -4,6 +4,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import "../.."
 import "../../components"
+import "../../animations/transitions"
 
 Repeater {
     id: root
@@ -74,18 +75,10 @@ Repeater {
                 font.pixelSize: FontsConf.pixelSize
                 elide: Text.ElideRight
                 Layout.fillWidth: true
-                Behavior on color {
-                    ColorAnimation {
-                        duration: AnimConf.durations.buttonState
-                    }
-                }
+                ButtonStateTrans on color {}
             }
         }
 
-        Behavior on color {
-            ColorAnimation {
-                duration: AnimConf.durations.buttonState
-            }
-        }
+        ButtonStateTrans on color {}
     }
 }

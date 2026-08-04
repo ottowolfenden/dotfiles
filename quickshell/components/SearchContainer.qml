@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import ".."
 import "../modules"
+import "../animations/transitions"
 
 Item {
     id: root
@@ -15,23 +16,13 @@ Item {
     anchors.horizontalCenter: parent.horizontalCenter
     width: search.isOpen ? DesignConf.searchGroupWidth : DesignConf.componentHeight
 
-    Behavior on width {
-        NumberAnimation {
-            duration: AnimConf.durations.default
-            easing: AnimConf.easing
-        }
-    }
+    DefaultTrans on width {}
 
     RowLayout {
         id: contentContainer
         anchors.fill: parent
         spacing: root.search.mode != "default" ? DesignConf.spacing : 0
 
-        Behavior on spacing {
-            NumberAnimation {
-                duration: AnimConf.durations.default
-                easing: AnimConf.easing
-            }
-        }
+        DefaultTrans on spacing {}
     }
 }

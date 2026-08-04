@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import ".."
 import "../components"
+import "../animations/transitions"
 
 Rectangle {
     color: "transparent"
@@ -9,12 +10,7 @@ Rectangle {
     implicitWidth: time.width + date.width + DesignConf.spacing * 3
     implicitHeight: DesignConf.componentHeight
 
-    Behavior on implicitWidth {
-        NumberAnimation {
-            duration: AnimConf.durations.short
-            easing: AnimConf.easing
-        }
-    }
+    ShortTrans on implicitWidth {}
 
     Cutout {}
 
