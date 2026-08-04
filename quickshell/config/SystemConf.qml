@@ -8,6 +8,7 @@ QtObject {
     readonly property bool showHdmiSinks: false
     readonly property int minBrightness: 4
     property int maxBrightness: 496
+    property real powerSaverBrightnessProportion: 0.3
     property string hyprlandLaptopMonitor: `
             hl.monitor({
                 output = "eDP-1",

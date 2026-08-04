@@ -1,13 +1,16 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import "../../services"
 import "../.."
 import "../../components"
 
 Scope {
     id: root
+    onBrightnessChanged: BatteryService.brightness = brightness
     property int brightness: 0
     property bool increasing: false
+    property int max: Math.floor(BatteryService.brightnessProportion * SystemConf.maxBrightness)
 
     function setBrightness(text) {
         const {
@@ -15,18 +18,18 @@ Scope {
             4: max
         } = text.trim().split(",");
         SystemConf.maxBrightness = max;
-        root.brightness = (max / (max - SystemConf.minBrightness)) * (current - SystemConf.minBrightness);
+        root.brightness = (root.max / (root.max - SystemConf.minBrightness)) * (current - SystemConf.minBrightness);
     }
 
     BottomAutoFlyout {
         type: "brightness"
         Slider {
-            value: root.brightness / SystemConf.maxBrightness
+            value: Math.min(root.brightness / root.max, 1)
             onChanged: newValue => {
-                root.brightness = SystemConf.maxBrightness * newValue;
+                root.brightness = root.max * newValue;
                 Quickshell.execDetached(["brightnessctl", "-n" + SystemConf.minBrightness, "s", root.brightness]);
             }
-            iconName: IconsConf.brightness.find(i => i.max >= root.brightness / SystemConf.maxBrightness).icon
+            iconName: IconsConf.brightness.find(i => i.max >= value).icon
         }
     }
 
@@ -41,7 +44,11 @@ Scope {
 
     Process {
         id: changeBrightnessProc
-        command: ["brightnessctl", "-n" + SystemConf.minBrightness, "-m", "s", "10%" + (root.increasing ? "+" : "-")]
+        command: {
+            let targetBrightness = root.brightness + (Math.trunc(root.max * 0.1) * (root.increasing ? 1 : -1));
+            targetBrightness = UtilsService.clamp(targetBrightness, SystemConf.minBrightness, root.max);
+            return ["brightnessctl", "-n" + SystemConf.minBrightness, "-m", "s", targetBrightness];
+        }
         stdout: StdioCollector {
             onStreamFinished: root.setBrightness(text)
         }
@@ -58,6 +65,9 @@ Scope {
             else
                 return;
             changeBrightnessProc.running = true;
+        }
+        function refresh(): void {
+            getBrightnessProc.running = true;
         }
     }
 }
