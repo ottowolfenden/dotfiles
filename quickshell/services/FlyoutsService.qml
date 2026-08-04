@@ -18,13 +18,13 @@ QtObject {
                 if (!flyout.hovering)
                     flyout.isOpen = false;
             if (![...root.flyouts, ...root.bafs].some(x => x.hovering || x.isOpen))
-                HyprlandService.reload();
+                HyprlandService.reloadFlyoutBafConf();
         }
 
         function hideAllFlyouts(): void {
             for (const flyout of root.flyouts)
                 flyout.isOpen = false;
-            HyprlandService.reload();
+            HyprlandService.reloadFlyoutBafConf();
         }
     }
 
@@ -50,7 +50,7 @@ QtObject {
                 if (!baf.hovering)
                     baf.isOpen = false;
             if (![...root.flyouts, ...root.bafs].some(x => x.hovering || x.isOpen))
-                HyprlandService.reload();
+                HyprlandService.reloadFlyoutBafConf();
         }
     }
 
@@ -61,7 +61,7 @@ QtObject {
         if (root.flyouts.some(f => f.isOpen))
             HyprlandService.applyFlyoutConf();
         else
-            HyprlandService.reload();
+            HyprlandService.reloadFlyoutBafConf();
     }
 
     function hideFlyout(flyoutToHide: Flyout): void {
@@ -71,7 +71,7 @@ QtObject {
         if (root.flyouts.some(f => f.isOpen))
             HyprlandService.applyFlyoutConf();
         else
-            HyprlandService.reload();
+            HyprlandService.reloadFlyoutBafConf();
     }
 
     function hideBaf(baf: BottomAutoFlyout): void {
@@ -81,6 +81,6 @@ QtObject {
         }
         baf.isOpen = false;
         if (![...root.flyouts, ...root.bafs].some(f => f.isOpen))
-            HyprlandService.reload();
+            HyprlandService.reloadFlyoutBafConf();
     }
 }

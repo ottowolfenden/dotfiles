@@ -61,6 +61,18 @@ QtObject {
             `]);
     }
 
+    function reloadFlyoutBafConf(): void {
+        Quickshell.execDetached(["hyprctl", "eval", `
+                hl.config({
+                    input = { follow_mouse = 1 },
+                    decoration = {
+                        active_opacity = 1.0,
+                        inactive_opacity = 0.85
+                    }
+                })
+            `]);
+    }
+
     property Process activeWsClientsProcess: Process {
         id: activeWsClientsProcess
         property var callbackFunc: null
