@@ -9,7 +9,7 @@ import "../components"
 Rectangle {
     id: root
     required property list<string> icons
-    property var onClickedCommands
+    property var onClickeds
     property Timer checkTimer
     property bool ignoreUpdates: false
     property int activeIndex: -1
@@ -61,8 +61,8 @@ Rectangle {
                         root.ignoreUpdates = true;
                         cooldownTimer.restart();
 
-                        if (root.onClickedCommands)
-                            Quickshell.execDetached(root.onClickedCommands[parent.index]);
+                        if (root.onClickeds)
+                            root.onClickeds[parent.index]();
 
                         if (root.checkTimer)
                             root.checkTimer.restart();

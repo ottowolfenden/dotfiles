@@ -3,6 +3,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
+import ".."
 
 QtObject {
     function getWsIsEmpty(id: int): bool {
@@ -18,6 +19,11 @@ QtObject {
         if (!Hyprland.workspaces?.values || Hyprland.workspaces.values.length == 0)
             return null;
         return Hyprland.workspaces.values.find(ws => ws.active);
+    }
+
+    function setRefreshRate(refreshRateHz: var): void {
+        let monitorConf = SystemConf.hyprlandLaptopMonitor.replace(/(mode\s*=\s*"\d+x\d+@)[^"]+/, "$1" + refreshRateHz);
+        Quickshell.execDetached(["hyprctl", "eval", monitorConf]);
     }
 
     function reload(): void {

@@ -9,6 +9,7 @@ singleton SearchConf 1.0 config/SearchConf.qml
 singleton SystemConf 1.0 config/SystemConf.qml
 
 singleton AudioService 1.0 services/AudioService.qml
+singleton BatteryService 1.0 services/BatteryService.qml
 singleton DailyWallpaperService 1.0 services/DailyWallpaperService.qml
 singleton FlyoutsService 1.0 services/FlyoutsService.qml
 singleton HyprlandService 1.0 services/HyprlandService.qml

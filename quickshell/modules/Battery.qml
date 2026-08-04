@@ -90,7 +90,10 @@ Rectangle {
                 ToggleGroup {
                     id: powerProfiletoggleGroup
                     icons: IconsConf.powerProfiles
-                    onClickedCommands: root.tlpModes.map(p => ["tlpctl", p])
+                    onClickeds: root.tlpModes.map(p => () => {
+                            Quickshell.execDetached(["tlpctl", p]);
+                            BatteryService.actions[p]();
+                        })
                     checkTimer: tlpctlTimer
                 }
 
