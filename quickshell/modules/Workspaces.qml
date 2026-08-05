@@ -81,11 +81,13 @@ Rectangle {
 
                 MouseArea {
                     id: mouseArea
+                    visible: circle.displayed
                     anchors.fill: parent
                     anchors.margins: -4
                     hoverEnabled: true
                     cursorShape: parent.isActive ? Qt.ArrowCursor : Qt.PointingHandCursor
                     onClicked: HyprlandService.focusWs(parent.modelData)
+                    DebugBox {}
                 }
             }
         }
