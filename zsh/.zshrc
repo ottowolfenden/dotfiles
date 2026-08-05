@@ -39,3 +39,5 @@ if [[ -n "$ZSH_PREFILL" ]]; then
     print -z "$ZSH_PREFILL"
     unset ZSH_PREFILL
 fi
+
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
