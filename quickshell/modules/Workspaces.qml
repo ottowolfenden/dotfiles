@@ -87,7 +87,6 @@ Rectangle {
                     hoverEnabled: true
                     cursorShape: parent.isActive ? Qt.ArrowCursor : Qt.PointingHandCursor
                     onClicked: HyprlandService.focusWs(parent.modelData)
-                    DebugBox {}
                 }
             }
         }
