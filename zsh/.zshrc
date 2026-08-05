@@ -41,3 +41,12 @@ if [[ -n "$ZSH_PREFILL" ]]; then
 fi
 
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_STRATEGY=(completion)
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(${ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#autosuggest-accept})
+ZSH_AUTOSUGGEST_COMPLETION_IGNORE=""
+_suggest-after-tab() {
+  zle autosuggest-accept
+  zle autosuggest-fetch
+}
+zle -N _suggest-after-tab
+bindkey '^I' _suggest-after-tab
