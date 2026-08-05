@@ -263,6 +263,7 @@ QtObject {
         "custom:file_cursor": ["ani", "cur", "smes"],
         "web": ["mhtml", "maff", "webarchive", "dtd", "chm"],
         "downloading": ["!ut", "crdownload", "opdownload", "part", "partial"],
+        "custom:file_config": ["conf", "config", "cfg", "ini", "toml", "ucl", "yaml", "yml", "env"],
         "key": ["gxk", "ssh", "pub", "ppk", "nsign", "cer", "crt", "der", "p7b", "p7c", "p12", "pfx", "pem"],
         "link": ["alias", "appref-ms", "desktop", "jnlp", "lnk", "nal", "pif", "sym", "url", "webloc", "website"],
         "map": ["apr", "dem", "e00", "geojson", "topojson", "geotiff", "gpx", "itn", "mxd", "ov2", "shp", "dted", "kml"],
@@ -285,6 +286,7 @@ QtObject {
         "album": ["iso", "cso", "hdi", "mds", "rom", "vmdk", "dvd", "ex01", "i02", "bws", "mbi", "cfs", "ashdisc", "dbr", "macvm", "d64", "vaporcd", "d01", "wlz", "hd", "vhd", "adi", "dmgpart", "dsk", "daa", "d00", "vhdx", "xvd", "sdi", "md0", "l01", "qcow", "lcd", "vmwarevm", "vfd", "wud", "dcf", "qcow2", "nrg", "ibp", "wim", "toast", "xva", "uibak", "avhd", "e01", "cif", "sub", "i01", "hds", "tib", "bif", "ccd", "bwt", "utm", "disk", "cdm", "ecm", "adz", "dax", "sdsk", "xdi", "ede", "cvbi", "vc4", "ima", "isz", "ipf", "ibdat", "cdi", "mlc", "2mg", "pvm", "mrimg", "img", "uif", "adf", "bwi", "sqfs", "hfv", "sco", "eui", "d81", "apfs", "dvdr", "swm", "hfs", "x64", "p01", "tc", "omg", "cdt", "ndif", "lvi", "tzx", "gbi", "lx01", "b5i", "tap", "pmf", "toc", "fdi", "woz", "edk", "t64", "mfi", "xa", "aff", "imd", "udf", "image", "fdd", "st", "000", "partimg", "ixa", "bwa", "cl5", "rcl", "sparseimage", "hdd", "wmt", "p2g", "vcx", "vco", "ciso", "infinitemacdisk", "pmfx", "pqi", "md1", "pxi", "vdi", "afd", "qed", "nkit", "rpkg", "gcd", "td0", "bwz", "ibadr", "86f", "b6i", "wii", "disc", "i00", "nn", "cue", "flg", "dms", "ibq", "b6t", "ibb", "eda", "c2d", "rdf", "dxp", "pgd", "gi", "edv", "gdrive", "imz", "wbi", "b5t", "cd", "simg", "atr", "volarchive", "winclone", "sparsebundle", "sopt", "lnx", "g41", "xmd", "ncd", "p2i", "fcd", "miniso", "d88", "mir", "ratdvd", "tao", "gkh", "pgx", "fd", "vhdpmem", "d71", "po", "do", "miniroot", "tgc", "cramfs", "ext4", "fat", "afr", "edq", "aa", "nfi", "wil", "dao", "vc8", "vc6", "eds", "xmf", "vbi", "ufs", "k3b"]
     }
     readonly property string otherFileFormat: "draft"
+    readonly property string confFile: "custom:file_config"
     readonly property var dirs: ({
             default: "folder",
             rootOwned: "custom:folder_lock",

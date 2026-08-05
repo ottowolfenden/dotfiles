@@ -55,7 +55,8 @@ QtObject {
                 get icon() {
                     let format = this.fileExt.toLowerCase().replace(".", "");
                     let icon = Object.keys(IconsConf.fileFormats).find(k => IconsConf.fileFormats[k].includes(format));
-                    return icon ?? IconsConf.otherFileFormat;
+                    let isConf = ["conf", "setting"].some(s => (this.name + this.fileExt).toLowerCase().includes(s)) || this.name.toLowerCase().endsWith("rc");
+                    return icon ?? (isConf ? IconsConf.confFile : IconsConf.otherFileFormat);
                 },
                 split() {
                     let nameNoExt = this.fileExt == "" ? this.name : this.name.slice(0, -this.fileExt.length);
