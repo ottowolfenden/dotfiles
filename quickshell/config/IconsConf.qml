@@ -253,7 +253,6 @@ QtObject {
             commands: "terminal"
         })
     readonly property var fileFormats: {
-        "markdown": ["md"],
         "article": ["txt"],
         "custom:json": ["json"],
         "gif_box": ["gif", "gifv"],
@@ -262,6 +261,7 @@ QtObject {
         "subtitles": ["ass", "ssa", "smi", "srt"],
         "custom:file_cursor": ["ani", "cur", "smes"],
         "web": ["mhtml", "maff", "webarchive", "dtd", "chm"],
+        "markdown": ["md", "rst", "markdown", "mdown", "mkdn", "mkd"],
         "downloading": ["!ut", "crdownload", "opdownload", "part", "partial"],
         "custom:file_config": ["conf", "config", "cfg", "ini", "toml", "ucl", "yaml", "yml", "env"],
         "key": ["gxk", "ssh", "pub", "ppk", "nsign", "cer", "crt", "der", "p7b", "p7c", "p12", "pfx", "pem"],
