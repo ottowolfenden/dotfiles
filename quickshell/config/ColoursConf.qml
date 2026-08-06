@@ -28,7 +28,7 @@ QtObject {
             textselectionbg: "#28000000",
             red: "#ea4335",
             orange: "#fd6132",
-            yellow: "#f1b911",
+            yellow: "#e2931d",
             green: "#34a853",
             lightblue: "#4285f4",
             darkblue: "#0057ca",
