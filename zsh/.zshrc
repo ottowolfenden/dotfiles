@@ -13,6 +13,7 @@ export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 autoload -Uz tetriscurses
+autoload -U add-zsh-hook
 
 clearscreen() {
     printf '\033[3J'
@@ -41,12 +42,35 @@ if [[ -n "$ZSH_PREFILL" ]]; then
 fi
 
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-ZSH_AUTOSUGGEST_STRATEGY=(completion)
+ZSH_AUTOSUGGEST_STRATEGY=completion
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(${ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#autosuggest-accept})
 ZSH_AUTOSUGGEST_COMPLETION_IGNORE=""
+
 _suggest-after-tab() {
   zle autosuggest-accept
   zle autosuggest-fetch
 }
+
+reset-autosuggest-strategy() { 
+    ZSH_AUTOSUGGEST_STRATEGY=completion 
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
+}
+
+toggle-autosuggest-strategy() {
+    if [[ $ZSH_AUTOSUGGEST_STRATEGY == "completion" ]]; then
+        ZSH_AUTOSUGGEST_STRATEGY=history
+        ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=23"
+        zle autosuggest-fetch
+    else
+        reset-autosuggest-strategy
+        zle autosuggest-fetch
+    fi
+}
+
+
+add-zsh-hook preexec reset-autosuggest-strategy
 zle -N _suggest-after-tab
-bindkey '^I' _suggest-after-tab
+zle -N toggle-autosuggest-strategy
+
+bindkey ^I _suggest-after-tab
+bindkey ^R toggle-autosuggest-strategy
