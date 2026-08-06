@@ -42,6 +42,8 @@ Rectangle {
 
                 radius: Infinity
                 color: {
+                    if (mouseArea.containsPress && !isEmpty)
+                        return ColoursConf.bg8.t;
                     if (mouseArea.containsPress)
                         return ColoursConf.pressedbg.t;
                     if (mouseArea.containsMouse && isEmpty)
@@ -49,7 +51,7 @@ Rectangle {
                     if (mouseArea.containsMouse && !isEmpty)
                         return ColoursConf.bg7.t;
                     if (!isEmpty)
-                        return ColoursConf.bg4.t;
+                        return ColoursConf.bg6.t;
                     return "transparent";
                 }
                 opacity: !isActive

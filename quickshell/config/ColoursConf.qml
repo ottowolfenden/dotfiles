@@ -12,7 +12,8 @@ QtObject {
             bg4: "#09000000",
             bg5: "#0c000000",
             bg6: "#0f000000",
-            bg7: "#15000000",
+            bg7: "#1b000000",
+            bg8: "#28000000",
             fg1: "#e0000000",
             fg2: "#a0000000",
             fg3: "#7b000000",
@@ -42,7 +43,8 @@ QtObject {
             bg4: "#10ffffff",
             bg5: "#13ffffff",
             bg6: "#16ffffff",
-            bg7: "#1bffffff",
+            bg7: "#28ffffff",
+            bg8: "#38ffffff",
             fg1: "#e0ffffff",
             fg2: "#a0ffffff",
             fg3: "#7bffffff",
@@ -104,6 +106,7 @@ QtObject {
     readonly property var bg5: createColour(theme.bg5)
     readonly property var bg6: createColour(theme.bg6)
     readonly property var bg7: createColour(theme.bg7)
+    readonly property var bg8: createColour(theme.bg8)
     readonly property var fg1: createColour(theme.fg1)
     readonly property var fg2: createColour(theme.fg2)
     readonly property var fg3: createColour(theme.fg3)
