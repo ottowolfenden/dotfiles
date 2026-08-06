@@ -59,7 +59,7 @@ reset-autosuggest-strategy() {
 toggle-autosuggest-strategy() {
     if [[ $ZSH_AUTOSUGGEST_STRATEGY == "completion" ]]; then
         ZSH_AUTOSUGGEST_STRATEGY=history
-        ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=23"
+        ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=189"
         zle autosuggest-fetch
     else
         reset-autosuggest-strategy
