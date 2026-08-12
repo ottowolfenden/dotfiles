@@ -34,6 +34,10 @@ function h.arr_includes(arr, val)
     return false
 end
 
+function h.starts_with(text, prefix)
+    return text:find(prefix, 1, true) == 1
+end
+
 function h.press_key(mods, key)
     hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "down" }))
     hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "up" }))

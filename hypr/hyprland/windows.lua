@@ -33,7 +33,7 @@ end
 h.qs_binds(qs_binds)
 h.binds(binds)
 
-local no_fullscreen_classes = { "helium" }
+local no_fullscreen_classes = { "helium", "xdg-desktop-portal-gtk" }
 
 hl.on("window.open", function(w)
     hl.timer(function()
@@ -41,7 +41,10 @@ hl.on("window.open", function(w)
         if not a_w or w.address ~= a_w.address then
             hl.dispatch(hl.dsp.focus({ window = w }))
         end
-        if not h.arr_includes(no_fullscreen_classes, w.class) then
+        if
+            not h.arr_includes(no_fullscreen_classes, w.class) and
+            not h.starts_with(w.class, "chrome-")
+        then
             hl.dispatch(hl.dsp.window.fullscreen_state({
                 internal = 0,
                 client = 2,
