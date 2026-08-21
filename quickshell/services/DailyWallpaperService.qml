@@ -15,18 +15,28 @@ QtObject {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.path = text.trim();
-                Quickshell.execDetached(["awww", "img", text.trim(), "--transition-type", "none"]);
+                Quickshell.execDetached(["awww", "img", text.trim(), "-t", "grow", "--transition-pos=2320,0", "--invert-y", "--transition-fps=120", "--transition-duration=1.5"]);
             }
         }
     }
 
     property Timer dailyWallpaperTimer: Timer {
         running: true
-        interval: new Date(new Date().setHours(24, 0, 0, 0)) - new Date()
+        repeat: true
+        interval: 10000
+
+        property int lastDay: -1
+
         onTriggered: {
-            root.dailyWallpaperProcess.running = true;
-            interval = 24 * 60 * 60 * 1000;
-            restart();
+            let now = new Date();
+            let hr = now.getHours();
+            let min = now.getMinutes();
+            let day = now.getDate();
+
+            if (hr == 0 && min == 0 && lastDay != day) {
+                lastDay = day;
+                root.dailyWallpaperProcess.running = true;
+            }
         }
     }
 
