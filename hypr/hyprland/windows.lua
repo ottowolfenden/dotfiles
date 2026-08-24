@@ -33,7 +33,7 @@ end
 h.qs_binds(qs_binds)
 h.binds(binds)
 
-local no_fullscreen_classes = { "helium", "xdg-desktop-portal-gtk", "chromium" }
+local no_fullscreen_classes = { "helium", "xdg-desktop-portal-gtk", "chromium", "firefox" }
 
 hl.on("window.open", function(w)
     hl.timer(function()
