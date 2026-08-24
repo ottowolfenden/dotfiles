@@ -78,11 +78,11 @@ QtObject {
     readonly property string dirParentDir: Quickshell.env("HOME")
     readonly property var pathExclusions: ({
             dirs: {
-                default: ["*/.*", Quickshell.env("HOME") + "/yay/*"],
+                default: ["*/.*", Quickshell.env("HOME") + "/yay/*", "*/node_modules/*"],
                 always: [Quickshell.env("HOME") + "/.local/share/Trash/*"]
             },
             files: {
-                default: ["*/.*", Quickshell.env("HOME") + "/yay/*"],
+                default: ["*/.*", Quickshell.env("HOME") + "/yay/*", "*/node_modules/*"],
                 always: [Quickshell.env("HOME") + "/.local/share/Trash/*"]
             }
         })
