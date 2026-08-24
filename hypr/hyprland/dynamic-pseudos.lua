@@ -8,7 +8,8 @@ local dynamic_pseudos = {
         "Thunar",
         "com.github.th-ch.youtube-music",
         "localsend",
-        "btop"
+        "btop",
+        "kew"
     },
     initial_titles = { "overskride" }
 }
