@@ -9,7 +9,8 @@ local dynamic_pseudos = {
         "com.github.th-ch.youtube-music",
         "localsend",
         "btop",
-        "kew"
+        "kew",
+        "org.localsend.localsend_app"
     },
     initial_titles = { "overskride" }
 }
