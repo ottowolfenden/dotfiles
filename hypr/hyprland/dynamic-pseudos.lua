@@ -10,7 +10,8 @@ local dynamic_pseudos = {
         "localsend",
         "btop",
         "kew",
-        "org.localsend.localsend_app"
+        "org.localsend.localsend_app",
+        "io.bassi.Amberol"
     },
     initial_titles = { "overskride" }
 }
