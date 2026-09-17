@@ -144,16 +144,3 @@ QtObject {
         }
     }
 }
-
-/*
-
-Quickshell.execDetached([
-    "kitty",
-    "-d", "~",
-    "zsh",
-    "-i",
-    "-c",
-    `print -z ${(JSON.stringify(result.command))}; exec zsh`
-]);
-
-*/
