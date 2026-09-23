@@ -60,10 +60,13 @@ Rectangle {
         }
 
         MouseArea {
+            property bool locked: false
             anchors.fill: parent
             hoverEnabled: true
+            acceptedButtons: Qt.MiddleButton
             cursorShape: Qt.PointingHandCursor
-            onClicked: parent.isSecondsFormat = !parent.isSecondsFormat
+            onClicked: locked = !locked
+            onContainsMouseChanged: parent.isSecondsFormat = containsMouse || locked
         }
     }
 
@@ -82,7 +85,7 @@ Rectangle {
             if (isNumberFormat) {
                 let maxDayW = getMaxWRange(1, 31, DateTimeConf.date0Padding);
                 let maxMonthW = getMaxWRange(1, 12, DateTimeConf.date0Padding);
-                let maxYrW = getMaxWRange(0, 99, true);
+                let maxYrW = getMaxWRange(0, 9) * 4;
                 let seps = getMaxW([DateTimeConf.dateSeparator]) * 2;
                 return maxDayW + maxMonthW + maxYrW + seps;
             } else {
@@ -98,8 +101,8 @@ Rectangle {
         property string format: {
             let days = DateTimeConf.date0Padding ? "dd" : "d";
             let months = DateTimeConf.date0Padding ? "MM" : "M";
-            let yrs = "yy";
-            return isNumberFormat ? [days, months, yrs].join(`'${DateTimeConf.dateSeparator}'`) : "ddd d MMM";
+            let yrs = "yyyy";
+            return isNumberFormat ? [yrs, months, days].join(`'${DateTimeConf.dateSeparator}'`) : "ddd d MMM";
         }
 
         Text {
@@ -114,10 +117,18 @@ Rectangle {
         }
 
         MouseArea {
+            property bool locked: false
             anchors.fill: parent
             hoverEnabled: true
+            acceptedButtons: Qt.LeftButton | Qt.MiddleButton
             cursorShape: Qt.PointingHandCursor
-            onClicked: parent.isNumberFormat = !parent.isNumberFormat
+            onContainsMouseChanged: parent.isNumberFormat = containsMouse || locked
+            onClicked: mouse => {
+                if (mouse.button == Qt.LeftButton)
+                    Quickshell.clipboardText = dateText.text;
+                else
+                    locked = !locked;
+            }
         }
     }
 }
