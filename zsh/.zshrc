@@ -26,7 +26,6 @@ zle_highlight+=(paste:none)
 
 alias tetris=tetriscurses
 alias suspend="systemctl suspend"
-alias code="code -n"
 alias qs="clear; qs |& grep -v 'quickshell.bluetooth.device'"
 
 export MANPATH=/home/otto/.local/share/man:$MANPATH
@@ -54,3 +53,4 @@ zle -N _suggest-after-tab
 bindkey ^I _suggest-after-tab
 
 unset HISTFILE
+[ -f "/home/otto/.ghcup/env" ] && . "/home/otto/.ghcup/env" # ghcup-env
