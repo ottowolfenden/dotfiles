@@ -15,7 +15,7 @@ h.binds({
     ["CTRL + SHIFT + escape"] = qs.exec_cmd("kitty --class btop -e btop"),
     ["SUPER + Q"] = function()
         local w = hl.get_active_window()
-        if w and w.class == "code" then
+        if w and w.class == "com.microsoft.VSCode" then
             if qs.is_cursor_in_qs() then
                 qs.dispatch(hl.dsp.focus({ window = w }))
             end
