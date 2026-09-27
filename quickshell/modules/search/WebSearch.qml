@@ -75,7 +75,7 @@ Repeater {
 
                 Text {
                     id: title
-                    text: result.modelData.text
+                    text: result.modelData.text.replace(/\s*<\s*br\s*\/?>\s*/gi, " ").trim()
                     Layout.preferredWidth: Math.min(title.implicitWidth, textRow.resultantWidth * SearchConf.maxHistoryTitleWidthProportion)
                     color: result.isActive ? ColoursConf.fg1.t : ColoursConf.fg3.t
                     font.family: FontsConf.mainFamily
