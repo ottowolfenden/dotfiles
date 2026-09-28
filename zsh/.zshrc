@@ -53,4 +53,11 @@ zle -N _suggest-after-tab
 bindkey ^I _suggest-after-tab
 
 unset HISTFILE
-[ -f "/home/otto/.ghcup/env" ] && . "/home/otto/.ghcup/env" # ghcup-env
+[ -f "/home/otto/.ghcup/env" ] && . "/home/otto/.ghcup/env"
+
+texshow() {
+    local tmp=$(mktemp --suffix=.tex)
+    printf '%s' "\\documentclass{article}\\begin{document}\\show$1\\end{document}" > "$tmp"
+    lualatex -halt-on-error "$tmp" | sed -n '/^> /,/^l\.1 /p' | sed '$d'
+    rm -f "$tmp" "${tmp%.tex}.aux" "${tmp%.tex}.log"
+}
