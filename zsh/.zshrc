@@ -56,6 +56,7 @@ unset HISTFILE
 [ -f "/home/otto/.ghcup/env" ] && . "/home/otto/.ghcup/env"
 
 texshow() {
+    cd /tmp
     local tmp=$(mktemp --suffix=.tex)
     printf '%s' "\\documentclass{article}\\begin{document}\\show$1\\end{document}" > "$tmp"
     lualatex -halt-on-error "$tmp" | sed -n '/^> /,/^l\.1 /p' | sed '$d'
