@@ -43,7 +43,8 @@ hl.on("window.open", function(w)
         end
         if
             not h.arr_includes(no_fullscreen_classes, w.class) and
-            not h.starts_with(w.class, "chrome-")
+            not h.starts_with(w.class, "chrome-") or
+            h.starts_with(w.class, "chrome-www.youtube.com__-Default")
         then
             hl.dispatch(hl.dsp.window.fullscreen_state({
                 internal = 0,
