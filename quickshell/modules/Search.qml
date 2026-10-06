@@ -20,11 +20,10 @@ Rectangle {
         mode = modes[newIndex];
     }
     onModeChanged: {
-        DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = CommandSearchService.mode = mode;
+        DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = mode;
         DirSearchService.search(searchInput.text.trim());
         FileSearchService.search(searchInput.text.trim());
         WebSearchService.search(searchInput.text.trim(), root.mode);
-        CommandSearchService.search(searchInput.text.trim(), root.mode);
     }
 
     color: ColoursConf.bg2.t
@@ -68,7 +67,7 @@ Rectangle {
             placeholderText: SearchConf.modes.find(m => m.name == root.mode).placeholder
             background: null
             font.pixelSize: FontsConf.pixelSize
-            font.family: root.mode == "commands" ? FontsConf.monospaceFamily : FontsConf.mainFamily
+            font.family: FontsConf.mainFamily
             selectionColor: ColoursConf.textselectionbg.t
             selectedTextColor: ColoursConf.fg1.t
             Layout.fillHeight: true
@@ -87,7 +86,6 @@ Rectangle {
                 FlyoutsService.hideFlyout(searchFlyout);
                 DirSearchService.results = FileSearchService.results = [];
                 WebSearchService.reset();
-                CommandSearchService.reset();
                 searchColumn.activeIndex = 0;
                 Object.keys(binds).forEach(k => binds[k].active = false);
             }
@@ -117,16 +115,12 @@ Rectangle {
                     FileSearchService.open(fileSearch.activeItem, binds);
                 else if (webSearch.activeItem)
                     WebSearchService.open(webSearch.activeItem, binds);
-                else if (commandSearch.activeItem)
-                    CommandSearchService.exec(commandSearch.activeItem, binds);
                 else
                     return;
                 reset();
             }
 
             onTextEdited: {
-                if (root.mode == "commands")
-                    return;
                 let mode = SearchConf.modes.find(m => m.prefixes.some(p => (text).startsWith(p)));
                 let prefix = mode?.prefixes.find(p => text.startsWith(p));
                 if (mode && prefix && root.mode != mode.name) {
@@ -155,7 +149,7 @@ Rectangle {
                     root.changeMode(1, true);
                 else if (e.key == Qt.Key_Backtab)
                     root.changeMode(-1, true);
-                else if (SearchConf.shiftBindsEnabled && root.mode != "commands" && (e.modifiers & Qt.ShiftModifier)) {
+                else if (SearchConf.shiftBindsEnabled && (e.modifiers & Qt.ShiftModifier)) {
                     let mode = SearchConf.modes.find(m => m.shiftKey == e.key)?.name;
                     if (mode) {
                         root.mode = mode;
@@ -188,7 +182,6 @@ Rectangle {
                     DirSearchService.search(text.trim());
                     FileSearchService.search(text.trim());
                     WebSearchService.search(text.trim(), root.mode);
-                    CommandSearchService.search(text.trim(), root.mode);
                 }
             }
 
@@ -205,7 +198,7 @@ Rectangle {
         onIsOpenChanged: {
             if (isOpen) {
                 searchInput.forceActiveFocus();
-                DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = CommandSearchService.mode = root.mode;
+                DirSearchService.mode = FileSearchService.mode = WebSearchService.mode = root.mode;
                 DirSearchService.searchOpen = FileSearchService.searchOpen = true;
             } else {
                 searchInput.reset();
@@ -230,7 +223,7 @@ Rectangle {
                 id: searchColumn
                 anchors.fill: parent
                 spacing: DesignConf.spacing
-                readonly property list<Repeater> repeaters: [appSearch, dirSearch, fileSearch, webSearch, commandSearch]
+                readonly property list<Repeater> repeaters: [appSearch, dirSearch, fileSearch, webSearch]
                 readonly property int totalResults: repeaters.reduce((acc, c) => (c.model?.length ?? 0) + acc, 0)
                 property int activeIndex: 0
 
@@ -283,20 +276,6 @@ Rectangle {
                         id: webSearch
                         visible: root.mode == "web" || root.mode == "default"
                         property int indexOffset: fileSearch.indexOffset + fileSearch.model.length
-                        mode: root.mode
-                        searchInput: searchInput
-                        activeIndex: searchColumn.activeIndex - indexOffset
-                        onActiveIndexSet: i => searchColumn.activeIndex = i + indexOffset
-                    }
-                }
-
-                SearchColumn {
-                    child: commandSearch
-                    onModeChanged: root.mode = mode
-                    CommandSearch {
-                        id: commandSearch
-                        visible: root.mode == "commands" || root.mode == "default"
-                        property int indexOffset: webSearch.indexOffset + webSearch.model.length
                         mode: root.mode
                         searchInput: searchInput
                         activeIndex: searchColumn.activeIndex - indexOffset

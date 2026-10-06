@@ -58,18 +58,6 @@ QtObject {
                 filtered: 7
             },
             displayName: "Web"
-        },
-        {
-            name: "commands",
-            prefixes: ["exec:", ">", "e:", "t:", "c:", "C"],
-            shiftKey: Qt.Key_C,
-            placeholder: "Search commands",
-            minChars: 1,
-            maxResults: {
-                all: 2,
-                filtered: 10
-            },
-            displayName: "Commands"
         }
     ]
     readonly property bool shiftBindsEnabled: true
@@ -112,10 +100,4 @@ QtObject {
     readonly property var searchHistorySqlExclusions: ["https://duckduckgo.com/%", "https://www.youtube.com/_%", "https://www.google.com/search%"]
     readonly property real browserHistoryProportion: 0.4
     readonly property string secondaryHistoryProperty: "hostName" // "hostName", "trimmedUrl", "url" or "type"
-    readonly property list<string> commandSubstrExclusions: ["\n", "\\n"]
-    readonly property int maxCommandChars: 53
-    readonly property real commandHistoryProportion: 0.6
-    readonly property list<string> whencePrefixExclusions: ["_", "+"]
-    readonly property bool alwaysPrefillCommands: false
-    readonly property bool searchWhenceSubstrings: false
 }

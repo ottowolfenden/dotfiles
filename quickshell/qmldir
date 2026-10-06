@@ -19,7 +19,6 @@ singleton ModeService 1.0 services/ModeService.qml
 singleton UtilsService 1.0 services/UtilsService.qml
 
 singleton AppSearchService 1.0 services/search/AppSearchService.qml
-singleton CommandSearchService 1.0 services/search/CommandSearchService.qml
 singleton DirSearchService 1.0 services/search/DirSearchService.qml
 singleton FileSearchService 1.0 services/search/FileSearchService.qml
 singleton WebSearchService 1.0 services/search/WebSearchService.qml
