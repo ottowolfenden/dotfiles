@@ -57,7 +57,9 @@ unset HISTFILE
 
 texshow() {
     local tmp=$(mktemp --suffix=.tex)
-    printf '%s' "\\documentclass{article}\\begin{document}\\show$1\\end{document}" > "$tmp"
+    printf '%s' \
+        "\\documentclass{article}\\usepackage{amssymb,amsthm,mathtools}\\begin{document}\\show$1\\end{document}" \
+        > "$tmp"
     lualatex --output-directory=/tmp -halt-on-error "$tmp" | 
         sed -n '/^> /,/^l\.1 /p' | 
         sed '$d'
