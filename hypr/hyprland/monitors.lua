@@ -9,9 +9,9 @@ local monitors = {
     },
     {
         output = "HDMI-A-1",
-        mirror = "eDP-1",
+        -- mirror = "eDP-1",
         mode = "preferred",
-        position = "auto",
+        position = "auto-up",
         scale = 1
     }
 }
