@@ -65,3 +65,11 @@ texshow() {
         sed '$d'
     rm -f "$tmp" "${tmp%.tex}.aux" "${tmp%.tex}.log"
 }
+
+yt-playlist-download() {
+    yt-dlp \
+        -t mp3 \
+        --no-sponsorblock \
+        --embed-thumbnail \
+        "$1"
+}
