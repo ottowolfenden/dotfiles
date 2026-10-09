@@ -34,6 +34,13 @@ function h.arr_includes(arr, val)
     return false
 end
 
+function h.find(t, predicate)
+    for _, v in ipairs(t) do
+        if predicate(v) then return v end
+    end
+    return nil
+end
+
 function h.starts_with(text, prefix)
     return text:find(prefix, 1, true) == 1
 end
