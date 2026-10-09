@@ -73,7 +73,7 @@ QtObject {
     }
 
     function getFilteredSinks(): list<PwNode> {
-        let filtered = Pipewire.nodes.values.filter(n => n.audio && n.ready && !n.isStream && n.isSink && (SystemConf.showHdmiSinks || !containsHdmi(n)));
+        let filtered = Pipewire.nodes.values.filter(n => n.audio && n.ready && !n.isStream && n.isSink && !AudioConf.excludedSinks.some(s => n.name == s));
         filtered.sort((a, b) => getSinkDetails(a).name > getSinkDetails(b).name ? 1 : -1);
         let target = filtered.find(n => n.name == SystemConf.mainPwNodeName);
         if (!target)
