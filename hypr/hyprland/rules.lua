@@ -12,9 +12,9 @@ h.window_rules({
         },
         no_focus = true
     },
-    { match = { class = "^anki$", title = "^Edit.*" },     float = true, center = true },
-    { match = { class = "[Tt]hunar", title = "Rename.*" }, float = true },
-    { match = { title = "about:blank.*" },                 float = true }
+    { match = { class = "[Tt]hunar", title = "Rename.*" },    float = true },
+    { match = { title = "about:blank.*" },                    float = true },
+    { match = { class = "anki", title = "Choose Note Type" }, size = { 200, 200 }, center = true }
 })
 
 hl.layer_rule({
