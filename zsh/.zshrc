@@ -44,8 +44,8 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_STRATEGY=completion
 
 _suggest-after-tab() {
-  zle autosuggest-accept
-  zle autosuggest-fetch
+    zle autosuggest-accept
+    zle autosuggest-fetch
 }
 
 zle -N _suggest-after-tab
