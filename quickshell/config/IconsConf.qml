@@ -154,6 +154,7 @@ QtObject {
             onOff: "power_settings_new",
             shutDown: "power_settings_new",
             restart: "restart_alt",
+            logout: "logout",
             sleep: "bedtime",
             lock: "lock"
         })

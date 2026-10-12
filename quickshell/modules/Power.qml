@@ -39,30 +39,30 @@ Rectangle {
 
             ColumnLayout {
                 spacing: DesignConf.spacing
+                property var exec: command => {
+                    FlyoutsService.flyoutsHandler.hideAllFlyouts();
+                    Quickshell.execDetached(command);
+                }
 
                 TextButton {
                     text: "Shut down"
                     iconName: IconsConf.power.shutDown
-                    onClicked: {
-                        FlyoutsService.flyoutsHandler.hideAllFlyouts();
-                        Quickshell.execDetached(["hyprshutdown", "-t", "Shutting down...", "--post-cmd", "systemctl poweroff"]);
-                    }
+                    onClicked: parent.exec(["hyprshutdown", "-t", "Shutting down...", "--post-cmd", "systemctl poweroff"])
                 }
                 TextButton {
                     text: "Restart"
                     iconName: IconsConf.power.restart
-                    onClicked: {
-                        FlyoutsService.flyoutsHandler.hideAllFlyouts();
-                        Quickshell.execDetached(["hyprshutdown", "-t", "Restarting...", "--post-cmd", "systemctl reboot"]);
-                    }
+                    onClicked: parent.exec(["hyprshutdown", "-t", "Restarting...", "--post-cmd", "systemctl reboot"])
+                }
+                TextButton {
+                    text: "Log out"
+                    iconName: IconsConf.power.logout
+                    onClicked: parent.exec(["hyprshutdown", "-t", "Logging out..."])
                 }
                 TextButton {
                     text: "Sleep"
                     iconName: IconsConf.power.sleep
-                    onClicked: {
-                        FlyoutsService.flyoutsHandler.hideAllFlyouts();
-                        Quickshell.execDetached(["systemctl", "suspend"]);
-                    }
+                    onClicked: parent.exec(["systemctl", "suspend"])
                 }
                 TextButton {
                     text: "Lock"
