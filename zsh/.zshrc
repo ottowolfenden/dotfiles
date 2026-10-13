@@ -73,3 +73,5 @@ yt-playlist-download() {
         --embed-thumbnail \
         "$1"
 }
+
+node-with() { node -i -e "Object.assign(globalThis, require('./$1'))"; }
