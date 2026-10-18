@@ -66,12 +66,12 @@ QtObject {
     readonly property string dirParentDir: Quickshell.env("HOME")
     readonly property var pathExclusions: ({
             dirs: {
-                default: ["*/.*", Quickshell.env("HOME") + "/yay/*", "*/node_modules/*"],
-                always: [Quickshell.env("HOME") + "/.local/share/Trash/*"]
+                default: ["*/.*", Quickshell.env("HOME") + "/yay/*", "*node_modules*"],
+                always: [Quickshell.env("HOME") + "/.local/share/Trash/*", Quickshell.env("HOME") + "/yay/*", "*node_modules*"]
             },
             files: {
-                default: ["*/.*", Quickshell.env("HOME") + "/yay/*", "*/node_modules/*"],
-                always: [Quickshell.env("HOME") + "/.local/share/Trash/*"]
+                default: ["*/.*", Quickshell.env("HOME") + "/yay/*", "*node_modules*"],
+                always: [Quickshell.env("HOME") + "/.local/share/Trash/*", Quickshell.env("HOME") + "/yay/*", "*node_modules*"]
             }
         })
     readonly property int msToSwitchHyprlandWs: 60
