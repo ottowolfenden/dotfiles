@@ -6,7 +6,13 @@ local qs_binds = {
     ["SUPER + mouse:273"] = { hl.dsp.window.resize(), { mouse = true } },
     ["SUPER + SHIFT + mouse:272"] = { hl.dsp.window.resize(), { mouse = true } },
     ["SUPER + M"] = hl.dsp.window.move({ monitor = "+1", follow = true }),
-    ["F11"] = hl.dsp.window.fullscreen_state({ internal = 0, client = 2, action = "toggle" }),
+    ["F11"] = function()
+        if hl.get_active_window().class == "anki" then
+            h.press_key(nil, "F11")
+        else
+            hl.dispatch(hl.dsp.window.fullscreen_state({ internal = 0, client = 2, action = "toggle" }))
+        end
+    end,
     ["SUPER + F11"] = hl.dsp.window.fullscreen_state({ internal = 3, client = 3, action = "toggle" }),
     [{ "SUPER + mouse:274", "SUPER + W" }] = hl.dsp.window.close()
 }
@@ -33,7 +39,7 @@ end
 h.qs_binds(qs_binds)
 h.binds(binds)
 
-local no_fullscreen_classes = { "helium", "xdg-desktop-portal-gtk", "chromium", "firefox" }
+local no_fullscreen_classes = { "helium", "xdg-desktop-portal-gtk", "chromium", "firefox", "anki" }
 
 hl.on("window.open", function(w)
     hl.timer(function()
@@ -41,10 +47,19 @@ hl.on("window.open", function(w)
         if not a_w or w.address ~= a_w.address then
             hl.dispatch(hl.dsp.focus({ window = w }))
         end
+        if w.class == "anki" then
+            hl.dispatch(hl.dsp.window.fullscreen_state({
+                internal = 0,
+                client = 1,
+                action = "set",
+                window = w
+            }))
+            hl.timer(function() h.press_key(nil, "F11") end, { timeout = 700, type = "oneshot" })
+        end
         if
             not h.arr_includes(no_fullscreen_classes, w.class) and
-            not h.starts_with(w.class, "chrome-") or
-            h.starts_with(w.class, "chrome-www.youtube.com__-Default")
+            not (h.starts_with(w.class, "chrome-") or
+                h.starts_with(w.class, "chrome-www.youtube.com__-Default"))
         then
             hl.dispatch(hl.dsp.window.fullscreen_state({
                 internal = 0,

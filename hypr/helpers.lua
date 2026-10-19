@@ -46,6 +46,7 @@ function h.starts_with(text, prefix)
 end
 
 function h.press_key(mods, key)
+    mods = h.t(mods == nil, "", mods)
     hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "down" }))
     hl.dispatch(hl.dsp.send_key_state({ mods = mods, key = key, state = "up" }))
 end
