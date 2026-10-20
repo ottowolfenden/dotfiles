@@ -2,11 +2,10 @@ if [[ "$TERM" == "linux" || "$TERM_PROGRAM" == "vscode" ]]; then
     ZSH_THEME=""
     PROMPT="%~ > "
 else
-    if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]] &&
         source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-    fi
     ZSH_THEME="powerlevel10k/powerlevel10k"
-    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+    [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 fi
 
 export ZSH="$HOME/.oh-my-zsh"
@@ -35,10 +34,10 @@ export PATH="/usr/local/texlive/2026/bin/x86_64-linux:$PATH"
 export MANPATH="/usr/local/texlive/2026/texmf-dist/doc/man:$MANPATH"
 export INFOPATH="/usr/local/texlive/2026/texmf-dist/doc/info:$INFOPATH"
 
-if [[ -n "$ZSH_PREFILL//" ]]; then
+[[ -n "$ZSH_PREFILL//" ]] && {
     print -z "$ZSH_PREFILL"
     unset ZSH_PREFILL
-fi
+}
 
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_STRATEGY=completion
@@ -56,14 +55,16 @@ unset HISTFILE
 [ -f "/home/otto/.ghcup/env" ] && . "/home/otto/.ghcup/env"
 
 texshow() {
-    local tmp=$(mktemp --suffix=.tex)
-    printf '%s' \
-        "\\documentclass{article}\\usepackage{amssymb,amsthm,mathtools}\\begin{document}\\show$1\\end{document}" \
-        > "$tmp"
-    lualatex --output-directory=/tmp -halt-on-error "$tmp" | 
-        sed -n '/^> /,/^l\.1 /p' | 
-        sed '$d'
-    rm -f "$tmp" "${tmp%.tex}.aux" "${tmp%.tex}.log"
+    for s in "$@"; do
+        local tmp=$(mktemp --suffix=.tex)
+        printf '%s' \
+            "\\documentclass{article}\\usepackage{amssymb,amsthm,mathtools}\\begin{document}\\show$s\\end{document}" \
+            > "$tmp"
+        lualatex --output-directory=/tmp -halt-on-error "$tmp" | 
+            sed -n '/^> /,/^l\.1 /p' | 
+            sed '$d'
+        rm -f "$tmp" "${tmp%.tex}.aux" "${tmp%.tex}.log"
+    done
 }
 
 yt-playlist-download() {
