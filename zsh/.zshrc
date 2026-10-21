@@ -51,7 +51,6 @@ zle -N _suggest-after-tab
 
 bindkey ^I _suggest-after-tab
 
-unset HISTFILE
 [ -f "/home/otto/.ghcup/env" ] && . "/home/otto/.ghcup/env"
 
 texshow() {
