@@ -14,7 +14,8 @@ h.window_rules({
     },
     { match = { class = "[Tt]hunar", title = "Rename.*" },           float = true },
     { match = { title = "about:blank.*|MathJax Equation Source.*" }, size = { 1000, 700 }, float = true },
-    { match = { class = "anki", title = "Choose Note Type" },        size = { 200, 300 },  center = true }
+    { match = { class = "anki", title = "Choose Note Type" },        size = { 200, 300 },  center = true },
+    { match = { class = "anki", title = "Profiles" },                size = { 450, 350 },  pseudo = true }
 })
 
 hl.layer_rule({
