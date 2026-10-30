@@ -136,6 +136,8 @@ QtObject {
             Quickshell.execDetached(["zsh", "-c", `${(() => {
                         if (binds?.inVsCode?.active)
                             return "code";
+                        if (file.fileExt == ".sh")
+                            return "bash";
                         if (checkStatus == "success")
                             return "xdg-open";
                         if (checkStatus == "fail")
