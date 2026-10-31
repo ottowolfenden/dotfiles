@@ -8,11 +8,5 @@
     "outSVGVue": false,
     "outSVGPath": false,
     "generateInfoData": false,
-    "excludeFormat": [
-        "eot",
-        "woff",
-        "woff2",
-        "svg",
-        "symbol.svg"
-    ]
+    "excludeFormat": ["eot", "woff", "woff2", "svg", "symbol.svg"]
 }
