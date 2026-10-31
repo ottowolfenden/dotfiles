@@ -1,1 +1,5 @@
-npx svgtofont -s ./svgs -o ../fonts
+#!/bin/bash
+
+cd "$(dirname "$(realpath "$0")")"
+
+npx svgtofont -s svgs -o ../fonts
