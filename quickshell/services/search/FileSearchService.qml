@@ -132,12 +132,12 @@ QtObject {
             openTimer.checkStatus = checkStatus;
             openTimer.binds = binds;
             openTimer.running = true;
-        } else
+        } else if (!binds?.inVsCode?.active && file.fileExt == ".sh")
+            Quickshell.execDetached(["zsh", "-c", `kitty -d ~ env ZSH_PREFILL='${file.homeRelativePath}' zsh`]);
+        else
             Quickshell.execDetached(["zsh", "-c", `${(() => {
                         if (binds?.inVsCode?.active)
                             return "code";
-                        if (file.fileExt == ".sh")
-                            return "bash";
                         if (checkStatus == "success")
                             return "xdg-open";
                         if (checkStatus == "fail")
