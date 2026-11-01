@@ -49,10 +49,10 @@ Scope {
             }
 
             SearchContainer {
-                search: search
+                search: searchComponent
 
                 Search {
-                    id: search
+                    id: searchComponent
                     Layout.fillWidth: true
                     onIsOpenChanged: {
                         if (isOpen) {
@@ -73,7 +73,7 @@ Scope {
 
                 SearchMode {
                     id: searchMode
-                    search: search
+                    search: searchComponent
                 }
             }
 
