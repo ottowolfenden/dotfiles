@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick
+import ".."
 
 QtObject {
     readonly property int pixelSize: 15

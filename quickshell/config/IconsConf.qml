@@ -1,6 +1,7 @@
 pragma Singleton
 import QtQuick
 import Quickshell.Networking
+import ".."
 
 QtObject {
     readonly property string forward: "chevron_forward"

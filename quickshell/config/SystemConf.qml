@@ -1,5 +1,6 @@
 pragma Singleton
 import QtQuick
+import ".."
 
 QtObject {
     readonly property list<string> vpnIdentifiers: ["vpn", "wireguard", "proton"]
