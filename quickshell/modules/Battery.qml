@@ -101,13 +101,16 @@ Rectangle {
                     id: tlpctlGetProcess
                     command: ["tlpctl", "get"]
                     running: true
+                    property var prevMode: null
                     stdout: StdioCollector {
                         onStreamFinished: {
                             if (powerProfiletoggleGroup.ignoreUpdates)
                                 return;
                             let modeName = text.trim();
                             powerProfiletoggleGroup.activeIndex = root.tlpModes.indexOf(modeName);
-                            BatteryService.actions[modeName]();
+                            if (modeName != tlpctlGetProcess.prevMode)
+                                BatteryService.actions[modeName]();
+                            tlpctlGetProcess.prevMode = modeName;
                         }
                     }
                 }
