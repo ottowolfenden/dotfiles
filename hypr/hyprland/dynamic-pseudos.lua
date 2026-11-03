@@ -44,8 +44,10 @@ local function resize(window)
 end
 
 local function get_dp_windows(opts)
+    local a_w = hl.get_active_workspace()
     if not opts then opts = {} end
-    local all_windows = hl.get_workspace_windows(opts.ws_id and opts.ws_id or hl.get_active_workspace().id)
+    if not a_w then return end
+    local all_windows = hl.get_workspace_windows(h.t(opts.ws_id, opts.ws_id, a_w.id))
     local windows = {}
     for _, w in ipairs(all_windows) do
         if
@@ -92,7 +94,7 @@ end
 
 local function window_close(closed_window)
     local windows = get_dp_windows({ exclude_window = closed_window, include_disabled = true })
-    if #windows == 1 then
+    if windows and #windows == 1 then
         local remaining_window = windows[1]
         if is_dynamic_pseudo(remaining_window) then
             pseudo("enable", remaining_window)
@@ -122,17 +124,21 @@ hl.on("window.move_to_workspace", function(_, new_ws)
     hl.timer(function()
         local prev_ws_windows = get_dp_windows({ ws_id = Previous_ws_id })
         local new_ws_windows = get_dp_windows({ ws_id = new_ws.id, include_disabled = true })
-
-        if #new_ws_windows == 1 then
-            local only_window = new_ws_windows[1]
-            if is_dynamic_pseudo(only_window) and not is_dp_disabled(only_window) then pseudo("enable", only_window) end
-        elseif #new_ws_windows > 1 then
-            unpseudo_windows(new_ws_windows)
+        if new_ws_windows then
+            if #new_ws_windows == 1 then
+                local only_window = new_ws_windows[1]
+                if is_dynamic_pseudo(only_window) and not is_dp_disabled(only_window) then
+                    pseudo("enable", only_window)
+                end
+            elseif #new_ws_windows > 1 then
+                unpseudo_windows(new_ws_windows)
+            end
         end
-
-        if #prev_ws_windows == 1 then
-            local remaining_window = prev_ws_windows[1]
-            if is_dynamic_pseudo(remaining_window) then pseudo("enable", remaining_window) end
+        if prev_ws_windows then
+            if #prev_ws_windows == 1 then
+                local remaining_window = prev_ws_windows[1]
+                if is_dynamic_pseudo(remaining_window) then pseudo("enable", remaining_window) end
+            end
         end
     end, { timeout = 10, type = "oneshot" })
 end)
