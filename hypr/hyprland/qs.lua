@@ -39,3 +39,8 @@ for key, val in pairs({ ["XF86MonBrightnessUp"] = "increase", ["XF86MonBrightnes
 end
 
 h.binds(binds)
+
+hl.layer_rule({
+    match = { namespace = "quickshell|qs-flyout" },
+    no_anim = true
+})
