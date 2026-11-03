@@ -24,3 +24,5 @@ function setRefreshRate(output, hz)
     monitor.mode = string.match(monitor.mode, ".*@") .. tostring(hz)
     hl.monitor(monitor)
 end
+
+hl.config({ render = { cm_auto_hdr = 0 } })
