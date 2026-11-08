@@ -14,17 +14,11 @@ Item {
 
     Text {
         id: icon
-        text: parent.iconName.replace("custom:", "").replace("fill:", "")
+        text: parent.iconName.replace("fill:", "")
         font.pixelSize: parent.pixelSize
         color: parent.colour
-        font.family: parent.iconName.startsWith("custom:") ? FontsConf.customMaterialSymbols : FontsConf.materialSymbols
+        font.family: parent.iconName.startsWith("fill:") ? FontsConf.materialSymbolsExtendedFill : FontsConf.materialSymbolsExtended
         renderType: Text.NativeRendering
-        font.variableAxes: ({
-                "FILL": parent.iconName.startsWith("fill:") ? 1 : 0,
-                "wght": 400,
-                "GRAD": 0,
-                "opsz": 24
-            })
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
