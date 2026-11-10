@@ -9,16 +9,16 @@ QtObject {
 
     readonly property string googleSansFlex: googleSansFlexLoader.name
     readonly property FontLoader googleSansFlexLoader: FontLoader {
-        source: "../assets/fonts/google-sans-flex.ttf"
+        source: "../fonts/google-sans-flex.ttf"
     }
 
     readonly property string materialSymbolsExtended: materialSymbolsExtendedLoader.name
     readonly property FontLoader materialSymbolsExtendedLoader: FontLoader {
-        source: "../assets/fonts/material-symbols-extended-24px.ttf"
+        source: "../fonts/material-symbols-extended-24px.ttf"
     }
 
     readonly property string materialSymbolsExtendedFill: materialSymbolsExtendedFillLoader.name
     readonly property FontLoader materialSymbolsExtendedFillLoader: FontLoader {
-        source: "../assets/fonts/material-symbols-extended-24px-fill.ttf"
+        source: "../fonts/material-symbols-extended-24px-fill.ttf"
     }
 }
