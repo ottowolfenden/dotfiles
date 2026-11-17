@@ -24,7 +24,7 @@ if [[ ${#exclusions[@]} -gt 0 ]]; then
     exclargs+=( ")" "-prune" "-o" )
 fi
 
-filters=( "$dir" "${exclargs[@]}" -type $type )
+filters=( "$dir" "${exclargs[@]}" -type "$type" )
 format=(-printf "%A@ %p\0")
 sort() { 
     if [[ $1 == -accessed ]]; then

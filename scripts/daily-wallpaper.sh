@@ -11,4 +11,4 @@ hash=$(echo "$hash * $n" | bc)
 hash=$((${hash%.*} + 1))
 hash=$(echo "if ($hash < $n) $hash else $n" | bc -l)
 
-echo "$dir"/$(ls "$dir" | head -n $hash  | tail -n 1)
+echo "$dir"/"$(ls "$dir" | head -n "$hash"  | tail -n 1)"
