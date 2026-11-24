@@ -1,4 +1,4 @@
-local spacing = 8
+spacing = 8
 
 hl.config({
     general = {

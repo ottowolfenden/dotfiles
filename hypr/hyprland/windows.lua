@@ -51,6 +51,12 @@ h.window_rules({
         },
         no_focus = true
     },
+    {
+        match = { class = ".*__interval-timer_-Default" },
+        size = { 400, 400 },
+        move = { "monitor_w - 400 - " .. spacing, "monitor_h - 400 - 66 - " .. spacing },
+        float = true
+    },
     { match = { class = "[Tt]hunar", title = "Rename.*" },           float = true },
     { match = { title = "about:blank.*|MathJax Equation Source.*" }, size = { 1000, 700 }, float = true },
     { match = { class = "anki", title = "Choose Note Type" },        size = { 200, 300 },  center = true },
