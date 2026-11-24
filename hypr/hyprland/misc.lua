@@ -6,7 +6,7 @@ h.binds({
     ["XF86AudioPrev"] = { hl.dsp.exec_cmd("playerctl previous"), { locked = true } },
     ["SUPER + space"] = { hl.dsp.exec_cmd("~/dotfiles/scripts/keyboard-backlight.sh"), { locked = true } },
     ["XF86AudioMicMute"] = { hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true } },
-    -- ["SUPER + ALT + I"] = { hl.plugin.darkwindow.dsp_shade({ shader = "invert", fade_in_speed = 1, fade_out_speed = 1 }) }
+    ["SUPER + ALT + I"] = { hl.plugin.darkwindow.dsp_shade({ shader = "invert", fade_in_speed = 1, fade_out_speed = 1 }) }
 })
 
 
@@ -31,5 +31,5 @@ hl.config({
         disable_hyprland_logo = true,
         focus_on_activate = true
     },
-    -- plugin = { darkwindow = { load_shaders = "invert" } }
+    plugin = { darkwindow = { load_shaders = "invert" } }
 })
