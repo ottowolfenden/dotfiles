@@ -2,7 +2,14 @@ local h = require("helpers")
 local qs = require("qs")
 
 hl.on("hyprland.start", function()
-    h.exec_cmds({ "qs", "awww-daemon", "swaync", "clipse -listen", "protonvpn connect" })
+    h.exec_cmds({
+        "qs",
+        "awww-daemon",
+        "swaync",
+        "clipse -listen",
+        "protonvpn connect",
+        "hyprpm reload"
+    })
 end)
 
 h.binds({
