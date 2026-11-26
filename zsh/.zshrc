@@ -71,7 +71,7 @@ yt-playlist-download() {
         -t mp3 \
         --no-sponsorblock \
         --embed-thumbnail \
-        "$1"
+        "$@"
 }
 
 node-with() { node -i -e "Object.assign(globalThis, require('./$1'))"; }
